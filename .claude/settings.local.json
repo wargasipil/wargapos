@@ -37,7 +37,12 @@
       "Bash(make build:*)",
       "Bash(npm run:*)",
       "Bash(go build:*)",
-      "Bash(docker build:*)"
+      "Bash(docker build:*)",
+      "Bash(bash scripts/docker-push.sh)",
+      "Bash(xargs wc:*)",
+      "Bash(go get:*)",
+      "Bash(go install:*)",
+      "Bash(wire gen:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

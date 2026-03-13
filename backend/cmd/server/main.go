@@ -11,13 +11,6 @@ import (
 	"golang.org/x/net/http2/h2c"
 
 	"wargapos/backend/internal/config"
-	"wargapos/backend/internal/db"
-	"wargapos/backend/internal/handler"
-
-	"wargapos/backend/gen/wargapos/auth/v1/authv1connect"
-	"wargapos/backend/gen/wargapos/product/v1/productv1connect"
-	"wargapos/backend/gen/wargapos/transaction/v1/transactionv1connect"
-	"wargapos/backend/gen/wargapos/user/v1/userv1connect"
 )
 
 //go:embed static
@@ -25,23 +18,15 @@ var staticFiles embed.FS
 
 func main() {
 	cfg := config.Load()
-	db.Connect(cfg)
-
-	mux := http.NewServeMux()
-
-	// Connect RPC handlers — registered first so they take priority
-	mux.Handle(authv1connect.NewAuthServiceHandler(&handler.AuthHandler{}))
-	mux.Handle(userv1connect.NewUserServiceHandler(&handler.UserHandler{}))
-	mux.Handle(productv1connect.NewProductServiceHandler(&handler.ProductHandler{}))
-	mux.Handle(transactionv1connect.NewTransactionServiceHandler(&handler.TransactionHandler{}))
-
-	// SPA fallback — serves static files, falls back to index.html for client-side routing
-	mux.Handle("/", spaHandler(staticFiles))
+	app, err := InitializeApp(cfg)
+	if err != nil {
+		log.Fatalf("init: %v", err)
+	}
 
 	addr := cfg.Server.Host + ":" + cfg.Server.Port
 	fmt.Printf("WargaPOS backend listening on %s\n", addr)
 
-	if err := http.ListenAndServe(addr, h2c.NewHandler(mux, &http2.Server{})); err != nil {
+	if err := http.ListenAndServe(addr, h2c.NewHandler(app.mux, &http2.Server{})); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
 }

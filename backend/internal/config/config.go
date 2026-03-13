@@ -10,6 +10,12 @@ import (
 type Config struct {
 	Server   ServerConfig   `yaml:"server"`
 	Database DatabaseConfig `yaml:"database"`
+	Auth     AuthConfig     `yaml:"auth"`
+}
+
+type AuthConfig struct {
+	JWTSecret        string `yaml:"jwt_secret"`
+	TokenExpireHours int    `yaml:"token_expire_hours"`
 }
 
 type ServerConfig struct {
@@ -29,7 +35,14 @@ var defaults = Config{
 		URL:  "host=localhost user=postgres password=postgres dbname=wargapos port=5432 sslmode=disable",
 		Skip: false,
 	},
+	Auth: AuthConfig{
+		JWTSecret:        "change-me-in-production",
+		TokenExpireHours: 24,
+	},
 }
+
+// ProvideAuthConfig is a Wire provider that extracts AuthConfig from Config.
+func ProvideAuthConfig(cfg *Config) AuthConfig { return cfg.Auth }
 
 // Load reads config.yaml (or CONFIG_PATH env var) and returns a Config.
 // If the file is not found, dev defaults are returned so the server can
@@ -74,5 +87,8 @@ func applyEnv(cfg *Config) {
 	}
 	if v := os.Getenv("DB_SKIP"); v == "1" || v == "true" {
 		cfg.Database.Skip = true
+	}
+	if v := os.Getenv("JWT_SECRET"); v != "" {
+		cfg.Auth.JWTSecret = v
 	}
 }
