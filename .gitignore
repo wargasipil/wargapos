@@ -1,0 +1,13 @@
+# ── Secrets & local config ──────────────────────────────────────
+backend/config.yaml
+
+# ── Build outputs ────────────────────────────────────────────────
+backend/bin/
+backend/cmd/server/static/
+
+# ── Dependencies ─────────────────────────────────────────────────
+frontend/node_modules/
+
+# ── OS / editor noise ────────────────────────────────────────────
+.DS_Store
+Thumbs.db

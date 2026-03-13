@@ -1,0 +1,22 @@
+version: v2
+clean: true
+plugins:
+  # Go protobuf message types
+  - local: protoc-gen-go
+    out: ../backend/gen
+    opt:
+      - paths=source_relative
+
+  # Connect-Go service handler interfaces
+  - local: protoc-gen-connect-go
+    out: ../backend/gen
+    opt:
+      - paths=source_relative
+
+  # TypeScript message types + service descriptors (protobuf-es v2)
+  # With protobuf-es v2, service descriptors are in _pb.ts — no separate connect plugin needed
+  - remote: buf.build/bufbuild/es:v2.2.3
+    out: ../frontend/src/gen
+    opt:
+      - target=ts
+      - import_extension=none

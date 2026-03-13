@@ -1,0 +1,7 @@
+server:
+  host: "0.0.0.0"   # bind address: 0.0.0.0 = all interfaces, 127.0.0.1 = localhost only
+  port: "8080"
+
+database:
+  url: "host=localhost user=postgres password=postgres dbname=wargapos port=5432 sslmode=disable"
+  skip: false

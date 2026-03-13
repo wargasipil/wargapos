@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package wargapos.product.v1;
+
+option go_package = "wargapos/backend/gen/wargapos/product/v1;productv1";
+
+message Category {
+  string id   = 1;
+  string name = 2;
+}
+
+message Product {
+  string id          = 1;
+  string name        = 2;
+  string description = 3;
+  string category_id = 4;
+  int64  price_cents = 5;
+  bool   is_active   = 6;
+  string sku         = 7;
+}
+
+message CreateProductRequest {
+  string name        = 1;
+  string description = 2;
+  string category_id = 3;
+  int64  price_cents = 4;
+  string sku         = 5;
+}
+
+message CreateProductResponse { Product product = 1; }
+
+message GetProductRequest  { string id = 1; }
+message GetProductResponse { Product product = 1; }
+
+message ListProductsRequest {
+  int32  page        = 1;
+  int32  page_size   = 2;
+  string category_id = 3;
+}
+
+message ListProductsResponse {
+  repeated Product products = 1;
+  int32            total    = 2;
+}
+
+message UpdateProductRequest {
+  string id          = 1;
+  string name        = 2;
+  int64  price_cents = 3;
+  bool   is_active   = 4;
+}
+
+message UpdateProductResponse { Product product = 1; }
+
+message DeleteProductRequest  { string id = 1; }
+message DeleteProductResponse {}
+
+message CreateCategoryRequest  { string name = 1; }
+message CreateCategoryResponse { Category category = 1; }
+
+message ListCategoriesRequest  {}
+message ListCategoriesResponse { repeated Category categories = 1; }
+
+service ProductService {
+  rpc CreateProduct(CreateProductRequest)   returns (CreateProductResponse);
+  rpc GetProduct(GetProductRequest)         returns (GetProductResponse);
+  rpc ListProducts(ListProductsRequest)     returns (ListProductsResponse);
+  rpc UpdateProduct(UpdateProductRequest)   returns (UpdateProductResponse);
+  rpc DeleteProduct(DeleteProductRequest)   returns (DeleteProductResponse);
+  rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse);
+  rpc ListCategories(ListCategoriesRequest) returns (ListCategoriesResponse);
+}

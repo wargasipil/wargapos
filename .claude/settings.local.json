@@ -1,0 +1,47 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go version)",
+      "Bash(node --version)",
+      "Bash(npm --version)",
+      "Bash(buf --version)",
+      "Bash(buf config ls-plugins)",
+      "Bash(buf registry plugin ls)",
+      "Bash(buf --help)",
+      "Bash(go env GOPATH GOMODCACHE GOPROXY)",
+      "Bash(buf generate --help)",
+      "Bash(ls /c/Users/heris/go/pkg/mod/google.golang.org/protobuf@*)",
+      "Bash(xargs ls)",
+      "Bash(npm view @connectrpc/protoc-gen-connect-es version)",
+      "Bash(npm view @connectrpc/connect-query version)",
+      "Bash(# Check latest Go lib versions for the go.mod go list -m -versions connectrpc.com/connect)",
+      "Bash(npm view @connectrpc/connect peerDependencies)",
+      "Bash(npm view @bufbuild/protoc-gen-es peerDependencies)",
+      "Bash(npm view @connectrpc/protoc-gen-connect-es peerDependencies)",
+      "Bash(# Verify lib/pq or pgx for postgres ls /c/Users/heris/go/pkg/mod/github.com/jackc/)",
+      "Read(//c/Users/heris/go/pkg/mod/github.com/lib//**)",
+      "Bash(buf generate)",
+      "Bash(go build ./...)",
+      "Bash(npm install)",
+      "Bash(go get gopkg.in/yaml.v3@v3.0.1)",
+      "Bash(go get github.com/pressly/goose/v3@v3.24.3)",
+      "Bash(npm run dev)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(npm install @chakra-ui/react @tanstack/react-router @tanstack/react-query zustand @tanstack/router-devtools @tanstack/react-query-devtools)",
+      "Bash(\"d:/research/wargapos/frontend/src/App.tsx\":*)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(npm install @tanstack/react-router-devtools)",
+      "Bash(npm uninstall @tanstack/router-devtools)",
+      "WebSearch",
+      "mcp__chakra-ui__get_component_example",
+      "Bash(make build:*)",
+      "Bash(npm run:*)",
+      "Bash(go build:*)",
+      "Bash(docker build:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
