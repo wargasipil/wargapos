@@ -55,7 +55,7 @@ export function ProductDetailPage() {
         </Button>
         <Heading size="md">Product Detail</Heading>
         <Button asChild size="sm" variant="outline" ml="auto">
-          <Link to={`/products/${id}/edit`}><Pencil size={14} /> Edit</Link>
+          <Link to="/products/$id/edit" params={{ id }}><Pencil size={14} /> Edit</Link>
         </Button>
       </HStack>
 

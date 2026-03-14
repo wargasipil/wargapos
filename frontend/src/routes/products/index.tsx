@@ -110,7 +110,7 @@ export function ProductsPage() {
             {products.map((p) => (
               <Box key={String(p.id)} bg="white" borderRadius="lg" p={4} boxShadow="sm">
                 <Flex justify="space-between" align="start">
-                  <Link to={`/products/${p.id}`} style={{ flex: 1, marginRight: 12 }}>
+                  <Link to="/products/$id" params={{ id: String(p.id) }} style={{ flex: 1, marginRight: 12 }}>
                     <Flex gap={3} align="center">
                       <ProductImage src={p.imageUrl} size={40} radius={6} />
                       <Box>
@@ -137,7 +137,7 @@ export function ProductsPage() {
                       {p.isActive ? 'Active' : 'Inactive'}
                     </Button>
                     <Button asChild size="xs" variant="ghost">
-                      <Link to={`/products/${p.id}/edit`}><Pencil size={14} /></Link>
+                      <Link to="/products/$id/edit" params={{ id: String(p.id) }}><Pencil size={14} /></Link>
                     </Button>
                     <Button size="xs" variant="ghost" colorPalette="red" onClick={() => setDeleteTarget(p)}>
                       <Trash2 size={14} />
@@ -169,7 +169,7 @@ export function ProductsPage() {
                 {products.map((p) => (
                   <Table.Row key={String(p.id)}>
                     <Table.Cell>
-                      <Link to={`/products/${p.id}`}>
+                      <Link to="/products/$id" params={{ id: String(p.id) }}>
                         <Flex align="center" gap={2}>
                           <ProductImage src={p.imageUrl} size={36} radius={4} />
                           <Text fontWeight="medium">{p.name}</Text>
@@ -194,7 +194,7 @@ export function ProductsPage() {
                     <Table.Cell>
                       <Flex gap={1} justify="flex-end">
                         <Button asChild size="xs" variant="ghost">
-                          <Link to={`/products/${p.id}/edit`}><Pencil size={14} /></Link>
+                          <Link to="/products/$id/edit" params={{ id: String(p.id) }}><Pencil size={14} /></Link>
                         </Button>
                         <Button size="xs" variant="ghost" colorPalette="red" onClick={() => setDeleteTarget(p)}>
                           <Trash2 size={14} />
