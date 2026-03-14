@@ -51,6 +51,12 @@ const (
 	// TransactionServiceListOrdersProcedure is the fully-qualified name of the TransactionService's
 	// ListOrders RPC.
 	TransactionServiceListOrdersProcedure = "/wargapos.transaction.v1.TransactionService/ListOrders"
+	// TransactionServiceCreatePaymentTokenProcedure is the fully-qualified name of the
+	// TransactionService's CreatePaymentToken RPC.
+	TransactionServiceCreatePaymentTokenProcedure = "/wargapos.transaction.v1.TransactionService/CreatePaymentToken"
+	// TransactionServiceMarkOrderPaidProcedure is the fully-qualified name of the TransactionService's
+	// MarkOrderPaid RPC.
+	TransactionServiceMarkOrderPaidProcedure = "/wargapos.transaction.v1.TransactionService/MarkOrderPaid"
 )
 
 // TransactionServiceClient is a client for the wargapos.transaction.v1.TransactionService service.
@@ -61,6 +67,8 @@ type TransactionServiceClient interface {
 	Checkout(context.Context, *connect.Request[v1.CheckoutRequest]) (*connect.Response[v1.CheckoutResponse], error)
 	GetOrder(context.Context, *connect.Request[v1.GetOrderRequest]) (*connect.Response[v1.GetOrderResponse], error)
 	ListOrders(context.Context, *connect.Request[v1.ListOrdersRequest]) (*connect.Response[v1.ListOrdersResponse], error)
+	CreatePaymentToken(context.Context, *connect.Request[v1.CreatePaymentTokenRequest]) (*connect.Response[v1.CreatePaymentTokenResponse], error)
+	MarkOrderPaid(context.Context, *connect.Request[v1.MarkOrderPaidRequest]) (*connect.Response[v1.MarkOrderPaidResponse], error)
 }
 
 // NewTransactionServiceClient constructs a client for the
@@ -110,17 +118,31 @@ func NewTransactionServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(transactionServiceMethods.ByName("ListOrders")),
 			connect.WithClientOptions(opts...),
 		),
+		createPaymentToken: connect.NewClient[v1.CreatePaymentTokenRequest, v1.CreatePaymentTokenResponse](
+			httpClient,
+			baseURL+TransactionServiceCreatePaymentTokenProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("CreatePaymentToken")),
+			connect.WithClientOptions(opts...),
+		),
+		markOrderPaid: connect.NewClient[v1.MarkOrderPaidRequest, v1.MarkOrderPaidResponse](
+			httpClient,
+			baseURL+TransactionServiceMarkOrderPaidProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("MarkOrderPaid")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // transactionServiceClient implements TransactionServiceClient.
 type transactionServiceClient struct {
-	addToCart      *connect.Client[v1.AddToCartRequest, v1.AddToCartResponse]
-	removeFromCart *connect.Client[v1.RemoveFromCartRequest, v1.RemoveFromCartResponse]
-	getCart        *connect.Client[v1.GetCartRequest, v1.GetCartResponse]
-	checkout       *connect.Client[v1.CheckoutRequest, v1.CheckoutResponse]
-	getOrder       *connect.Client[v1.GetOrderRequest, v1.GetOrderResponse]
-	listOrders     *connect.Client[v1.ListOrdersRequest, v1.ListOrdersResponse]
+	addToCart          *connect.Client[v1.AddToCartRequest, v1.AddToCartResponse]
+	removeFromCart     *connect.Client[v1.RemoveFromCartRequest, v1.RemoveFromCartResponse]
+	getCart            *connect.Client[v1.GetCartRequest, v1.GetCartResponse]
+	checkout           *connect.Client[v1.CheckoutRequest, v1.CheckoutResponse]
+	getOrder           *connect.Client[v1.GetOrderRequest, v1.GetOrderResponse]
+	listOrders         *connect.Client[v1.ListOrdersRequest, v1.ListOrdersResponse]
+	createPaymentToken *connect.Client[v1.CreatePaymentTokenRequest, v1.CreatePaymentTokenResponse]
+	markOrderPaid      *connect.Client[v1.MarkOrderPaidRequest, v1.MarkOrderPaidResponse]
 }
 
 // AddToCart calls wargapos.transaction.v1.TransactionService.AddToCart.
@@ -153,6 +175,16 @@ func (c *transactionServiceClient) ListOrders(ctx context.Context, req *connect.
 	return c.listOrders.CallUnary(ctx, req)
 }
 
+// CreatePaymentToken calls wargapos.transaction.v1.TransactionService.CreatePaymentToken.
+func (c *transactionServiceClient) CreatePaymentToken(ctx context.Context, req *connect.Request[v1.CreatePaymentTokenRequest]) (*connect.Response[v1.CreatePaymentTokenResponse], error) {
+	return c.createPaymentToken.CallUnary(ctx, req)
+}
+
+// MarkOrderPaid calls wargapos.transaction.v1.TransactionService.MarkOrderPaid.
+func (c *transactionServiceClient) MarkOrderPaid(ctx context.Context, req *connect.Request[v1.MarkOrderPaidRequest]) (*connect.Response[v1.MarkOrderPaidResponse], error) {
+	return c.markOrderPaid.CallUnary(ctx, req)
+}
+
 // TransactionServiceHandler is an implementation of the wargapos.transaction.v1.TransactionService
 // service.
 type TransactionServiceHandler interface {
@@ -162,6 +194,8 @@ type TransactionServiceHandler interface {
 	Checkout(context.Context, *connect.Request[v1.CheckoutRequest]) (*connect.Response[v1.CheckoutResponse], error)
 	GetOrder(context.Context, *connect.Request[v1.GetOrderRequest]) (*connect.Response[v1.GetOrderResponse], error)
 	ListOrders(context.Context, *connect.Request[v1.ListOrdersRequest]) (*connect.Response[v1.ListOrdersResponse], error)
+	CreatePaymentToken(context.Context, *connect.Request[v1.CreatePaymentTokenRequest]) (*connect.Response[v1.CreatePaymentTokenResponse], error)
+	MarkOrderPaid(context.Context, *connect.Request[v1.MarkOrderPaidRequest]) (*connect.Response[v1.MarkOrderPaidResponse], error)
 }
 
 // NewTransactionServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -207,6 +241,18 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 		connect.WithSchema(transactionServiceMethods.ByName("ListOrders")),
 		connect.WithHandlerOptions(opts...),
 	)
+	transactionServiceCreatePaymentTokenHandler := connect.NewUnaryHandler(
+		TransactionServiceCreatePaymentTokenProcedure,
+		svc.CreatePaymentToken,
+		connect.WithSchema(transactionServiceMethods.ByName("CreatePaymentToken")),
+		connect.WithHandlerOptions(opts...),
+	)
+	transactionServiceMarkOrderPaidHandler := connect.NewUnaryHandler(
+		TransactionServiceMarkOrderPaidProcedure,
+		svc.MarkOrderPaid,
+		connect.WithSchema(transactionServiceMethods.ByName("MarkOrderPaid")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.transaction.v1.TransactionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TransactionServiceAddToCartProcedure:
@@ -221,6 +267,10 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 			transactionServiceGetOrderHandler.ServeHTTP(w, r)
 		case TransactionServiceListOrdersProcedure:
 			transactionServiceListOrdersHandler.ServeHTTP(w, r)
+		case TransactionServiceCreatePaymentTokenProcedure:
+			transactionServiceCreatePaymentTokenHandler.ServeHTTP(w, r)
+		case TransactionServiceMarkOrderPaidProcedure:
+			transactionServiceMarkOrderPaidHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -252,4 +302,12 @@ func (UnimplementedTransactionServiceHandler) GetOrder(context.Context, *connect
 
 func (UnimplementedTransactionServiceHandler) ListOrders(context.Context, *connect.Request[v1.ListOrdersRequest]) (*connect.Response[v1.ListOrdersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.ListOrders is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) CreatePaymentToken(context.Context, *connect.Request[v1.CreatePaymentTokenRequest]) (*connect.Response[v1.CreatePaymentTokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.CreatePaymentToken is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) MarkOrderPaid(context.Context, *connect.Request[v1.MarkOrderPaidRequest]) (*connect.Response[v1.MarkOrderPaidResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.MarkOrderPaid is not implemented"))
 }

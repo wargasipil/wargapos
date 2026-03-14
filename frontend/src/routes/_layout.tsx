@@ -1,12 +1,23 @@
 import { Outlet, Link, useNavigate } from '@tanstack/react-router'
-import { Box, Button, Flex, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Flex, IconButton, Text, VStack, HStack } from '@chakra-ui/react'
+import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, Tag, LayoutGrid } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
+import { Toaster } from '../components/ui/toaster'
 
 const navItems = [
-  { label: 'Dashboard', to: '/' },
-  { label: 'POS / Cashier', to: '/pos' },
-  { label: 'Products', to: '/products' },
-  { label: 'Categories', to: '/products/categories' },
+  { label: 'Dashboard', to: '/', Icon: LayoutDashboard },
+  { label: 'POS', to: '/pos', Icon: ShoppingCart },
+  { label: 'Products', to: '/products', Icon: Package },
+  { label: 'Orders', to: '/orders', Icon: Receipt },
+]
+
+const sidebarItems = [
+  { label: 'Dashboard', to: '/', Icon: LayoutDashboard, exact: true },
+  { label: 'POS / Cashier', to: '/pos', Icon: ShoppingCart },
+  { label: 'Orders', to: '/orders', Icon: Receipt },
+  { label: 'Products', to: '/products', Icon: Package, exact: true },
+  { label: 'Categories', to: '/products/categories', Icon: Tag },
+  { label: 'Tables', to: '/tables', Icon: LayoutGrid },
 ]
 
 export function ProtectedLayout() {
@@ -19,54 +30,117 @@ export function ProtectedLayout() {
   }
 
   return (
-    <Flex h="100vh">
-      {/* Sidebar */}
+    <Flex h="100vh" direction="column">
+      {/* Mobile top header */}
       <Flex
-        direction="column"
-        w="220px"
-        bg="gray.900"
-        color="white"
-        py={6}
+        display={{ base: 'flex', md: 'none' }}
+        h="48px"
+        bg="white"
+        borderBottom="1px solid"
+        borderColor="gray.200"
+        align="center"
         px={4}
+        justify="space-between"
         flexShrink={0}
-        h="full"
       >
-        <Text fontWeight="bold" fontSize="lg" mb={8} px={2}>
-          WargaPOS
-        </Text>
-        <VStack align="stretch" gap={1} flex={1}>
-          {navItems.map((item) => (
-            <Link key={item.to} to={item.to}>
-              {({ isActive }) => (
-                <Box
-                  px={3}
-                  py={2}
-                  borderRadius="md"
-                  bg={isActive ? 'blue.600' : 'transparent'}
-                  _hover={{ bg: isActive ? 'blue.600' : 'whiteAlpha.200' }}
-                  cursor="pointer"
-                  fontSize="sm"
-                >
-                  {item.label}
-                </Box>
-              )}
-            </Link>
-          ))}
-        </VStack>
-        <Box pt={4} borderTop="1px solid" borderColor="whiteAlpha.200">
-          <Text fontSize="xs" color="gray.400" mb={2} px={2}>
-            Role: {role ?? '—'}
-          </Text>
-          <Button size="sm" variant="ghost" colorPalette="red" width="full" onClick={handleLogout}>
-            Logout
-          </Button>
+        <HStack gap={2}>
+          <ShoppingCart size={18} color="#3b82f6" />
+          <Text fontWeight="bold" fontSize="md">WargaPOS</Text>
+        </HStack>
+        <IconButton aria-label="Logout" variant="ghost" size="sm" colorPalette="red" onClick={handleLogout}>
+          <LogOut size={18} />
+        </IconButton>
+      </Flex>
+
+      <Flex flex={1} overflow="hidden">
+        {/* Sidebar — desktop only */}
+        <Flex
+          display={{ base: 'none', md: 'flex' }}
+          direction="column"
+          w="220px"
+          bg="white"
+          borderRight="1px solid"
+          borderColor="gray.200"
+          py={6}
+          px={4}
+          flexShrink={0}
+          h="full"
+        >
+          <HStack gap={2} mb={8} px={2}>
+            <ShoppingCart size={20} color="#3b82f6" />
+            <Text fontWeight="bold" fontSize="lg">WargaPOS</Text>
+          </HStack>
+          <VStack align="stretch" gap={1} flex={1}>
+            {sidebarItems.map((item) => (
+              <Link key={item.to} to={item.to} activeOptions={item.exact ? { exact: true } : undefined}>
+                {({ isActive }) => (
+                  <HStack
+                    px={3}
+                    py={2}
+                    borderRadius="md"
+                    bg={isActive ? 'blue.50' : 'transparent'}
+                    color={isActive ? 'blue.600' : 'gray.600'}
+                    fontWeight={isActive ? 'medium' : 'normal'}
+                    _hover={{ bg: isActive ? 'blue.50' : 'gray.100' }}
+                    cursor="pointer"
+                    fontSize="sm"
+                    gap={2.5}
+                  >
+                    <item.Icon size={16} />
+                    <Text>{item.label}</Text>
+                  </HStack>
+                )}
+              </Link>
+            ))}
+          </VStack>
+          <Box pt={4} borderTop="1px solid" borderColor="gray.200">
+            <Text fontSize="xs" color="gray.500" mb={2} px={2}>Role: {role ?? '—'}</Text>
+            <Button size="sm" variant="ghost" colorPalette="red" width="full" onClick={handleLogout}>
+              <LogOut size={14} />
+              Logout
+            </Button>
+          </Box>
+        </Flex>
+
+        {/* Main content */}
+        <Box flex={1} bg="gray.50" overflow="auto" pb={{ base: '64px', md: 0 }}>
+          <Outlet />
         </Box>
       </Flex>
 
-      {/* Main content */}
-      <Box flex={1} bg="gray.50" overflow="auto">
-        <Outlet />
+      {/* Bottom nav — mobile only */}
+      <Box
+        display={{ base: 'flex', md: 'none' }}
+        position="fixed"
+        bottom={0}
+        left={0}
+        right={0}
+        h="64px"
+        bg="white"
+        borderTop="1px solid"
+        borderColor="gray.200"
+        zIndex={100}
+      >
+        {navItems.map((item) => (
+          <Link key={item.to} to={item.to} style={{ flex: 1 }}>
+            {({ isActive }) => (
+              <Flex
+                direction="column"
+                align="center"
+                justify="center"
+                h="full"
+                gap={0.5}
+                color={isActive ? 'blue.500' : 'gray.400'}
+              >
+                <item.Icon size={20} />
+                <Text fontSize="10px">{item.label}</Text>
+              </Flex>
+            )}
+          </Link>
+        ))}
       </Box>
+
+      <Toaster />
     </Flex>
   )
 }

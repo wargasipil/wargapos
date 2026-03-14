@@ -16,7 +16,7 @@ func (s *ProductService) DeleteProduct(
 	ctx context.Context,
 	req *connect.Request[productv1.DeleteProductRequest],
 ) (*connect.Response[productv1.DeleteProductResponse], error) {
-	if req.Msg.Id == "" {
+	if req.Msg.Id == 0 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
 	}
 

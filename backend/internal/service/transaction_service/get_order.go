@@ -14,7 +14,7 @@ func (s *TransactionService) GetOrder(
 	ctx context.Context,
 	req *connect.Request[transactionv1.GetOrderRequest],
 ) (*connect.Response[transactionv1.GetOrderResponse], error) {
-	if req.Msg.OrderId == "" {
+	if req.Msg.OrderId == 0 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("order_id is required"))
 	}
 

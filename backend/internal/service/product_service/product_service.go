@@ -21,9 +21,13 @@ func NewProductService(db *gorm.DB) *ProductService {
 var _ productv1connect.ProductServiceHandler = (*ProductService)(nil)
 
 func toProtoProduct(p *models.Product) *productv1.Product {
-	categoryID := ""
+	var categoryID int64
 	if p.CategoryID != nil {
 		categoryID = *p.CategoryID
+	}
+	imageURL := ""
+	if p.ImageURL != nil {
+		imageURL = *p.ImageURL
 	}
 	return &productv1.Product{
 		Id:          p.ID,
@@ -31,8 +35,10 @@ func toProtoProduct(p *models.Product) *productv1.Product {
 		Description: p.Description,
 		CategoryId:  categoryID,
 		PriceCents:  p.PriceCents,
+		CogsCents:   p.CogsCents,
 		IsActive:    p.IsActive,
 		Sku:         p.SKU,
+		ImageUrl:    imageURL,
 	}
 }
 

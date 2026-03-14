@@ -42,7 +42,11 @@
       "Bash(xargs wc:*)",
       "Bash(go get:*)",
       "Bash(go install:*)",
-      "Bash(wire gen:*)"
+      "Bash(wire gen:*)",
+      "Bash(find d:/research/wargapos/frontend/src -name *login* -o -name *routes*)",
+      "Bash(npm install:*)",
+      "Bash(make proto-gen:*)",
+      "Bash(npx @chakra-ui/cli snippet add toaster)"
     ]
   },
   "enableAllProjectMcpServers": true,

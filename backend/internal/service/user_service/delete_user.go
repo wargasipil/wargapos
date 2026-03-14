@@ -15,7 +15,7 @@ func (s *UserService) DeleteUser(
 	ctx context.Context,
 	req *connect.Request[userv1.DeleteUserRequest],
 ) (*connect.Response[userv1.DeleteUserResponse], error) {
-	if req.Msg.Id == "" {
+	if req.Msg.Id == 0 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
 	}
 

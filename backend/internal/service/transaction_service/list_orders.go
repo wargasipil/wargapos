@@ -26,8 +26,17 @@ func (s *TransactionService) ListOrders(
 	}
 
 	db := s.db.WithContext(ctx).Model(&models.Order{})
-	if req.Msg.CashierId != "" {
+	if req.Msg.CashierId != 0 {
 		db = db.Where("cashier_id = ?", req.Msg.CashierId)
+	}
+	if req.Msg.StatusFilter != "" {
+		db = db.Where("status = ?", req.Msg.StatusFilter)
+	}
+	if req.Msg.TableId != 0 {
+		db = db.Where("table_id = ?", req.Msg.TableId)
+	}
+	if req.Msg.OrderFromFilter != transactionv1.OrderFrom_ORDER_FROM_UNSPECIFIED {
+		db = db.Where("order_from = ?", int32(req.Msg.OrderFromFilter))
 	}
 
 	var total int64

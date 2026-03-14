@@ -26,7 +26,7 @@ func (s *ProductService) ListProducts(
 	}
 
 	db := s.db.WithContext(ctx).Model(&models.Product{}).Where("is_active = true")
-	if req.Msg.CategoryId != "" {
+	if req.Msg.CategoryId != 0 {
 		db = db.Where("category_id = ?", req.Msg.CategoryId)
 	}
 

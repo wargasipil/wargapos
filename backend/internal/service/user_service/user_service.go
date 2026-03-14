@@ -21,6 +21,10 @@ func NewUserService(db *gorm.DB) *UserService {
 var _ userv1connect.UserServiceHandler = (*UserService)(nil)
 
 func toProtoUser(u *models.User) *userv1.User {
+	imageURL := ""
+	if u.ImageURL != nil {
+		imageURL = *u.ImageURL
+	}
 	return &userv1.User{
 		Id:       u.ID,
 		Username: u.Username,
@@ -28,6 +32,7 @@ func toProtoUser(u *models.User) *userv1.User {
 		Email:    u.Email,
 		Role:     stringToProtoRole(u.Role),
 		IsActive: u.IsActive,
+		ImageUrl: imageURL,
 	}
 }
 

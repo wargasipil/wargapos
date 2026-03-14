@@ -23,12 +23,17 @@ func (s *ProductService) CreateProduct(
 		Name:        req.Msg.Name,
 		Description: req.Msg.Description,
 		PriceCents:  req.Msg.PriceCents,
+		CogsCents:   req.Msg.CogsCents,
 		SKU:         req.Msg.Sku,
 		IsActive:    true,
 	}
-	if req.Msg.CategoryId != "" {
+	if req.Msg.CategoryId != 0 {
 		catID := req.Msg.CategoryId
 		p.CategoryID = &catID
+	}
+	if req.Msg.ImageUrl != "" {
+		url := req.Msg.ImageUrl
+		p.ImageURL = &url
 	}
 
 	if err := s.db.WithContext(ctx).Create(p).Error; err != nil {

@@ -21,7 +21,7 @@ func (s *TransactionService) GetCart(
 
 	var order models.Order
 	if err := s.db.WithContext(ctx).Preload("Items").
-		First(&order, "id = ? AND status = 'pending'", req.Msg.SessionId).Error; err != nil {
+		First(&order, "session_token = ? AND status = 'pending'", req.Msg.SessionId).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, err)
 		}

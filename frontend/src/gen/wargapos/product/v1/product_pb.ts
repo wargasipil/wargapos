@@ -10,16 +10,16 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/product/v1/product.proto.
  */
 export const file_wargapos_product_v1_product: GenFile = /*@__PURE__*/
-  fileDesc("CiF3YXJnYXBvcy9wcm9kdWN0L3YxL3Byb2R1Y3QucHJvdG8SE3dhcmdhcG9zLnByb2R1Y3QudjEiJAoIQ2F0ZWdvcnkSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCSKCAQoHUHJvZHVjdBIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhMKC2NhdGVnb3J5X2lkGAQgASgJEhMKC3ByaWNlX2NlbnRzGAUgASgDEhEKCWlzX2FjdGl2ZRgGIAEoCBILCgNza3UYByABKAkicAoUQ3JlYXRlUHJvZHVjdFJlcXVlc3QSDAoEbmFtZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRITCgtjYXRlZ29yeV9pZBgDIAEoCRITCgtwcmljZV9jZW50cxgEIAEoAxILCgNza3UYBSABKAkiRgoVQ3JlYXRlUHJvZHVjdFJlc3BvbnNlEi0KB3Byb2R1Y3QYASABKAsyHC53YXJnYXBvcy5wcm9kdWN0LnYxLlByb2R1Y3QiHwoRR2V0UHJvZHVjdFJlcXVlc3QSCgoCaWQYASABKAkiQwoSR2V0UHJvZHVjdFJlc3BvbnNlEi0KB3Byb2R1Y3QYASABKAsyHC53YXJnYXBvcy5wcm9kdWN0LnYxLlByb2R1Y3QiSwoTTGlzdFByb2R1Y3RzUmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBRITCgtjYXRlZ29yeV9pZBgDIAEoCSJVChRMaXN0UHJvZHVjdHNSZXNwb25zZRIuCghwcm9kdWN0cxgBIAMoCzIcLndhcmdhcG9zLnByb2R1Y3QudjEuUHJvZHVjdBINCgV0b3RhbBgCIAEoBSJYChRVcGRhdGVQcm9kdWN0UmVxdWVzdBIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEhMKC3ByaWNlX2NlbnRzGAMgASgDEhEKCWlzX2FjdGl2ZRgEIAEoCCJGChVVcGRhdGVQcm9kdWN0UmVzcG9uc2USLQoHcHJvZHVjdBgBIAEoCzIcLndhcmdhcG9zLnByb2R1Y3QudjEuUHJvZHVjdCIiChREZWxldGVQcm9kdWN0UmVxdWVzdBIKCgJpZBgBIAEoCSIXChVEZWxldGVQcm9kdWN0UmVzcG9uc2UiJQoVQ3JlYXRlQ2F0ZWdvcnlSZXF1ZXN0EgwKBG5hbWUYASABKAkiSQoWQ3JlYXRlQ2F0ZWdvcnlSZXNwb25zZRIvCghjYXRlZ29yeRgBIAEoCzIdLndhcmdhcG9zLnByb2R1Y3QudjEuQ2F0ZWdvcnkiFwoVTGlzdENhdGVnb3JpZXNSZXF1ZXN0IksKFkxpc3RDYXRlZ29yaWVzUmVzcG9uc2USMQoKY2F0ZWdvcmllcxgBIAMoCzIdLndhcmdhcG9zLnByb2R1Y3QudjEuQ2F0ZWdvcnky4gUKDlByb2R1Y3RTZXJ2aWNlEmYKDUNyZWF0ZVByb2R1Y3QSKS53YXJnYXBvcy5wcm9kdWN0LnYxLkNyZWF0ZVByb2R1Y3RSZXF1ZXN0Gioud2FyZ2Fwb3MucHJvZHVjdC52MS5DcmVhdGVQcm9kdWN0UmVzcG9uc2USXQoKR2V0UHJvZHVjdBImLndhcmdhcG9zLnByb2R1Y3QudjEuR2V0UHJvZHVjdFJlcXVlc3QaJy53YXJnYXBvcy5wcm9kdWN0LnYxLkdldFByb2R1Y3RSZXNwb25zZRJjCgxMaXN0UHJvZHVjdHMSKC53YXJnYXBvcy5wcm9kdWN0LnYxLkxpc3RQcm9kdWN0c1JlcXVlc3QaKS53YXJnYXBvcy5wcm9kdWN0LnYxLkxpc3RQcm9kdWN0c1Jlc3BvbnNlEmYKDVVwZGF0ZVByb2R1Y3QSKS53YXJnYXBvcy5wcm9kdWN0LnYxLlVwZGF0ZVByb2R1Y3RSZXF1ZXN0Gioud2FyZ2Fwb3MucHJvZHVjdC52MS5VcGRhdGVQcm9kdWN0UmVzcG9uc2USZgoNRGVsZXRlUHJvZHVjdBIpLndhcmdhcG9zLnByb2R1Y3QudjEuRGVsZXRlUHJvZHVjdFJlcXVlc3QaKi53YXJnYXBvcy5wcm9kdWN0LnYxLkRlbGV0ZVByb2R1Y3RSZXNwb25zZRJpCg5DcmVhdGVDYXRlZ29yeRIqLndhcmdhcG9zLnByb2R1Y3QudjEuQ3JlYXRlQ2F0ZWdvcnlSZXF1ZXN0Gisud2FyZ2Fwb3MucHJvZHVjdC52MS5DcmVhdGVDYXRlZ29yeVJlc3BvbnNlEmkKDkxpc3RDYXRlZ29yaWVzEioud2FyZ2Fwb3MucHJvZHVjdC52MS5MaXN0Q2F0ZWdvcmllc1JlcXVlc3QaKy53YXJnYXBvcy5wcm9kdWN0LnYxLkxpc3RDYXRlZ29yaWVzUmVzcG9uc2VCNFoyd2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3MvcHJvZHVjdC92MTtwcm9kdWN0djFiBnByb3RvMw");
+  fileDesc("CiF3YXJnYXBvcy9wcm9kdWN0L3YxL3Byb2R1Y3QucHJvdG8SE3dhcmdhcG9zLnByb2R1Y3QudjEiJAoIQ2F0ZWdvcnkSCgoCaWQYASABKAMSDAoEbmFtZRgCIAEoCSKpAQoHUHJvZHVjdBIKCgJpZBgBIAEoAxIMCgRuYW1lGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhMKC2NhdGVnb3J5X2lkGAQgASgDEhMKC3ByaWNlX2NlbnRzGAUgASgDEhEKCWlzX2FjdGl2ZRgGIAEoCBILCgNza3UYByABKAkSEQoJaW1hZ2VfdXJsGAggASgJEhIKCmNvZ3NfY2VudHMYCSABKAMilwEKFENyZWF0ZVByb2R1Y3RSZXF1ZXN0EgwKBG5hbWUYASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSEwoLY2F0ZWdvcnlfaWQYAyABKAMSEwoLcHJpY2VfY2VudHMYBCABKAMSCwoDc2t1GAUgASgJEhEKCWltYWdlX3VybBgGIAEoCRISCgpjb2dzX2NlbnRzGAcgASgDIkYKFUNyZWF0ZVByb2R1Y3RSZXNwb25zZRItCgdwcm9kdWN0GAEgASgLMhwud2FyZ2Fwb3MucHJvZHVjdC52MS5Qcm9kdWN0Ih8KEUdldFByb2R1Y3RSZXF1ZXN0EgoKAmlkGAEgASgDIkMKEkdldFByb2R1Y3RSZXNwb25zZRItCgdwcm9kdWN0GAEgASgLMhwud2FyZ2Fwb3MucHJvZHVjdC52MS5Qcm9kdWN0IksKE0xpc3RQcm9kdWN0c1JlcXVlc3QSDAoEcGFnZRgBIAEoBRIRCglwYWdlX3NpemUYAiABKAUSEwoLY2F0ZWdvcnlfaWQYAyABKAMiVQoUTGlzdFByb2R1Y3RzUmVzcG9uc2USLgoIcHJvZHVjdHMYASADKAsyHC53YXJnYXBvcy5wcm9kdWN0LnYxLlByb2R1Y3QSDQoFdG90YWwYAiABKAUitgEKFFVwZGF0ZVByb2R1Y3RSZXF1ZXN0EgoKAmlkGAEgASgDEgwKBG5hbWUYAiABKAkSEwoLcHJpY2VfY2VudHMYAyABKAMSEQoJaXNfYWN0aXZlGAQgASgIEhEKCWltYWdlX3VybBgFIAEoCRITCgtkZXNjcmlwdGlvbhgGIAEoCRILCgNza3UYByABKAkSEwoLY2F0ZWdvcnlfaWQYCCABKAMSEgoKY29nc19jZW50cxgJIAEoAyJGChVVcGRhdGVQcm9kdWN0UmVzcG9uc2USLQoHcHJvZHVjdBgBIAEoCzIcLndhcmdhcG9zLnByb2R1Y3QudjEuUHJvZHVjdCIiChREZWxldGVQcm9kdWN0UmVxdWVzdBIKCgJpZBgBIAEoAyIXChVEZWxldGVQcm9kdWN0UmVzcG9uc2UiJQoVQ3JlYXRlQ2F0ZWdvcnlSZXF1ZXN0EgwKBG5hbWUYASABKAkiSQoWQ3JlYXRlQ2F0ZWdvcnlSZXNwb25zZRIvCghjYXRlZ29yeRgBIAEoCzIdLndhcmdhcG9zLnByb2R1Y3QudjEuQ2F0ZWdvcnkiFwoVTGlzdENhdGVnb3JpZXNSZXF1ZXN0IksKFkxpc3RDYXRlZ29yaWVzUmVzcG9uc2USMQoKY2F0ZWdvcmllcxgBIAMoCzIdLndhcmdhcG9zLnByb2R1Y3QudjEuQ2F0ZWdvcnky4gUKDlByb2R1Y3RTZXJ2aWNlEmYKDUNyZWF0ZVByb2R1Y3QSKS53YXJnYXBvcy5wcm9kdWN0LnYxLkNyZWF0ZVByb2R1Y3RSZXF1ZXN0Gioud2FyZ2Fwb3MucHJvZHVjdC52MS5DcmVhdGVQcm9kdWN0UmVzcG9uc2USXQoKR2V0UHJvZHVjdBImLndhcmdhcG9zLnByb2R1Y3QudjEuR2V0UHJvZHVjdFJlcXVlc3QaJy53YXJnYXBvcy5wcm9kdWN0LnYxLkdldFByb2R1Y3RSZXNwb25zZRJjCgxMaXN0UHJvZHVjdHMSKC53YXJnYXBvcy5wcm9kdWN0LnYxLkxpc3RQcm9kdWN0c1JlcXVlc3QaKS53YXJnYXBvcy5wcm9kdWN0LnYxLkxpc3RQcm9kdWN0c1Jlc3BvbnNlEmYKDVVwZGF0ZVByb2R1Y3QSKS53YXJnYXBvcy5wcm9kdWN0LnYxLlVwZGF0ZVByb2R1Y3RSZXF1ZXN0Gioud2FyZ2Fwb3MucHJvZHVjdC52MS5VcGRhdGVQcm9kdWN0UmVzcG9uc2USZgoNRGVsZXRlUHJvZHVjdBIpLndhcmdhcG9zLnByb2R1Y3QudjEuRGVsZXRlUHJvZHVjdFJlcXVlc3QaKi53YXJnYXBvcy5wcm9kdWN0LnYxLkRlbGV0ZVByb2R1Y3RSZXNwb25zZRJpCg5DcmVhdGVDYXRlZ29yeRIqLndhcmdhcG9zLnByb2R1Y3QudjEuQ3JlYXRlQ2F0ZWdvcnlSZXF1ZXN0Gisud2FyZ2Fwb3MucHJvZHVjdC52MS5DcmVhdGVDYXRlZ29yeVJlc3BvbnNlEmkKDkxpc3RDYXRlZ29yaWVzEioud2FyZ2Fwb3MucHJvZHVjdC52MS5MaXN0Q2F0ZWdvcmllc1JlcXVlc3QaKy53YXJnYXBvcy5wcm9kdWN0LnYxLkxpc3RDYXRlZ29yaWVzUmVzcG9uc2VCNFoyd2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3MvcHJvZHVjdC92MTtwcm9kdWN0djFiBnByb3RvMw");
 
 /**
  * @generated from message wargapos.product.v1.Category
  */
 export type Category = Message<"wargapos.product.v1.Category"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   /**
    * @generated from field: string name = 2;
@@ -39,9 +39,9 @@ export const CategorySchema: GenMessage<Category> = /*@__PURE__*/
  */
 export type Product = Message<"wargapos.product.v1.Product"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   /**
    * @generated from field: string name = 2;
@@ -54,9 +54,9 @@ export type Product = Message<"wargapos.product.v1.Product"> & {
   description: string;
 
   /**
-   * @generated from field: string category_id = 4;
+   * @generated from field: int64 category_id = 4;
    */
-  categoryId: string;
+  categoryId: bigint;
 
   /**
    * @generated from field: int64 price_cents = 5;
@@ -72,6 +72,16 @@ export type Product = Message<"wargapos.product.v1.Product"> & {
    * @generated from field: string sku = 7;
    */
   sku: string;
+
+  /**
+   * @generated from field: string image_url = 8;
+   */
+  imageUrl: string;
+
+  /**
+   * @generated from field: int64 cogs_cents = 9;
+   */
+  cogsCents: bigint;
 };
 
 /**
@@ -96,9 +106,9 @@ export type CreateProductRequest = Message<"wargapos.product.v1.CreateProductReq
   description: string;
 
   /**
-   * @generated from field: string category_id = 3;
+   * @generated from field: int64 category_id = 3;
    */
-  categoryId: string;
+  categoryId: bigint;
 
   /**
    * @generated from field: int64 price_cents = 4;
@@ -109,6 +119,16 @@ export type CreateProductRequest = Message<"wargapos.product.v1.CreateProductReq
    * @generated from field: string sku = 5;
    */
   sku: string;
+
+  /**
+   * @generated from field: string image_url = 6;
+   */
+  imageUrl: string;
+
+  /**
+   * @generated from field: int64 cogs_cents = 7;
+   */
+  cogsCents: bigint;
 };
 
 /**
@@ -140,9 +160,9 @@ export const CreateProductResponseSchema: GenMessage<CreateProductResponse> = /*
  */
 export type GetProductRequest = Message<"wargapos.product.v1.GetProductRequest"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 };
 
 /**
@@ -184,9 +204,9 @@ export type ListProductsRequest = Message<"wargapos.product.v1.ListProductsReque
   pageSize: number;
 
   /**
-   * @generated from field: string category_id = 3;
+   * @generated from field: int64 category_id = 3;
    */
-  categoryId: string;
+  categoryId: bigint;
 };
 
 /**
@@ -223,9 +243,9 @@ export const ListProductsResponseSchema: GenMessage<ListProductsResponse> = /*@_
  */
 export type UpdateProductRequest = Message<"wargapos.product.v1.UpdateProductRequest"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 
   /**
    * @generated from field: string name = 2;
@@ -241,6 +261,31 @@ export type UpdateProductRequest = Message<"wargapos.product.v1.UpdateProductReq
    * @generated from field: bool is_active = 4;
    */
   isActive: boolean;
+
+  /**
+   * @generated from field: string image_url = 5;
+   */
+  imageUrl: string;
+
+  /**
+   * @generated from field: string description = 6;
+   */
+  description: string;
+
+  /**
+   * @generated from field: string sku = 7;
+   */
+  sku: string;
+
+  /**
+   * @generated from field: int64 category_id = 8;
+   */
+  categoryId: bigint;
+
+  /**
+   * @generated from field: int64 cogs_cents = 9;
+   */
+  cogsCents: bigint;
 };
 
 /**
@@ -272,9 +317,9 @@ export const UpdateProductResponseSchema: GenMessage<UpdateProductResponse> = /*
  */
 export type DeleteProductRequest = Message<"wargapos.product.v1.DeleteProductRequest"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int64 id = 1;
    */
-  id: string;
+  id: bigint;
 };
 
 /**

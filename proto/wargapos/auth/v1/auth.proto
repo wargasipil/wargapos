@@ -27,7 +27,7 @@ message ValidateTokenRequest {
 
 message ValidateTokenResponse {
   bool   valid   = 1;
-  string user_id = 2;
+  int64  user_id = 2;
   string role    = 3;
 }
 

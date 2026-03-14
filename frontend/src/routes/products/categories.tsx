@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
-  Box, Button, Flex, Heading, Input, Spinner, Table, Text,
+  Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Text,
   Dialog, Field, VStack,
 } from '@chakra-ui/react'
+import { Tag, Plus } from 'lucide-react'
 import { productClient } from '../../client'
+import { toaster } from '../../components/ui/toaster'
+import { stripError } from '../../lib/errors'
 
 export function CategoriesPage() {
   const qc = useQueryClient()
@@ -22,7 +25,9 @@ export function CategoriesPage() {
       qc.invalidateQueries({ queryKey: ['categories'] })
       setDialogOpen(false)
       setName('')
+      toaster.create({ title: 'Category created', type: 'success', duration: 3000 })
     },
+    onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
 
   function handleSubmit(e: React.FormEvent) {
@@ -33,36 +38,58 @@ export function CategoriesPage() {
   const categories = data?.categories ?? []
 
   return (
-    <Box p={6}>
-      <Flex justify="space-between" align="center" mb={6}>
-        <Heading size="md">Categories</Heading>
-        <Button colorPalette="blue" size="sm" onClick={() => setDialogOpen(true)}>+ Add Category</Button>
+    <Box p={{ base: 3, md: 6 }}>
+      <Flex justify="space-between" align="center" mb={4} gap={3} wrap="wrap">
+        <HStack gap={2}><Tag size={22} /><Heading size="md">Categories</Heading></HStack>
+        <Button colorPalette="blue" size="sm" width={{ base: 'full', md: 'auto' }} onClick={() => setDialogOpen(true)}>
+          <Plus size={16} /> Add Category
+        </Button>
       </Flex>
 
       {isLoading ? (
         <Flex justify="center" mt={12}><Spinner /></Flex>
       ) : (
-        <Table.Root variant="outline" maxW="480px">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeader>ID</Table.ColumnHeader>
-              <Table.ColumnHeader>Name</Table.ColumnHeader>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
+        <>
+          {/* Mobile card list */}
+          <VStack display={{ base: 'flex', md: 'none' }} gap={3} align="stretch">
             {categories.map((c) => (
-              <Table.Row key={c.id}>
-                <Table.Cell color="gray.400" fontSize="xs">{c.id.slice(0, 8)}…</Table.Cell>
-                <Table.Cell fontWeight="medium">{c.name}</Table.Cell>
-              </Table.Row>
+              <Box key={String(c.id)} bg="white" borderRadius="lg" p={4} boxShadow="sm">
+                <Flex justify="space-between" align="center">
+                  <Text fontWeight="semibold" fontSize="sm">{c.name}</Text>
+                  <Text fontSize="xs" color="gray.400">#{String(c.id)}</Text>
+                </Flex>
+              </Box>
             ))}
             {categories.length === 0 && (
-              <Table.Row>
-                <Table.Cell colSpan={2} textAlign="center" color="gray.400" py={8}>No categories yet.</Table.Cell>
-              </Table.Row>
+              <Text color="gray.400" fontSize="sm" textAlign="center" py={8}>No categories yet.</Text>
             )}
-          </Table.Body>
-        </Table.Root>
+          </VStack>
+
+          {/* Desktop table */}
+          <Box display={{ base: 'none', md: 'block' }}>
+            <Table.Root variant="outline" maxW="480px">
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeader>ID</Table.ColumnHeader>
+                  <Table.ColumnHeader>Name</Table.ColumnHeader>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {categories.map((c) => (
+                  <Table.Row key={String(c.id)}>
+                    <Table.Cell color="gray.400" fontSize="xs">#{String(c.id)}</Table.Cell>
+                    <Table.Cell fontWeight="medium">{c.name}</Table.Cell>
+                  </Table.Row>
+                ))}
+                {categories.length === 0 && (
+                  <Table.Row>
+                    <Table.Cell colSpan={2} textAlign="center" color="gray.400" py={8}>No categories yet.</Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table.Root>
+          </Box>
+        </>
       )}
 
       <Dialog.Root open={dialogOpen} onOpenChange={(d) => { if (!d.open) { setDialogOpen(false); setName('') } }}>

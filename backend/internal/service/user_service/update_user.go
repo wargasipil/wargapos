@@ -15,7 +15,7 @@ func (s *UserService) UpdateUser(
 	ctx context.Context,
 	req *connect.Request[userv1.UpdateUserRequest],
 ) (*connect.Response[userv1.UpdateUserResponse], error) {
-	if req.Msg.Id == "" {
+	if req.Msg.Id == 0 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
 	}
 

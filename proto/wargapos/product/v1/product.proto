@@ -5,37 +5,41 @@ package wargapos.product.v1;
 option go_package = "wargapos/backend/gen/wargapos/product/v1;productv1";
 
 message Category {
-  string id   = 1;
+  int64  id   = 1;
   string name = 2;
 }
 
 message Product {
-  string id          = 1;
+  int64  id          = 1;
   string name        = 2;
   string description = 3;
-  string category_id = 4;
+  int64  category_id = 4;
   int64  price_cents = 5;
   bool   is_active   = 6;
   string sku         = 7;
+  string image_url   = 8;
+  int64  cogs_cents  = 9;
 }
 
 message CreateProductRequest {
   string name        = 1;
   string description = 2;
-  string category_id = 3;
+  int64  category_id = 3;
   int64  price_cents = 4;
   string sku         = 5;
+  string image_url   = 6;
+  int64  cogs_cents  = 7;
 }
 
 message CreateProductResponse { Product product = 1; }
 
-message GetProductRequest  { string id = 1; }
+message GetProductRequest  { int64 id = 1; }
 message GetProductResponse { Product product = 1; }
 
 message ListProductsRequest {
-  int32  page        = 1;
-  int32  page_size   = 2;
-  string category_id = 3;
+  int32 page        = 1;
+  int32 page_size   = 2;
+  int64 category_id = 3;
 }
 
 message ListProductsResponse {
@@ -44,15 +48,20 @@ message ListProductsResponse {
 }
 
 message UpdateProductRequest {
-  string id          = 1;
+  int64  id          = 1;
   string name        = 2;
   int64  price_cents = 3;
   bool   is_active   = 4;
+  string image_url   = 5;
+  string description = 6;
+  string sku         = 7;
+  int64  category_id = 8;
+  int64  cogs_cents  = 9;
 }
 
 message UpdateProductResponse { Product product = 1; }
 
-message DeleteProductRequest  { string id = 1; }
+message DeleteProductRequest  { int64 id = 1; }
 message DeleteProductResponse {}
 
 message CreateCategoryRequest  { string name = 1; }

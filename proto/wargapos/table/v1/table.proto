@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package wargapos.table.v1;
+
+option go_package = "wargapos/backend/gen/wargapos/table/v1;tablev1";
+
+message Table {
+  int64  id   = 1;
+  string name = 2;
+}
+
+message CreateTableRequest  { string name = 1; }
+message CreateTableResponse { Table table = 1; }
+
+message UpdateTableRequest  { int64 id = 1; string name = 2; }
+message UpdateTableResponse { Table table = 1; }
+
+message DeleteTableRequest  { int64 id = 1; }
+message DeleteTableResponse {}
+
+message ListTablesRequest  {}
+message ListTablesResponse { repeated Table tables = 1; }
+
+service TableService {
+  rpc CreateTable(CreateTableRequest) returns (CreateTableResponse);
+  rpc UpdateTable(UpdateTableRequest) returns (UpdateTableResponse);
+  rpc DeleteTable(DeleteTableRequest) returns (DeleteTableResponse);
+  rpc ListTables(ListTablesRequest)   returns (ListTablesResponse);
+}

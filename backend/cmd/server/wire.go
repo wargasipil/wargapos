@@ -8,6 +8,7 @@ import (
 	"wargapos/backend/internal/db"
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/product_service"
+	"wargapos/backend/internal/service/table_service"
 	"wargapos/backend/internal/service/transaction_service"
 	"wargapos/backend/internal/service/user_service"
 )
@@ -16,10 +17,12 @@ func InitializeApp(cfg *config.Config) (*App, error) {
 	wire.Build(
 		db.NewDB,
 		config.ProvideAuthConfig,
+		config.ProvideMidtransConfig,
 		auth_service.NewAuthService,
 		user_service.NewUserService,
 		product_service.NewProductService,
 		transaction_service.NewTransactionService,
+		table_service.NewTableService,
 		NewApp,
 	)
 	return nil, nil

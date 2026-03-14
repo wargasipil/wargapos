@@ -19,10 +19,11 @@ func (s *TransactionService) Checkout(
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("session_id is required"))
 	}
 
+	var orderID int64
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var order models.Order
 		if err := tx.Preload("Items").
-			First(&order, "id = ? AND status = 'pending'", req.Msg.SessionId).Error; err != nil {
+			First(&order, "session_token = ? AND status = 'pending'", req.Msg.SessionId).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return ErrCartNotPending
 			}
@@ -31,13 +32,23 @@ func (s *TransactionService) Checkout(
 		if len(order.Items) == 0 {
 			return ErrCartEmpty
 		}
+		orderID = order.ID
 
 		updates := map[string]any{
 			"status":         "paid",
-			"payment_method": req.Msg.PaymentMethod,
+			"payment_method": paymentMethodToString(req.Msg.PaymentMethod),
 		}
-		if req.Msg.CashierId != "" {
+		if req.Msg.CashierId != 0 {
 			updates["cashier_id"] = req.Msg.CashierId
+		}
+		if req.Msg.CustomerName != "" {
+			updates["customer_name"] = req.Msg.CustomerName
+		}
+		if req.Msg.PhoneNumber != "" {
+			updates["phone_number"] = req.Msg.PhoneNumber
+		}
+		if req.Msg.OrderFrom != transactionv1.OrderFrom_ORDER_FROM_UNSPECIFIED {
+			updates["order_from"] = int32(req.Msg.OrderFrom)
 		}
 		return tx.Model(&order).Updates(updates).Error
 	})
@@ -48,7 +59,7 @@ func (s *TransactionService) Checkout(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	order, err := s.loadOrder(ctx, req.Msg.SessionId)
+	order, err := s.loadOrder(ctx, orderID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

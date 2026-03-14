@@ -11,6 +11,13 @@ type Config struct {
 	Server   ServerConfig   `yaml:"server"`
 	Database DatabaseConfig `yaml:"database"`
 	Auth     AuthConfig     `yaml:"auth"`
+	Midtrans MidtransConfig `yaml:"midtrans"`
+}
+
+type MidtransConfig struct {
+	ServerKey   string `yaml:"server_key"`
+	ClientKey   string `yaml:"client_key"`
+	Environment string `yaml:"environment"` // "sandbox" | "production"
 }
 
 type AuthConfig struct {
@@ -19,8 +26,9 @@ type AuthConfig struct {
 }
 
 type ServerConfig struct {
-	Host string `yaml:"host"`
-	Port string `yaml:"port"`
+	Host      string `yaml:"host"`
+	Port      string `yaml:"port"`
+	UploadDir string `yaml:"upload_dir"`
 }
 
 type DatabaseConfig struct {
@@ -30,7 +38,7 @@ type DatabaseConfig struct {
 
 // defaults used when config.yaml is absent (dev convenience).
 var defaults = Config{
-	Server: ServerConfig{Host: "0.0.0.0", Port: "8080"},
+	Server: ServerConfig{Host: "0.0.0.0", Port: "8080", UploadDir: "./uploads"},
 	Database: DatabaseConfig{
 		URL:  "host=localhost user=postgres password=postgres dbname=wargapos port=5432 sslmode=disable",
 		Skip: false,
@@ -39,10 +47,18 @@ var defaults = Config{
 		JWTSecret:        "change-me-in-production",
 		TokenExpireHours: 24,
 	},
+	Midtrans: MidtransConfig{
+		ServerKey:   "",
+		ClientKey:   "",
+		Environment: "sandbox",
+	},
 }
 
 // ProvideAuthConfig is a Wire provider that extracts AuthConfig from Config.
 func ProvideAuthConfig(cfg *Config) AuthConfig { return cfg.Auth }
+
+// ProvideMidtransConfig is a Wire provider that extracts MidtransConfig from Config.
+func ProvideMidtransConfig(cfg *Config) MidtransConfig { return cfg.Midtrans }
 
 // Load reads config.yaml (or CONFIG_PATH env var) and returns a Config.
 // If the file is not found, dev defaults are returned so the server can
@@ -76,6 +92,9 @@ func Load() *Config {
 // This allows Docker / container deployments to configure the server
 // without mounting a config file.
 func applyEnv(cfg *Config) {
+	if v := os.Getenv("UPLOAD_DIR"); v != "" {
+		cfg.Server.UploadDir = v
+	}
 	if v := os.Getenv("DATABASE_URL"); v != "" {
 		cfg.Database.URL = v
 	}
@@ -90,5 +109,11 @@ func applyEnv(cfg *Config) {
 	}
 	if v := os.Getenv("JWT_SECRET"); v != "" {
 		cfg.Auth.JWTSecret = v
+	}
+	if v := os.Getenv("MIDTRANS_SERVER_KEY"); v != "" {
+		cfg.Midtrans.ServerKey = v
+	}
+	if v := os.Getenv("MIDTRANS_CLIENT_KEY"); v != "" {
+		cfg.Midtrans.ClientKey = v
 	}
 }

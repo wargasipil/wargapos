@@ -5,9 +5,15 @@ import { useAuthStore } from './store/auth'
 import { ProtectedLayout } from './routes/_layout'
 import { LoginPage } from './routes/login'
 import { DashboardPage } from './routes/dashboard'
-import { PosPage } from './routes/pos'
+import { PosPage } from './routes/pos/index'
 import { ProductsPage } from './routes/products'
+import { ProductNewPage } from './routes/products/new'
+import { ProductEditPage } from './routes/products/edit'
 import { CategoriesPage } from './routes/products/categories'
+import { TablesPage } from './routes/tables/index'
+import { MenuPage } from './routes/menu'
+import { OrdersPage } from './routes/orders/index'
+import { ProductDetailPage } from './routes/products/detail'
 
 // Root route with devtools
 const rootRoute = createRootRoute({
@@ -24,6 +30,12 @@ const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/login',
   component: LoginPage,
+})
+
+const menuRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/menu',
+  component: MenuPage,
 })
 
 // Protected layout — redirects to /login if no token
@@ -61,13 +73,49 @@ const categoriesRoute = createRoute({
   component: CategoriesPage,
 })
 
+const productNewRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/products/new',
+  component: ProductNewPage,
+})
+
+const productEditRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/products/$id/edit',
+  component: ProductEditPage,
+})
+
+const productDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/products/$id',
+  component: ProductDetailPage,
+})
+
+const tablesRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/tables',
+  component: TablesPage,
+})
+
+const ordersRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/orders',
+  component: OrdersPage,
+})
+
 const routeTree = rootRoute.addChildren([
   loginRoute,
+  menuRoute,
   layoutRoute.addChildren([
     dashboardRoute,
     posRoute,
     productsRoute,
     categoriesRoute,
+    productNewRoute,
+    productEditRoute,
+    tablesRoute,
+    ordersRoute,
+    productDetailRoute,
   ]),
 ])
 

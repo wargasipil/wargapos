@@ -23,7 +23,7 @@ const (
 
 type Category struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -59,11 +59,11 @@ func (*Category) Descriptor() ([]byte, []int) {
 	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Category) GetId() string {
+func (x *Category) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *Category) GetName() string {
@@ -75,13 +75,15 @@ func (x *Category) GetName() string {
 
 type Product struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	CategoryId    string                 `protobuf:"bytes,4,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	CategoryId    int64                  `protobuf:"varint,4,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
 	PriceCents    int64                  `protobuf:"varint,5,opt,name=price_cents,json=priceCents,proto3" json:"price_cents,omitempty"`
 	IsActive      bool                   `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	Sku           string                 `protobuf:"bytes,7,opt,name=sku,proto3" json:"sku,omitempty"`
+	ImageUrl      string                 `protobuf:"bytes,8,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
+	CogsCents     int64                  `protobuf:"varint,9,opt,name=cogs_cents,json=cogsCents,proto3" json:"cogs_cents,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -116,11 +118,11 @@ func (*Product) Descriptor() ([]byte, []int) {
 	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Product) GetId() string {
+func (x *Product) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *Product) GetName() string {
@@ -137,11 +139,11 @@ func (x *Product) GetDescription() string {
 	return ""
 }
 
-func (x *Product) GetCategoryId() string {
+func (x *Product) GetCategoryId() int64 {
 	if x != nil {
 		return x.CategoryId
 	}
-	return ""
+	return 0
 }
 
 func (x *Product) GetPriceCents() int64 {
@@ -165,13 +167,29 @@ func (x *Product) GetSku() string {
 	return ""
 }
 
+func (x *Product) GetImageUrl() string {
+	if x != nil {
+		return x.ImageUrl
+	}
+	return ""
+}
+
+func (x *Product) GetCogsCents() int64 {
+	if x != nil {
+		return x.CogsCents
+	}
+	return 0
+}
+
 type CreateProductRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	CategoryId    string                 `protobuf:"bytes,3,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	CategoryId    int64                  `protobuf:"varint,3,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
 	PriceCents    int64                  `protobuf:"varint,4,opt,name=price_cents,json=priceCents,proto3" json:"price_cents,omitempty"`
 	Sku           string                 `protobuf:"bytes,5,opt,name=sku,proto3" json:"sku,omitempty"`
+	ImageUrl      string                 `protobuf:"bytes,6,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
+	CogsCents     int64                  `protobuf:"varint,7,opt,name=cogs_cents,json=cogsCents,proto3" json:"cogs_cents,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -220,11 +238,11 @@ func (x *CreateProductRequest) GetDescription() string {
 	return ""
 }
 
-func (x *CreateProductRequest) GetCategoryId() string {
+func (x *CreateProductRequest) GetCategoryId() int64 {
 	if x != nil {
 		return x.CategoryId
 	}
-	return ""
+	return 0
 }
 
 func (x *CreateProductRequest) GetPriceCents() int64 {
@@ -239,6 +257,20 @@ func (x *CreateProductRequest) GetSku() string {
 		return x.Sku
 	}
 	return ""
+}
+
+func (x *CreateProductRequest) GetImageUrl() string {
+	if x != nil {
+		return x.ImageUrl
+	}
+	return ""
+}
+
+func (x *CreateProductRequest) GetCogsCents() int64 {
+	if x != nil {
+		return x.CogsCents
+	}
+	return 0
 }
 
 type CreateProductResponse struct {
@@ -287,7 +319,7 @@ func (x *CreateProductResponse) GetProduct() *Product {
 
 type GetProductRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -322,11 +354,11 @@ func (*GetProductRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetProductRequest) GetId() string {
+func (x *GetProductRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type GetProductResponse struct {
@@ -377,7 +409,7 @@ type ListProductsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	CategoryId    string                 `protobuf:"bytes,3,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	CategoryId    int64                  `protobuf:"varint,3,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -426,11 +458,11 @@ func (x *ListProductsRequest) GetPageSize() int32 {
 	return 0
 }
 
-func (x *ListProductsRequest) GetCategoryId() string {
+func (x *ListProductsRequest) GetCategoryId() int64 {
 	if x != nil {
 		return x.CategoryId
 	}
-	return ""
+	return 0
 }
 
 type ListProductsResponse struct {
@@ -487,10 +519,15 @@ func (x *ListProductsResponse) GetTotal() int32 {
 
 type UpdateProductRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	PriceCents    int64                  `protobuf:"varint,3,opt,name=price_cents,json=priceCents,proto3" json:"price_cents,omitempty"`
 	IsActive      bool                   `protobuf:"varint,4,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	ImageUrl      string                 `protobuf:"bytes,5,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
+	Description   string                 `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
+	Sku           string                 `protobuf:"bytes,7,opt,name=sku,proto3" json:"sku,omitempty"`
+	CategoryId    int64                  `protobuf:"varint,8,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	CogsCents     int64                  `protobuf:"varint,9,opt,name=cogs_cents,json=cogsCents,proto3" json:"cogs_cents,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -525,11 +562,11 @@ func (*UpdateProductRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *UpdateProductRequest) GetId() string {
+func (x *UpdateProductRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *UpdateProductRequest) GetName() string {
@@ -551,6 +588,41 @@ func (x *UpdateProductRequest) GetIsActive() bool {
 		return x.IsActive
 	}
 	return false
+}
+
+func (x *UpdateProductRequest) GetImageUrl() string {
+	if x != nil {
+		return x.ImageUrl
+	}
+	return ""
+}
+
+func (x *UpdateProductRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *UpdateProductRequest) GetSku() string {
+	if x != nil {
+		return x.Sku
+	}
+	return ""
+}
+
+func (x *UpdateProductRequest) GetCategoryId() int64 {
+	if x != nil {
+		return x.CategoryId
+	}
+	return 0
+}
+
+func (x *UpdateProductRequest) GetCogsCents() int64 {
+	if x != nil {
+		return x.CogsCents
+	}
+	return 0
 }
 
 type UpdateProductResponse struct {
@@ -599,7 +671,7 @@ func (x *UpdateProductResponse) GetProduct() *Product {
 
 type DeleteProductRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -634,11 +706,11 @@ func (*DeleteProductRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *DeleteProductRequest) GetId() string {
+func (x *DeleteProductRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type DeleteProductResponse struct {
@@ -851,50 +923,63 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\n" +
 	"!wargapos/product/v1/product.proto\x12\x13wargapos.product.v1\".\n" +
 	"\bCategory\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\xc0\x01\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xfc\x01\n" +
 	"\aProduct\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1f\n" +
-	"\vcategory_id\x18\x04 \x01(\tR\n" +
+	"\vcategory_id\x18\x04 \x01(\x03R\n" +
 	"categoryId\x12\x1f\n" +
 	"\vprice_cents\x18\x05 \x01(\x03R\n" +
 	"priceCents\x12\x1b\n" +
 	"\tis_active\x18\x06 \x01(\bR\bisActive\x12\x10\n" +
-	"\x03sku\x18\a \x01(\tR\x03sku\"\xa0\x01\n" +
+	"\x03sku\x18\a \x01(\tR\x03sku\x12\x1b\n" +
+	"\timage_url\x18\b \x01(\tR\bimageUrl\x12\x1d\n" +
+	"\n" +
+	"cogs_cents\x18\t \x01(\x03R\tcogsCents\"\xdc\x01\n" +
 	"\x14CreateProductRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1f\n" +
-	"\vcategory_id\x18\x03 \x01(\tR\n" +
+	"\vcategory_id\x18\x03 \x01(\x03R\n" +
 	"categoryId\x12\x1f\n" +
 	"\vprice_cents\x18\x04 \x01(\x03R\n" +
 	"priceCents\x12\x10\n" +
-	"\x03sku\x18\x05 \x01(\tR\x03sku\"O\n" +
+	"\x03sku\x18\x05 \x01(\tR\x03sku\x12\x1b\n" +
+	"\timage_url\x18\x06 \x01(\tR\bimageUrl\x12\x1d\n" +
+	"\n" +
+	"cogs_cents\x18\a \x01(\x03R\tcogsCents\"O\n" +
 	"\x15CreateProductResponse\x126\n" +
 	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"#\n" +
 	"\x11GetProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"L\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"L\n" +
 	"\x12GetProductResponse\x126\n" +
 	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"g\n" +
 	"\x13ListProductsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1f\n" +
-	"\vcategory_id\x18\x03 \x01(\tR\n" +
+	"\vcategory_id\x18\x03 \x01(\x03R\n" +
 	"categoryId\"f\n" +
 	"\x14ListProductsResponse\x128\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1c.wargapos.product.v1.ProductR\bproducts\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"x\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\x89\x02\n" +
 	"\x14UpdateProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1f\n" +
 	"\vprice_cents\x18\x03 \x01(\x03R\n" +
 	"priceCents\x12\x1b\n" +
-	"\tis_active\x18\x04 \x01(\bR\bisActive\"O\n" +
+	"\tis_active\x18\x04 \x01(\bR\bisActive\x12\x1b\n" +
+	"\timage_url\x18\x05 \x01(\tR\bimageUrl\x12 \n" +
+	"\vdescription\x18\x06 \x01(\tR\vdescription\x12\x10\n" +
+	"\x03sku\x18\a \x01(\tR\x03sku\x12\x1f\n" +
+	"\vcategory_id\x18\b \x01(\x03R\n" +
+	"categoryId\x12\x1d\n" +
+	"\n" +
+	"cogs_cents\x18\t \x01(\x03R\tcogsCents\"O\n" +
 	"\x15UpdateProductResponse\x126\n" +
 	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"&\n" +
 	"\x14DeleteProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x17\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x17\n" +
 	"\x15DeleteProductResponse\"+\n" +
 	"\x15CreateCategoryRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"S\n" +

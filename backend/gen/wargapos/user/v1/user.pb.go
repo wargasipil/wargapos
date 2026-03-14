@@ -75,12 +75,13 @@ func (Role) EnumDescriptor() ([]byte, []int) {
 
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
 	FullName      string                 `protobuf:"bytes,3,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
 	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
 	Role          Role                   `protobuf:"varint,5,opt,name=role,proto3,enum=wargapos.user.v1.Role" json:"role,omitempty"`
 	IsActive      bool                   `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	ImageUrl      string                 `protobuf:"bytes,7,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -115,11 +116,11 @@ func (*User) Descriptor() ([]byte, []int) {
 	return file_wargapos_user_v1_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *User) GetId() string {
+func (x *User) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *User) GetUsername() string {
@@ -155,6 +156,13 @@ func (x *User) GetIsActive() bool {
 		return x.IsActive
 	}
 	return false
+}
+
+func (x *User) GetImageUrl() string {
+	if x != nil {
+		return x.ImageUrl
+	}
+	return ""
 }
 
 type CreateUserRequest struct {
@@ -279,7 +287,7 @@ func (x *CreateUserResponse) GetUser() *User {
 
 type GetUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -314,11 +322,11 @@ func (*GetUserRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_user_v1_user_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetUserRequest) GetId() string {
+func (x *GetUserRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type GetUserResponse struct {
@@ -367,7 +375,7 @@ func (x *GetUserResponse) GetUser() *User {
 
 type UpdateUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	FullName      string                 `protobuf:"bytes,2,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	Role          Role                   `protobuf:"varint,4,opt,name=role,proto3,enum=wargapos.user.v1.Role" json:"role,omitempty"`
@@ -406,11 +414,11 @@ func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_user_v1_user_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *UpdateUserRequest) GetId() string {
+func (x *UpdateUserRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *UpdateUserRequest) GetFullName() string {
@@ -487,7 +495,7 @@ func (x *UpdateUserResponse) GetUser() *User {
 
 type DeleteUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -522,11 +530,11 @@ func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_user_v1_user_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *DeleteUserRequest) GetId() string {
+func (x *DeleteUserRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type DeleteUserResponse struct {
@@ -673,14 +681,15 @@ var File_wargapos_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/user/v1/user.proto\x12\x10wargapos.user.v1\"\xae\x01\n" +
+	"\x1bwargapos/user/v1/user.proto\x12\x10wargapos.user.v1\"\xcb\x01\n" +
 	"\x04User\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1a\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x1b\n" +
 	"\tfull_name\x18\x03 \x01(\tR\bfullName\x12\x14\n" +
 	"\x05email\x18\x04 \x01(\tR\x05email\x12*\n" +
 	"\x04role\x18\x05 \x01(\x0e2\x16.wargapos.user.v1.RoleR\x04role\x12\x1b\n" +
-	"\tis_active\x18\x06 \x01(\bR\bisActive\"\xaa\x01\n" +
+	"\tis_active\x18\x06 \x01(\bR\bisActive\x12\x1b\n" +
+	"\timage_url\x18\a \x01(\tR\bimageUrl\"\xaa\x01\n" +
 	"\x11CreateUserRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1b\n" +
 	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12\x14\n" +
@@ -690,11 +699,11 @@ const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\x12CreateUserResponse\x12*\n" +
 	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\" \n" +
 	"\x0eGetUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"=\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"=\n" +
 	"\x0fGetUserResponse\x12*\n" +
 	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\"\x9f\x01\n" +
 	"\x11UpdateUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1b\n" +
 	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12*\n" +
 	"\x04role\x18\x04 \x01(\x0e2\x16.wargapos.user.v1.RoleR\x04role\x12\x1b\n" +
@@ -702,7 +711,7 @@ const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\x12UpdateUserResponse\x12*\n" +
 	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\"#\n" +
 	"\x11DeleteUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x14\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x14\n" +
 	"\x12DeleteUserResponse\"C\n" +
 	"\x10ListUsersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
