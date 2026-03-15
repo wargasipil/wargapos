@@ -9,7 +9,7 @@ import type { Product } from '../gen/wargapos/product/v1/product_pb'
 import { OrderFrom, PaymentMethod } from '../gen/wargapos/transaction/v1/transaction_pb'
 import { formatPrice } from '../lib/format'
 import { stripError } from '../lib/errors'
-import { MenuProductCard } from '../components/shared/MenuProductCard'
+import { POSProductCard } from '../components/shared/POSProductCard'
 import { ProductFilter } from '../components/shared/ProductFilter'
 import { syncCartToServer } from '../lib/syncCart'
 import { useAuthStore } from '../store/auth'
@@ -31,8 +31,7 @@ type CartView = 'items' | 'payment'
 
 export function MenuPage() {
   const search = useSearch({ strict: false }) as { table?: string }
-  const tableIdStr = search.table ?? ''
-  const tableId: bigint = tableIdStr ? BigInt(tableIdStr) : 0n
+  const tableUuid = search.table ?? ''
 
   const sessionIdRef = useRef<string>(generateId())
   const sessionId = sessionIdRef.current
@@ -61,10 +60,10 @@ export function MenuPage() {
     queryFn: () => productClient.listCategories({}),
   })
 
-  const { data: tablesData } = useQuery({
-    queryKey: ['tables'],
-    queryFn: () => tableClient.listTables({}),
-    enabled: tableId !== 0n,
+  const { data: tableData } = useQuery({
+    queryKey: ['table-by-uuid', tableUuid],
+    queryFn: () => tableClient.getTable({ uuid: tableUuid }),
+    enabled: !!tableUuid,
   })
 
   const { data: settingsData } = useQuery({
@@ -73,10 +72,12 @@ export function MenuPage() {
   })
   const midtransEnabled = settingsData?.midtransConfigured ?? false
 
+  const tableId: bigint = tableData?.table?.id ?? 0n
+  const tableName = tableData?.table?.name ?? tableUuid
+
   const products = (productsData?.products ?? []).filter((p) => p.isActive && p.stockQty > 0)
   const categories = categoriesData?.categories ?? []
   const categoryMap = new Map(categories.map((c) => [c.id, c.name]))
-  const tableName = tablesData?.tables.find((t) => t.id === tableId)?.name ?? tableIdStr
 
   const filteredProducts = products.filter((p) => {
     const matchesCategory = selectedCategory === 0n || p.categoryId === selectedCategory
@@ -396,7 +397,7 @@ export function MenuPage() {
         ) : (
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(auto-fill, minmax(160px, 1fr))' }} gap={3}>
             {filteredProducts.map((p) => (
-              <MenuProductCard
+              <POSProductCard
                 key={String(p.id)}
                 name={p.name}
                 imageUrl={p.imageUrl}

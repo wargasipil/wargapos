@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/product/v1/product.proto.
  */
 export const file_wargapos_product_v1_product: GenFile = /*@__PURE__*/
-  fileDesc("CiF3YXJnYXBvcy9wcm9kdWN0L3YxL3Byb2R1Y3QucHJvdG8SE3dhcmdhcG9zLnByb2R1Y3QudjEiJAoIQ2F0ZWdvcnkSCgoCaWQYASABKAMSDAoEbmFtZRgCIAEoCSK8AQoHUHJvZHVjdBIKCgJpZBgBIAEoAxIMCgRuYW1lGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhMKC2NhdGVnb3J5X2lkGAQgASgDEhMKC3ByaWNlX2NlbnRzGAUgASgDEhEKCWlzX2FjdGl2ZRgGIAEoCBILCgNza3UYByABKAkSEQoJaW1hZ2VfdXJsGAggASgJEhIKCmNvZ3NfY2VudHMYCSABKAMSEQoJc3RvY2tfcXR5GAogASgFIpcBChRDcmVhdGVQcm9kdWN0UmVxdWVzdBIMCgRuYW1lGAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEhMKC2NhdGVnb3J5X2lkGAMgASgDEhMKC3ByaWNlX2NlbnRzGAQgASgDEgsKA3NrdRgFIAEoCRIRCglpbWFnZV91cmwYBiABKAkSEgoKY29nc19jZW50cxgHIAEoAyJGChVDcmVhdGVQcm9kdWN0UmVzcG9uc2USLQoHcHJvZHVjdBgBIAEoCzIcLndhcmdhcG9zLnByb2R1Y3QudjEuUHJvZHVjdCIfChFHZXRQcm9kdWN0UmVxdWVzdBIKCgJpZBgBIAEoAyJDChJHZXRQcm9kdWN0UmVzcG9uc2USLQoHcHJvZHVjdBgBIAEoCzIcLndhcmdhcG9zLnByb2R1Y3QudjEuUHJvZHVjdCJgChNMaXN0UHJvZHVjdHNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEhMKC2NhdGVnb3J5X2lkGAMgASgDEhMKC2FjdGl2ZV9vbmx5GAQgASgIIlUKFExpc3RQcm9kdWN0c1Jlc3BvbnNlEi4KCHByb2R1Y3RzGAEgAygLMhwud2FyZ2Fwb3MucHJvZHVjdC52MS5Qcm9kdWN0Eg0KBXRvdGFsGAIgASgFIrYBChRVcGRhdGVQcm9kdWN0UmVxdWVzdBIKCgJpZBgBIAEoAxIMCgRuYW1lGAIgASgJEhMKC3ByaWNlX2NlbnRzGAMgASgDEhEKCWlzX2FjdGl2ZRgEIAEoCBIRCglpbWFnZV91cmwYBSABKAkSEwoLZGVzY3JpcHRpb24YBiABKAkSCwoDc2t1GAcgASgJEhMKC2NhdGVnb3J5X2lkGAggASgDEhIKCmNvZ3NfY2VudHMYCSABKAMiRgoVVXBkYXRlUHJvZHVjdFJlc3BvbnNlEi0KB3Byb2R1Y3QYASABKAsyHC53YXJnYXBvcy5wcm9kdWN0LnYxLlByb2R1Y3QiIgoURGVsZXRlUHJvZHVjdFJlcXVlc3QSCgoCaWQYASABKAMiFwoVRGVsZXRlUHJvZHVjdFJlc3BvbnNlIiUKFUNyZWF0ZUNhdGVnb3J5UmVxdWVzdBIMCgRuYW1lGAEgASgJIkkKFkNyZWF0ZUNhdGVnb3J5UmVzcG9uc2USLwoIY2F0ZWdvcnkYASABKAsyHS53YXJnYXBvcy5wcm9kdWN0LnYxLkNhdGVnb3J5IhcKFUxpc3RDYXRlZ29yaWVzUmVxdWVzdCJLChZMaXN0Q2F0ZWdvcmllc1Jlc3BvbnNlEjEKCmNhdGVnb3JpZXMYASADKAsyHS53YXJnYXBvcy5wcm9kdWN0LnYxLkNhdGVnb3J5MuIFCg5Qcm9kdWN0U2VydmljZRJmCg1DcmVhdGVQcm9kdWN0Eikud2FyZ2Fwb3MucHJvZHVjdC52MS5DcmVhdGVQcm9kdWN0UmVxdWVzdBoqLndhcmdhcG9zLnByb2R1Y3QudjEuQ3JlYXRlUHJvZHVjdFJlc3BvbnNlEl0KCkdldFByb2R1Y3QSJi53YXJnYXBvcy5wcm9kdWN0LnYxLkdldFByb2R1Y3RSZXF1ZXN0Gicud2FyZ2Fwb3MucHJvZHVjdC52MS5HZXRQcm9kdWN0UmVzcG9uc2USYwoMTGlzdFByb2R1Y3RzEigud2FyZ2Fwb3MucHJvZHVjdC52MS5MaXN0UHJvZHVjdHNSZXF1ZXN0Gikud2FyZ2Fwb3MucHJvZHVjdC52MS5MaXN0UHJvZHVjdHNSZXNwb25zZRJmCg1VcGRhdGVQcm9kdWN0Eikud2FyZ2Fwb3MucHJvZHVjdC52MS5VcGRhdGVQcm9kdWN0UmVxdWVzdBoqLndhcmdhcG9zLnByb2R1Y3QudjEuVXBkYXRlUHJvZHVjdFJlc3BvbnNlEmYKDURlbGV0ZVByb2R1Y3QSKS53YXJnYXBvcy5wcm9kdWN0LnYxLkRlbGV0ZVByb2R1Y3RSZXF1ZXN0Gioud2FyZ2Fwb3MucHJvZHVjdC52MS5EZWxldGVQcm9kdWN0UmVzcG9uc2USaQoOQ3JlYXRlQ2F0ZWdvcnkSKi53YXJnYXBvcy5wcm9kdWN0LnYxLkNyZWF0ZUNhdGVnb3J5UmVxdWVzdBorLndhcmdhcG9zLnByb2R1Y3QudjEuQ3JlYXRlQ2F0ZWdvcnlSZXNwb25zZRJpCg5MaXN0Q2F0ZWdvcmllcxIqLndhcmdhcG9zLnByb2R1Y3QudjEuTGlzdENhdGVnb3JpZXNSZXF1ZXN0Gisud2FyZ2Fwb3MucHJvZHVjdC52MS5MaXN0Q2F0ZWdvcmllc1Jlc3BvbnNlQjRaMndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3Byb2R1Y3QvdjE7cHJvZHVjdHYxYgZwcm90bzM");
+  fileDesc("CiF3YXJnYXBvcy9wcm9kdWN0L3YxL3Byb2R1Y3QucHJvdG8SE3dhcmdhcG9zLnByb2R1Y3QudjEiJAoIQ2F0ZWdvcnkSCgoCaWQYASABKAMSDAoEbmFtZRgCIAEoCSK8AQoHUHJvZHVjdBIKCgJpZBgBIAEoAxIMCgRuYW1lGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhMKC2NhdGVnb3J5X2lkGAQgASgDEhMKC3ByaWNlX2NlbnRzGAUgASgDEhEKCWlzX2FjdGl2ZRgGIAEoCBILCgNza3UYByABKAkSEQoJaW1hZ2VfdXJsGAggASgJEhIKCmNvZ3NfY2VudHMYCSABKAMSEQoJc3RvY2tfcXR5GAogASgFIpcBChRDcmVhdGVQcm9kdWN0UmVxdWVzdBIMCgRuYW1lGAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEhMKC2NhdGVnb3J5X2lkGAMgASgDEhMKC3ByaWNlX2NlbnRzGAQgASgDEgsKA3NrdRgFIAEoCRIRCglpbWFnZV91cmwYBiABKAkSEgoKY29nc19jZW50cxgHIAEoAyJGChVDcmVhdGVQcm9kdWN0UmVzcG9uc2USLQoHcHJvZHVjdBgBIAEoCzIcLndhcmdhcG9zLnByb2R1Y3QudjEuUHJvZHVjdCIfChFHZXRQcm9kdWN0UmVxdWVzdBIKCgJpZBgBIAEoAyJDChJHZXRQcm9kdWN0UmVzcG9uc2USLQoHcHJvZHVjdBgBIAEoCzIcLndhcmdhcG9zLnByb2R1Y3QudjEuUHJvZHVjdCKHAQoTTGlzdFByb2R1Y3RzUmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBRITCgtjYXRlZ29yeV9pZBgDIAEoAxITCgthY3RpdmVfb25seRgEIAEoCBIVCg1pbmFjdGl2ZV9vbmx5GAUgASgIEg4KBnNlYXJjaBgGIAEoCSJVChRMaXN0UHJvZHVjdHNSZXNwb25zZRIuCghwcm9kdWN0cxgBIAMoCzIcLndhcmdhcG9zLnByb2R1Y3QudjEuUHJvZHVjdBINCgV0b3RhbBgCIAEoBSK2AQoUVXBkYXRlUHJvZHVjdFJlcXVlc3QSCgoCaWQYASABKAMSDAoEbmFtZRgCIAEoCRITCgtwcmljZV9jZW50cxgDIAEoAxIRCglpc19hY3RpdmUYBCABKAgSEQoJaW1hZ2VfdXJsGAUgASgJEhMKC2Rlc2NyaXB0aW9uGAYgASgJEgsKA3NrdRgHIAEoCRITCgtjYXRlZ29yeV9pZBgIIAEoAxISCgpjb2dzX2NlbnRzGAkgASgDIkYKFVVwZGF0ZVByb2R1Y3RSZXNwb25zZRItCgdwcm9kdWN0GAEgASgLMhwud2FyZ2Fwb3MucHJvZHVjdC52MS5Qcm9kdWN0IiIKFERlbGV0ZVByb2R1Y3RSZXF1ZXN0EgoKAmlkGAEgASgDIhcKFURlbGV0ZVByb2R1Y3RSZXNwb25zZSIlChVDcmVhdGVDYXRlZ29yeVJlcXVlc3QSDAoEbmFtZRgBIAEoCSJJChZDcmVhdGVDYXRlZ29yeVJlc3BvbnNlEi8KCGNhdGVnb3J5GAEgASgLMh0ud2FyZ2Fwb3MucHJvZHVjdC52MS5DYXRlZ29yeSIxChVVcGRhdGVDYXRlZ29yeVJlcXVlc3QSCgoCaWQYASABKAMSDAoEbmFtZRgCIAEoCSJJChZVcGRhdGVDYXRlZ29yeVJlc3BvbnNlEi8KCGNhdGVnb3J5GAEgASgLMh0ud2FyZ2Fwb3MucHJvZHVjdC52MS5DYXRlZ29yeSIjChVEZWxldGVDYXRlZ29yeVJlcXVlc3QSCgoCaWQYASABKAMiGAoWRGVsZXRlQ2F0ZWdvcnlSZXNwb25zZSIXChVMaXN0Q2F0ZWdvcmllc1JlcXVlc3QiSwoWTGlzdENhdGVnb3JpZXNSZXNwb25zZRIxCgpjYXRlZ29yaWVzGAEgAygLMh0ud2FyZ2Fwb3MucHJvZHVjdC52MS5DYXRlZ29yeTK4BwoOUHJvZHVjdFNlcnZpY2USZgoNQ3JlYXRlUHJvZHVjdBIpLndhcmdhcG9zLnByb2R1Y3QudjEuQ3JlYXRlUHJvZHVjdFJlcXVlc3QaKi53YXJnYXBvcy5wcm9kdWN0LnYxLkNyZWF0ZVByb2R1Y3RSZXNwb25zZRJdCgpHZXRQcm9kdWN0EiYud2FyZ2Fwb3MucHJvZHVjdC52MS5HZXRQcm9kdWN0UmVxdWVzdBonLndhcmdhcG9zLnByb2R1Y3QudjEuR2V0UHJvZHVjdFJlc3BvbnNlEmMKDExpc3RQcm9kdWN0cxIoLndhcmdhcG9zLnByb2R1Y3QudjEuTGlzdFByb2R1Y3RzUmVxdWVzdBopLndhcmdhcG9zLnByb2R1Y3QudjEuTGlzdFByb2R1Y3RzUmVzcG9uc2USZgoNVXBkYXRlUHJvZHVjdBIpLndhcmdhcG9zLnByb2R1Y3QudjEuVXBkYXRlUHJvZHVjdFJlcXVlc3QaKi53YXJnYXBvcy5wcm9kdWN0LnYxLlVwZGF0ZVByb2R1Y3RSZXNwb25zZRJmCg1EZWxldGVQcm9kdWN0Eikud2FyZ2Fwb3MucHJvZHVjdC52MS5EZWxldGVQcm9kdWN0UmVxdWVzdBoqLndhcmdhcG9zLnByb2R1Y3QudjEuRGVsZXRlUHJvZHVjdFJlc3BvbnNlEmkKDkNyZWF0ZUNhdGVnb3J5Eioud2FyZ2Fwb3MucHJvZHVjdC52MS5DcmVhdGVDYXRlZ29yeVJlcXVlc3QaKy53YXJnYXBvcy5wcm9kdWN0LnYxLkNyZWF0ZUNhdGVnb3J5UmVzcG9uc2USaQoOVXBkYXRlQ2F0ZWdvcnkSKi53YXJnYXBvcy5wcm9kdWN0LnYxLlVwZGF0ZUNhdGVnb3J5UmVxdWVzdBorLndhcmdhcG9zLnByb2R1Y3QudjEuVXBkYXRlQ2F0ZWdvcnlSZXNwb25zZRJpCg5EZWxldGVDYXRlZ29yeRIqLndhcmdhcG9zLnByb2R1Y3QudjEuRGVsZXRlQ2F0ZWdvcnlSZXF1ZXN0Gisud2FyZ2Fwb3MucHJvZHVjdC52MS5EZWxldGVDYXRlZ29yeVJlc3BvbnNlEmkKDkxpc3RDYXRlZ29yaWVzEioud2FyZ2Fwb3MucHJvZHVjdC52MS5MaXN0Q2F0ZWdvcmllc1JlcXVlc3QaKy53YXJnYXBvcy5wcm9kdWN0LnYxLkxpc3RDYXRlZ29yaWVzUmVzcG9uc2VCNFoyd2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3MvcHJvZHVjdC92MTtwcm9kdWN0djFiBnByb3RvMw");
 
 /**
  * @generated from message wargapos.product.v1.Category
@@ -219,6 +219,20 @@ export type ListProductsRequest = Message<"wargapos.product.v1.ListProductsReque
    * @generated from field: bool active_only = 4;
    */
   activeOnly: boolean;
+
+  /**
+   * when true, only return is_active=false products
+   *
+   * @generated from field: bool inactive_only = 5;
+   */
+  inactiveOnly: boolean;
+
+  /**
+   * filter by name (case-insensitive, partial match)
+   *
+   * @generated from field: string search = 6;
+   */
+  search: string;
 };
 
 /**
@@ -389,6 +403,75 @@ export const CreateCategoryResponseSchema: GenMessage<CreateCategoryResponse> = 
   messageDesc(file_wargapos_product_v1_product, 13);
 
 /**
+ * @generated from message wargapos.product.v1.UpdateCategoryRequest
+ */
+export type UpdateCategoryRequest = Message<"wargapos.product.v1.UpdateCategoryRequest"> & {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message wargapos.product.v1.UpdateCategoryRequest.
+ * Use `create(UpdateCategoryRequestSchema)` to create a new message.
+ */
+export const UpdateCategoryRequestSchema: GenMessage<UpdateCategoryRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_product_v1_product, 14);
+
+/**
+ * @generated from message wargapos.product.v1.UpdateCategoryResponse
+ */
+export type UpdateCategoryResponse = Message<"wargapos.product.v1.UpdateCategoryResponse"> & {
+  /**
+   * @generated from field: wargapos.product.v1.Category category = 1;
+   */
+  category?: Category;
+};
+
+/**
+ * Describes the message wargapos.product.v1.UpdateCategoryResponse.
+ * Use `create(UpdateCategoryResponseSchema)` to create a new message.
+ */
+export const UpdateCategoryResponseSchema: GenMessage<UpdateCategoryResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_product_v1_product, 15);
+
+/**
+ * @generated from message wargapos.product.v1.DeleteCategoryRequest
+ */
+export type DeleteCategoryRequest = Message<"wargapos.product.v1.DeleteCategoryRequest"> & {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+};
+
+/**
+ * Describes the message wargapos.product.v1.DeleteCategoryRequest.
+ * Use `create(DeleteCategoryRequestSchema)` to create a new message.
+ */
+export const DeleteCategoryRequestSchema: GenMessage<DeleteCategoryRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_product_v1_product, 16);
+
+/**
+ * @generated from message wargapos.product.v1.DeleteCategoryResponse
+ */
+export type DeleteCategoryResponse = Message<"wargapos.product.v1.DeleteCategoryResponse"> & {
+};
+
+/**
+ * Describes the message wargapos.product.v1.DeleteCategoryResponse.
+ * Use `create(DeleteCategoryResponseSchema)` to create a new message.
+ */
+export const DeleteCategoryResponseSchema: GenMessage<DeleteCategoryResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_product_v1_product, 17);
+
+/**
  * @generated from message wargapos.product.v1.ListCategoriesRequest
  */
 export type ListCategoriesRequest = Message<"wargapos.product.v1.ListCategoriesRequest"> & {
@@ -399,7 +482,7 @@ export type ListCategoriesRequest = Message<"wargapos.product.v1.ListCategoriesR
  * Use `create(ListCategoriesRequestSchema)` to create a new message.
  */
 export const ListCategoriesRequestSchema: GenMessage<ListCategoriesRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_product_v1_product, 14);
+  messageDesc(file_wargapos_product_v1_product, 18);
 
 /**
  * @generated from message wargapos.product.v1.ListCategoriesResponse
@@ -416,7 +499,7 @@ export type ListCategoriesResponse = Message<"wargapos.product.v1.ListCategories
  * Use `create(ListCategoriesResponseSchema)` to create a new message.
  */
 export const ListCategoriesResponseSchema: GenMessage<ListCategoriesResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_product_v1_product, 15);
+  messageDesc(file_wargapos_product_v1_product, 19);
 
 /**
  * @generated from service wargapos.product.v1.ProductService
@@ -469,6 +552,22 @@ export const ProductService: GenService<{
     methodKind: "unary";
     input: typeof CreateCategoryRequestSchema;
     output: typeof CreateCategoryResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.product.v1.ProductService.UpdateCategory
+   */
+  updateCategory: {
+    methodKind: "unary";
+    input: typeof UpdateCategoryRequestSchema;
+    output: typeof UpdateCategoryResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.product.v1.ProductService.DeleteCategory
+   */
+  deleteCategory: {
+    methodKind: "unary";
+    input: typeof DeleteCategoryRequestSchema;
+    output: typeof DeleteCategoryResponseSchema;
   },
   /**
    * @generated from rpc wargapos.product.v1.ProductService.ListCategories

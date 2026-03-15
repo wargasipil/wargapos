@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
+	"wargapos/backend/internal/auth"
 	"wargapos/backend/internal/models"
 )
 
@@ -27,10 +28,7 @@ func (s *StockService) AdjustStock(
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("reason must be 'restock' or 'adjustment'"))
 	}
 
-	userID, err := s.parseUserID(req.Header().Get("Authorization"))
-	if err != nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, err)
-	}
+	claims := auth.ClaimsFromContext(ctx)
 
 	var newStock int32
 	txErr := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -56,13 +54,17 @@ func (s *StockService) AdjustStock(
 		newStock = p.StockQty
 
 		// Record the movement.
-		uid := userID
+		var createdBy *int64
+		if claims != nil {
+			uid := claims.UserID
+			createdBy = &uid
+		}
 		mov := &models.StockMovement{
 			ProductID: req.Msg.ProductId,
 			Delta:     req.Msg.Delta,
 			Reason:    reason,
 			Note:      req.Msg.Note,
-			CreatedBy: &uid,
+			CreatedBy: createdBy,
 		}
 		return tx.Create(mov).Error
 	})

@@ -75,7 +75,7 @@ export function ProductNewPage() {
       }
       qc.invalidateQueries({ queryKey: ['products'] })
       toaster.create({ title: 'Product created', type: 'success', duration: 3000 })
-      navigate({ to: '/products' })
+      navigate({ to: '/products/$id', params: { id: String(res.product!.id) } })
     },
     onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })

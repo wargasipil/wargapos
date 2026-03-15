@@ -9,7 +9,7 @@ import { useAuthStore } from '../../store/auth'
 import { toaster } from '../../components/ui/toaster'
 import { formatPrice } from '../../lib/format'
 import { stripError } from '../../lib/errors'
-import { MenuProductCard } from '../../components/shared/MenuProductCard'
+import { POSProductCard } from '../../components/shared/POSProductCard'
 import { ProductFilter } from '../../components/shared/ProductFilter'
 import { syncCartToServer } from '../../lib/syncCart'
 import type { Product } from '../../gen/wargapos/product/v1/product_pb'
@@ -156,7 +156,7 @@ export function PosPage() {
         ) : (
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(auto-fill, minmax(160px, 1fr))' }} gap={{ base: 3, md: 4 }}>
             {products.map((p) => (
-              <MenuProductCard
+              <POSProductCard
                 key={String(p.id)}
                 name={p.name}
                 imageUrl={p.imageUrl}

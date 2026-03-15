@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/table/v1/table.proto.
  */
 export const file_wargapos_table_v1_table: GenFile = /*@__PURE__*/
-  fileDesc("Ch13YXJnYXBvcy90YWJsZS92MS90YWJsZS5wcm90bxIRd2FyZ2Fwb3MudGFibGUudjEiIQoFVGFibGUSCgoCaWQYASABKAMSDAoEbmFtZRgCIAEoCSIiChJDcmVhdGVUYWJsZVJlcXVlc3QSDAoEbmFtZRgBIAEoCSI+ChNDcmVhdGVUYWJsZVJlc3BvbnNlEicKBXRhYmxlGAEgASgLMhgud2FyZ2Fwb3MudGFibGUudjEuVGFibGUiLgoSVXBkYXRlVGFibGVSZXF1ZXN0EgoKAmlkGAEgASgDEgwKBG5hbWUYAiABKAkiPgoTVXBkYXRlVGFibGVSZXNwb25zZRInCgV0YWJsZRgBIAEoCzIYLndhcmdhcG9zLnRhYmxlLnYxLlRhYmxlIiAKEkRlbGV0ZVRhYmxlUmVxdWVzdBIKCgJpZBgBIAEoAyIVChNEZWxldGVUYWJsZVJlc3BvbnNlIhMKEUxpc3RUYWJsZXNSZXF1ZXN0Ij4KEkxpc3RUYWJsZXNSZXNwb25zZRIoCgZ0YWJsZXMYASADKAsyGC53YXJnYXBvcy50YWJsZS52MS5UYWJsZTKDAwoMVGFibGVTZXJ2aWNlElwKC0NyZWF0ZVRhYmxlEiUud2FyZ2Fwb3MudGFibGUudjEuQ3JlYXRlVGFibGVSZXF1ZXN0GiYud2FyZ2Fwb3MudGFibGUudjEuQ3JlYXRlVGFibGVSZXNwb25zZRJcCgtVcGRhdGVUYWJsZRIlLndhcmdhcG9zLnRhYmxlLnYxLlVwZGF0ZVRhYmxlUmVxdWVzdBomLndhcmdhcG9zLnRhYmxlLnYxLlVwZGF0ZVRhYmxlUmVzcG9uc2USXAoLRGVsZXRlVGFibGUSJS53YXJnYXBvcy50YWJsZS52MS5EZWxldGVUYWJsZVJlcXVlc3QaJi53YXJnYXBvcy50YWJsZS52MS5EZWxldGVUYWJsZVJlc3BvbnNlElkKCkxpc3RUYWJsZXMSJC53YXJnYXBvcy50YWJsZS52MS5MaXN0VGFibGVzUmVxdWVzdBolLndhcmdhcG9zLnRhYmxlLnYxLkxpc3RUYWJsZXNSZXNwb25zZUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy90YWJsZS92MTt0YWJsZXYxYgZwcm90bzM");
+  fileDesc("Ch13YXJnYXBvcy90YWJsZS92MS90YWJsZS5wcm90bxIRd2FyZ2Fwb3MudGFibGUudjEiLwoFVGFibGUSCgoCaWQYASABKAMSDAoEbmFtZRgCIAEoCRIMCgR1dWlkGAMgASgJIiIKEkNyZWF0ZVRhYmxlUmVxdWVzdBIMCgRuYW1lGAEgASgJIj4KE0NyZWF0ZVRhYmxlUmVzcG9uc2USJwoFdGFibGUYASABKAsyGC53YXJnYXBvcy50YWJsZS52MS5UYWJsZSIuChJVcGRhdGVUYWJsZVJlcXVlc3QSCgoCaWQYASABKAMSDAoEbmFtZRgCIAEoCSI+ChNVcGRhdGVUYWJsZVJlc3BvbnNlEicKBXRhYmxlGAEgASgLMhgud2FyZ2Fwb3MudGFibGUudjEuVGFibGUiIAoSRGVsZXRlVGFibGVSZXF1ZXN0EgoKAmlkGAEgASgDIhUKE0RlbGV0ZVRhYmxlUmVzcG9uc2UiEwoRTGlzdFRhYmxlc1JlcXVlc3QiPgoSTGlzdFRhYmxlc1Jlc3BvbnNlEigKBnRhYmxlcxgBIAMoCzIYLndhcmdhcG9zLnRhYmxlLnYxLlRhYmxlIisKD0dldFRhYmxlUmVxdWVzdBIKCgJpZBgBIAEoAxIMCgR1dWlkGAIgASgJIjsKEEdldFRhYmxlUmVzcG9uc2USJwoFdGFibGUYASABKAsyGC53YXJnYXBvcy50YWJsZS52MS5UYWJsZTLYAwoMVGFibGVTZXJ2aWNlElwKC0NyZWF0ZVRhYmxlEiUud2FyZ2Fwb3MudGFibGUudjEuQ3JlYXRlVGFibGVSZXF1ZXN0GiYud2FyZ2Fwb3MudGFibGUudjEuQ3JlYXRlVGFibGVSZXNwb25zZRJcCgtVcGRhdGVUYWJsZRIlLndhcmdhcG9zLnRhYmxlLnYxLlVwZGF0ZVRhYmxlUmVxdWVzdBomLndhcmdhcG9zLnRhYmxlLnYxLlVwZGF0ZVRhYmxlUmVzcG9uc2USXAoLRGVsZXRlVGFibGUSJS53YXJnYXBvcy50YWJsZS52MS5EZWxldGVUYWJsZVJlcXVlc3QaJi53YXJnYXBvcy50YWJsZS52MS5EZWxldGVUYWJsZVJlc3BvbnNlElkKCkxpc3RUYWJsZXMSJC53YXJnYXBvcy50YWJsZS52MS5MaXN0VGFibGVzUmVxdWVzdBolLndhcmdhcG9zLnRhYmxlLnYxLkxpc3RUYWJsZXNSZXNwb25zZRJTCghHZXRUYWJsZRIiLndhcmdhcG9zLnRhYmxlLnYxLkdldFRhYmxlUmVxdWVzdBojLndhcmdhcG9zLnRhYmxlLnYxLkdldFRhYmxlUmVzcG9uc2VCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3MvdGFibGUvdjE7dGFibGV2MWIGcHJvdG8z");
 
 /**
  * @generated from message wargapos.table.v1.Table
@@ -25,6 +25,11 @@ export type Table = Message<"wargapos.table.v1.Table"> & {
    * @generated from field: string name = 2;
    */
   name: string;
+
+  /**
+   * @generated from field: string uuid = 3;
+   */
+  uuid: string;
 };
 
 /**
@@ -168,6 +173,45 @@ export const ListTablesResponseSchema: GenMessage<ListTablesResponse> = /*@__PUR
   messageDesc(file_wargapos_table_v1_table, 8);
 
 /**
+ * @generated from message wargapos.table.v1.GetTableRequest
+ */
+export type GetTableRequest = Message<"wargapos.table.v1.GetTableRequest"> & {
+  /**
+   * @generated from field: int64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string uuid = 2;
+   */
+  uuid: string;
+};
+
+/**
+ * Describes the message wargapos.table.v1.GetTableRequest.
+ * Use `create(GetTableRequestSchema)` to create a new message.
+ */
+export const GetTableRequestSchema: GenMessage<GetTableRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_table_v1_table, 9);
+
+/**
+ * @generated from message wargapos.table.v1.GetTableResponse
+ */
+export type GetTableResponse = Message<"wargapos.table.v1.GetTableResponse"> & {
+  /**
+   * @generated from field: wargapos.table.v1.Table table = 1;
+   */
+  table?: Table;
+};
+
+/**
+ * Describes the message wargapos.table.v1.GetTableResponse.
+ * Use `create(GetTableResponseSchema)` to create a new message.
+ */
+export const GetTableResponseSchema: GenMessage<GetTableResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_table_v1_table, 10);
+
+/**
  * @generated from service wargapos.table.v1.TableService
  */
 export const TableService: GenService<{
@@ -202,6 +246,14 @@ export const TableService: GenService<{
     methodKind: "unary";
     input: typeof ListTablesRequestSchema;
     output: typeof ListTablesResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.table.v1.TableService.GetTable
+   */
+  getTable: {
+    methodKind: "unary";
+    input: typeof GetTableRequestSchema;
+    output: typeof GetTableResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_wargapos_table_v1_table, 0);

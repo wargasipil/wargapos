@@ -9,12 +9,12 @@ import { PosPage } from './routes/pos/index'
 import { ProductsPage } from './routes/products'
 import { ProductNewPage } from './routes/products/new'
 import { ProductEditPage } from './routes/products/edit'
-import { CategoriesPage } from './routes/products/categories'
 import { TablesPage } from './routes/tables/index'
 import { MenuPage } from './routes/menu'
 import { OrdersPage } from './routes/orders/index'
 import { ProductDetailPage } from './routes/products/detail'
 import { SettingsPage } from './routes/settings'
+import { UsersPage } from './routes/users/index'
 
 // Root route with devtools
 const rootRoute = createRootRoute({
@@ -35,7 +35,7 @@ const loginRoute = createRoute({
 
 const menuRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/guest_checkout',
+  path: '/menu',
   component: MenuPage,
 })
 
@@ -66,12 +66,6 @@ const productsRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/products',
   component: ProductsPage,
-})
-
-const categoriesRoute = createRoute({
-  getParentRoute: () => layoutRoute,
-  path: '/products/categories',
-  component: CategoriesPage,
 })
 
 const productNewRoute = createRoute({
@@ -110,6 +104,12 @@ const settingsRoute = createRoute({
   component: SettingsPage,
 })
 
+const usersRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/users',
+  component: UsersPage,
+})
+
 const routeTree = rootRoute.addChildren([
   loginRoute,
   menuRoute,
@@ -117,13 +117,13 @@ const routeTree = rootRoute.addChildren([
     dashboardRoute,
     posRoute,
     productsRoute,
-    categoriesRoute,
     productNewRoute,
     productEditRoute,
     tablesRoute,
     ordersRoute,
     productDetailRoute,
     settingsRoute,
+    usersRoute,
   ]),
 ])
 

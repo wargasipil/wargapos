@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 
 	userv1 "wargapos/backend/gen/wargapos/user/v1"
+	"wargapos/backend/internal/auth"
 	"wargapos/backend/internal/models"
 )
 
@@ -17,6 +18,10 @@ func (s *UserService) DeleteUser(
 ) (*connect.Response[userv1.DeleteUserResponse], error) {
 	if req.Msg.Id == 0 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
+	}
+
+	if claims := auth.ClaimsFromContext(ctx); claims != nil && claims.UserID == req.Msg.Id {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("cannot delete your own account"))
 	}
 
 	result := s.db.WithContext(ctx).Delete(&models.User{}, "id = ?", req.Msg.Id)

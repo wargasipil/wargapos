@@ -44,6 +44,8 @@ const (
 	TableServiceDeleteTableProcedure = "/wargapos.table.v1.TableService/DeleteTable"
 	// TableServiceListTablesProcedure is the fully-qualified name of the TableService's ListTables RPC.
 	TableServiceListTablesProcedure = "/wargapos.table.v1.TableService/ListTables"
+	// TableServiceGetTableProcedure is the fully-qualified name of the TableService's GetTable RPC.
+	TableServiceGetTableProcedure = "/wargapos.table.v1.TableService/GetTable"
 )
 
 // TableServiceClient is a client for the wargapos.table.v1.TableService service.
@@ -52,6 +54,7 @@ type TableServiceClient interface {
 	UpdateTable(context.Context, *connect.Request[v1.UpdateTableRequest]) (*connect.Response[v1.UpdateTableResponse], error)
 	DeleteTable(context.Context, *connect.Request[v1.DeleteTableRequest]) (*connect.Response[v1.DeleteTableResponse], error)
 	ListTables(context.Context, *connect.Request[v1.ListTablesRequest]) (*connect.Response[v1.ListTablesResponse], error)
+	GetTable(context.Context, *connect.Request[v1.GetTableRequest]) (*connect.Response[v1.GetTableResponse], error)
 }
 
 // NewTableServiceClient constructs a client for the wargapos.table.v1.TableService service. By
@@ -89,6 +92,12 @@ func NewTableServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(tableServiceMethods.ByName("ListTables")),
 			connect.WithClientOptions(opts...),
 		),
+		getTable: connect.NewClient[v1.GetTableRequest, v1.GetTableResponse](
+			httpClient,
+			baseURL+TableServiceGetTableProcedure,
+			connect.WithSchema(tableServiceMethods.ByName("GetTable")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -98,6 +107,7 @@ type tableServiceClient struct {
 	updateTable *connect.Client[v1.UpdateTableRequest, v1.UpdateTableResponse]
 	deleteTable *connect.Client[v1.DeleteTableRequest, v1.DeleteTableResponse]
 	listTables  *connect.Client[v1.ListTablesRequest, v1.ListTablesResponse]
+	getTable    *connect.Client[v1.GetTableRequest, v1.GetTableResponse]
 }
 
 // CreateTable calls wargapos.table.v1.TableService.CreateTable.
@@ -120,12 +130,18 @@ func (c *tableServiceClient) ListTables(ctx context.Context, req *connect.Reques
 	return c.listTables.CallUnary(ctx, req)
 }
 
+// GetTable calls wargapos.table.v1.TableService.GetTable.
+func (c *tableServiceClient) GetTable(ctx context.Context, req *connect.Request[v1.GetTableRequest]) (*connect.Response[v1.GetTableResponse], error) {
+	return c.getTable.CallUnary(ctx, req)
+}
+
 // TableServiceHandler is an implementation of the wargapos.table.v1.TableService service.
 type TableServiceHandler interface {
 	CreateTable(context.Context, *connect.Request[v1.CreateTableRequest]) (*connect.Response[v1.CreateTableResponse], error)
 	UpdateTable(context.Context, *connect.Request[v1.UpdateTableRequest]) (*connect.Response[v1.UpdateTableResponse], error)
 	DeleteTable(context.Context, *connect.Request[v1.DeleteTableRequest]) (*connect.Response[v1.DeleteTableResponse], error)
 	ListTables(context.Context, *connect.Request[v1.ListTablesRequest]) (*connect.Response[v1.ListTablesResponse], error)
+	GetTable(context.Context, *connect.Request[v1.GetTableRequest]) (*connect.Response[v1.GetTableResponse], error)
 }
 
 // NewTableServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -159,6 +175,12 @@ func NewTableServiceHandler(svc TableServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(tableServiceMethods.ByName("ListTables")),
 		connect.WithHandlerOptions(opts...),
 	)
+	tableServiceGetTableHandler := connect.NewUnaryHandler(
+		TableServiceGetTableProcedure,
+		svc.GetTable,
+		connect.WithSchema(tableServiceMethods.ByName("GetTable")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.table.v1.TableService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TableServiceCreateTableProcedure:
@@ -169,6 +191,8 @@ func NewTableServiceHandler(svc TableServiceHandler, opts ...connect.HandlerOpti
 			tableServiceDeleteTableHandler.ServeHTTP(w, r)
 		case TableServiceListTablesProcedure:
 			tableServiceListTablesHandler.ServeHTTP(w, r)
+		case TableServiceGetTableProcedure:
+			tableServiceGetTableHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -192,4 +216,8 @@ func (UnimplementedTableServiceHandler) DeleteTable(context.Context, *connect.Re
 
 func (UnimplementedTableServiceHandler) ListTables(context.Context, *connect.Request[v1.ListTablesRequest]) (*connect.Response[v1.ListTablesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.table.v1.TableService.ListTables is not implemented"))
+}
+
+func (UnimplementedTableServiceHandler) GetTable(context.Context, *connect.Request[v1.GetTableRequest]) (*connect.Response[v1.GetTableResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.table.v1.TableService.GetTable is not implemented"))
 }

@@ -1,5 +1,4 @@
-import { HStack, NativeSelect } from '@chakra-ui/react'
-import { Tag } from 'lucide-react'
+import { Select, createListCollection } from '@chakra-ui/react'
 
 interface Category {
   id: bigint
@@ -15,21 +14,41 @@ interface Props {
 }
 
 export function CategorySelect({ categories, value, onChange, placeholder = 'All categories', size = 'sm' }: Props) {
+  const collection = createListCollection({
+    items: [
+      { label: placeholder, value: '0' },
+      ...categories.map((c) => ({ label: c.name, value: String(c.id) })),
+    ],
+  })
+
   return (
-    <HStack gap={1.5} align="center">
-      <Tag size={14} color="gray" />
-      <NativeSelect.Root size={size} minW="160px">
-        <NativeSelect.Field
-          value={String(value)}
-          onChange={(e) => onChange(BigInt(e.target.value))}
-        >
-          <option value="0">{placeholder}</option>
-          {categories.map((c) => (
-            <option key={String(c.id)} value={String(c.id)}>{c.name}</option>
+    <Select.Root
+      collection={collection}
+      value={[String(value)]}
+      onValueChange={(e) => onChange(BigInt(e.value[0] ?? '0'))}
+      size={size}
+      minW="140px"
+      maxW="180px"
+    >
+      <Select.HiddenSelect />
+      <Select.Control>
+        <Select.Trigger>
+          <Select.ValueText />
+        </Select.Trigger>
+        <Select.IndicatorGroup>
+          <Select.Indicator />
+        </Select.IndicatorGroup>
+      </Select.Control>
+      <Select.Positioner>
+        <Select.Content>
+          {collection.items.map((item) => (
+            <Select.Item item={item} key={item.value}>
+              <Select.ItemText>{item.label}</Select.ItemText>
+              <Select.ItemIndicator />
+            </Select.Item>
           ))}
-        </NativeSelect.Field>
-        <NativeSelect.Indicator />
-      </NativeSelect.Root>
-    </HStack>
+        </Select.Content>
+      </Select.Positioner>
+    </Select.Root>
   )
 }

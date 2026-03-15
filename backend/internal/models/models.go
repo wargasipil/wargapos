@@ -67,6 +67,7 @@ type Order struct {
 type Table struct {
 	ID        int64  `gorm:"primaryKey;autoIncrement"`
 	Name      string `gorm:"not null"`
+	UUID      string `gorm:"column:uuid;not null;uniqueIndex"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

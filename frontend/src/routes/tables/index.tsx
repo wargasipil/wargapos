@@ -12,9 +12,9 @@ import { stripError } from '../../lib/errors'
 import { ConfirmDialog } from '../../components/shared/ConfirmDialog'
 import type { Table } from '../../gen/wargapos/table/v1/table_pb'
 
-function TableQR({ tableId }: { tableId: bigint }) {
+function TableQR({ uuid }: { uuid: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const url = `${window.location.origin}/guest_checkout?table=${tableId.toString()}`
+  const url = `${window.location.origin}/menu?table=${uuid}`
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -31,6 +31,7 @@ export function TablesPage() {
   const [editTarget, setEditTarget] = useState<Table | null>(null)
   const [name, setName] = useState('')
   const [deleteTarget, setDeleteTarget] = useState<Table | null>(null)
+  const [tableSearch, setTableSearch] = useState('')
 
   const { data, isLoading } = useQuery({
     queryKey: ['tables'],
@@ -76,7 +77,9 @@ export function TablesPage() {
     else createMutation.mutate()
   }
 
-  const tables = data?.tables ?? []
+  const tables = (data?.tables ?? []).filter((t) =>
+    !tableSearch || t.name.toLowerCase().includes(tableSearch.toLowerCase())
+  )
   const isSaving = createMutation.isPending || updateMutation.isPending
 
   return (
@@ -88,6 +91,15 @@ export function TablesPage() {
         </Button>
       </Flex>
 
+      <Input
+        placeholder="Search tables…"
+        size="sm"
+        value={tableSearch}
+        onChange={(e) => setTableSearch(e.target.value)}
+        mb={4}
+        maxW={{ md: '260px' }}
+      />
+
       {isLoading ? (
         <Flex justify="center" mt={12}><Spinner /></Flex>
       ) : (
@@ -97,13 +109,20 @@ export function TablesPage() {
               <Flex align="start" gap={4}>
                 <Box>
                   <HStack gap={1} mb={1} color="gray.400"><QrCode size={12} /><Text fontSize="xs">Scan to order</Text></HStack>
-                  <TableQR tableId={t.id} />
+                  <TableQR uuid={t.uuid} />
                 </Box>
                 <Box flex={1}>
                   <Text fontWeight="semibold" fontSize="lg" mb={1}>{t.name}</Text>
-                  <Text fontSize="xs" color="gray.400" mb={3} wordBreak="break-all">
-                    {window.location.origin}/guest_checkout?table={t.id.toString()}
-                  </Text>
+                  <Box mb={3}>
+                    <a
+                      href={`${window.location.origin}/menu?table=${t.uuid}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: '12px', color: '#3182ce', wordBreak: 'break-all' }}
+                    >
+                      {window.location.origin}/menu?table={t.uuid}
+                    </a>
+                  </Box>
                   <HStack gap={2}>
                     <Button size="xs" variant="outline" onClick={() => openEdit(t)}><Pencil size={12} /> Rename</Button>
                     <Button size="xs" variant="outline" colorPalette="red" onClick={() => setDeleteTarget(t)}><Trash2 size={12} /> Delete</Button>

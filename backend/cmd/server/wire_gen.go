@@ -25,12 +25,12 @@ func InitializeApp(cfg *config.Config) (*App, error) {
 	midtransConfig := config.ProvideMidtransConfig(cfg)
 	authConfig := config.ProvideAuthConfig(cfg)
 	authService := auth_service.NewAuthService(gormDB, authConfig)
-	userService := user_service.NewUserService(gormDB, authConfig)
+	userService := user_service.NewUserService(gormDB)
 	productService := product_service.NewProductService(gormDB)
 	transactionService := transaction_service.NewTransactionService(gormDB, midtransConfig)
 	tableService := table_service.NewTableService(gormDB)
 	settingsService := settings_service.NewSettingsService(gormDB, midtransConfig)
-	stockService := stock_service.NewStockService(gormDB, authConfig)
+	stockService := stock_service.NewStockService(gormDB)
 	app := NewApp(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService)
 	return app, nil
 }

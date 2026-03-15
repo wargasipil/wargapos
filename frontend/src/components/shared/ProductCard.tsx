@@ -16,11 +16,19 @@ interface Props {
 
 export function ProductCard({ p, categoryName, margin, togglePending, onToggle, onDelete }: Props) {
   return (
-    <Box bg="white" borderRadius="lg" overflow="hidden" boxShadow="sm">
-      <Link to="/products/$id" params={{ id: String(p.id) }}>
+    <Box
+      bg="white"
+      borderRadius="lg"
+      overflow="hidden"
+      boxShadow="sm"
+      display="flex"
+      flexDir="column"
+    >
+      <Link to="/products/$id" params={{ id: String(p.id) }} style={{ flexShrink: 0 }}>
         <ProductImage src={p.imageUrl} />
       </Link>
-      <Box p={3}>
+
+      <Box p={3} flex="1">
         <Link to="/products/$id" params={{ id: String(p.id) }}>
           <Text fontWeight="semibold" fontSize="sm" lineClamp={2} mb={0.5}>{p.name}</Text>
         </Link>
@@ -28,11 +36,22 @@ export function ProductCard({ p, categoryName, margin, togglePending, onToggle, 
         {categoryName && <Text fontSize="xs" color="teal.600" mb={1}>{categoryName}</Text>}
         <Text fontWeight="bold" color="blue.600" fontSize="sm">{formatPrice(p.priceCents)}</Text>
         {margin && <Text fontSize="xs" color="green.600">Margin {margin}</Text>}
-        <Text fontSize="xs" color={p.stockQty > 0 ? 'gray.500' : 'red.500'} mt={0.5}>
-          {p.stockQty > 0 ? `Stock: ${p.stockQty}` : 'Out of stock'}
+        <Text
+          fontSize="xs"
+          mt={0.5}
+          color={p.stockQty <= 0 ? 'red.500' : p.stockQty <= 5 ? 'orange.500' : 'gray.500'}
+        >
+          {p.stockQty <= 0 ? 'Out of stock' : `Stock: ${p.stockQty}`}
         </Text>
       </Box>
-      <Flex px={3} pb={3} justify="space-between" align="center">
+
+      <Flex
+        px={3} pb={3} pt={1}
+        justify="space-between"
+        align="center"
+        borderTopWidth={1}
+        borderColor="gray.100"
+      >
         <Button
           size="2xs"
           variant="outline"

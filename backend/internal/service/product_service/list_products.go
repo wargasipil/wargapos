@@ -2,6 +2,7 @@ package product_service
 
 import (
 	"context"
+	"strings"
 
 	"connectrpc.com/connect"
 
@@ -29,8 +30,14 @@ func (s *ProductService) ListProducts(
 	if req.Msg.ActiveOnly {
 		db = db.Where("is_active = true")
 	}
+	if req.Msg.InactiveOnly {
+		db = db.Where("is_active = false")
+	}
 	if req.Msg.CategoryId != 0 {
 		db = db.Where("category_id = ?", req.Msg.CategoryId)
+	}
+	if req.Msg.Search != "" {
+		db = db.Where("LOWER(name) LIKE ?", "%"+strings.ToLower(req.Msg.Search)+"%")
 	}
 
 	var total int64

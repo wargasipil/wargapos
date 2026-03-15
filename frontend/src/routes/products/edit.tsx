@@ -91,7 +91,7 @@ export function ProductEditPage() {
       qc.invalidateQueries({ queryKey: ['products'] })
       qc.invalidateQueries({ queryKey: ['product', id] })
       toaster.create({ title: 'Product saved', type: 'success', duration: 3000 })
-      navigate({ to: '/products' })
+      navigate({ to: '/products/$id', params: { id } })
     },
     onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
@@ -109,7 +109,7 @@ export function ProductEditPage() {
     <Box p={{ base: 3, md: 6 }} maxW="560px">
       <HStack gap={2} mb={6}>
         <Button asChild variant="ghost" size="sm">
-          <Link to="/products"><ArrowLeft size={16} /> Back</Link>
+          <Link to="/products/$id" params={{ id }}><ArrowLeft size={16} /> Back</Link>
         </Button>
         <Heading size="md">Edit Product</Heading>
       </HStack>
@@ -202,7 +202,7 @@ export function ProductEditPage() {
 
         <HStack justify="flex-end" mt={2}>
           <Button asChild variant="ghost">
-            <Link to="/products">Cancel</Link>
+            <Link to="/products/$id" params={{ id }}>Cancel</Link>
           </Button>
           <Button type="submit" colorPalette="blue" loading={updateMutation.isPending}>
             Save

@@ -49,7 +49,11 @@
       "Bash(npx @chakra-ui/cli snippet add toaster)",
       "Bash(wc -l /d/research/wargapos/frontend/src/routes/*.tsx /d/research/wargapos/frontend/src/routes/*/*.tsx)",
       "Bash(find d:/research/wargapos/frontend/node_modules/@chakra-ui -name *tab* -type f)",
-      "Bash(node -e \"const l = require\\(''lucide-react''\\); console.log\\(Object.keys\\(l\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''image''\\)\\)\\)\")"
+      "Bash(node -e \"const l = require\\(''lucide-react''\\); console.log\\(Object.keys\\(l\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''image''\\)\\)\\)\")",
+      "Bash(find /d/research/wargapos/backend/internal -type f -name *auth* -o -name *middleware* -o -name *interceptor*)",
+      "Bash(find /d/research/wargapos/backend/migrations -type f -name *.sql)",
+      "Bash(make -C d:/research/wargapos proto-gen)",
+      "Bash(find /d/research/wargapos/frontend/node_modules/@chakra-ui -name createListCollection* -o -name *listCollection*)"
     ]
   },
   "enableAllProjectMcpServers": true,

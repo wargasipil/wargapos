@@ -25,6 +25,7 @@ type Table struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Uuid          string                 `protobuf:"bytes,3,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,6 +70,13 @@ func (x *Table) GetId() int64 {
 func (x *Table) GetName() string {
 	if x != nil {
 		return x.Name
+	}
+	return ""
+}
+
+func (x *Table) GetUuid() string {
+	if x != nil {
+		return x.Uuid
 	}
 	return ""
 }
@@ -417,14 +425,111 @@ func (x *ListTablesResponse) GetTables() []*Table {
 	return nil
 }
 
+type GetTableRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Uuid          string                 `protobuf:"bytes,2,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTableRequest) Reset() {
+	*x = GetTableRequest{}
+	mi := &file_wargapos_table_v1_table_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTableRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTableRequest) ProtoMessage() {}
+
+func (x *GetTableRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_table_v1_table_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTableRequest.ProtoReflect.Descriptor instead.
+func (*GetTableRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_table_v1_table_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetTableRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *GetTableRequest) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+type GetTableResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Table         *Table                 `protobuf:"bytes,1,opt,name=table,proto3" json:"table,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTableResponse) Reset() {
+	*x = GetTableResponse{}
+	mi := &file_wargapos_table_v1_table_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTableResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTableResponse) ProtoMessage() {}
+
+func (x *GetTableResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_table_v1_table_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTableResponse.ProtoReflect.Descriptor instead.
+func (*GetTableResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_table_v1_table_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetTableResponse) GetTable() *Table {
+	if x != nil {
+		return x.Table
+	}
+	return nil
+}
+
 var File_wargapos_table_v1_table_proto protoreflect.FileDescriptor
 
 const file_wargapos_table_v1_table_proto_rawDesc = "" +
 	"\n" +
-	"\x1dwargapos/table/v1/table.proto\x12\x11wargapos.table.v1\"+\n" +
+	"\x1dwargapos/table/v1/table.proto\x12\x11wargapos.table.v1\"?\n" +
 	"\x05Table\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"(\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
+	"\x04uuid\x18\x03 \x01(\tR\x04uuid\"(\n" +
 	"\x12CreateTableRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"E\n" +
 	"\x13CreateTableResponse\x12.\n" +
@@ -439,13 +544,19 @@ const file_wargapos_table_v1_table_proto_rawDesc = "" +
 	"\x13DeleteTableResponse\"\x13\n" +
 	"\x11ListTablesRequest\"F\n" +
 	"\x12ListTablesResponse\x120\n" +
-	"\x06tables\x18\x01 \x03(\v2\x18.wargapos.table.v1.TableR\x06tables2\x83\x03\n" +
+	"\x06tables\x18\x01 \x03(\v2\x18.wargapos.table.v1.TableR\x06tables\"5\n" +
+	"\x0fGetTableRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04uuid\x18\x02 \x01(\tR\x04uuid\"B\n" +
+	"\x10GetTableResponse\x12.\n" +
+	"\x05table\x18\x01 \x01(\v2\x18.wargapos.table.v1.TableR\x05table2\xd8\x03\n" +
 	"\fTableService\x12\\\n" +
 	"\vCreateTable\x12%.wargapos.table.v1.CreateTableRequest\x1a&.wargapos.table.v1.CreateTableResponse\x12\\\n" +
 	"\vUpdateTable\x12%.wargapos.table.v1.UpdateTableRequest\x1a&.wargapos.table.v1.UpdateTableResponse\x12\\\n" +
 	"\vDeleteTable\x12%.wargapos.table.v1.DeleteTableRequest\x1a&.wargapos.table.v1.DeleteTableResponse\x12Y\n" +
 	"\n" +
-	"ListTables\x12$.wargapos.table.v1.ListTablesRequest\x1a%.wargapos.table.v1.ListTablesResponseB0Z.wargapos/backend/gen/wargapos/table/v1;tablev1b\x06proto3"
+	"ListTables\x12$.wargapos.table.v1.ListTablesRequest\x1a%.wargapos.table.v1.ListTablesResponse\x12S\n" +
+	"\bGetTable\x12\".wargapos.table.v1.GetTableRequest\x1a#.wargapos.table.v1.GetTableResponseB0Z.wargapos/backend/gen/wargapos/table/v1;tablev1b\x06proto3"
 
 var (
 	file_wargapos_table_v1_table_proto_rawDescOnce sync.Once
@@ -459,7 +570,7 @@ func file_wargapos_table_v1_table_proto_rawDescGZIP() []byte {
 	return file_wargapos_table_v1_table_proto_rawDescData
 }
 
-var file_wargapos_table_v1_table_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_wargapos_table_v1_table_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_wargapos_table_v1_table_proto_goTypes = []any{
 	(*Table)(nil),               // 0: wargapos.table.v1.Table
 	(*CreateTableRequest)(nil),  // 1: wargapos.table.v1.CreateTableRequest
@@ -470,24 +581,29 @@ var file_wargapos_table_v1_table_proto_goTypes = []any{
 	(*DeleteTableResponse)(nil), // 6: wargapos.table.v1.DeleteTableResponse
 	(*ListTablesRequest)(nil),   // 7: wargapos.table.v1.ListTablesRequest
 	(*ListTablesResponse)(nil),  // 8: wargapos.table.v1.ListTablesResponse
+	(*GetTableRequest)(nil),     // 9: wargapos.table.v1.GetTableRequest
+	(*GetTableResponse)(nil),    // 10: wargapos.table.v1.GetTableResponse
 }
 var file_wargapos_table_v1_table_proto_depIdxs = []int32{
-	0, // 0: wargapos.table.v1.CreateTableResponse.table:type_name -> wargapos.table.v1.Table
-	0, // 1: wargapos.table.v1.UpdateTableResponse.table:type_name -> wargapos.table.v1.Table
-	0, // 2: wargapos.table.v1.ListTablesResponse.tables:type_name -> wargapos.table.v1.Table
-	1, // 3: wargapos.table.v1.TableService.CreateTable:input_type -> wargapos.table.v1.CreateTableRequest
-	3, // 4: wargapos.table.v1.TableService.UpdateTable:input_type -> wargapos.table.v1.UpdateTableRequest
-	5, // 5: wargapos.table.v1.TableService.DeleteTable:input_type -> wargapos.table.v1.DeleteTableRequest
-	7, // 6: wargapos.table.v1.TableService.ListTables:input_type -> wargapos.table.v1.ListTablesRequest
-	2, // 7: wargapos.table.v1.TableService.CreateTable:output_type -> wargapos.table.v1.CreateTableResponse
-	4, // 8: wargapos.table.v1.TableService.UpdateTable:output_type -> wargapos.table.v1.UpdateTableResponse
-	6, // 9: wargapos.table.v1.TableService.DeleteTable:output_type -> wargapos.table.v1.DeleteTableResponse
-	8, // 10: wargapos.table.v1.TableService.ListTables:output_type -> wargapos.table.v1.ListTablesResponse
-	7, // [7:11] is the sub-list for method output_type
-	3, // [3:7] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0,  // 0: wargapos.table.v1.CreateTableResponse.table:type_name -> wargapos.table.v1.Table
+	0,  // 1: wargapos.table.v1.UpdateTableResponse.table:type_name -> wargapos.table.v1.Table
+	0,  // 2: wargapos.table.v1.ListTablesResponse.tables:type_name -> wargapos.table.v1.Table
+	0,  // 3: wargapos.table.v1.GetTableResponse.table:type_name -> wargapos.table.v1.Table
+	1,  // 4: wargapos.table.v1.TableService.CreateTable:input_type -> wargapos.table.v1.CreateTableRequest
+	3,  // 5: wargapos.table.v1.TableService.UpdateTable:input_type -> wargapos.table.v1.UpdateTableRequest
+	5,  // 6: wargapos.table.v1.TableService.DeleteTable:input_type -> wargapos.table.v1.DeleteTableRequest
+	7,  // 7: wargapos.table.v1.TableService.ListTables:input_type -> wargapos.table.v1.ListTablesRequest
+	9,  // 8: wargapos.table.v1.TableService.GetTable:input_type -> wargapos.table.v1.GetTableRequest
+	2,  // 9: wargapos.table.v1.TableService.CreateTable:output_type -> wargapos.table.v1.CreateTableResponse
+	4,  // 10: wargapos.table.v1.TableService.UpdateTable:output_type -> wargapos.table.v1.UpdateTableResponse
+	6,  // 11: wargapos.table.v1.TableService.DeleteTable:output_type -> wargapos.table.v1.DeleteTableResponse
+	8,  // 12: wargapos.table.v1.TableService.ListTables:output_type -> wargapos.table.v1.ListTablesResponse
+	10, // 13: wargapos.table.v1.TableService.GetTable:output_type -> wargapos.table.v1.GetTableResponse
+	9,  // [9:14] is the sub-list for method output_type
+	4,  // [4:9] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_table_v1_table_proto_init() }
@@ -501,7 +617,7 @@ func file_wargapos_table_v1_table_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_table_v1_table_proto_rawDesc), len(file_wargapos_table_v1_table_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

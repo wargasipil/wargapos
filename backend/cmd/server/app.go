@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"connectrpc.com/connect"
 	"gorm.io/gorm"
 
 	"wargapos/backend/gen/wargapos/auth/v1/authv1connect"
@@ -12,6 +13,7 @@ import (
 	"wargapos/backend/gen/wargapos/table/v1/tablev1connect"
 	"wargapos/backend/gen/wargapos/transaction/v1/transactionv1connect"
 	"wargapos/backend/gen/wargapos/user/v1/userv1connect"
+	"wargapos/backend/internal/auth"
 	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/product_service"
@@ -41,14 +43,16 @@ func NewApp(
 	settingsSvc *settings_service.SettingsService,
 	stockSvc *stock_service.StockService,
 ) *App {
+	interceptor := connect.WithInterceptors(auth.NewInterceptor([]byte(authCfg.JWTSecret)))
+
 	mux := http.NewServeMux()
-	mux.Handle(authv1connect.NewAuthServiceHandler(authSvc))
-	mux.Handle(userv1connect.NewUserServiceHandler(userSvc))
-	mux.Handle(productv1connect.NewProductServiceHandler(productSvc))
-	mux.Handle(transactionv1connect.NewTransactionServiceHandler(txSvc))
-	mux.Handle(tablev1connect.NewTableServiceHandler(tableSvc))
-	mux.Handle(settingsv1connect.NewSettingsServiceHandler(settingsSvc))
-	mux.Handle(stockv1connect.NewStockServiceHandler(stockSvc))
+	mux.Handle(authv1connect.NewAuthServiceHandler(authSvc, interceptor))
+	mux.Handle(userv1connect.NewUserServiceHandler(userSvc, interceptor))
+	mux.Handle(productv1connect.NewProductServiceHandler(productSvc, interceptor))
+	mux.Handle(transactionv1connect.NewTransactionServiceHandler(txSvc, interceptor))
+	mux.Handle(tablev1connect.NewTableServiceHandler(tableSvc, interceptor))
+	mux.Handle(settingsv1connect.NewSettingsServiceHandler(settingsSvc, interceptor))
+	mux.Handle(stockv1connect.NewStockServiceHandler(stockSvc, interceptor))
 	mux.HandleFunc("POST /midtrans/webhook", midtransWebhookHandler(db, midtransCfg))
 
 	uploadDir := cfg.Server.UploadDir

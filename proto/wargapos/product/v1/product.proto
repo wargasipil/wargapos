@@ -38,10 +38,12 @@ message GetProductRequest  { int64 id = 1; }
 message GetProductResponse { Product product = 1; }
 
 message ListProductsRequest {
-  int32 page        = 1;
-  int32 page_size   = 2;
-  int64 category_id = 3;
-  bool  active_only = 4; // when true, only return is_active=true products
+  int32  page          = 1;
+  int32  page_size     = 2;
+  int64  category_id   = 3;
+  bool   active_only   = 4; // when true, only return is_active=true products
+  bool   inactive_only = 5; // when true, only return is_active=false products
+  string search        = 6; // filter by name (case-insensitive, partial match)
 }
 
 message ListProductsResponse {
@@ -69,6 +71,12 @@ message DeleteProductResponse {}
 message CreateCategoryRequest  { string name = 1; }
 message CreateCategoryResponse { Category category = 1; }
 
+message UpdateCategoryRequest  { int64 id = 1; string name = 2; }
+message UpdateCategoryResponse { Category category = 1; }
+
+message DeleteCategoryRequest  { int64 id = 1; }
+message DeleteCategoryResponse {}
+
 message ListCategoriesRequest  {}
 message ListCategoriesResponse { repeated Category categories = 1; }
 
@@ -79,5 +87,7 @@ service ProductService {
   rpc UpdateProduct(UpdateProductRequest)   returns (UpdateProductResponse);
   rpc DeleteProduct(DeleteProductRequest)   returns (DeleteProductResponse);
   rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse);
+  rpc UpdateCategory(UpdateCategoryRequest) returns (UpdateCategoryResponse);
+  rpc DeleteCategory(DeleteCategoryRequest) returns (DeleteCategoryResponse);
   rpc ListCategories(ListCategoriesRequest) returns (ListCategoriesResponse);
 }

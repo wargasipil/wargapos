@@ -1,10 +1,10 @@
 import { Outlet, Link, useNavigate } from '@tanstack/react-router'
 import { Box, Button, Flex, IconButton, Text, VStack, HStack } from '@chakra-ui/react'
-import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, Tag, LayoutGrid, Settings } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
 import { Toaster } from '../components/ui/toaster'
 
-const navItems = [
+const baseNavItems = [
   { label: 'Dashboard', to: '/', Icon: LayoutDashboard },
   { label: 'POS', to: '/pos', Icon: ShoppingCart },
   { label: 'Products', to: '/products', Icon: Package },
@@ -12,18 +12,20 @@ const navItems = [
   { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
-const sidebarItems = [
+const baseSidebarItems = [
   { label: 'Dashboard', to: '/', Icon: LayoutDashboard, exact: true },
   { label: 'POS / Cashier', to: '/pos', Icon: ShoppingCart },
   { label: 'Orders', to: '/orders', Icon: Receipt },
   { label: 'Products', to: '/products', Icon: Package, exact: true },
-  { label: 'Categories', to: '/products/categories', Icon: Tag },
   { label: 'Tables', to: '/tables', Icon: LayoutGrid },
   { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
 export function ProtectedLayout() {
   const { role, logout } = useAuthStore()
+  const isAdmin = role === 'admin'
+  const navItems = isAdmin ? [...baseNavItems, { label: 'Team', to: '/users', Icon: Users }] : baseNavItems
+  const sidebarItems = isAdmin ? [...baseSidebarItems, { label: 'Team', to: '/users', Icon: Users }] : baseSidebarItems
   const navigate = useNavigate()
 
   function handleLogout() {

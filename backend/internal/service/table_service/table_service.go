@@ -21,5 +21,5 @@ func NewTableService(db *gorm.DB) *TableService {
 var _ tablev1connect.TableServiceHandler = (*TableService)(nil)
 
 func toProtoTable(t *models.Table) *tablev1.Table {
-	return &tablev1.Table{Id: t.ID, Name: t.Name}
+	return &tablev1.Table{Id: t.ID, Name: t.Name, Uuid: t.UUID}
 }

@@ -3,22 +3,15 @@ package user_service
 import (
 	"context"
 	"errors"
-	"strings"
 
 	"connectrpc.com/connect"
-	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 
 	userv1 "wargapos/backend/gen/wargapos/user/v1"
+	"wargapos/backend/internal/auth"
 	"wargapos/backend/internal/models"
 )
-
-type jwtClaims struct {
-	UserID int64  `json:"user_id"`
-	Role   string `json:"role"`
-	jwt.RegisteredClaims
-}
 
 func (s *UserService) ChangePassword(
 	ctx context.Context,
@@ -28,22 +21,9 @@ func (s *UserService) ChangePassword(
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("current_password and new_password are required"))
 	}
 
-	// Extract user ID from Bearer token in Authorization header.
-	authHeader := req.Header().Get("Authorization")
-	tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
-	if tokenStr == "" {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("missing authorization token"))
-	}
-
-	claims := &jwtClaims{}
-	_, err := jwt.ParseWithClaims(tokenStr, claims, func(t *jwt.Token) (any, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, errors.New("unexpected signing method")
-		}
-		return s.jwtSecret, nil
-	})
-	if err != nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("invalid token"))
+	claims := auth.ClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("missing authorization"))
 	}
 
 	// Load user from DB.

@@ -11,7 +11,8 @@ interface Props {
   onClick: () => void
 }
 
-export function MenuProductCard({ name, imageUrl, priceCents, categoryName, qtyInCart, onClick }: Props) {
+export function POSProductCard({ name, imageUrl, priceCents, categoryName, qtyInCart, onClick }: Props) {
+  const inCart = (qtyInCart ?? 0) > 0
   return (
     <Box
       bg="white"
@@ -23,8 +24,12 @@ export function MenuProductCard({ name, imageUrl, priceCents, categoryName, qtyI
       _active={{ opacity: 0.85 }}
       onClick={onClick}
       position="relative"
+      display="flex"
+      flexDir="column"
+      outline={inCart ? '2px solid' : 'none'}
+      outlineColor="blue.400"
     >
-      {(qtyInCart ?? 0) > 0 && (
+      {inCart && (
         <Box
           position="absolute"
           top={2}
@@ -32,8 +37,9 @@ export function MenuProductCard({ name, imageUrl, priceCents, categoryName, qtyI
           bg="blue.500"
           color="white"
           borderRadius="full"
-          w={5}
+          minW={5}
           h={5}
+          px={1}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -45,10 +51,10 @@ export function MenuProductCard({ name, imageUrl, priceCents, categoryName, qtyI
         </Box>
       )}
       <ProductImage src={imageUrl} />
-      <Box p={3}>
+      <Box p={3} flex="1" display="flex" flexDir="column">
         <Text fontWeight="semibold" fontSize="sm" mb={0.5} lineClamp={2}>{name}</Text>
         {categoryName && <Text fontSize="xs" color="gray.400" mb={1}>{categoryName}</Text>}
-        <Text fontWeight="bold" color="blue.600" fontSize="sm">{formatPrice(priceCents)}</Text>
+        <Text fontWeight="bold" color="blue.600" fontSize="sm" mt="auto">{formatPrice(priceCents)}</Text>
       </Box>
     </Box>
   )

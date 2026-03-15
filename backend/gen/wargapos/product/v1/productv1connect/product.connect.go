@@ -51,6 +51,12 @@ const (
 	// ProductServiceCreateCategoryProcedure is the fully-qualified name of the ProductService's
 	// CreateCategory RPC.
 	ProductServiceCreateCategoryProcedure = "/wargapos.product.v1.ProductService/CreateCategory"
+	// ProductServiceUpdateCategoryProcedure is the fully-qualified name of the ProductService's
+	// UpdateCategory RPC.
+	ProductServiceUpdateCategoryProcedure = "/wargapos.product.v1.ProductService/UpdateCategory"
+	// ProductServiceDeleteCategoryProcedure is the fully-qualified name of the ProductService's
+	// DeleteCategory RPC.
+	ProductServiceDeleteCategoryProcedure = "/wargapos.product.v1.ProductService/DeleteCategory"
 	// ProductServiceListCategoriesProcedure is the fully-qualified name of the ProductService's
 	// ListCategories RPC.
 	ProductServiceListCategoriesProcedure = "/wargapos.product.v1.ProductService/ListCategories"
@@ -64,6 +70,8 @@ type ProductServiceClient interface {
 	UpdateProduct(context.Context, *connect.Request[v1.UpdateProductRequest]) (*connect.Response[v1.UpdateProductResponse], error)
 	DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error)
 	CreateCategory(context.Context, *connect.Request[v1.CreateCategoryRequest]) (*connect.Response[v1.CreateCategoryResponse], error)
+	UpdateCategory(context.Context, *connect.Request[v1.UpdateCategoryRequest]) (*connect.Response[v1.UpdateCategoryResponse], error)
+	DeleteCategory(context.Context, *connect.Request[v1.DeleteCategoryRequest]) (*connect.Response[v1.DeleteCategoryResponse], error)
 	ListCategories(context.Context, *connect.Request[v1.ListCategoriesRequest]) (*connect.Response[v1.ListCategoriesResponse], error)
 }
 
@@ -114,6 +122,18 @@ func NewProductServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(productServiceMethods.ByName("CreateCategory")),
 			connect.WithClientOptions(opts...),
 		),
+		updateCategory: connect.NewClient[v1.UpdateCategoryRequest, v1.UpdateCategoryResponse](
+			httpClient,
+			baseURL+ProductServiceUpdateCategoryProcedure,
+			connect.WithSchema(productServiceMethods.ByName("UpdateCategory")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteCategory: connect.NewClient[v1.DeleteCategoryRequest, v1.DeleteCategoryResponse](
+			httpClient,
+			baseURL+ProductServiceDeleteCategoryProcedure,
+			connect.WithSchema(productServiceMethods.ByName("DeleteCategory")),
+			connect.WithClientOptions(opts...),
+		),
 		listCategories: connect.NewClient[v1.ListCategoriesRequest, v1.ListCategoriesResponse](
 			httpClient,
 			baseURL+ProductServiceListCategoriesProcedure,
@@ -131,6 +151,8 @@ type productServiceClient struct {
 	updateProduct  *connect.Client[v1.UpdateProductRequest, v1.UpdateProductResponse]
 	deleteProduct  *connect.Client[v1.DeleteProductRequest, v1.DeleteProductResponse]
 	createCategory *connect.Client[v1.CreateCategoryRequest, v1.CreateCategoryResponse]
+	updateCategory *connect.Client[v1.UpdateCategoryRequest, v1.UpdateCategoryResponse]
+	deleteCategory *connect.Client[v1.DeleteCategoryRequest, v1.DeleteCategoryResponse]
 	listCategories *connect.Client[v1.ListCategoriesRequest, v1.ListCategoriesResponse]
 }
 
@@ -164,6 +186,16 @@ func (c *productServiceClient) CreateCategory(ctx context.Context, req *connect.
 	return c.createCategory.CallUnary(ctx, req)
 }
 
+// UpdateCategory calls wargapos.product.v1.ProductService.UpdateCategory.
+func (c *productServiceClient) UpdateCategory(ctx context.Context, req *connect.Request[v1.UpdateCategoryRequest]) (*connect.Response[v1.UpdateCategoryResponse], error) {
+	return c.updateCategory.CallUnary(ctx, req)
+}
+
+// DeleteCategory calls wargapos.product.v1.ProductService.DeleteCategory.
+func (c *productServiceClient) DeleteCategory(ctx context.Context, req *connect.Request[v1.DeleteCategoryRequest]) (*connect.Response[v1.DeleteCategoryResponse], error) {
+	return c.deleteCategory.CallUnary(ctx, req)
+}
+
 // ListCategories calls wargapos.product.v1.ProductService.ListCategories.
 func (c *productServiceClient) ListCategories(ctx context.Context, req *connect.Request[v1.ListCategoriesRequest]) (*connect.Response[v1.ListCategoriesResponse], error) {
 	return c.listCategories.CallUnary(ctx, req)
@@ -177,6 +209,8 @@ type ProductServiceHandler interface {
 	UpdateProduct(context.Context, *connect.Request[v1.UpdateProductRequest]) (*connect.Response[v1.UpdateProductResponse], error)
 	DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error)
 	CreateCategory(context.Context, *connect.Request[v1.CreateCategoryRequest]) (*connect.Response[v1.CreateCategoryResponse], error)
+	UpdateCategory(context.Context, *connect.Request[v1.UpdateCategoryRequest]) (*connect.Response[v1.UpdateCategoryResponse], error)
+	DeleteCategory(context.Context, *connect.Request[v1.DeleteCategoryRequest]) (*connect.Response[v1.DeleteCategoryResponse], error)
 	ListCategories(context.Context, *connect.Request[v1.ListCategoriesRequest]) (*connect.Response[v1.ListCategoriesResponse], error)
 }
 
@@ -223,6 +257,18 @@ func NewProductServiceHandler(svc ProductServiceHandler, opts ...connect.Handler
 		connect.WithSchema(productServiceMethods.ByName("CreateCategory")),
 		connect.WithHandlerOptions(opts...),
 	)
+	productServiceUpdateCategoryHandler := connect.NewUnaryHandler(
+		ProductServiceUpdateCategoryProcedure,
+		svc.UpdateCategory,
+		connect.WithSchema(productServiceMethods.ByName("UpdateCategory")),
+		connect.WithHandlerOptions(opts...),
+	)
+	productServiceDeleteCategoryHandler := connect.NewUnaryHandler(
+		ProductServiceDeleteCategoryProcedure,
+		svc.DeleteCategory,
+		connect.WithSchema(productServiceMethods.ByName("DeleteCategory")),
+		connect.WithHandlerOptions(opts...),
+	)
 	productServiceListCategoriesHandler := connect.NewUnaryHandler(
 		ProductServiceListCategoriesProcedure,
 		svc.ListCategories,
@@ -243,6 +289,10 @@ func NewProductServiceHandler(svc ProductServiceHandler, opts ...connect.Handler
 			productServiceDeleteProductHandler.ServeHTTP(w, r)
 		case ProductServiceCreateCategoryProcedure:
 			productServiceCreateCategoryHandler.ServeHTTP(w, r)
+		case ProductServiceUpdateCategoryProcedure:
+			productServiceUpdateCategoryHandler.ServeHTTP(w, r)
+		case ProductServiceDeleteCategoryProcedure:
+			productServiceDeleteCategoryHandler.ServeHTTP(w, r)
 		case ProductServiceListCategoriesProcedure:
 			productServiceListCategoriesHandler.ServeHTTP(w, r)
 		default:
@@ -276,6 +326,14 @@ func (UnimplementedProductServiceHandler) DeleteProduct(context.Context, *connec
 
 func (UnimplementedProductServiceHandler) CreateCategory(context.Context, *connect.Request[v1.CreateCategoryRequest]) (*connect.Response[v1.CreateCategoryResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.product.v1.ProductService.CreateCategory is not implemented"))
+}
+
+func (UnimplementedProductServiceHandler) UpdateCategory(context.Context, *connect.Request[v1.UpdateCategoryRequest]) (*connect.Response[v1.UpdateCategoryResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.product.v1.ProductService.UpdateCategory is not implemented"))
+}
+
+func (UnimplementedProductServiceHandler) DeleteCategory(context.Context, *connect.Request[v1.DeleteCategoryRequest]) (*connect.Response[v1.DeleteCategoryResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.product.v1.ProductService.DeleteCategory is not implemented"))
 }
 
 func (UnimplementedProductServiceHandler) ListCategories(context.Context, *connect.Request[v1.ListCategoriesRequest]) (*connect.Response[v1.ListCategoriesResponse], error) {

@@ -418,7 +418,9 @@ type ListProductsRequest struct {
 	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	CategoryId    int64                  `protobuf:"varint,3,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
-	ActiveOnly    bool                   `protobuf:"varint,4,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"` // when true, only return is_active=true products
+	ActiveOnly    bool                   `protobuf:"varint,4,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`       // when true, only return is_active=true products
+	InactiveOnly  bool                   `protobuf:"varint,5,opt,name=inactive_only,json=inactiveOnly,proto3" json:"inactive_only,omitempty"` // when true, only return is_active=false products
+	Search        string                 `protobuf:"bytes,6,opt,name=search,proto3" json:"search,omitempty"`                                  // filter by name (case-insensitive, partial match)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -479,6 +481,20 @@ func (x *ListProductsRequest) GetActiveOnly() bool {
 		return x.ActiveOnly
 	}
 	return false
+}
+
+func (x *ListProductsRequest) GetInactiveOnly() bool {
+	if x != nil {
+		return x.InactiveOnly
+	}
+	return false
+}
+
+func (x *ListProductsRequest) GetSearch() string {
+	if x != nil {
+		return x.Search
+	}
+	return ""
 }
 
 type ListProductsResponse struct {
@@ -853,6 +869,182 @@ func (x *CreateCategoryResponse) GetCategory() *Category {
 	return nil
 }
 
+type UpdateCategoryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateCategoryRequest) Reset() {
+	*x = UpdateCategoryRequest{}
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateCategoryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateCategoryRequest) ProtoMessage() {}
+
+func (x *UpdateCategoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateCategoryRequest.ProtoReflect.Descriptor instead.
+func (*UpdateCategoryRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *UpdateCategoryRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UpdateCategoryRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type UpdateCategoryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Category      *Category              `protobuf:"bytes,1,opt,name=category,proto3" json:"category,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateCategoryResponse) Reset() {
+	*x = UpdateCategoryResponse{}
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateCategoryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateCategoryResponse) ProtoMessage() {}
+
+func (x *UpdateCategoryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateCategoryResponse.ProtoReflect.Descriptor instead.
+func (*UpdateCategoryResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UpdateCategoryResponse) GetCategory() *Category {
+	if x != nil {
+		return x.Category
+	}
+	return nil
+}
+
+type DeleteCategoryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteCategoryRequest) Reset() {
+	*x = DeleteCategoryRequest{}
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteCategoryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteCategoryRequest) ProtoMessage() {}
+
+func (x *DeleteCategoryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteCategoryRequest.ProtoReflect.Descriptor instead.
+func (*DeleteCategoryRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *DeleteCategoryRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type DeleteCategoryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteCategoryResponse) Reset() {
+	*x = DeleteCategoryResponse{}
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteCategoryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteCategoryResponse) ProtoMessage() {}
+
+func (x *DeleteCategoryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteCategoryResponse.ProtoReflect.Descriptor instead.
+func (*DeleteCategoryResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{17}
+}
+
 type ListCategoriesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -861,7 +1053,7 @@ type ListCategoriesRequest struct {
 
 func (x *ListCategoriesRequest) Reset() {
 	*x = ListCategoriesRequest{}
-	mi := &file_wargapos_product_v1_product_proto_msgTypes[14]
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -873,7 +1065,7 @@ func (x *ListCategoriesRequest) String() string {
 func (*ListCategoriesRequest) ProtoMessage() {}
 
 func (x *ListCategoriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_product_v1_product_proto_msgTypes[14]
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -886,7 +1078,7 @@ func (x *ListCategoriesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCategoriesRequest.ProtoReflect.Descriptor instead.
 func (*ListCategoriesRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{14}
+	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{18}
 }
 
 type ListCategoriesResponse struct {
@@ -898,7 +1090,7 @@ type ListCategoriesResponse struct {
 
 func (x *ListCategoriesResponse) Reset() {
 	*x = ListCategoriesResponse{}
-	mi := &file_wargapos_product_v1_product_proto_msgTypes[15]
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -910,7 +1102,7 @@ func (x *ListCategoriesResponse) String() string {
 func (*ListCategoriesResponse) ProtoMessage() {}
 
 func (x *ListCategoriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_product_v1_product_proto_msgTypes[15]
+	mi := &file_wargapos_product_v1_product_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -923,7 +1115,7 @@ func (x *ListCategoriesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCategoriesResponse.ProtoReflect.Descriptor instead.
 func (*ListCategoriesResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{15}
+	return file_wargapos_product_v1_product_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ListCategoriesResponse) GetCategories() []*Category {
@@ -972,14 +1164,16 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\x11GetProductRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"L\n" +
 	"\x12GetProductResponse\x126\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"\x88\x01\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"\xc5\x01\n" +
 	"\x13ListProductsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1f\n" +
 	"\vcategory_id\x18\x03 \x01(\x03R\n" +
 	"categoryId\x12\x1f\n" +
 	"\vactive_only\x18\x04 \x01(\bR\n" +
-	"activeOnly\"f\n" +
+	"activeOnly\x12#\n" +
+	"\rinactive_only\x18\x05 \x01(\bR\finactiveOnly\x12\x16\n" +
+	"\x06search\x18\x06 \x01(\tR\x06search\"f\n" +
 	"\x14ListProductsResponse\x128\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1c.wargapos.product.v1.ProductR\bproducts\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\"\x89\x02\n" +
@@ -1004,12 +1198,20 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\x15CreateCategoryRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\"S\n" +
 	"\x16CreateCategoryResponse\x129\n" +
-	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\"\x17\n" +
+	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\";\n" +
+	"\x15UpdateCategoryRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"S\n" +
+	"\x16UpdateCategoryResponse\x129\n" +
+	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\"'\n" +
+	"\x15DeleteCategoryRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x18\n" +
+	"\x16DeleteCategoryResponse\"\x17\n" +
 	"\x15ListCategoriesRequest\"W\n" +
 	"\x16ListCategoriesResponse\x12=\n" +
 	"\n" +
 	"categories\x18\x01 \x03(\v2\x1d.wargapos.product.v1.CategoryR\n" +
-	"categories2\xe2\x05\n" +
+	"categories2\xb8\a\n" +
 	"\x0eProductService\x12f\n" +
 	"\rCreateProduct\x12).wargapos.product.v1.CreateProductRequest\x1a*.wargapos.product.v1.CreateProductResponse\x12]\n" +
 	"\n" +
@@ -1018,6 +1220,8 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\rUpdateProduct\x12).wargapos.product.v1.UpdateProductRequest\x1a*.wargapos.product.v1.UpdateProductResponse\x12f\n" +
 	"\rDeleteProduct\x12).wargapos.product.v1.DeleteProductRequest\x1a*.wargapos.product.v1.DeleteProductResponse\x12i\n" +
 	"\x0eCreateCategory\x12*.wargapos.product.v1.CreateCategoryRequest\x1a+.wargapos.product.v1.CreateCategoryResponse\x12i\n" +
+	"\x0eUpdateCategory\x12*.wargapos.product.v1.UpdateCategoryRequest\x1a+.wargapos.product.v1.UpdateCategoryResponse\x12i\n" +
+	"\x0eDeleteCategory\x12*.wargapos.product.v1.DeleteCategoryRequest\x1a+.wargapos.product.v1.DeleteCategoryResponse\x12i\n" +
 	"\x0eListCategories\x12*.wargapos.product.v1.ListCategoriesRequest\x1a+.wargapos.product.v1.ListCategoriesResponseB4Z2wargapos/backend/gen/wargapos/product/v1;productv1b\x06proto3"
 
 var (
@@ -1032,7 +1236,7 @@ func file_wargapos_product_v1_product_proto_rawDescGZIP() []byte {
 	return file_wargapos_product_v1_product_proto_rawDescData
 }
 
-var file_wargapos_product_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_wargapos_product_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_wargapos_product_v1_product_proto_goTypes = []any{
 	(*Category)(nil),               // 0: wargapos.product.v1.Category
 	(*Product)(nil),                // 1: wargapos.product.v1.Product
@@ -1048,8 +1252,12 @@ var file_wargapos_product_v1_product_proto_goTypes = []any{
 	(*DeleteProductResponse)(nil),  // 11: wargapos.product.v1.DeleteProductResponse
 	(*CreateCategoryRequest)(nil),  // 12: wargapos.product.v1.CreateCategoryRequest
 	(*CreateCategoryResponse)(nil), // 13: wargapos.product.v1.CreateCategoryResponse
-	(*ListCategoriesRequest)(nil),  // 14: wargapos.product.v1.ListCategoriesRequest
-	(*ListCategoriesResponse)(nil), // 15: wargapos.product.v1.ListCategoriesResponse
+	(*UpdateCategoryRequest)(nil),  // 14: wargapos.product.v1.UpdateCategoryRequest
+	(*UpdateCategoryResponse)(nil), // 15: wargapos.product.v1.UpdateCategoryResponse
+	(*DeleteCategoryRequest)(nil),  // 16: wargapos.product.v1.DeleteCategoryRequest
+	(*DeleteCategoryResponse)(nil), // 17: wargapos.product.v1.DeleteCategoryResponse
+	(*ListCategoriesRequest)(nil),  // 18: wargapos.product.v1.ListCategoriesRequest
+	(*ListCategoriesResponse)(nil), // 19: wargapos.product.v1.ListCategoriesResponse
 }
 var file_wargapos_product_v1_product_proto_depIdxs = []int32{
 	1,  // 0: wargapos.product.v1.CreateProductResponse.product:type_name -> wargapos.product.v1.Product
@@ -1057,26 +1265,31 @@ var file_wargapos_product_v1_product_proto_depIdxs = []int32{
 	1,  // 2: wargapos.product.v1.ListProductsResponse.products:type_name -> wargapos.product.v1.Product
 	1,  // 3: wargapos.product.v1.UpdateProductResponse.product:type_name -> wargapos.product.v1.Product
 	0,  // 4: wargapos.product.v1.CreateCategoryResponse.category:type_name -> wargapos.product.v1.Category
-	0,  // 5: wargapos.product.v1.ListCategoriesResponse.categories:type_name -> wargapos.product.v1.Category
-	2,  // 6: wargapos.product.v1.ProductService.CreateProduct:input_type -> wargapos.product.v1.CreateProductRequest
-	4,  // 7: wargapos.product.v1.ProductService.GetProduct:input_type -> wargapos.product.v1.GetProductRequest
-	6,  // 8: wargapos.product.v1.ProductService.ListProducts:input_type -> wargapos.product.v1.ListProductsRequest
-	8,  // 9: wargapos.product.v1.ProductService.UpdateProduct:input_type -> wargapos.product.v1.UpdateProductRequest
-	10, // 10: wargapos.product.v1.ProductService.DeleteProduct:input_type -> wargapos.product.v1.DeleteProductRequest
-	12, // 11: wargapos.product.v1.ProductService.CreateCategory:input_type -> wargapos.product.v1.CreateCategoryRequest
-	14, // 12: wargapos.product.v1.ProductService.ListCategories:input_type -> wargapos.product.v1.ListCategoriesRequest
-	3,  // 13: wargapos.product.v1.ProductService.CreateProduct:output_type -> wargapos.product.v1.CreateProductResponse
-	5,  // 14: wargapos.product.v1.ProductService.GetProduct:output_type -> wargapos.product.v1.GetProductResponse
-	7,  // 15: wargapos.product.v1.ProductService.ListProducts:output_type -> wargapos.product.v1.ListProductsResponse
-	9,  // 16: wargapos.product.v1.ProductService.UpdateProduct:output_type -> wargapos.product.v1.UpdateProductResponse
-	11, // 17: wargapos.product.v1.ProductService.DeleteProduct:output_type -> wargapos.product.v1.DeleteProductResponse
-	13, // 18: wargapos.product.v1.ProductService.CreateCategory:output_type -> wargapos.product.v1.CreateCategoryResponse
-	15, // 19: wargapos.product.v1.ProductService.ListCategories:output_type -> wargapos.product.v1.ListCategoriesResponse
-	13, // [13:20] is the sub-list for method output_type
-	6,  // [6:13] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	0,  // 5: wargapos.product.v1.UpdateCategoryResponse.category:type_name -> wargapos.product.v1.Category
+	0,  // 6: wargapos.product.v1.ListCategoriesResponse.categories:type_name -> wargapos.product.v1.Category
+	2,  // 7: wargapos.product.v1.ProductService.CreateProduct:input_type -> wargapos.product.v1.CreateProductRequest
+	4,  // 8: wargapos.product.v1.ProductService.GetProduct:input_type -> wargapos.product.v1.GetProductRequest
+	6,  // 9: wargapos.product.v1.ProductService.ListProducts:input_type -> wargapos.product.v1.ListProductsRequest
+	8,  // 10: wargapos.product.v1.ProductService.UpdateProduct:input_type -> wargapos.product.v1.UpdateProductRequest
+	10, // 11: wargapos.product.v1.ProductService.DeleteProduct:input_type -> wargapos.product.v1.DeleteProductRequest
+	12, // 12: wargapos.product.v1.ProductService.CreateCategory:input_type -> wargapos.product.v1.CreateCategoryRequest
+	14, // 13: wargapos.product.v1.ProductService.UpdateCategory:input_type -> wargapos.product.v1.UpdateCategoryRequest
+	16, // 14: wargapos.product.v1.ProductService.DeleteCategory:input_type -> wargapos.product.v1.DeleteCategoryRequest
+	18, // 15: wargapos.product.v1.ProductService.ListCategories:input_type -> wargapos.product.v1.ListCategoriesRequest
+	3,  // 16: wargapos.product.v1.ProductService.CreateProduct:output_type -> wargapos.product.v1.CreateProductResponse
+	5,  // 17: wargapos.product.v1.ProductService.GetProduct:output_type -> wargapos.product.v1.GetProductResponse
+	7,  // 18: wargapos.product.v1.ProductService.ListProducts:output_type -> wargapos.product.v1.ListProductsResponse
+	9,  // 19: wargapos.product.v1.ProductService.UpdateProduct:output_type -> wargapos.product.v1.UpdateProductResponse
+	11, // 20: wargapos.product.v1.ProductService.DeleteProduct:output_type -> wargapos.product.v1.DeleteProductResponse
+	13, // 21: wargapos.product.v1.ProductService.CreateCategory:output_type -> wargapos.product.v1.CreateCategoryResponse
+	15, // 22: wargapos.product.v1.ProductService.UpdateCategory:output_type -> wargapos.product.v1.UpdateCategoryResponse
+	17, // 23: wargapos.product.v1.ProductService.DeleteCategory:output_type -> wargapos.product.v1.DeleteCategoryResponse
+	19, // 24: wargapos.product.v1.ProductService.ListCategories:output_type -> wargapos.product.v1.ListCategoriesResponse
+	16, // [16:25] is the sub-list for method output_type
+	7,  // [7:16] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_product_v1_product_proto_init() }
@@ -1090,7 +1303,7 @@ func file_wargapos_product_v1_product_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_product_v1_product_proto_rawDesc), len(file_wargapos_product_v1_product_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   16,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
