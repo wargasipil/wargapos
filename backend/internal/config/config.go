@@ -12,6 +12,12 @@ type Config struct {
 	Database DatabaseConfig `yaml:"database"`
 	Auth     AuthConfig     `yaml:"auth"`
 	Midtrans MidtransConfig `yaml:"midtrans"`
+	Printer  PrinterConfig  `yaml:"printer"`
+}
+
+type PrinterConfig struct {
+	Address string `yaml:"address"` // e.g. "192.168.1.100:9100"
+	Port    string `yaml:"port"`    // connector HTTP port, default "8081"
 }
 
 type MidtransConfig struct {
@@ -52,6 +58,10 @@ var defaults = Config{
 		ClientKey:   "",
 		Environment: "sandbox",
 	},
+	Printer: PrinterConfig{
+		Address: "localhost:9100",
+		Port:    "8081",
+	},
 }
 
 // ProvideAuthConfig is a Wire provider that extracts AuthConfig from Config.
@@ -59,6 +69,9 @@ func ProvideAuthConfig(cfg *Config) AuthConfig { return cfg.Auth }
 
 // ProvideMidtransConfig is a Wire provider that extracts MidtransConfig from Config.
 func ProvideMidtransConfig(cfg *Config) MidtransConfig { return cfg.Midtrans }
+
+// ProvidePrinterConfig is a Wire provider that extracts PrinterConfig from Config.
+func ProvidePrinterConfig(cfg *Config) PrinterConfig { return cfg.Printer }
 
 // Load reads config.yaml (or CONFIG_PATH env var) and returns a Config.
 // If the file is not found, dev defaults are returned so the server can
@@ -115,5 +128,11 @@ func applyEnv(cfg *Config) {
 	}
 	if v := os.Getenv("MIDTRANS_CLIENT_KEY"); v != "" {
 		cfg.Midtrans.ClientKey = v
+	}
+	if v := os.Getenv("PRINTER_ADDRESS"); v != "" {
+		cfg.Printer.Address = v
+	}
+	if v := os.Getenv("CONNECTOR_PORT"); v != "" {
+		cfg.Printer.Port = v
 	}
 }

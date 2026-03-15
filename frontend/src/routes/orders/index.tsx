@@ -1,34 +1,39 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import {
-  Badge, Box, Button, Flex, Heading, HStack, NativeSelect, Spinner, Text, VStack,
+  Badge, Box, Button, Flex, Heading, HStack, Spinner, Text, VStack,
 } from '@chakra-ui/react'
-import { Receipt, Phone, ChevronDown, ChevronUp, CheckCircle, Filter } from 'lucide-react'
+import { Receipt, Filter, CheckCircle, XCircle, ChevronRight, Truck, ChefHat } from 'lucide-react'
 import { transactionClient, tableClient } from '../../client'
-import { OrderFrom, PaymentMethod } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { TableSelect } from '../../components/shared/TableSelect'
+import { OrderFrom, OrderStatus, PaymentMethod } from '../../gen/wargapos/transaction/v1/transaction_pb'
 import { toaster } from '../../components/ui/toaster'
 import { formatPrice, formatTime } from '../../lib/format'
 import { stripError } from '../../lib/errors'
 
 const STATUS_FILTERS = [
-  { label: 'All', value: '' },
-  { label: 'Pending', value: 'pending' },
-  { label: 'Paid', value: 'paid' },
+  { label: 'All',       value: OrderStatus.UNSPECIFIED },
+  { label: 'Pending',   value: OrderStatus.PENDING },
+  { label: 'Ready',     value: OrderStatus.READY },
+  { label: 'Delivered', value: OrderStatus.DELIVERED },
+  { label: 'Paid',      value: OrderStatus.PAID },
+  { label: 'Cancelled', value: OrderStatus.CANCELLED },
 ]
 
 const SOURCE_FILTERS = [
   { label: 'All Sources', value: OrderFrom.UNSPECIFIED },
-  { label: 'Guest', value: OrderFrom.GUEST },
-  { label: 'POS', value: OrderFrom.POS },
+  { label: 'Guest',       value: OrderFrom.GUEST },
+  { label: 'POS',         value: OrderFrom.POS },
 ]
 
 export function OrdersPage() {
   const qc = useQueryClient()
-  const [statusFilter, setStatusFilter] = useState('')
+  const navigate = useNavigate()
+  const [statusFilter, setStatusFilter] = useState<OrderStatus>(OrderStatus.UNSPECIFIED)
   const [tableFilter, setTableFilter] = useState<bigint>(0n)
   const [orderFromFilter, setOrderFromFilter] = useState<OrderFrom>(OrderFrom.UNSPECIFIED)
   const [page, setPage] = useState(1)
-  const [expandedId, setExpandedId] = useState<bigint | null>(null)
 
   const { data, isLoading } = useQuery({
     queryKey: ['orders', statusFilter, String(tableFilter), String(orderFromFilter), page],
@@ -40,6 +45,8 @@ export function OrdersPage() {
       cashierId: 0n,
       orderFromFilter,
     }),
+    staleTime: 0,
+    gcTime: 0,
   })
 
   const { data: tablesData } = useQuery({
@@ -47,13 +54,44 @@ export function OrdersPage() {
     queryFn: () => tableClient.listTables({}),
   })
 
+  // Poll for ready orders — notify staff when count increases
+  const { data: readyData } = useQuery({
+    queryKey: ['orders-ready-count'],
+    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.READY, pageSize: 1, page: 1 }),
+    refetchInterval: 15_000,
+  })
+  const prevReadyCount = useRef(0)
+  useEffect(() => {
+    const count = readyData?.total ?? 0
+    if (prevReadyCount.current !== 0 && count > prevReadyCount.current) {
+      toaster.create({ title: `🔔 ${count} order(s) ready to serve!`, type: 'info', duration: 5000 })
+    }
+    prevReadyCount.current = count
+  }, [readyData?.total])
+
+  const markDeliveredMutation = useMutation({
+    mutationFn: (orderId: bigint) => transactionClient.markOrderDelivered({ orderId }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['orders'] })
+      toaster.create({ title: 'Order marked as delivered', type: 'success', duration: 3000 })
+    },
+    onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
+  })
+
   const markPaidMutation = useMutation({
     mutationFn: (orderId: bigint) => transactionClient.markOrderPaid({ orderId }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['orders'] })
-      qc.invalidateQueries({ queryKey: ['orders-pending'] })
-      qc.invalidateQueries({ queryKey: ['orders-paid'] })
       toaster.create({ title: 'Order marked as paid', type: 'success', duration: 3000 })
+    },
+    onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
+  })
+
+  const cancelMutation = useMutation({
+    mutationFn: (orderId: bigint) => transactionClient.cancelOrder({ orderId }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['orders'] })
+      toaster.create({ title: 'Order cancelled', type: 'success', duration: 3000 })
     },
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
@@ -63,8 +101,19 @@ export function OrdersPage() {
   const tables = tablesData?.tables ?? []
 
   function tableNameById(id: bigint): string {
-    if (id === 0n) return '—'
+    if (id === 0n) return 'Walk-in'
     return tables.find((t) => t.id === id)?.name ?? `#${String(id)}`
+  }
+
+  function statusBadge(status: OrderStatus) {
+    switch (status) {
+      case OrderStatus.PENDING:   return <Badge colorPalette="orange" size="sm">Pending</Badge>
+      case OrderStatus.READY:     return <Badge colorPalette="blue"   size="sm">Ready</Badge>
+      case OrderStatus.DELIVERED: return <Badge colorPalette="purple" size="sm">Delivered</Badge>
+      case OrderStatus.PAID:      return <Badge colorPalette="green"  size="sm">Paid</Badge>
+      case OrderStatus.CANCELLED: return <Badge colorPalette="red"    size="sm">Cancelled</Badge>
+      default: return null
+    }
   }
 
   return (
@@ -74,44 +123,43 @@ export function OrdersPage() {
         <Heading size="md">Orders</Heading>
       </HStack>
 
-      {/* Filters */}
+      {/* Filter bar */}
       <Flex gap={2} mb={4} wrap="wrap" align="center">
-        {STATUS_FILTERS.map((f) => (
-          <Button
-            key={f.value}
-            size="sm"
-            variant={statusFilter === f.value ? 'solid' : 'outline'}
-            colorPalette={statusFilter === f.value ? 'blue' : 'gray'}
-            onClick={() => { setStatusFilter(f.value); setPage(1) }}
-          >
-            {f.label}
-          </Button>
-        ))}
-        {SOURCE_FILTERS.map((f) => (
-          <Button
-            key={String(f.value)}
-            size="sm"
-            variant={orderFromFilter === f.value ? 'solid' : 'outline'}
-            colorPalette={orderFromFilter === f.value ? 'teal' : 'gray'}
-            onClick={() => { setOrderFromFilter(f.value); setPage(1) }}
-          >
-            {f.label}
-          </Button>
-        ))}
-        <HStack gap={1}>
-          <Filter size={14} color="gray" />
-          <NativeSelect.Root size="sm" w="auto" minW="130px">
-            <NativeSelect.Field
-              value={String(tableFilter)}
-              onChange={(e) => { setTableFilter(e.target.value ? BigInt(e.target.value) : 0n); setPage(1) }}
+        <HStack gap={1} flexWrap="wrap">
+          {STATUS_FILTERS.map((f) => (
+            <Button
+              key={f.value}
+              size="sm"
+              variant={statusFilter === f.value ? 'solid' : 'outline'}
+              colorPalette={statusFilter === f.value ? 'blue' : 'gray'}
+              onClick={() => { setStatusFilter(f.value); setPage(1) }}
             >
-              <option value="">All Tables</option>
-              {tables.map((t) => (
-                <option key={String(t.id)} value={String(t.id)}>{t.name}</option>
-              ))}
-            </NativeSelect.Field>
-            <NativeSelect.Indicator />
-          </NativeSelect.Root>
+              {f.label}
+            </Button>
+          ))}
+        </HStack>
+
+        <HStack gap={2} ml="auto">
+          {SOURCE_FILTERS.map((f) => (
+            <Button
+              key={String(f.value)}
+              size="sm"
+              variant={orderFromFilter === f.value ? 'solid' : 'outline'}
+              colorPalette={orderFromFilter === f.value ? 'teal' : 'gray'}
+              onClick={() => { setOrderFromFilter(f.value); setPage(1) }}
+            >
+              {f.label}
+            </Button>
+          ))}
+          <HStack gap={1}>
+            <Filter size={14} color="gray" />
+            <TableSelect
+              tables={tables}
+              value={tableFilter}
+              onChange={(id) => { setTableFilter(id); setPage(1) }}
+              placeholder="All Tables"
+            />
+          </HStack>
         </HStack>
       </Flex>
 
@@ -120,17 +168,21 @@ export function OrdersPage() {
       ) : (
         <VStack gap={3} align="stretch">
           {orders.map((order) => (
-            <Box key={String(order.id)} bg="white" borderRadius="lg" p={4} boxShadow="sm">
+            <Box
+              key={String(order.id)}
+              bg="white"
+              borderRadius="lg"
+              p={4}
+              boxShadow="sm"
+              cursor="pointer"
+              _hover={{ boxShadow: 'md' }}
+              onClick={() => navigate({ to: '/orders/$id', params: { id: String(order.id) } })}
+            >
               <Flex justify="space-between" align="start" mb={2}>
                 <Box>
                   <HStack gap={2} mb={1} flexWrap="wrap">
                     <Text fontWeight="semibold" fontSize="sm">#{String(order.id)}</Text>
-                    <Badge
-                      colorPalette={order.status === 1 ? 'orange' : order.status === 2 ? 'green' : 'gray'}
-                      size="sm"
-                    >
-                      {order.status === 1 ? 'Pending' : order.status === 2 ? 'Paid' : 'Unknown'}
-                    </Badge>
+                    {statusBadge(order.status)}
                     {order.paymentMethod === PaymentMethod.CASH && (
                       <Badge colorPalette="gray" size="sm">Cash</Badge>
                     )}
@@ -145,61 +197,56 @@ export function OrdersPage() {
                     )}
                   </HStack>
                   <Text fontSize="xs" color="gray.500">
-                    {formatTime(order.createdAt)} · Table: {tableNameById(order.tableId)}
+                    {formatTime(order.createdAt)} · {tableNameById(order.tableId)} · {order.items.length} item(s)
                   </Text>
                   {order.customerName && (
-                    <Text fontSize="xs" color="gray.600" fontWeight="medium" mt={0.5}>
-                      Guest: {order.customerName}
-                    </Text>
-                  )}
-                  {order.phoneNumber && (
-                    <HStack gap={1} mt={0.5}>
-                      <Phone size={10} color="gray" />
-                      <Text fontSize="xs" color="gray.500">
-                        <a href={`tel:${order.phoneNumber}`}>{order.phoneNumber}</a>
-                      </Text>
-                    </HStack>
+                    <Text fontSize="xs" color="gray.600" mt={0.5}>{order.customerName}</Text>
                   )}
                 </Box>
-                <Text fontWeight="bold" fontSize="sm">{formatPrice(order.totalCents)}</Text>
+                <HStack gap={2} align="center">
+                  <Text fontWeight="bold" fontSize="sm">{formatPrice(order.totalCents)}</Text>
+                  <ChevronRight size={14} color="gray" />
+                </HStack>
               </Flex>
 
-              <Flex gap={2} align="center">
-                <Button
-                  size="xs"
-                  variant="ghost"
-                  onClick={() => setExpandedId(expandedId === order.id ? null : order.id)}
-                >
-                  {expandedId === order.id ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                  {expandedId === order.id ? 'Hide items' : `${order.items.length} item(s)`}
-                </Button>
-                {order.status === 1 && (
+              {/* Action buttons — stop propagation so clicks don't navigate */}
+              {(order.status === OrderStatus.PENDING ||
+                order.status === OrderStatus.READY ||
+                order.status === OrderStatus.DELIVERED) && (
+                <HStack gap={2} onClick={(e) => e.stopPropagation()}>
+                  {order.status === OrderStatus.READY && (
+                    <Button
+                      size="xs"
+                      colorPalette="purple"
+                      loading={markDeliveredMutation.isPending}
+                      onClick={() => markDeliveredMutation.mutate(order.id)}
+                    >
+                      <Truck size={11} />
+                      Mark Delivered
+                    </Button>
+                  )}
+                  {order.status === OrderStatus.DELIVERED && (
+                    <Button
+                      size="xs"
+                      colorPalette="green"
+                      loading={markPaidMutation.isPending}
+                      onClick={() => markPaidMutation.mutate(order.id)}
+                    >
+                      <CheckCircle size={11} />
+                      Mark as Paid
+                    </Button>
+                  )}
                   <Button
                     size="xs"
-                    colorPalette="green"
-                    loading={markPaidMutation.isPending}
-                    onClick={() => markPaidMutation.mutate(order.id)}
+                    variant="outline"
+                    colorPalette="red"
+                    loading={cancelMutation.isPending}
+                    onClick={() => cancelMutation.mutate(order.id)}
                   >
-                    <CheckCircle size={12} />
-                    Mark as Paid
+                    <XCircle size={11} />
+                    Cancel
                   </Button>
-                )}
-              </Flex>
-
-              {expandedId === order.id && order.items.length > 0 && (
-                <Box mt={2} pl={2} borderLeft="2px solid" borderColor="gray.100">
-                  {order.items.map((item) => (
-                    <Box key={String(item.id)} py={0.5}>
-                      <HStack justify="space-between">
-                        <Text fontSize="xs">{item.productName} × {item.quantity}</Text>
-                        <Text fontSize="xs" color="gray.500">{formatPrice(item.subtotalCents)}</Text>
-                      </HStack>
-                      {item.notes && (
-                        <Text fontSize="xs" color="gray.400" pl={2}>↳ {item.notes}</Text>
-                      )}
-                    </Box>
-                  ))}
-                </Box>
+                </HStack>
               )}
             </Box>
           ))}
@@ -213,7 +260,6 @@ export function OrdersPage() {
         </VStack>
       )}
 
-      {/* Pagination */}
       {total > 20 && (
         <HStack justify="center" mt={4} gap={2}>
           <Button size="sm" variant="outline" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>

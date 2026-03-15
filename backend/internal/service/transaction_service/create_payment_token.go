@@ -21,7 +21,7 @@ func (s *TransactionService) CreatePaymentToken(
 	}
 
 	order, err := s.loadOrder(ctx, req.Msg.OrderId)
-	if err != nil || order.Status != "pending" {
+	if err != nil || order.Status != statusPending {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("pending order not found"))
 	}
 	if len(order.Items) == 0 {

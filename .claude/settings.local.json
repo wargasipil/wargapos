@@ -53,11 +53,13 @@
       "Bash(find /d/research/wargapos/backend/internal -type f -name *auth* -o -name *middleware* -o -name *interceptor*)",
       "Bash(find /d/research/wargapos/backend/migrations -type f -name *.sql)",
       "Bash(make -C d:/research/wargapos proto-gen)",
-      "Bash(find /d/research/wargapos/frontend/node_modules/@chakra-ui -name createListCollection* -o -name *listCollection*)"
+      "Bash(find /d/research/wargapos/frontend/node_modules/@chakra-ui -name createListCollection* -o -name *listCollection*)",
+      "Bash(find /d/research/wargapos/frontend/src/routes -type f -name *.tsx -o -name *.ts)",
+      "Bash(npx vitest:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
-    "supabase"
+    "chakra-ui"
   ]
 }

@@ -1,8 +1,12 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  test: {
+    environment: 'happy-dom',
+    globals: true,
+  },
   build: {
     outDir: '../backend/cmd/server/static',
     emptyOutDir: true,
@@ -12,6 +16,11 @@ export default defineConfig({
       // Proxy all Connect RPCs to the Go backend.
       // All Connect paths start with the proto package name e.g.:
       //   /wargapos.auth.v1.AuthService/Login
+      // Printer connector — must be before the general /wargapos rule
+      '/wargapos.printer.v1': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+      },
       '/wargapos': {
         target: 'http://localhost:8080',
         changeOrigin: true,

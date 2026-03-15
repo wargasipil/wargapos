@@ -24,7 +24,7 @@ func (s *TransactionService) Checkout(
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var order models.Order
 		if err := tx.Preload("Items").
-			First(&order, "session_token = ? AND status = 'pending'", req.Msg.SessionId).Error; err != nil {
+			First(&order, "session_token = ? AND status = ?", req.Msg.SessionId, statusPending).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return ErrCartNotPending
 			}
@@ -35,9 +35,10 @@ func (s *TransactionService) Checkout(
 		}
 		orderID = order.ID
 
+		pm := int32(req.Msg.PaymentMethod)
 		updates := map[string]any{
-			"status":         "paid",
-			"payment_method": paymentMethodToString(req.Msg.PaymentMethod),
+			"status":         statusPaid,
+			"payment_method": pm,
 		}
 		if req.Msg.CashierId != 0 {
 			updates["cashier_id"] = req.Msg.CashierId
@@ -67,7 +68,7 @@ func (s *TransactionService) Checkout(
 				return res.Error
 			}
 			if res.RowsAffected == 0 {
-				return fmt.Errorf("insufficient stock for product %d", *item.ProductID)
+				return fmt.Errorf("insufficient stock for %s", item.ProductName)
 			}
 			mov := &models.StockMovement{
 				ProductID: *item.ProductID,

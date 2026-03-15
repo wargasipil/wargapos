@@ -52,8 +52,8 @@ type Order struct {
 	SessionToken  *string     `gorm:"column:session_token;uniqueIndex"`
 	CashierID     *int64      `gorm:"type:bigint"`
 	TotalCents    int64       `gorm:"not null;default:0"`
-	Status        string      `gorm:"not null;default:pending;size:20"`
-	PaymentMethod *string     `gorm:"size:50"`
+	Status        int32       `gorm:"not null;default:1"`
+	PaymentMethod *int32      `gorm:"column:payment_method"`
 	TableID       *int64      `gorm:"column:table_id;type:bigint"`
 	SnapToken     *string     `gorm:"column:snap_token"`
 	CustomerName  *string     `gorm:"column:customer_name"`

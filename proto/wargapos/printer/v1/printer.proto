@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package wargapos.printer.v1;
+
+option go_package = "wargapos/backend/gen/wargapos/printer/v1;printerv1";
+
+service PrinterService {
+  rpc Print(PrintRequest) returns (PrintResponse);
+  rpc GetStatus(GetStatusRequest) returns (GetStatusResponse);
+}
+
+message PrintRequest {
+  bytes data = 1; // Raw ESC/POS bytes
+}
+
+message PrintResponse {}
+
+message GetStatusRequest {}
+
+message GetStatusResponse {
+  bool   connected       = 1;
+  string printer_address = 2;
+}

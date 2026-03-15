@@ -4,25 +4,31 @@ import {
   Alert, Box, Button, Field, Flex, Heading, HStack, Input, NativeSelect,
   Spinner, Tabs, Text, VStack,
 } from '@chakra-ui/react'
-import { KeyRound, CreditCard } from 'lucide-react'
+import { KeyRound, CreditCard, User } from 'lucide-react'
 import { userClient, settingsClient } from '../client'
 import { useAuthStore } from '../store/auth'
 import { toaster } from '../components/ui/toaster'
 import { stripError } from '../lib/errors'
 
 export function SettingsPage() {
-  const { token, role } = useAuthStore()
+  const { token, role, userId } = useAuthStore()
   const isAdmin = role === 'admin'
 
   return (
     <Box p={{ base: 4, md: 8 }} maxW="480px">
       <Heading size={{ base: 'md', md: 'lg' }} mb={6}>Settings</Heading>
-      <Tabs.Root defaultValue="password" variant="line">
+      <Tabs.Root defaultValue="profile" variant="line">
         <Tabs.List>
+          <Tabs.Trigger value="profile">
+            <HStack gap={1.5}>
+              <User size={14} />
+              Profile
+            </HStack>
+          </Tabs.Trigger>
           <Tabs.Trigger value="password">
             <HStack gap={1.5}>
               <KeyRound size={14} />
-              Change Password
+              Password
             </HStack>
           </Tabs.Trigger>
           {isAdmin && (
@@ -35,6 +41,9 @@ export function SettingsPage() {
           )}
         </Tabs.List>
 
+        <Tabs.Content value="profile">
+          <ProfileSection userId={userId} role={role} />
+        </Tabs.Content>
         <Tabs.Content value="password">
           <ChangePasswordSection token={token} />
         </Tabs.Content>
@@ -44,6 +53,74 @@ export function SettingsPage() {
           </Tabs.Content>
         )}
       </Tabs.Root>
+    </Box>
+  )
+}
+
+// ── Profile ────────────────────────────────────────────────────────────────────
+
+function ProfileSection({ userId, role }: { userId: string | null; role: string | null }) {
+  const qc = useQueryClient()
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [initialized, setInitialized] = useState(false)
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => userClient.getUser({ id: BigInt(userId!) }),
+    enabled: !!userId,
+  })
+
+  if (data && !initialized) {
+    setFullName(data.user?.fullName ?? '')
+    setEmail(data.user?.email ?? '')
+    setInitialized(true)
+  }
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      userClient.updateUser({
+        id: BigInt(userId!),
+        fullName,
+        email,
+        role: data?.user?.role,
+        isActive: data?.user?.isActive ?? true,
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['user', userId] })
+      toaster.create({ title: 'Profile updated', type: 'success', duration: 3000 })
+    },
+  })
+
+  if (isLoading) return <Box pt={4}><Spinner size="sm" /></Box>
+
+  return (
+    <Box pt={4}>
+      <VStack align="stretch" gap={3}>
+        <Field.Root>
+          <Field.Label>Full Name</Field.Label>
+          <Input size="sm" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Email</Field.Label>
+          <Input size="sm" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Role</Field.Label>
+          <Input size="sm" value={role ?? ''} readOnly opacity={0.6} />
+        </Field.Root>
+        {mutation.isError && (
+          <Alert.Root status="error" borderRadius="md">
+            <Alert.Indicator />
+            <Alert.Description fontSize="sm">{stripError(mutation.error)}</Alert.Description>
+          </Alert.Root>
+        )}
+        <Flex justify="flex-end" pt={1}>
+          <Button size="sm" colorPalette="blue" loading={mutation.isPending} onClick={() => mutation.mutate()}>
+            Save Profile
+          </Button>
+        </Flex>
+      </VStack>
     </Box>
   )
 }

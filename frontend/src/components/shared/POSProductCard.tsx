@@ -8,28 +8,69 @@ interface Props {
   priceCents: bigint
   categoryName?: string
   qtyInCart?: number
+  stockQty?: number
   onClick: () => void
 }
 
-export function POSProductCard({ name, imageUrl, priceCents, categoryName, qtyInCart, onClick }: Props) {
+export function POSProductCard({ name, imageUrl, priceCents, categoryName, qtyInCart, stockQty, onClick }: Props) {
   const inCart = (qtyInCart ?? 0) > 0
+  const outOfStock = (stockQty ?? 1) <= 0
+  const lowStock = !outOfStock && stockQty !== undefined && stockQty <= 5
+
   return (
     <Box
       bg="white"
       borderRadius="lg"
       overflow="hidden"
       boxShadow="sm"
-      cursor="pointer"
+      cursor={outOfStock ? 'not-allowed' : 'pointer'}
+      pointerEvents={outOfStock ? 'none' : undefined}
+      opacity={outOfStock ? 0.5 : 1}
       transition="all 0.15s"
-      _active={{ opacity: 0.85 }}
-      onClick={onClick}
+      _active={outOfStock ? undefined : { opacity: 0.85 }}
+      onClick={outOfStock ? undefined : onClick}
       position="relative"
       display="flex"
       flexDir="column"
-      outline={inCart ? '2px solid' : 'none'}
+      outline={!outOfStock && inCart ? '2px solid' : 'none'}
       outlineColor="blue.400"
     >
-      {inCart && (
+      {/* Top-right badge: out of stock / low stock / cart qty */}
+      {outOfStock ? (
+        <Box
+          position="absolute"
+          top={2}
+          right={2}
+          bg="red.500"
+          color="white"
+          borderRadius="full"
+          px={2}
+          py="1px"
+          fontSize="10px"
+          fontWeight="bold"
+          zIndex={1}
+          whiteSpace="nowrap"
+        >
+          Out of Stock
+        </Box>
+      ) : lowStock ? (
+        <Box
+          position="absolute"
+          top={2}
+          right={2}
+          bg="orange.400"
+          color="white"
+          borderRadius="full"
+          px={2}
+          py="1px"
+          fontSize="10px"
+          fontWeight="bold"
+          zIndex={1}
+          whiteSpace="nowrap"
+        >
+          {stockQty} left
+        </Box>
+      ) : inCart ? (
         <Box
           position="absolute"
           top={2}
@@ -49,7 +90,8 @@ export function POSProductCard({ name, imageUrl, priceCents, categoryName, qtyIn
         >
           {qtyInCart}
         </Box>
-      )}
+      ) : null}
+
       <ProductImage src={imageUrl} />
       <Box p={3} flex="1" display="flex" flexDir="column">
         <Text fontWeight="semibold" fontSize="sm" mb={0.5} lineClamp={2}>{name}</Text>

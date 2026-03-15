@@ -57,6 +57,15 @@ const (
 	// TransactionServiceMarkOrderPaidProcedure is the fully-qualified name of the TransactionService's
 	// MarkOrderPaid RPC.
 	TransactionServiceMarkOrderPaidProcedure = "/wargapos.transaction.v1.TransactionService/MarkOrderPaid"
+	// TransactionServiceCancelOrderProcedure is the fully-qualified name of the TransactionService's
+	// CancelOrder RPC.
+	TransactionServiceCancelOrderProcedure = "/wargapos.transaction.v1.TransactionService/CancelOrder"
+	// TransactionServiceMarkOrderReadyProcedure is the fully-qualified name of the TransactionService's
+	// MarkOrderReady RPC.
+	TransactionServiceMarkOrderReadyProcedure = "/wargapos.transaction.v1.TransactionService/MarkOrderReady"
+	// TransactionServiceMarkOrderDeliveredProcedure is the fully-qualified name of the
+	// TransactionService's MarkOrderDelivered RPC.
+	TransactionServiceMarkOrderDeliveredProcedure = "/wargapos.transaction.v1.TransactionService/MarkOrderDelivered"
 )
 
 // TransactionServiceClient is a client for the wargapos.transaction.v1.TransactionService service.
@@ -69,6 +78,9 @@ type TransactionServiceClient interface {
 	ListOrders(context.Context, *connect.Request[v1.ListOrdersRequest]) (*connect.Response[v1.ListOrdersResponse], error)
 	CreatePaymentToken(context.Context, *connect.Request[v1.CreatePaymentTokenRequest]) (*connect.Response[v1.CreatePaymentTokenResponse], error)
 	MarkOrderPaid(context.Context, *connect.Request[v1.MarkOrderPaidRequest]) (*connect.Response[v1.MarkOrderPaidResponse], error)
+	CancelOrder(context.Context, *connect.Request[v1.CancelOrderRequest]) (*connect.Response[v1.CancelOrderResponse], error)
+	MarkOrderReady(context.Context, *connect.Request[v1.MarkOrderReadyRequest]) (*connect.Response[v1.MarkOrderReadyResponse], error)
+	MarkOrderDelivered(context.Context, *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error)
 }
 
 // NewTransactionServiceClient constructs a client for the
@@ -130,6 +142,24 @@ func NewTransactionServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(transactionServiceMethods.ByName("MarkOrderPaid")),
 			connect.WithClientOptions(opts...),
 		),
+		cancelOrder: connect.NewClient[v1.CancelOrderRequest, v1.CancelOrderResponse](
+			httpClient,
+			baseURL+TransactionServiceCancelOrderProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("CancelOrder")),
+			connect.WithClientOptions(opts...),
+		),
+		markOrderReady: connect.NewClient[v1.MarkOrderReadyRequest, v1.MarkOrderReadyResponse](
+			httpClient,
+			baseURL+TransactionServiceMarkOrderReadyProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("MarkOrderReady")),
+			connect.WithClientOptions(opts...),
+		),
+		markOrderDelivered: connect.NewClient[v1.MarkOrderDeliveredRequest, v1.MarkOrderDeliveredResponse](
+			httpClient,
+			baseURL+TransactionServiceMarkOrderDeliveredProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("MarkOrderDelivered")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -143,6 +173,9 @@ type transactionServiceClient struct {
 	listOrders         *connect.Client[v1.ListOrdersRequest, v1.ListOrdersResponse]
 	createPaymentToken *connect.Client[v1.CreatePaymentTokenRequest, v1.CreatePaymentTokenResponse]
 	markOrderPaid      *connect.Client[v1.MarkOrderPaidRequest, v1.MarkOrderPaidResponse]
+	cancelOrder        *connect.Client[v1.CancelOrderRequest, v1.CancelOrderResponse]
+	markOrderReady     *connect.Client[v1.MarkOrderReadyRequest, v1.MarkOrderReadyResponse]
+	markOrderDelivered *connect.Client[v1.MarkOrderDeliveredRequest, v1.MarkOrderDeliveredResponse]
 }
 
 // AddToCart calls wargapos.transaction.v1.TransactionService.AddToCart.
@@ -185,6 +218,21 @@ func (c *transactionServiceClient) MarkOrderPaid(ctx context.Context, req *conne
 	return c.markOrderPaid.CallUnary(ctx, req)
 }
 
+// CancelOrder calls wargapos.transaction.v1.TransactionService.CancelOrder.
+func (c *transactionServiceClient) CancelOrder(ctx context.Context, req *connect.Request[v1.CancelOrderRequest]) (*connect.Response[v1.CancelOrderResponse], error) {
+	return c.cancelOrder.CallUnary(ctx, req)
+}
+
+// MarkOrderReady calls wargapos.transaction.v1.TransactionService.MarkOrderReady.
+func (c *transactionServiceClient) MarkOrderReady(ctx context.Context, req *connect.Request[v1.MarkOrderReadyRequest]) (*connect.Response[v1.MarkOrderReadyResponse], error) {
+	return c.markOrderReady.CallUnary(ctx, req)
+}
+
+// MarkOrderDelivered calls wargapos.transaction.v1.TransactionService.MarkOrderDelivered.
+func (c *transactionServiceClient) MarkOrderDelivered(ctx context.Context, req *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error) {
+	return c.markOrderDelivered.CallUnary(ctx, req)
+}
+
 // TransactionServiceHandler is an implementation of the wargapos.transaction.v1.TransactionService
 // service.
 type TransactionServiceHandler interface {
@@ -196,6 +244,9 @@ type TransactionServiceHandler interface {
 	ListOrders(context.Context, *connect.Request[v1.ListOrdersRequest]) (*connect.Response[v1.ListOrdersResponse], error)
 	CreatePaymentToken(context.Context, *connect.Request[v1.CreatePaymentTokenRequest]) (*connect.Response[v1.CreatePaymentTokenResponse], error)
 	MarkOrderPaid(context.Context, *connect.Request[v1.MarkOrderPaidRequest]) (*connect.Response[v1.MarkOrderPaidResponse], error)
+	CancelOrder(context.Context, *connect.Request[v1.CancelOrderRequest]) (*connect.Response[v1.CancelOrderResponse], error)
+	MarkOrderReady(context.Context, *connect.Request[v1.MarkOrderReadyRequest]) (*connect.Response[v1.MarkOrderReadyResponse], error)
+	MarkOrderDelivered(context.Context, *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error)
 }
 
 // NewTransactionServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -253,6 +304,24 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 		connect.WithSchema(transactionServiceMethods.ByName("MarkOrderPaid")),
 		connect.WithHandlerOptions(opts...),
 	)
+	transactionServiceCancelOrderHandler := connect.NewUnaryHandler(
+		TransactionServiceCancelOrderProcedure,
+		svc.CancelOrder,
+		connect.WithSchema(transactionServiceMethods.ByName("CancelOrder")),
+		connect.WithHandlerOptions(opts...),
+	)
+	transactionServiceMarkOrderReadyHandler := connect.NewUnaryHandler(
+		TransactionServiceMarkOrderReadyProcedure,
+		svc.MarkOrderReady,
+		connect.WithSchema(transactionServiceMethods.ByName("MarkOrderReady")),
+		connect.WithHandlerOptions(opts...),
+	)
+	transactionServiceMarkOrderDeliveredHandler := connect.NewUnaryHandler(
+		TransactionServiceMarkOrderDeliveredProcedure,
+		svc.MarkOrderDelivered,
+		connect.WithSchema(transactionServiceMethods.ByName("MarkOrderDelivered")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.transaction.v1.TransactionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TransactionServiceAddToCartProcedure:
@@ -271,6 +340,12 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 			transactionServiceCreatePaymentTokenHandler.ServeHTTP(w, r)
 		case TransactionServiceMarkOrderPaidProcedure:
 			transactionServiceMarkOrderPaidHandler.ServeHTTP(w, r)
+		case TransactionServiceCancelOrderProcedure:
+			transactionServiceCancelOrderHandler.ServeHTTP(w, r)
+		case TransactionServiceMarkOrderReadyProcedure:
+			transactionServiceMarkOrderReadyHandler.ServeHTTP(w, r)
+		case TransactionServiceMarkOrderDeliveredProcedure:
+			transactionServiceMarkOrderDeliveredHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -310,4 +385,16 @@ func (UnimplementedTransactionServiceHandler) CreatePaymentToken(context.Context
 
 func (UnimplementedTransactionServiceHandler) MarkOrderPaid(context.Context, *connect.Request[v1.MarkOrderPaidRequest]) (*connect.Response[v1.MarkOrderPaidResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.MarkOrderPaid is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) CancelOrder(context.Context, *connect.Request[v1.CancelOrderRequest]) (*connect.Response[v1.CancelOrderResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.CancelOrder is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) MarkOrderReady(context.Context, *connect.Request[v1.MarkOrderReadyRequest]) (*connect.Response[v1.MarkOrderReadyResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.MarkOrderReady is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) MarkOrderDelivered(context.Context, *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.MarkOrderDelivered is not implemented"))
 }

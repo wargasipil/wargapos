@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/auth/v1/auth.proto.
  */
 export const file_wargapos_auth_v1_auth: GenFile = /*@__PURE__*/
-  fileDesc("Cht3YXJnYXBvcy9hdXRoL3YxL2F1dGgucHJvdG8SEHdhcmdhcG9zLmF1dGgudjEiMgoMTG9naW5SZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJIlAKDUxvZ2luUmVzcG9uc2USFAoMYWNjZXNzX3Rva2VuGAEgASgJEhUKDXJlZnJlc2hfdG9rZW4YAiABKAkSEgoKZXhwaXJlc19hdBgDIAEoAyIlCg1Mb2dvdXRSZXF1ZXN0EhQKDGFjY2Vzc190b2tlbhgBIAEoCSIQCg5Mb2dvdXRSZXNwb25zZSIlChRWYWxpZGF0ZVRva2VuUmVxdWVzdBINCgV0b2tlbhgBIAEoCSJFChVWYWxpZGF0ZVRva2VuUmVzcG9uc2USDQoFdmFsaWQYASABKAgSDwoHdXNlcl9pZBgCIAEoAxIMCgRyb2xlGAMgASgJMoYCCgtBdXRoU2VydmljZRJICgVMb2dpbhIeLndhcmdhcG9zLmF1dGgudjEuTG9naW5SZXF1ZXN0Gh8ud2FyZ2Fwb3MuYXV0aC52MS5Mb2dpblJlc3BvbnNlEksKBkxvZ291dBIfLndhcmdhcG9zLmF1dGgudjEuTG9nb3V0UmVxdWVzdBogLndhcmdhcG9zLmF1dGgudjEuTG9nb3V0UmVzcG9uc2USYAoNVmFsaWRhdGVUb2tlbhImLndhcmdhcG9zLmF1dGgudjEuVmFsaWRhdGVUb2tlblJlcXVlc3QaJy53YXJnYXBvcy5hdXRoLnYxLlZhbGlkYXRlVG9rZW5SZXNwb25zZUIuWix3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9hdXRoL3YxO2F1dGh2MWIGcHJvdG8z");
+  fileDesc("Cht3YXJnYXBvcy9hdXRoL3YxL2F1dGgucHJvdG8SEHdhcmdhcG9zLmF1dGgudjEiMgoMTG9naW5SZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJIlAKDUxvZ2luUmVzcG9uc2USFAoMYWNjZXNzX3Rva2VuGAEgASgJEhUKDXJlZnJlc2hfdG9rZW4YAiABKAkSEgoKZXhwaXJlc19hdBgDIAEoAyIlCg1Mb2dvdXRSZXF1ZXN0EhQKDGFjY2Vzc190b2tlbhgBIAEoCSIQCg5Mb2dvdXRSZXNwb25zZSIlChRWYWxpZGF0ZVRva2VuUmVxdWVzdBINCgV0b2tlbhgBIAEoCSJFChVWYWxpZGF0ZVRva2VuUmVzcG9uc2USDQoFdmFsaWQYASABKAgSDwoHdXNlcl9pZBgCIAEoAxIMCgRyb2xlGAMgASgJIiwKE1JlZnJlc2hUb2tlblJlcXVlc3QSFQoNcmVmcmVzaF90b2tlbhgBIAEoCSJXChRSZWZyZXNoVG9rZW5SZXNwb25zZRIUCgxhY2Nlc3NfdG9rZW4YASABKAkSFQoNcmVmcmVzaF90b2tlbhgCIAEoCRISCgpleHBpcmVzX2F0GAMgASgDMuUCCgtBdXRoU2VydmljZRJICgVMb2dpbhIeLndhcmdhcG9zLmF1dGgudjEuTG9naW5SZXF1ZXN0Gh8ud2FyZ2Fwb3MuYXV0aC52MS5Mb2dpblJlc3BvbnNlEksKBkxvZ291dBIfLndhcmdhcG9zLmF1dGgudjEuTG9nb3V0UmVxdWVzdBogLndhcmdhcG9zLmF1dGgudjEuTG9nb3V0UmVzcG9uc2USYAoNVmFsaWRhdGVUb2tlbhImLndhcmdhcG9zLmF1dGgudjEuVmFsaWRhdGVUb2tlblJlcXVlc3QaJy53YXJnYXBvcy5hdXRoLnYxLlZhbGlkYXRlVG9rZW5SZXNwb25zZRJdCgxSZWZyZXNoVG9rZW4SJS53YXJnYXBvcy5hdXRoLnYxLlJlZnJlc2hUb2tlblJlcXVlc3QaJi53YXJnYXBvcy5hdXRoLnYxLlJlZnJlc2hUb2tlblJlc3BvbnNlQi5aLHdhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL2F1dGgvdjE7YXV0aHYxYgZwcm90bzM");
 
 /**
  * @generated from message wargapos.auth.v1.LoginRequest
@@ -136,6 +136,50 @@ export const ValidateTokenResponseSchema: GenMessage<ValidateTokenResponse> = /*
   messageDesc(file_wargapos_auth_v1_auth, 5);
 
 /**
+ * @generated from message wargapos.auth.v1.RefreshTokenRequest
+ */
+export type RefreshTokenRequest = Message<"wargapos.auth.v1.RefreshTokenRequest"> & {
+  /**
+   * @generated from field: string refresh_token = 1;
+   */
+  refreshToken: string;
+};
+
+/**
+ * Describes the message wargapos.auth.v1.RefreshTokenRequest.
+ * Use `create(RefreshTokenRequestSchema)` to create a new message.
+ */
+export const RefreshTokenRequestSchema: GenMessage<RefreshTokenRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_auth_v1_auth, 6);
+
+/**
+ * @generated from message wargapos.auth.v1.RefreshTokenResponse
+ */
+export type RefreshTokenResponse = Message<"wargapos.auth.v1.RefreshTokenResponse"> & {
+  /**
+   * @generated from field: string access_token = 1;
+   */
+  accessToken: string;
+
+  /**
+   * @generated from field: string refresh_token = 2;
+   */
+  refreshToken: string;
+
+  /**
+   * @generated from field: int64 expires_at = 3;
+   */
+  expiresAt: bigint;
+};
+
+/**
+ * Describes the message wargapos.auth.v1.RefreshTokenResponse.
+ * Use `create(RefreshTokenResponseSchema)` to create a new message.
+ */
+export const RefreshTokenResponseSchema: GenMessage<RefreshTokenResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_auth_v1_auth, 7);
+
+/**
  * @generated from service wargapos.auth.v1.AuthService
  */
 export const AuthService: GenService<{
@@ -162,6 +206,14 @@ export const AuthService: GenService<{
     methodKind: "unary";
     input: typeof ValidateTokenRequestSchema;
     output: typeof ValidateTokenResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.auth.v1.AuthService.RefreshToken
+   */
+  refreshToken: {
+    methodKind: "unary";
+    input: typeof RefreshTokenRequestSchema;
+    output: typeof RefreshTokenResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_wargapos_auth_v1_auth, 0);

@@ -29,8 +29,8 @@ func (s *TransactionService) ListOrders(
 	if req.Msg.CashierId != 0 {
 		db = db.Where("cashier_id = ?", req.Msg.CashierId)
 	}
-	if req.Msg.StatusFilter != "" {
-		db = db.Where("status = ?", req.Msg.StatusFilter)
+	if req.Msg.StatusFilter != transactionv1.OrderStatus_ORDER_STATUS_UNSPECIFIED {
+		db = db.Where("status = ?", int32(req.Msg.StatusFilter))
 	}
 	if req.Msg.TableId != 0 {
 		db = db.Where("table_id = ?", req.Msg.TableId)

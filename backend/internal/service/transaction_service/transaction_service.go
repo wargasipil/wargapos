@@ -16,6 +16,15 @@ import (
 var ErrCartEmpty = errors.New("cart has no items")
 var ErrCartNotPending = errors.New("cart is not in pending state")
 
+// Package-level status constants for use across all handlers.
+const (
+	statusPending   = int32(transactionv1.OrderStatus_ORDER_STATUS_PENDING)
+	statusPaid      = int32(transactionv1.OrderStatus_ORDER_STATUS_PAID)
+	statusCancelled = int32(transactionv1.OrderStatus_ORDER_STATUS_CANCELLED)
+	statusReady     = int32(transactionv1.OrderStatus_ORDER_STATUS_READY)
+	statusDelivered = int32(transactionv1.OrderStatus_ORDER_STATUS_DELIVERED)
+)
+
 // TransactionService implements transactionv1connect.TransactionServiceHandler directly.
 type TransactionService struct {
 	db          *gorm.DB
@@ -49,7 +58,7 @@ func (s *TransactionService) loadOrder(ctx context.Context, orderID int64) (*mod
 func (s *TransactionService) loadOrderBySession(ctx context.Context, sessionToken string) (*models.Order, error) {
 	var order models.Order
 	if err := s.db.WithContext(ctx).Preload("Items").
-		First(&order, "session_token = ? AND status = 'pending'", sessionToken).Error; err != nil {
+		First(&order, "session_token = ? AND status = ?", sessionToken, statusPending).Error; err != nil {
 		return nil, err
 	}
 	return &order, nil
@@ -97,9 +106,9 @@ func toProtoOrder(o *models.Order) *transactionv1.Order {
 		phoneNumber = *o.PhoneNumber
 	}
 
-	pm := ""
+	var pm transactionv1.PaymentMethod
 	if o.PaymentMethod != nil {
-		pm = *o.PaymentMethod
+		pm = transactionv1.PaymentMethod(*o.PaymentMethod)
 	}
 
 	return &transactionv1.Order{
@@ -107,48 +116,13 @@ func toProtoOrder(o *models.Order) *transactionv1.Order {
 		CashierId:     cashierID,
 		Items:         items,
 		TotalCents:    o.TotalCents,
-		Status:        stringToOrderStatus(o.Status),
+		Status:        transactionv1.OrderStatus(o.Status),
 		CreatedAt:     o.CreatedAt.Unix(),
 		TableId:       tableID,
 		CustomerName:  customerName,
 		PhoneNumber:   phoneNumber,
-		PaymentMethod: stringToPaymentMethod(pm),
+		PaymentMethod: pm,
 		OrderFrom:     transactionv1.OrderFrom(o.OrderFrom),
-	}
-}
-
-func stringToPaymentMethod(s string) transactionv1.PaymentMethod {
-	switch s {
-	case "cash":
-		return transactionv1.PaymentMethod_PAYMENT_METHOD_CASH
-	case "qris":
-		return transactionv1.PaymentMethod_PAYMENT_METHOD_QRIS
-	default:
-		return transactionv1.PaymentMethod_PAYMENT_METHOD_UNSPECIFIED
-	}
-}
-
-func paymentMethodToString(m transactionv1.PaymentMethod) string {
-	switch m {
-	case transactionv1.PaymentMethod_PAYMENT_METHOD_CASH:
-		return "cash"
-	case transactionv1.PaymentMethod_PAYMENT_METHOD_QRIS:
-		return "qris"
-	default:
-		return ""
-	}
-}
-
-func stringToOrderStatus(s string) transactionv1.OrderStatus {
-	switch s {
-	case "pending":
-		return transactionv1.OrderStatus_ORDER_STATUS_PENDING
-	case "paid":
-		return transactionv1.OrderStatus_ORDER_STATUS_PAID
-	case "cancelled":
-		return transactionv1.OrderStatus_ORDER_STATUS_CANCELLED
-	default:
-		return transactionv1.OrderStatus_ORDER_STATUS_UNSPECIFIED
 	}
 }
 

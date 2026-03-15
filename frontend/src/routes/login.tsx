@@ -22,7 +22,7 @@ export function LoginPage() {
     try {
       const res = await authClient.login({ username, password })
       const validate = await authClient.validateToken({ token: res.accessToken })
-      login(res.accessToken, String(validate.userId), validate.role)
+      login(res.accessToken, res.refreshToken, Number(res.expiresAt), String(validate.userId), validate.role)
       navigate({ to: '/' })
     } catch (err: unknown) {
       setError(stripError(err))
@@ -82,7 +82,7 @@ export function LoginPage() {
                 <Alert.Description fontSize="sm">{error}</Alert.Description>
               </Alert.Root>
             )}
-            <Button type="submit" width="full" loading={loading}>
+            <Button type="submit" width="full" colorPalette="blue" loading={loading}>
               Sign In
             </Button>
           </VStack>

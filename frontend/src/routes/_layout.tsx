@@ -1,14 +1,14 @@
 import { Outlet, Link, useNavigate } from '@tanstack/react-router'
 import { Box, Button, Flex, IconButton, Text, VStack, HStack } from '@chakra-ui/react'
-import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
 import { Toaster } from '../components/ui/toaster'
 
 const baseNavItems = [
   { label: 'Dashboard', to: '/', Icon: LayoutDashboard },
   { label: 'POS', to: '/pos', Icon: ShoppingCart },
-  { label: 'Products', to: '/products', Icon: Package },
   { label: 'Orders', to: '/orders', Icon: Receipt },
+  { label: 'Kitchen', to: '/kitchen', Icon: ChefHat },
   { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
@@ -16,6 +16,7 @@ const baseSidebarItems = [
   { label: 'Dashboard', to: '/', Icon: LayoutDashboard, exact: true },
   { label: 'POS / Cashier', to: '/pos', Icon: ShoppingCart },
   { label: 'Orders', to: '/orders', Icon: Receipt },
+  { label: 'Kitchen', to: '/kitchen', Icon: ChefHat },
   { label: 'Products', to: '/products', Icon: Package, exact: true },
   { label: 'Tables', to: '/tables', Icon: LayoutGrid },
   { label: 'Settings', to: '/settings', Icon: Settings },

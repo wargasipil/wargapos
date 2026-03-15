@@ -27,10 +27,10 @@ func (s *TransactionService) AddToCart(
 		// Find or create the pending order identified by session_token.
 		var order models.Order
 		err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
-			First(&order, "session_token = ? AND status = 'pending'", req.Msg.SessionId).Error
+			First(&order, "session_token = ? AND status = ?", req.Msg.SessionId, statusPending).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			token := req.Msg.SessionId
-			order = models.Order{SessionToken: &token, Status: "pending"}
+			order = models.Order{SessionToken: &token, Status: statusPending}
 			if req.Msg.TableId != 0 {
 				tableID := req.Msg.TableId
 				order.TableID = &tableID

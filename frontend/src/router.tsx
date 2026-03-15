@@ -12,9 +12,12 @@ import { ProductEditPage } from './routes/products/edit'
 import { TablesPage } from './routes/tables/index'
 import { MenuPage } from './routes/menu'
 import { OrdersPage } from './routes/orders/index'
+import { OrderDetailPage } from './routes/orders/detail'
 import { ProductDetailPage } from './routes/products/detail'
 import { SettingsPage } from './routes/settings'
 import { UsersPage } from './routes/users/index'
+import { KitchenPage } from './routes/kitchen'
+import { PlaygroundPage } from './routes/playground'
 
 // Root route with devtools
 const rootRoute = createRootRoute({
@@ -98,21 +101,44 @@ const ordersRoute = createRoute({
   component: OrdersPage,
 })
 
+const orderDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/orders/$id',
+  component: OrderDetailPage,
+})
+
 const settingsRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/settings',
   component: SettingsPage,
 })
 
+const kitchenRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/kitchen',
+  component: KitchenPage,
+})
+
 const usersRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/users',
   component: UsersPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin') throw redirect({ to: '/' })
+  },
+})
+
+const playgroundRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/playground',
+  component: PlaygroundPage,
 })
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
   menuRoute,
+  playgroundRoute,
   layoutRoute.addChildren([
     dashboardRoute,
     posRoute,
@@ -121,6 +147,8 @@ const routeTree = rootRoute.addChildren([
     productEditRoute,
     tablesRoute,
     ordersRoute,
+    orderDetailRoute,
+    kitchenRoute,
     productDetailRoute,
     settingsRoute,
     usersRoute,

@@ -1,0 +1,35 @@
+package transaction_service
+
+import (
+	"context"
+	"errors"
+
+	"connectrpc.com/connect"
+
+	transactionv1 "wargapos/backend/gen/wargapos/transaction/v1"
+	"wargapos/backend/internal/models"
+)
+
+func (s *TransactionService) MarkOrderDelivered(
+	ctx context.Context,
+	req *connect.Request[transactionv1.MarkOrderDeliveredRequest],
+) (*connect.Response[transactionv1.MarkOrderDeliveredResponse], error) {
+	if req.Msg.OrderId == 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("order_id is required"))
+	}
+
+	order, err := s.loadOrder(ctx, req.Msg.OrderId)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeNotFound, errors.New("order not found"))
+	}
+	if order.Status != statusReady {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("order is not ready"))
+	}
+
+	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Update("status", statusDelivered).Error; err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	order.Status = statusDelivered
+
+	return connect.NewResponse(&transactionv1.MarkOrderDeliveredResponse{Order: toProtoOrder(order)}), nil
+}

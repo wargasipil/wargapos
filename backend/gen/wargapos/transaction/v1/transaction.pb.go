@@ -77,6 +77,8 @@ const (
 	OrderStatus_ORDER_STATUS_PENDING     OrderStatus = 1
 	OrderStatus_ORDER_STATUS_PAID        OrderStatus = 2
 	OrderStatus_ORDER_STATUS_CANCELLED   OrderStatus = 3
+	OrderStatus_ORDER_STATUS_READY       OrderStatus = 4
+	OrderStatus_ORDER_STATUS_DELIVERED   OrderStatus = 5
 )
 
 // Enum value maps for OrderStatus.
@@ -86,12 +88,16 @@ var (
 		1: "ORDER_STATUS_PENDING",
 		2: "ORDER_STATUS_PAID",
 		3: "ORDER_STATUS_CANCELLED",
+		4: "ORDER_STATUS_READY",
+		5: "ORDER_STATUS_DELIVERED",
 	}
 	OrderStatus_value = map[string]int32{
 		"ORDER_STATUS_UNSPECIFIED": 0,
 		"ORDER_STATUS_PENDING":     1,
 		"ORDER_STATUS_PAID":        2,
 		"ORDER_STATUS_CANCELLED":   3,
+		"ORDER_STATUS_READY":       4,
+		"ORDER_STATUS_DELIVERED":   5,
 	}
 )
 
@@ -1008,7 +1014,7 @@ type ListOrdersRequest struct {
 	Page            int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize        int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	CashierId       int64                  `protobuf:"varint,3,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
-	StatusFilter    string                 `protobuf:"bytes,4,opt,name=status_filter,json=statusFilter,proto3" json:"status_filter,omitempty"`
+	StatusFilter    OrderStatus            `protobuf:"varint,4,opt,name=status_filter,json=statusFilter,proto3,enum=wargapos.transaction.v1.OrderStatus" json:"status_filter,omitempty"`
 	TableId         int64                  `protobuf:"varint,5,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
 	OrderFromFilter OrderFrom              `protobuf:"varint,6,opt,name=order_from_filter,json=orderFromFilter,proto3,enum=wargapos.transaction.v1.OrderFrom" json:"order_from_filter,omitempty"`
 	unknownFields   protoimpl.UnknownFields
@@ -1066,11 +1072,11 @@ func (x *ListOrdersRequest) GetCashierId() int64 {
 	return 0
 }
 
-func (x *ListOrdersRequest) GetStatusFilter() string {
+func (x *ListOrdersRequest) GetStatusFilter() OrderStatus {
 	if x != nil {
 		return x.StatusFilter
 	}
-	return ""
+	return OrderStatus_ORDER_STATUS_UNSPECIFIED
 }
 
 func (x *ListOrdersRequest) GetTableId() int64 {
@@ -1227,6 +1233,270 @@ func (x *MarkOrderPaidResponse) GetOrder() *Order {
 	return nil
 }
 
+type CancelOrderRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OrderId       int64                  `protobuf:"varint,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelOrderRequest) Reset() {
+	*x = CancelOrderRequest{}
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelOrderRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelOrderRequest) ProtoMessage() {}
+
+func (x *CancelOrderRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelOrderRequest.ProtoReflect.Descriptor instead.
+func (*CancelOrderRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_transaction_v1_transaction_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *CancelOrderRequest) GetOrderId() int64 {
+	if x != nil {
+		return x.OrderId
+	}
+	return 0
+}
+
+type CancelOrderResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Order         *Order                 `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CancelOrderResponse) Reset() {
+	*x = CancelOrderResponse{}
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CancelOrderResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CancelOrderResponse) ProtoMessage() {}
+
+func (x *CancelOrderResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CancelOrderResponse.ProtoReflect.Descriptor instead.
+func (*CancelOrderResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_transaction_v1_transaction_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *CancelOrderResponse) GetOrder() *Order {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
+type MarkOrderReadyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OrderId       int64                  `protobuf:"varint,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MarkOrderReadyRequest) Reset() {
+	*x = MarkOrderReadyRequest{}
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MarkOrderReadyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MarkOrderReadyRequest) ProtoMessage() {}
+
+func (x *MarkOrderReadyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MarkOrderReadyRequest.ProtoReflect.Descriptor instead.
+func (*MarkOrderReadyRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_transaction_v1_transaction_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *MarkOrderReadyRequest) GetOrderId() int64 {
+	if x != nil {
+		return x.OrderId
+	}
+	return 0
+}
+
+type MarkOrderReadyResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Order         *Order                 `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MarkOrderReadyResponse) Reset() {
+	*x = MarkOrderReadyResponse{}
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MarkOrderReadyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MarkOrderReadyResponse) ProtoMessage() {}
+
+func (x *MarkOrderReadyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MarkOrderReadyResponse.ProtoReflect.Descriptor instead.
+func (*MarkOrderReadyResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_transaction_v1_transaction_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *MarkOrderReadyResponse) GetOrder() *Order {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
+type MarkOrderDeliveredRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	OrderId       int64                  `protobuf:"varint,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MarkOrderDeliveredRequest) Reset() {
+	*x = MarkOrderDeliveredRequest{}
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MarkOrderDeliveredRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MarkOrderDeliveredRequest) ProtoMessage() {}
+
+func (x *MarkOrderDeliveredRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MarkOrderDeliveredRequest.ProtoReflect.Descriptor instead.
+func (*MarkOrderDeliveredRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_transaction_v1_transaction_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *MarkOrderDeliveredRequest) GetOrderId() int64 {
+	if x != nil {
+		return x.OrderId
+	}
+	return 0
+}
+
+type MarkOrderDeliveredResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Order         *Order                 `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MarkOrderDeliveredResponse) Reset() {
+	*x = MarkOrderDeliveredResponse{}
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MarkOrderDeliveredResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MarkOrderDeliveredResponse) ProtoMessage() {}
+
+func (x *MarkOrderDeliveredResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_transaction_v1_transaction_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MarkOrderDeliveredResponse.ProtoReflect.Descriptor instead.
+func (*MarkOrderDeliveredResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_transaction_v1_transaction_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *MarkOrderDeliveredResponse) GetOrder() *Order {
+	if x != nil {
+		return x.Order
+	}
+	return nil
+}
+
 var File_wargapos_transaction_v1_transaction_proto protoreflect.FileDescriptor
 
 const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
@@ -1302,13 +1572,13 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\x0fGetOrderRequest\x12\x19\n" +
 	"\border_id\x18\x01 \x01(\x03R\aorderId\"H\n" +
 	"\x10GetOrderResponse\x124\n" +
-	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"\xf3\x01\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"\x99\x02\n" +
 	"\x11ListOrdersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"cashier_id\x18\x03 \x01(\x03R\tcashierId\x12#\n" +
-	"\rstatus_filter\x18\x04 \x01(\tR\fstatusFilter\x12\x19\n" +
+	"cashier_id\x18\x03 \x01(\x03R\tcashierId\x12I\n" +
+	"\rstatus_filter\x18\x04 \x01(\x0e2$.wargapos.transaction.v1.OrderStatusR\fstatusFilter\x12\x19\n" +
 	"\btable_id\x18\x05 \x01(\x03R\atableId\x12N\n" +
 	"\x11order_from_filter\x18\x06 \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\x0forderFromFilter\"b\n" +
 	"\x12ListOrdersResponse\x126\n" +
@@ -1317,20 +1587,34 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\x14MarkOrderPaidRequest\x12\x19\n" +
 	"\border_id\x18\x01 \x01(\x03R\aorderId\"M\n" +
 	"\x15MarkOrderPaidResponse\x124\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"/\n" +
+	"\x12CancelOrderRequest\x12\x19\n" +
+	"\border_id\x18\x01 \x01(\x03R\aorderId\"K\n" +
+	"\x13CancelOrderResponse\x124\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"2\n" +
+	"\x15MarkOrderReadyRequest\x12\x19\n" +
+	"\border_id\x18\x01 \x01(\x03R\aorderId\"N\n" +
+	"\x16MarkOrderReadyResponse\x124\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"6\n" +
+	"\x19MarkOrderDeliveredRequest\x12\x19\n" +
+	"\border_id\x18\x01 \x01(\x03R\aorderId\"R\n" +
+	"\x1aMarkOrderDeliveredResponse\x124\n" +
 	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order*a\n" +
 	"\rPaymentMethod\x12\x1e\n" +
 	"\x1aPAYMENT_METHOD_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13PAYMENT_METHOD_CASH\x10\x01\x12\x17\n" +
-	"\x13PAYMENT_METHOD_QRIS\x10\x02*x\n" +
+	"\x13PAYMENT_METHOD_QRIS\x10\x02*\xac\x01\n" +
 	"\vOrderStatus\x12\x1c\n" +
 	"\x18ORDER_STATUS_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14ORDER_STATUS_PENDING\x10\x01\x12\x15\n" +
 	"\x11ORDER_STATUS_PAID\x10\x02\x12\x1a\n" +
-	"\x16ORDER_STATUS_CANCELLED\x10\x03*Q\n" +
+	"\x16ORDER_STATUS_CANCELLED\x10\x03\x12\x16\n" +
+	"\x12ORDER_STATUS_READY\x10\x04\x12\x1a\n" +
+	"\x16ORDER_STATUS_DELIVERED\x10\x05*Q\n" +
 	"\tOrderFrom\x12\x1a\n" +
 	"\x16ORDER_FROM_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10ORDER_FROM_GUEST\x10\x01\x12\x12\n" +
-	"\x0eORDER_FROM_POS\x10\x022\xe1\x06\n" +
+	"\x0eORDER_FROM_POS\x10\x022\xbd\t\n" +
 	"\x12TransactionService\x12b\n" +
 	"\tAddToCart\x12).wargapos.transaction.v1.AddToCartRequest\x1a*.wargapos.transaction.v1.AddToCartResponse\x12q\n" +
 	"\x0eRemoveFromCart\x12..wargapos.transaction.v1.RemoveFromCartRequest\x1a/.wargapos.transaction.v1.RemoveFromCartResponse\x12\\\n" +
@@ -1340,7 +1624,10 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\n" +
 	"ListOrders\x12*.wargapos.transaction.v1.ListOrdersRequest\x1a+.wargapos.transaction.v1.ListOrdersResponse\x12}\n" +
 	"\x12CreatePaymentToken\x122.wargapos.transaction.v1.CreatePaymentTokenRequest\x1a3.wargapos.transaction.v1.CreatePaymentTokenResponse\x12n\n" +
-	"\rMarkOrderPaid\x12-.wargapos.transaction.v1.MarkOrderPaidRequest\x1a..wargapos.transaction.v1.MarkOrderPaidResponseB<Z:wargapos/backend/gen/wargapos/transaction/v1;transactionv1b\x06proto3"
+	"\rMarkOrderPaid\x12-.wargapos.transaction.v1.MarkOrderPaidRequest\x1a..wargapos.transaction.v1.MarkOrderPaidResponse\x12h\n" +
+	"\vCancelOrder\x12+.wargapos.transaction.v1.CancelOrderRequest\x1a,.wargapos.transaction.v1.CancelOrderResponse\x12q\n" +
+	"\x0eMarkOrderReady\x12..wargapos.transaction.v1.MarkOrderReadyRequest\x1a/.wargapos.transaction.v1.MarkOrderReadyResponse\x12}\n" +
+	"\x12MarkOrderDelivered\x122.wargapos.transaction.v1.MarkOrderDeliveredRequest\x1a3.wargapos.transaction.v1.MarkOrderDeliveredResponseB<Z:wargapos/backend/gen/wargapos/transaction/v1;transactionv1b\x06proto3"
 
 var (
 	file_wargapos_transaction_v1_transaction_proto_rawDescOnce sync.Once
@@ -1355,7 +1642,7 @@ func file_wargapos_transaction_v1_transaction_proto_rawDescGZIP() []byte {
 }
 
 var file_wargapos_transaction_v1_transaction_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_wargapos_transaction_v1_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_wargapos_transaction_v1_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_wargapos_transaction_v1_transaction_proto_goTypes = []any{
 	(PaymentMethod)(0),                 // 0: wargapos.transaction.v1.PaymentMethod
 	(OrderStatus)(0),                   // 1: wargapos.transaction.v1.OrderStatus
@@ -1378,6 +1665,12 @@ var file_wargapos_transaction_v1_transaction_proto_goTypes = []any{
 	(*ListOrdersResponse)(nil),         // 18: wargapos.transaction.v1.ListOrdersResponse
 	(*MarkOrderPaidRequest)(nil),       // 19: wargapos.transaction.v1.MarkOrderPaidRequest
 	(*MarkOrderPaidResponse)(nil),      // 20: wargapos.transaction.v1.MarkOrderPaidResponse
+	(*CancelOrderRequest)(nil),         // 21: wargapos.transaction.v1.CancelOrderRequest
+	(*CancelOrderResponse)(nil),        // 22: wargapos.transaction.v1.CancelOrderResponse
+	(*MarkOrderReadyRequest)(nil),      // 23: wargapos.transaction.v1.MarkOrderReadyRequest
+	(*MarkOrderReadyResponse)(nil),     // 24: wargapos.transaction.v1.MarkOrderReadyResponse
+	(*MarkOrderDeliveredRequest)(nil),  // 25: wargapos.transaction.v1.MarkOrderDeliveredRequest
+	(*MarkOrderDeliveredResponse)(nil), // 26: wargapos.transaction.v1.MarkOrderDeliveredResponse
 }
 var file_wargapos_transaction_v1_transaction_proto_depIdxs = []int32{
 	3,  // 0: wargapos.transaction.v1.Order.items:type_name -> wargapos.transaction.v1.OrderItem
@@ -1391,30 +1684,40 @@ var file_wargapos_transaction_v1_transaction_proto_depIdxs = []int32{
 	2,  // 8: wargapos.transaction.v1.CheckoutRequest.order_from:type_name -> wargapos.transaction.v1.OrderFrom
 	4,  // 9: wargapos.transaction.v1.CheckoutResponse.order:type_name -> wargapos.transaction.v1.Order
 	4,  // 10: wargapos.transaction.v1.GetOrderResponse.order:type_name -> wargapos.transaction.v1.Order
-	2,  // 11: wargapos.transaction.v1.ListOrdersRequest.order_from_filter:type_name -> wargapos.transaction.v1.OrderFrom
-	4,  // 12: wargapos.transaction.v1.ListOrdersResponse.orders:type_name -> wargapos.transaction.v1.Order
-	4,  // 13: wargapos.transaction.v1.MarkOrderPaidResponse.order:type_name -> wargapos.transaction.v1.Order
-	5,  // 14: wargapos.transaction.v1.TransactionService.AddToCart:input_type -> wargapos.transaction.v1.AddToCartRequest
-	9,  // 15: wargapos.transaction.v1.TransactionService.RemoveFromCart:input_type -> wargapos.transaction.v1.RemoveFromCartRequest
-	11, // 16: wargapos.transaction.v1.TransactionService.GetCart:input_type -> wargapos.transaction.v1.GetCartRequest
-	13, // 17: wargapos.transaction.v1.TransactionService.Checkout:input_type -> wargapos.transaction.v1.CheckoutRequest
-	15, // 18: wargapos.transaction.v1.TransactionService.GetOrder:input_type -> wargapos.transaction.v1.GetOrderRequest
-	17, // 19: wargapos.transaction.v1.TransactionService.ListOrders:input_type -> wargapos.transaction.v1.ListOrdersRequest
-	6,  // 20: wargapos.transaction.v1.TransactionService.CreatePaymentToken:input_type -> wargapos.transaction.v1.CreatePaymentTokenRequest
-	19, // 21: wargapos.transaction.v1.TransactionService.MarkOrderPaid:input_type -> wargapos.transaction.v1.MarkOrderPaidRequest
-	8,  // 22: wargapos.transaction.v1.TransactionService.AddToCart:output_type -> wargapos.transaction.v1.AddToCartResponse
-	10, // 23: wargapos.transaction.v1.TransactionService.RemoveFromCart:output_type -> wargapos.transaction.v1.RemoveFromCartResponse
-	12, // 24: wargapos.transaction.v1.TransactionService.GetCart:output_type -> wargapos.transaction.v1.GetCartResponse
-	14, // 25: wargapos.transaction.v1.TransactionService.Checkout:output_type -> wargapos.transaction.v1.CheckoutResponse
-	16, // 26: wargapos.transaction.v1.TransactionService.GetOrder:output_type -> wargapos.transaction.v1.GetOrderResponse
-	18, // 27: wargapos.transaction.v1.TransactionService.ListOrders:output_type -> wargapos.transaction.v1.ListOrdersResponse
-	7,  // 28: wargapos.transaction.v1.TransactionService.CreatePaymentToken:output_type -> wargapos.transaction.v1.CreatePaymentTokenResponse
-	20, // 29: wargapos.transaction.v1.TransactionService.MarkOrderPaid:output_type -> wargapos.transaction.v1.MarkOrderPaidResponse
-	22, // [22:30] is the sub-list for method output_type
-	14, // [14:22] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	1,  // 11: wargapos.transaction.v1.ListOrdersRequest.status_filter:type_name -> wargapos.transaction.v1.OrderStatus
+	2,  // 12: wargapos.transaction.v1.ListOrdersRequest.order_from_filter:type_name -> wargapos.transaction.v1.OrderFrom
+	4,  // 13: wargapos.transaction.v1.ListOrdersResponse.orders:type_name -> wargapos.transaction.v1.Order
+	4,  // 14: wargapos.transaction.v1.MarkOrderPaidResponse.order:type_name -> wargapos.transaction.v1.Order
+	4,  // 15: wargapos.transaction.v1.CancelOrderResponse.order:type_name -> wargapos.transaction.v1.Order
+	4,  // 16: wargapos.transaction.v1.MarkOrderReadyResponse.order:type_name -> wargapos.transaction.v1.Order
+	4,  // 17: wargapos.transaction.v1.MarkOrderDeliveredResponse.order:type_name -> wargapos.transaction.v1.Order
+	5,  // 18: wargapos.transaction.v1.TransactionService.AddToCart:input_type -> wargapos.transaction.v1.AddToCartRequest
+	9,  // 19: wargapos.transaction.v1.TransactionService.RemoveFromCart:input_type -> wargapos.transaction.v1.RemoveFromCartRequest
+	11, // 20: wargapos.transaction.v1.TransactionService.GetCart:input_type -> wargapos.transaction.v1.GetCartRequest
+	13, // 21: wargapos.transaction.v1.TransactionService.Checkout:input_type -> wargapos.transaction.v1.CheckoutRequest
+	15, // 22: wargapos.transaction.v1.TransactionService.GetOrder:input_type -> wargapos.transaction.v1.GetOrderRequest
+	17, // 23: wargapos.transaction.v1.TransactionService.ListOrders:input_type -> wargapos.transaction.v1.ListOrdersRequest
+	6,  // 24: wargapos.transaction.v1.TransactionService.CreatePaymentToken:input_type -> wargapos.transaction.v1.CreatePaymentTokenRequest
+	19, // 25: wargapos.transaction.v1.TransactionService.MarkOrderPaid:input_type -> wargapos.transaction.v1.MarkOrderPaidRequest
+	21, // 26: wargapos.transaction.v1.TransactionService.CancelOrder:input_type -> wargapos.transaction.v1.CancelOrderRequest
+	23, // 27: wargapos.transaction.v1.TransactionService.MarkOrderReady:input_type -> wargapos.transaction.v1.MarkOrderReadyRequest
+	25, // 28: wargapos.transaction.v1.TransactionService.MarkOrderDelivered:input_type -> wargapos.transaction.v1.MarkOrderDeliveredRequest
+	8,  // 29: wargapos.transaction.v1.TransactionService.AddToCart:output_type -> wargapos.transaction.v1.AddToCartResponse
+	10, // 30: wargapos.transaction.v1.TransactionService.RemoveFromCart:output_type -> wargapos.transaction.v1.RemoveFromCartResponse
+	12, // 31: wargapos.transaction.v1.TransactionService.GetCart:output_type -> wargapos.transaction.v1.GetCartResponse
+	14, // 32: wargapos.transaction.v1.TransactionService.Checkout:output_type -> wargapos.transaction.v1.CheckoutResponse
+	16, // 33: wargapos.transaction.v1.TransactionService.GetOrder:output_type -> wargapos.transaction.v1.GetOrderResponse
+	18, // 34: wargapos.transaction.v1.TransactionService.ListOrders:output_type -> wargapos.transaction.v1.ListOrdersResponse
+	7,  // 35: wargapos.transaction.v1.TransactionService.CreatePaymentToken:output_type -> wargapos.transaction.v1.CreatePaymentTokenResponse
+	20, // 36: wargapos.transaction.v1.TransactionService.MarkOrderPaid:output_type -> wargapos.transaction.v1.MarkOrderPaidResponse
+	22, // 37: wargapos.transaction.v1.TransactionService.CancelOrder:output_type -> wargapos.transaction.v1.CancelOrderResponse
+	24, // 38: wargapos.transaction.v1.TransactionService.MarkOrderReady:output_type -> wargapos.transaction.v1.MarkOrderReadyResponse
+	26, // 39: wargapos.transaction.v1.TransactionService.MarkOrderDelivered:output_type -> wargapos.transaction.v1.MarkOrderDeliveredResponse
+	29, // [29:40] is the sub-list for method output_type
+	18, // [18:29] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_transaction_v1_transaction_proto_init() }
@@ -1428,7 +1731,7 @@ func file_wargapos_transaction_v1_transaction_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_transaction_v1_transaction_proto_rawDesc), len(file_wargapos_transaction_v1_transaction_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   18,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

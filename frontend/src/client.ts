@@ -1,4 +1,4 @@
-import { createClient, type Interceptor } from '@connectrpc/connect'
+import { Code, ConnectError, createClient, type Interceptor } from '@connectrpc/connect'
 import { createConnectTransport } from '@connectrpc/connect-web'
 import { AuthService }        from './gen/wargapos/auth/v1/auth_pb'
 import { UserService }        from './gen/wargapos/user/v1/user_pb'
@@ -7,25 +7,68 @@ import { TransactionService } from './gen/wargapos/transaction/v1/transaction_pb
 import { TableService }       from './gen/wargapos/table/v1/table_pb'
 import { SettingsService }    from './gen/wargapos/settings/v1/settings_pb'
 import { StockService }      from './gen/wargapos/stock/v1/stock_pb'
+import { PrinterService }   from './gen/wargapos/printer/v1/printer_pb'
 import { useAuthStore } from './store/auth'
 
-// Automatically attach the JWT from the auth store to every request.
-// Public routes on the backend ignore a missing token; this just ensures
-// authenticated routes get the header without each call site needing to add it.
+const baseUrl = import.meta.env.VITE_API_BASE_URL ?? ''
+
+// Raw transport (no interceptors) — used for authClient to avoid circular refresh calls.
+const rawTransport = createConnectTransport({ baseUrl })
+export const authClient = createClient(AuthService, rawTransport)
+
+// Attach JWT to every request.
 const authInterceptor: Interceptor = (next) => (req) => {
   const { token } = useAuthStore.getState()
   if (token) req.header.set('Authorization', `Bearer ${token}`)
   return next(req)
 }
 
+// Proactively refresh the access token when it is within 5 minutes of expiry.
+const refreshInterceptor: Interceptor = (next) => async (req) => {
+  const { token, refreshToken, expiresAt, setTokens, logout } = useAuthStore.getState()
+  if (token && refreshToken && expiresAt) {
+    const secsUntilExpiry = expiresAt - Math.floor(Date.now() / 1000)
+    if (secsUntilExpiry < 5 * 60) {
+      try {
+        const res = await authClient.refreshToken({ refreshToken })
+        setTokens(res.accessToken, res.refreshToken, Number(res.expiresAt))
+      } catch {
+        logout()
+        window.location.href = '/login'
+        return next(req)
+      }
+    }
+  }
+  return next(req)
+}
+
+// Redirect to /login on any Unauthenticated response.
+const unauthInterceptor: Interceptor = (next) => async (req) => {
+  try {
+    return await next(req)
+  } catch (err) {
+    if (err instanceof ConnectError && err.code === Code.Unauthenticated) {
+      useAuthStore.getState().logout()
+      window.location.href = '/login'
+    }
+    throw err
+  }
+}
+
 // In dev, Vite proxies /wargapos/* → http://localhost:8080
 // In production, set VITE_API_BASE_URL to your API endpoint
 const transport = createConnectTransport({
-  baseUrl: import.meta.env.VITE_API_BASE_URL ?? '',
-  interceptors: [authInterceptor],
+  baseUrl,
+  interceptors: [refreshInterceptor, unauthInterceptor, authInterceptor],
 })
 
-export const authClient        = createClient(AuthService, transport)
+// Connector transport — routes to the local printer connector (port 8081 via Vite proxy in dev).
+// In production set VITE_CONNECTOR_BASE_URL to the connector's origin.
+const connectorTransport = createConnectTransport({
+  baseUrl: import.meta.env.VITE_CONNECTOR_BASE_URL ?? '',
+})
+export const printerClient = createClient(PrinterService, connectorTransport)
+
 export const userClient        = createClient(UserService, transport)
 export const productClient     = createClient(ProductService, transport)
 export const transactionClient = createClient(TransactionService, transport)

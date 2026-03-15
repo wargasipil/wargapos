@@ -1,26 +1,35 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
-  Alert, Box, Button, Drawer, Flex, Grid, Heading, HStack, NativeSelect, Separator, Spinner, Text, VStack,
+  Alert, Box, Button, Dialog, Drawer, Field, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, VStack,
 } from '@chakra-ui/react'
+import { Printer } from 'lucide-react'
 import { productClient, transactionClient, tableClient } from '../../client'
+import { TableSelect } from '../../components/shared/TableSelect'
 import { useCartStore } from '../../store/cart'
 import { useAuthStore } from '../../store/auth'
-import { toaster } from '../../components/ui/toaster'
-import { formatPrice } from '../../lib/format'
+import { formatPrice, formatTime } from '../../lib/format'
 import { stripError } from '../../lib/errors'
 import { POSProductCard } from '../../components/shared/POSProductCard'
 import { ProductFilter } from '../../components/shared/ProductFilter'
 import { syncCartToServer } from '../../lib/syncCart'
 import type { Product } from '../../gen/wargapos/product/v1/product_pb'
 import { PaymentMethod, OrderFrom } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import type { Order } from '../../gen/wargapos/transaction/v1/transaction_pb'
+
+type Step = 'browse' | 'receipt'
 
 export function PosPage() {
   const { items, totalCents, sessionId, addItem, removeItem, clear } = useCartStore()
   const { userId } = useAuthStore()
+  const [step, setStep] = useState<Step>('browse')
+  const [receiptOrder, setReceiptOrder] = useState<Order | null>(null)
   const [cartOpen, setCartOpen] = useState(false)
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [customerName, setCustomerName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [tableId, setTableId] = useState<bigint>(0n)
   const [categoryId, setCategoryId] = useState<bigint>(0n)
   const [search, setSearch] = useState('')
@@ -63,11 +72,17 @@ export function PosPage() {
         cashierId: userId ? BigInt(userId) : 0n,
         paymentMethod: PaymentMethod.CASH,
         orderFrom: OrderFrom.POS,
+        customerName: customerName.trim(),
+        phoneNumber: phoneNumber.trim(),
       })
       clear()
       setTableId(0n)
       setCartOpen(false)
-      toaster.create({ title: `Order #${String(res.order?.id)} completed!`, type: 'success', duration: 4000 })
+      setCheckoutOpen(false)
+      setCustomerName('')
+      setPhoneNumber('')
+      setReceiptOrder(res.order ?? null)
+      setStep('receipt')
     } catch (err) {
       setCheckoutError(stripError(err))
     } finally {
@@ -77,6 +92,98 @@ export function PosPage() {
 
   function handleAdd(product: Product) {
     addItem({ productId: product.id, name: product.name, unitPriceCents: product.priceCents })
+  }
+
+  function handleNewOrder() {
+    setReceiptOrder(null)
+    setStep('browse')
+  }
+
+  // ── Receipt screen ───────────────────────────────────────────────────────────
+  if (step === 'receipt' && receiptOrder) {
+    const order = receiptOrder
+    const orderTable = tables.find((t) => t.id === order.tableId)
+    const receiptTotal = order.items.reduce((s, i) => s + i.subtotalCents, 0n)
+
+    return (
+      <Box minH="100svh" bg="gray.50" display="flex" alignItems="center" justifyContent="center" p={4}>
+        <Box bg="white" borderRadius="xl" boxShadow="md" w="full" maxW="420px">
+          {/* Receipt content — also used for print */}
+          <Box className="receipt-print" p={6}>
+            <Text fontWeight="bold" fontSize="lg" textAlign="center">WargaPOS</Text>
+            <Text fontSize="xs" color="gray.500" textAlign="center" mb={4}>Café Point of Sale</Text>
+
+            <HStack justify="space-between" fontSize="sm" mb={1}>
+              <Text color="gray.500">Order</Text>
+              <Text fontWeight="medium">#{String(order.id)}</Text>
+            </HStack>
+            <HStack justify="space-between" fontSize="sm" mb={1}>
+              <Text color="gray.500">Date</Text>
+              <Text>{formatTime(order.createdAt)}</Text>
+            </HStack>
+            <HStack justify="space-between" fontSize="sm" mb={1}>
+              <Text color="gray.500">Table</Text>
+              <Text>{orderTable ? orderTable.name : 'Walk-in'}</Text>
+            </HStack>
+            {order.customerName && (
+              <HStack justify="space-between" fontSize="sm" mb={1}>
+                <Text color="gray.500">Customer</Text>
+                <Text>{order.customerName}</Text>
+              </HStack>
+            )}
+            {order.phoneNumber && (
+              <HStack justify="space-between" fontSize="sm" mb={1}>
+                <Text color="gray.500">Phone</Text>
+                <Text>{order.phoneNumber}</Text>
+              </HStack>
+            )}
+
+            <Separator my={4} />
+
+            <VStack align="stretch" gap={2} mb={4}>
+              {order.items.map((item, i) => (
+                <HStack key={i} justify="space-between" fontSize="sm">
+                  <Box flex={1}>
+                    <Text fontWeight="medium">{item.productName}</Text>
+                    <Text fontSize="xs" color="gray.500">{formatPrice(item.unitPriceCents)} × {item.quantity}</Text>
+                  </Box>
+                  <Text fontWeight="medium">{formatPrice(item.subtotalCents)}</Text>
+                </HStack>
+              ))}
+            </VStack>
+
+            <Separator mb={4} />
+
+            <HStack justify="space-between">
+              <Text fontWeight="bold" fontSize="md">Total</Text>
+              <Text fontWeight="bold" fontSize="xl">{formatPrice(receiptTotal)}</Text>
+            </HStack>
+          </Box>
+
+          {/* Actions — hidden on print */}
+          <Box p={4} borderTop="1px solid" borderColor="gray.100" className="no-print">
+            <HStack gap={3}>
+              <Button flex={1} variant="outline" onClick={() => window.print()}>
+                <Printer size={16} />
+                Print
+              </Button>
+              <Button flex={1} colorPalette="blue" onClick={handleNewOrder}>
+                New Order
+              </Button>
+            </HStack>
+          </Box>
+        </Box>
+
+        {/* Print styles */}
+        <style>{`
+          @media print {
+            body > * { display: none !important; }
+            .receipt-print { display: block !important; }
+            .no-print { display: none !important; }
+          }
+        `}</style>
+      </Box>
+    )
   }
 
   const cartPanel = (
@@ -105,18 +212,11 @@ export function PosPage() {
           <Text fontWeight="bold">Total</Text>
           <Text fontWeight="bold" fontSize="lg">{formatPrice(totalCents)}</Text>
         </HStack>
-        {checkoutError && (
-          <Alert.Root status="error" borderRadius="md" mb={2}>
-            <Alert.Indicator />
-            <Alert.Description fontSize="sm">{checkoutError}</Alert.Description>
-          </Alert.Root>
-        )}
         <Button
           width="full"
           colorPalette="blue"
           disabled={items.length === 0}
-          loading={checkoutLoading}
-          onClick={handleCheckout}
+          onClick={() => { setCheckoutError(null); setCheckoutOpen(true) }}
         >
           Checkout
         </Button>
@@ -138,18 +238,12 @@ export function PosPage() {
             onSearchChange={setSearch}
             onReset={() => { setCategoryId(0n); setSearch('') }}
           />
-          <NativeSelect.Root size="sm" w="160px">
-            <NativeSelect.Field
-              value={String(tableId)}
-              onChange={(e) => setTableId(BigInt(e.target.value))}
-            >
-              <option value="0">Walk-in</option>
-              {tables.map((t) => (
-                <option key={String(t.id)} value={String(t.id)}>{t.name}</option>
-              ))}
-            </NativeSelect.Field>
-            <NativeSelect.Indicator />
-          </NativeSelect.Root>
+          <TableSelect
+            tables={tables}
+            value={tableId}
+            onChange={setTableId}
+            placeholder="Walk-in"
+          />
         </HStack>
         {isLoading ? (
           <Flex justify="center" mt={12}><Spinner /></Flex>
@@ -161,6 +255,7 @@ export function PosPage() {
                 name={p.name}
                 imageUrl={p.imageUrl}
                 priceCents={p.priceCents}
+                stockQty={p.stockQty}
                 qtyInCart={items.find((i) => i.productId === p.id)?.qty}
                 onClick={() => handleAdd(p)}
               />
@@ -220,6 +315,52 @@ export function PosPage() {
         </Box>
         {cartPanel}
       </Box>
+
+      {/* Customer info dialog */}
+      <Dialog.Root open={checkoutOpen} onOpenChange={(d) => setCheckoutOpen(d.open)}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Customer Info</Dialog.Title>
+              <Text fontSize="xs" color="gray.500">Optional — leave blank for walk-in</Text>
+            </Dialog.Header>
+            <Dialog.Body>
+              <VStack gap={4}>
+                <Field.Root w="full">
+                  <Field.Label>Customer Name</Field.Label>
+                  <Input
+                    placeholder="e.g. Budi"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                  />
+                </Field.Root>
+                <Field.Root w="full">
+                  <Field.Label>Phone Number</Field.Label>
+                  <Input
+                    type="tel"
+                    placeholder="e.g. 08123..."
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                  />
+                </Field.Root>
+                {checkoutError && (
+                  <Alert.Root status="error" borderRadius="md" w="full">
+                    <Alert.Indicator />
+                    <Alert.Description fontSize="sm">{checkoutError}</Alert.Description>
+                  </Alert.Root>
+                )}
+              </VStack>
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Button variant="outline" onClick={() => setCheckoutOpen(false)}>Cancel</Button>
+              <Button colorPalette="blue" loading={checkoutLoading} onClick={handleCheckout}>
+                Confirm Checkout
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
     </Flex>
   )
 }

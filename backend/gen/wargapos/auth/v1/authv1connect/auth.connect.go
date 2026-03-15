@@ -40,6 +40,9 @@ const (
 	// AuthServiceValidateTokenProcedure is the fully-qualified name of the AuthService's ValidateToken
 	// RPC.
 	AuthServiceValidateTokenProcedure = "/wargapos.auth.v1.AuthService/ValidateToken"
+	// AuthServiceRefreshTokenProcedure is the fully-qualified name of the AuthService's RefreshToken
+	// RPC.
+	AuthServiceRefreshTokenProcedure = "/wargapos.auth.v1.AuthService/RefreshToken"
 )
 
 // AuthServiceClient is a client for the wargapos.auth.v1.AuthService service.
@@ -47,6 +50,7 @@ type AuthServiceClient interface {
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
 	Logout(context.Context, *connect.Request[v1.LogoutRequest]) (*connect.Response[v1.LogoutResponse], error)
 	ValidateToken(context.Context, *connect.Request[v1.ValidateTokenRequest]) (*connect.Response[v1.ValidateTokenResponse], error)
+	RefreshToken(context.Context, *connect.Request[v1.RefreshTokenRequest]) (*connect.Response[v1.RefreshTokenResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the wargapos.auth.v1.AuthService service. By
@@ -78,6 +82,12 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("ValidateToken")),
 			connect.WithClientOptions(opts...),
 		),
+		refreshToken: connect.NewClient[v1.RefreshTokenRequest, v1.RefreshTokenResponse](
+			httpClient,
+			baseURL+AuthServiceRefreshTokenProcedure,
+			connect.WithSchema(authServiceMethods.ByName("RefreshToken")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -86,6 +96,7 @@ type authServiceClient struct {
 	login         *connect.Client[v1.LoginRequest, v1.LoginResponse]
 	logout        *connect.Client[v1.LogoutRequest, v1.LogoutResponse]
 	validateToken *connect.Client[v1.ValidateTokenRequest, v1.ValidateTokenResponse]
+	refreshToken  *connect.Client[v1.RefreshTokenRequest, v1.RefreshTokenResponse]
 }
 
 // Login calls wargapos.auth.v1.AuthService.Login.
@@ -103,11 +114,17 @@ func (c *authServiceClient) ValidateToken(ctx context.Context, req *connect.Requ
 	return c.validateToken.CallUnary(ctx, req)
 }
 
+// RefreshToken calls wargapos.auth.v1.AuthService.RefreshToken.
+func (c *authServiceClient) RefreshToken(ctx context.Context, req *connect.Request[v1.RefreshTokenRequest]) (*connect.Response[v1.RefreshTokenResponse], error) {
+	return c.refreshToken.CallUnary(ctx, req)
+}
+
 // AuthServiceHandler is an implementation of the wargapos.auth.v1.AuthService service.
 type AuthServiceHandler interface {
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
 	Logout(context.Context, *connect.Request[v1.LogoutRequest]) (*connect.Response[v1.LogoutResponse], error)
 	ValidateToken(context.Context, *connect.Request[v1.ValidateTokenRequest]) (*connect.Response[v1.ValidateTokenResponse], error)
+	RefreshToken(context.Context, *connect.Request[v1.RefreshTokenRequest]) (*connect.Response[v1.RefreshTokenResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -135,6 +152,12 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("ValidateToken")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceRefreshTokenHandler := connect.NewUnaryHandler(
+		AuthServiceRefreshTokenProcedure,
+		svc.RefreshToken,
+		connect.WithSchema(authServiceMethods.ByName("RefreshToken")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.auth.v1.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceLoginProcedure:
@@ -143,6 +166,8 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceLogoutHandler.ServeHTTP(w, r)
 		case AuthServiceValidateTokenProcedure:
 			authServiceValidateTokenHandler.ServeHTTP(w, r)
+		case AuthServiceRefreshTokenProcedure:
+			authServiceRefreshTokenHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -162,4 +187,8 @@ func (UnimplementedAuthServiceHandler) Logout(context.Context, *connect.Request[
 
 func (UnimplementedAuthServiceHandler) ValidateToken(context.Context, *connect.Request[v1.ValidateTokenRequest]) (*connect.Response[v1.ValidateTokenResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.auth.v1.AuthService.ValidateToken is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) RefreshToken(context.Context, *connect.Request[v1.RefreshTokenRequest]) (*connect.Response[v1.RefreshTokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.auth.v1.AuthService.RefreshToken is not implemented"))
 }

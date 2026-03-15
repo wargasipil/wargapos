@@ -27,6 +27,9 @@ backend-build: ## Build the Go server binary to backend/bin/server
 backend-run: ## Run the Go server (set DB_SKIP=1 to skip DB connection)
 	cd $(BACKEND_DIR) && go run ./cmd/server
 
+connector-run: ## Run the printer connector on :8081 (set PRINTER_ADDRESS=ip:9100)
+	cd $(BACKEND_DIR) && go run ./cmd/connector
+
 backend-test: ## Run Go tests
 	cd $(BACKEND_DIR) && go test ./...
 
