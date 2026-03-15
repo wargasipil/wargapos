@@ -677,6 +677,94 @@ func (x *ListUsersResponse) GetTotal() int32 {
 	return 0
 }
 
+type ChangePasswordRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	CurrentPassword string                 `protobuf:"bytes,1,opt,name=current_password,json=currentPassword,proto3" json:"current_password,omitempty"`
+	NewPassword     string                 `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ChangePasswordRequest) Reset() {
+	*x = ChangePasswordRequest{}
+	mi := &file_wargapos_user_v1_user_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangePasswordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangePasswordRequest) ProtoMessage() {}
+
+func (x *ChangePasswordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_user_v1_user_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangePasswordRequest.ProtoReflect.Descriptor instead.
+func (*ChangePasswordRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_user_v1_user_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ChangePasswordRequest) GetCurrentPassword() string {
+	if x != nil {
+		return x.CurrentPassword
+	}
+	return ""
+}
+
+func (x *ChangePasswordRequest) GetNewPassword() string {
+	if x != nil {
+		return x.NewPassword
+	}
+	return ""
+}
+
+type ChangePasswordResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChangePasswordResponse) Reset() {
+	*x = ChangePasswordResponse{}
+	mi := &file_wargapos_user_v1_user_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangePasswordResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangePasswordResponse) ProtoMessage() {}
+
+func (x *ChangePasswordResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_user_v1_user_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangePasswordResponse.ProtoReflect.Descriptor instead.
+func (*ChangePasswordResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_user_v1_user_proto_rawDescGZIP(), []int{12}
+}
+
 var File_wargapos_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_wargapos_user_v1_user_proto_rawDesc = "" +
@@ -718,13 +806,17 @@ const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\"W\n" +
 	"\x11ListUsersResponse\x12,\n" +
 	"\x05users\x18\x01 \x03(\v2\x16.wargapos.user.v1.UserR\x05users\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total*P\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"e\n" +
+	"\x15ChangePasswordRequest\x12)\n" +
+	"\x10current_password\x18\x01 \x01(\tR\x0fcurrentPassword\x12!\n" +
+	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\"\x18\n" +
+	"\x16ChangePasswordResponse*P\n" +
 	"\x04Role\x12\x14\n" +
 	"\x10ROLE_UNSPECIFIED\x10\x00\x12\x0e\n" +
 	"\n" +
 	"ROLE_ADMIN\x10\x01\x12\x10\n" +
 	"\fROLE_CASHIER\x10\x02\x12\x10\n" +
-	"\fROLE_MANAGER\x10\x032\xbe\x03\n" +
+	"\fROLE_MANAGER\x10\x032\xa3\x04\n" +
 	"\vUserService\x12W\n" +
 	"\n" +
 	"CreateUser\x12#.wargapos.user.v1.CreateUserRequest\x1a$.wargapos.user.v1.CreateUserResponse\x12N\n" +
@@ -733,7 +825,8 @@ const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"UpdateUser\x12#.wargapos.user.v1.UpdateUserRequest\x1a$.wargapos.user.v1.UpdateUserResponse\x12W\n" +
 	"\n" +
 	"DeleteUser\x12#.wargapos.user.v1.DeleteUserRequest\x1a$.wargapos.user.v1.DeleteUserResponse\x12T\n" +
-	"\tListUsers\x12\".wargapos.user.v1.ListUsersRequest\x1a#.wargapos.user.v1.ListUsersResponseB.Z,wargapos/backend/gen/wargapos/user/v1;userv1b\x06proto3"
+	"\tListUsers\x12\".wargapos.user.v1.ListUsersRequest\x1a#.wargapos.user.v1.ListUsersResponse\x12c\n" +
+	"\x0eChangePassword\x12'.wargapos.user.v1.ChangePasswordRequest\x1a(.wargapos.user.v1.ChangePasswordResponseB.Z,wargapos/backend/gen/wargapos/user/v1;userv1b\x06proto3"
 
 var (
 	file_wargapos_user_v1_user_proto_rawDescOnce sync.Once
@@ -748,20 +841,22 @@ func file_wargapos_user_v1_user_proto_rawDescGZIP() []byte {
 }
 
 var file_wargapos_user_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_wargapos_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_wargapos_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_wargapos_user_v1_user_proto_goTypes = []any{
-	(Role)(0),                  // 0: wargapos.user.v1.Role
-	(*User)(nil),               // 1: wargapos.user.v1.User
-	(*CreateUserRequest)(nil),  // 2: wargapos.user.v1.CreateUserRequest
-	(*CreateUserResponse)(nil), // 3: wargapos.user.v1.CreateUserResponse
-	(*GetUserRequest)(nil),     // 4: wargapos.user.v1.GetUserRequest
-	(*GetUserResponse)(nil),    // 5: wargapos.user.v1.GetUserResponse
-	(*UpdateUserRequest)(nil),  // 6: wargapos.user.v1.UpdateUserRequest
-	(*UpdateUserResponse)(nil), // 7: wargapos.user.v1.UpdateUserResponse
-	(*DeleteUserRequest)(nil),  // 8: wargapos.user.v1.DeleteUserRequest
-	(*DeleteUserResponse)(nil), // 9: wargapos.user.v1.DeleteUserResponse
-	(*ListUsersRequest)(nil),   // 10: wargapos.user.v1.ListUsersRequest
-	(*ListUsersResponse)(nil),  // 11: wargapos.user.v1.ListUsersResponse
+	(Role)(0),                      // 0: wargapos.user.v1.Role
+	(*User)(nil),                   // 1: wargapos.user.v1.User
+	(*CreateUserRequest)(nil),      // 2: wargapos.user.v1.CreateUserRequest
+	(*CreateUserResponse)(nil),     // 3: wargapos.user.v1.CreateUserResponse
+	(*GetUserRequest)(nil),         // 4: wargapos.user.v1.GetUserRequest
+	(*GetUserResponse)(nil),        // 5: wargapos.user.v1.GetUserResponse
+	(*UpdateUserRequest)(nil),      // 6: wargapos.user.v1.UpdateUserRequest
+	(*UpdateUserResponse)(nil),     // 7: wargapos.user.v1.UpdateUserResponse
+	(*DeleteUserRequest)(nil),      // 8: wargapos.user.v1.DeleteUserRequest
+	(*DeleteUserResponse)(nil),     // 9: wargapos.user.v1.DeleteUserResponse
+	(*ListUsersRequest)(nil),       // 10: wargapos.user.v1.ListUsersRequest
+	(*ListUsersResponse)(nil),      // 11: wargapos.user.v1.ListUsersResponse
+	(*ChangePasswordRequest)(nil),  // 12: wargapos.user.v1.ChangePasswordRequest
+	(*ChangePasswordResponse)(nil), // 13: wargapos.user.v1.ChangePasswordResponse
 }
 var file_wargapos_user_v1_user_proto_depIdxs = []int32{
 	0,  // 0: wargapos.user.v1.User.role:type_name -> wargapos.user.v1.Role
@@ -776,13 +871,15 @@ var file_wargapos_user_v1_user_proto_depIdxs = []int32{
 	6,  // 9: wargapos.user.v1.UserService.UpdateUser:input_type -> wargapos.user.v1.UpdateUserRequest
 	8,  // 10: wargapos.user.v1.UserService.DeleteUser:input_type -> wargapos.user.v1.DeleteUserRequest
 	10, // 11: wargapos.user.v1.UserService.ListUsers:input_type -> wargapos.user.v1.ListUsersRequest
-	3,  // 12: wargapos.user.v1.UserService.CreateUser:output_type -> wargapos.user.v1.CreateUserResponse
-	5,  // 13: wargapos.user.v1.UserService.GetUser:output_type -> wargapos.user.v1.GetUserResponse
-	7,  // 14: wargapos.user.v1.UserService.UpdateUser:output_type -> wargapos.user.v1.UpdateUserResponse
-	9,  // 15: wargapos.user.v1.UserService.DeleteUser:output_type -> wargapos.user.v1.DeleteUserResponse
-	11, // 16: wargapos.user.v1.UserService.ListUsers:output_type -> wargapos.user.v1.ListUsersResponse
-	12, // [12:17] is the sub-list for method output_type
-	7,  // [7:12] is the sub-list for method input_type
+	12, // 12: wargapos.user.v1.UserService.ChangePassword:input_type -> wargapos.user.v1.ChangePasswordRequest
+	3,  // 13: wargapos.user.v1.UserService.CreateUser:output_type -> wargapos.user.v1.CreateUserResponse
+	5,  // 14: wargapos.user.v1.UserService.GetUser:output_type -> wargapos.user.v1.GetUserResponse
+	7,  // 15: wargapos.user.v1.UserService.UpdateUser:output_type -> wargapos.user.v1.UpdateUserResponse
+	9,  // 16: wargapos.user.v1.UserService.DeleteUser:output_type -> wargapos.user.v1.DeleteUserResponse
+	11, // 17: wargapos.user.v1.UserService.ListUsers:output_type -> wargapos.user.v1.ListUsersResponse
+	13, // 18: wargapos.user.v1.UserService.ChangePassword:output_type -> wargapos.user.v1.ChangePasswordResponse
+	13, // [13:19] is the sub-list for method output_type
+	7,  // [7:13] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
 	7,  // [7:7] is the sub-list for extension extendee
 	0,  // [0:7] is the sub-list for field type_name
@@ -799,7 +896,7 @@ func file_wargapos_user_v1_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_user_v1_user_proto_rawDesc), len(file_wargapos_user_v1_user_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   11,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

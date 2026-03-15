@@ -5,17 +5,19 @@ import (
 
 	userv1 "wargapos/backend/gen/wargapos/user/v1"
 	"wargapos/backend/gen/wargapos/user/v1/userv1connect"
+	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/models"
 )
 
 // UserService implements userv1connect.UserServiceHandler directly.
 type UserService struct {
-	db *gorm.DB
+	db        *gorm.DB
+	jwtSecret []byte
 }
 
 // NewUserService is the Wire provider constructor.
-func NewUserService(db *gorm.DB) *UserService {
-	return &UserService{db: db}
+func NewUserService(db *gorm.DB, authCfg config.AuthConfig) *UserService {
+	return &UserService{db: db, jwtSecret: []byte(authCfg.JWTSecret)}
 }
 
 var _ userv1connect.UserServiceHandler = (*UserService)(nil)

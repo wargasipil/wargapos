@@ -32,8 +32,19 @@ type Product struct {
 	IsActive    bool    `gorm:"not null;default:true"`
 	SKU         string  `gorm:"uniqueIndex;not null;size:100;column:sku"`
 	ImageURL    *string `gorm:"column:image_url"`
+	StockQty    int32   `gorm:"column:stock_qty;not null;default:0"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+}
+
+type StockMovement struct {
+	ID        int64  `gorm:"primaryKey;autoIncrement"`
+	ProductID int64  `gorm:"column:product_id;not null"`
+	Delta     int32  `gorm:"column:delta;not null"`
+	Reason    string `gorm:"column:reason;not null"`
+	Note      string `gorm:"column:note;not null;default:''"`
+	CreatedBy *int64 `gorm:"column:created_by"`
+	CreatedAt time.Time
 }
 
 type Order struct {
@@ -70,4 +81,12 @@ type OrderItem struct {
 	SubtotalCents  int64   `gorm:"not null"`
 	Notes          *string `gorm:"column:notes"`
 	CreatedAt      time.Time
+}
+
+type AppSettings struct {
+	ID                  int    `gorm:"primaryKey;autoIncrement"`
+	MidtransServerKey   string `gorm:"column:midtrans_server_key;not null;default:''"`
+	MidtransClientKey   string `gorm:"column:midtrans_client_key;not null;default:''"`
+	MidtransEnvironment string `gorm:"column:midtrans_environment;not null;default:'sandbox'"`
+	UpdatedAt           time.Time
 }

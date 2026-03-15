@@ -39,6 +39,7 @@ func toProtoProduct(p *models.Product) *productv1.Product {
 		IsActive:    p.IsActive,
 		Sku:         p.SKU,
 		ImageUrl:    imageURL,
+		StockQty:    p.StockQty,
 	}
 }
 

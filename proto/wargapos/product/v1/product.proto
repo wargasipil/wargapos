@@ -19,6 +19,7 @@ message Product {
   string sku         = 7;
   string image_url   = 8;
   int64  cogs_cents  = 9;
+  int32  stock_qty   = 10;
 }
 
 message CreateProductRequest {
@@ -40,6 +41,7 @@ message ListProductsRequest {
   int32 page        = 1;
   int32 page_size   = 2;
   int64 category_id = 3;
+  bool  active_only = 4; // when true, only return is_active=true products
 }
 
 message ListProductsResponse {

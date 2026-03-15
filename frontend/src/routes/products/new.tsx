@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
-import { productClient, uploadFile } from '../../client'
+import { productClient, stockClient, uploadFile } from '../../client'
 import { useAuthStore } from '../../store/auth'
 import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
@@ -22,11 +22,13 @@ interface ProductForm {
 
 const emptyForm: ProductForm = { name: '', description: '', categoryId: '', priceCents: '', cogsCents: '', sku: '', imageUrl: '' }
 
+
 export function ProductNewPage() {
   const qc = useQueryClient()
   const navigate = useNavigate()
   const token = useAuthStore((s) => s.token) ?? ''
   const [form, setForm] = useState<ProductForm>(emptyForm)
+  const [initialStock, setInitialStock] = useState('')
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState('')
 
@@ -61,7 +63,16 @@ export function ProductNewPage() {
       sku: form.sku,
       imageUrl: form.imageUrl,
     }),
-    onSuccess: () => {
+    onSuccess: async (res) => {
+      const qty = parseInt(initialStock || '0', 10)
+      if (qty > 0 && res.product) {
+        try {
+          await stockClient.adjustStock(
+            { productId: res.product.id, delta: qty, reason: 'restock', note: 'Initial stock' },
+            { headers: { Authorization: `Bearer ${token}` } },
+          )
+        } catch { /* non-fatal */ }
+      }
       qc.invalidateQueries({ queryKey: ['products'] })
       toaster.create({ title: 'Product created', type: 'success', duration: 3000 })
       navigate({ to: '/products' })
@@ -145,6 +156,17 @@ export function ProductNewPage() {
             value={form.cogsCents}
             onChange={(e) => setForm({ ...form, cogsCents: e.target.value })}
             placeholder="0"
+          />
+        </Field.Root>
+
+        <Field.Root>
+          <Field.Label>Initial Stock</Field.Label>
+          <Input
+            type="number"
+            value={initialStock}
+            onChange={(e) => setInitialStock(e.target.value)}
+            placeholder="0"
+            min={0}
           />
         </Field.Root>
 

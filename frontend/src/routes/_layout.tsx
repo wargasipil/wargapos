@@ -1,6 +1,6 @@
 import { Outlet, Link, useNavigate } from '@tanstack/react-router'
 import { Box, Button, Flex, IconButton, Text, VStack, HStack } from '@chakra-ui/react'
-import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, Tag, LayoutGrid } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, Tag, LayoutGrid, Settings } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
 import { Toaster } from '../components/ui/toaster'
 
@@ -9,6 +9,7 @@ const navItems = [
   { label: 'POS', to: '/pos', Icon: ShoppingCart },
   { label: 'Products', to: '/products', Icon: Package },
   { label: 'Orders', to: '/orders', Icon: Receipt },
+  { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
 const sidebarItems = [
@@ -18,6 +19,7 @@ const sidebarItems = [
   { label: 'Products', to: '/products', Icon: Package, exact: true },
   { label: 'Categories', to: '/products/categories', Icon: Tag },
   { label: 'Tables', to: '/tables', Icon: LayoutGrid },
+  { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
 export function ProtectedLayout() {

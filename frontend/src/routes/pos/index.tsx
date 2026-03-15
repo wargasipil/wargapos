@@ -9,7 +9,9 @@ import { useAuthStore } from '../../store/auth'
 import { toaster } from '../../components/ui/toaster'
 import { formatPrice } from '../../lib/format'
 import { stripError } from '../../lib/errors'
-import { ProductImage } from '../../components/ProductImage'
+import { MenuProductCard } from '../../components/shared/MenuProductCard'
+import { ProductFilter } from '../../components/shared/ProductFilter'
+import { syncCartToServer } from '../../lib/syncCart'
 import type { Product } from '../../gen/wargapos/product/v1/product_pb'
 import { PaymentMethod, OrderFrom } from '../../gen/wargapos/transaction/v1/transaction_pb'
 
@@ -20,10 +22,17 @@ export function PosPage() {
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [tableId, setTableId] = useState<bigint>(0n)
+  const [categoryId, setCategoryId] = useState<bigint>(0n)
+  const [search, setSearch] = useState('')
 
   const { data, isLoading } = useQuery({
-    queryKey: ['products'],
-    queryFn: () => productClient.listProducts({ page: 1, pageSize: 50, categoryId: 0n }),
+    queryKey: ['pos-products'],
+    queryFn: () => productClient.listProducts({ page: 1, pageSize: 200, categoryId: 0n }),
+  })
+
+  const { data: catData } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => productClient.listCategories({}),
   })
 
   const { data: tableData } = useQuery({
@@ -32,23 +41,23 @@ export function PosPage() {
   })
 
   const tables = tableData?.tables ?? []
+  const categories = catData?.categories ?? []
   const selectedTable = tables.find((t) => t.id === tableId)
   const tableLabel = selectedTable ? selectedTable.name : 'Walk-in'
+
+  const allProducts = (data?.products ?? []).filter((p) => p.isActive)
+  const products = allProducts.filter((p) => {
+    const matchesCategory = categoryId === 0n || p.categoryId === categoryId
+    const matchesSearch = search === '' || p.name.toLowerCase().includes(search.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
 
   async function handleCheckout() {
     if (items.length === 0) return
     setCheckoutLoading(true)
     setCheckoutError(null)
     try {
-      for (const item of items) {
-        await transactionClient.addToCart({
-          sessionId,
-          productId: item.productId,
-          quantity: item.qty,
-          tableId,
-          notes: '',
-        })
-      }
+      await syncCartToServer(sessionId, tableId, items.map((i) => ({ productId: i.productId, qty: i.qty })))
       const res = await transactionClient.checkout({
         sessionId,
         cashierId: userId ? BigInt(userId) : 0n,
@@ -69,8 +78,6 @@ export function PosPage() {
   function handleAdd(product: Product) {
     addItem({ productId: product.id, name: product.name, unitPriceCents: product.priceCents })
   }
-
-  const products = data?.products ?? []
 
   const cartPanel = (
     <>
@@ -123,6 +130,14 @@ export function PosPage() {
       <Box flex={1} p={{ base: 3, md: 6 }} overflow="auto" pb={{ base: '80px', md: 6 }}>
         <HStack mb={4} gap={3} align="center" wrap="wrap">
           <Heading size="md" flex={1}>Products</Heading>
+          <ProductFilter
+            categories={categories}
+            categoryId={categoryId}
+            search={search}
+            onCategoryChange={setCategoryId}
+            onSearchChange={setSearch}
+            onReset={() => { setCategoryId(0n); setSearch('') }}
+          />
           <NativeSelect.Root size="sm" w="160px">
             <NativeSelect.Field
               value={String(tableId)}
@@ -141,24 +156,14 @@ export function PosPage() {
         ) : (
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(auto-fill, minmax(160px, 1fr))' }} gap={{ base: 3, md: 4 }}>
             {products.map((p) => (
-              <Box
+              <MenuProductCard
                 key={String(p.id)}
-                bg="white"
-                borderRadius="lg"
-                overflow="hidden"
-                boxShadow="sm"
-                cursor="pointer"
-                transition="all 0.15s"
-                _hover={{ boxShadow: 'md', transform: 'translateY(-1px)' }}
-                _active={{ opacity: 0.85 }}
+                name={p.name}
+                imageUrl={p.imageUrl}
+                priceCents={p.priceCents}
+                qtyInCart={items.find((i) => i.productId === p.id)?.qty}
                 onClick={() => handleAdd(p)}
-              >
-                <ProductImage src={p.imageUrl} />
-                <Box p={3}>
-                  <Text fontWeight="semibold" fontSize="sm" mb={1} lineClamp={2}>{p.name}</Text>
-                  <Text fontWeight="bold" color="blue.600" fontSize="sm">{formatPrice(p.priceCents)}</Text>
-                </Box>
-              </Box>
+              />
             ))}
             {products.length === 0 && (
               <Text color="gray.400" fontSize="sm">No products found.</Text>

@@ -46,7 +46,10 @@
       "Bash(find d:/research/wargapos/frontend/src -name *login* -o -name *routes*)",
       "Bash(npm install:*)",
       "Bash(make proto-gen:*)",
-      "Bash(npx @chakra-ui/cli snippet add toaster)"
+      "Bash(npx @chakra-ui/cli snippet add toaster)",
+      "Bash(wc -l /d/research/wargapos/frontend/src/routes/*.tsx /d/research/wargapos/frontend/src/routes/*/*.tsx)",
+      "Bash(find d:/research/wargapos/frontend/node_modules/@chakra-ui -name *tab* -type f)",
+      "Bash(node -e \"const l = require\\(''lucide-react''\\); console.log\\(Object.keys\\(l\\).filter\\(k => k.toLowerCase\\(\\).includes\\(''image''\\)\\)\\)\")"
     ]
   },
   "enableAllProjectMcpServers": true,

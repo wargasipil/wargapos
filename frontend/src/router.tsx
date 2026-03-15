@@ -14,6 +14,7 @@ import { TablesPage } from './routes/tables/index'
 import { MenuPage } from './routes/menu'
 import { OrdersPage } from './routes/orders/index'
 import { ProductDetailPage } from './routes/products/detail'
+import { SettingsPage } from './routes/settings'
 
 // Root route with devtools
 const rootRoute = createRootRoute({
@@ -34,7 +35,7 @@ const loginRoute = createRoute({
 
 const menuRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/menu',
+  path: '/guest_checkout',
   component: MenuPage,
 })
 
@@ -103,6 +104,12 @@ const ordersRoute = createRoute({
   component: OrdersPage,
 })
 
+const settingsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/settings',
+  component: SettingsPage,
+})
+
 const routeTree = rootRoute.addChildren([
   loginRoute,
   menuRoute,
@@ -116,6 +123,7 @@ const routeTree = rootRoute.addChildren([
     tablesRoute,
     ordersRoute,
     productDetailRoute,
+    settingsRoute,
   ]),
 ])
 

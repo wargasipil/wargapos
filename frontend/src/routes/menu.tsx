@@ -2,15 +2,16 @@ import { useRef, useState } from 'react'
 import { useSearch } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import {
-  Alert, Box, Button, Drawer, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, VStack,
+  Alert, Box, Button, Drawer, Field, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, VStack,
 } from '@chakra-ui/react'
-import { productClient, tableClient, transactionClient } from '../client'
-import { CategorySelect } from '../components/CategorySelect'
+import { productClient, settingsClient, tableClient, transactionClient } from '../client'
 import type { Product } from '../gen/wargapos/product/v1/product_pb'
 import { OrderFrom, PaymentMethod } from '../gen/wargapos/transaction/v1/transaction_pb'
 import { formatPrice } from '../lib/format'
 import { stripError } from '../lib/errors'
-import { ProductImage } from '../components/ProductImage'
+import { MenuProductCard } from '../components/shared/MenuProductCard'
+import { ProductFilter } from '../components/shared/ProductFilter'
+import { syncCartToServer } from '../lib/syncCart'
 import { useAuthStore } from '../store/auth'
 
 function generateId(): string {
@@ -45,13 +46,14 @@ export function MenuPage() {
   const [submitting, setSubmitting] = useState(false)
   const [successCart, setSuccessCart] = useState<CartItem[]>([])
   const [customerName, setCustomerName] = useState('')
+  const [nameError, setNameError] = useState(false)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<bigint>(0n)
 
   const { data: productsData, isLoading: productsLoading } = useQuery({
     queryKey: ['menu-products'],
-    queryFn: () => productClient.listProducts({ page: 1, pageSize: 100, categoryId: 0n }),
+    queryFn: () => productClient.listProducts({ page: 1, pageSize: 100, categoryId: 0n, activeOnly: true }),
   })
 
   const { data: categoriesData } = useQuery({
@@ -65,7 +67,13 @@ export function MenuPage() {
     enabled: tableId !== 0n,
   })
 
-  const products = (productsData?.products ?? []).filter((p) => p.isActive)
+  const { data: settingsData } = useQuery({
+    queryKey: ['public-settings'],
+    queryFn: () => settingsClient.getSettings({}),
+  })
+  const midtransEnabled = settingsData?.midtransConfigured ?? false
+
+  const products = (productsData?.products ?? []).filter((p) => p.isActive && p.stockQty > 0)
   const categories = categoriesData?.categories ?? []
   const categoryMap = new Map(categories.map((c) => [c.id, c.name]))
   const tableName = tablesData?.tables.find((t) => t.id === tableId)?.name ?? tableIdStr
@@ -101,23 +109,13 @@ export function MenuPage() {
     setCart((prev) => prev.map((i) => i.productId === productId ? { ...i, notes } : i))
   }
 
-  async function syncCartToServer() {
-    for (const item of cart) {
-      await transactionClient.addToCart({
-        sessionId,
-        productId: item.productId,
-        quantity: item.qty,
-        tableId,
-        notes: item.notes,
-      })
-    }
-  }
-
   async function handleCashCheckout() {
+    if (!customerName.trim()) { setNameError(true); return }
+    setNameError(false)
     setSubmitting(true)
     setError(null)
     try {
-      await syncCartToServer()
+      await syncCartToServer(sessionId, tableId, cart.map((i) => ({ productId: i.productId, qty: i.qty, notes: i.notes })))
       await transactionClient.checkout({
         sessionId,
         cashierId: userId ? BigInt(userId) : 0n,
@@ -139,10 +137,12 @@ export function MenuPage() {
   }
 
   async function handleOnlinePayment() {
+    if (!customerName.trim()) { setNameError(true); return }
+    setNameError(false)
     setSubmitting(true)
     setError(null)
     try {
-      await syncCartToServer()
+      await syncCartToServer(sessionId, tableId, cart.map((i) => ({ productId: i.productId, qty: i.qty, notes: i.notes })))
       const cartRes = await transactionClient.getCart({ sessionId })
       const res = await transactionClient.createPaymentToken({ orderId: cartRes.cart?.id ?? 0n })
       ;(window as any).snap.pay(res.snapToken, {
@@ -301,15 +301,18 @@ export function MenuPage() {
 
         <Separator my={2} />
 
-        <Box>
-          <Text fontSize="sm" mb={1} fontWeight="medium">Your Name <Text as="span" color="gray.400" fontWeight="normal">(optional)</Text></Text>
+        <Field.Root invalid={nameError}>
+          <Field.Label fontSize="sm" fontWeight="medium">
+            Your Name <Text as="span" color="red.500">*</Text>
+          </Field.Label>
           <Input
             size="sm"
             placeholder="e.g. Budi"
             value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
+            onChange={(e) => { setCustomerName(e.target.value); if (nameError) setNameError(false) }}
           />
-        </Box>
+          <Field.ErrorText>Name is required</Field.ErrorText>
+        </Field.Root>
         <Box>
           <Text fontSize="sm" mb={1} fontWeight="medium">Phone Number <Text as="span" color="gray.400" fontWeight="normal">(optional)</Text></Text>
           <Input
@@ -343,15 +346,17 @@ export function MenuPage() {
           >
             Pay at Cashier
           </Button>
-          <Button
-            width="full"
-            colorPalette="blue"
-            disabled={submitting}
-            loading={submitting}
-            onClick={handleOnlinePayment}
-          >
-            Pay Online
-          </Button>
+          {midtransEnabled && (
+            <Button
+              width="full"
+              colorPalette="blue"
+              disabled={submitting}
+              loading={submitting}
+              onClick={handleOnlinePayment}
+            >
+              Pay Online
+            </Button>
+          )}
         </VStack>
       </Box>
     </>
@@ -372,20 +377,15 @@ export function MenuPage() {
         </Flex>
       </Box>
 
-      {/* Search + Category chips */}
+      {/* Filter button */}
       <Box px={{ base: 3, md: 6 }} pt={4} pb={2}>
-        <Input
-          placeholder="Search menu…"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          bg="white"
-          mb={3}
-        />
-        <CategorySelect
+        <ProductFilter
           categories={categories}
-          value={selectedCategory}
-          onChange={setSelectedCategory}
-          placeholder="All"
+          categoryId={selectedCategory}
+          search={searchQuery}
+          onCategoryChange={setSelectedCategory}
+          onSearchChange={setSearchQuery}
+          onReset={() => { setSelectedCategory(0n); setSearchQuery('') }}
         />
       </Box>
 
@@ -396,47 +396,15 @@ export function MenuPage() {
         ) : (
           <Grid templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)', md: 'repeat(auto-fill, minmax(160px, 1fr))' }} gap={3}>
             {filteredProducts.map((p) => (
-              <Box
+              <MenuProductCard
                 key={String(p.id)}
-                bg="white"
-                borderRadius="lg"
-                overflow="hidden"
-                boxShadow="sm"
-                cursor="pointer"
-                transition="all 0.15s"
-                _active={{ opacity: 0.85 }}
+                name={p.name}
+                imageUrl={p.imageUrl}
+                priceCents={p.priceCents}
+                categoryName={categoryMap.get(p.categoryId)}
+                qtyInCart={cart.find((i) => i.productId === p.id)?.qty}
                 onClick={() => addToCart(p)}
-                position="relative"
-              >
-                {cart.find((i) => i.productId === p.id) && (
-                  <Box
-                    position="absolute"
-                    top={2}
-                    right={2}
-                    bg="blue.500"
-                    color="white"
-                    borderRadius="full"
-                    w={5}
-                    h={5}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    fontSize="10px"
-                    fontWeight="bold"
-                    zIndex={1}
-                  >
-                    {cart.find((i) => i.productId === p.id)?.qty}
-                  </Box>
-                )}
-                <ProductImage src={p.imageUrl} />
-                <Box p={3}>
-                  <Text fontWeight="semibold" fontSize="sm" mb={0.5} lineClamp={2}>{p.name}</Text>
-                  {categoryMap.get(p.categoryId) && (
-                    <Text fontSize="xs" color="gray.400" mb={1}>{categoryMap.get(p.categoryId)}</Text>
-                  )}
-                  <Text fontWeight="bold" color="blue.600" fontSize="sm">{formatPrice(p.priceCents)}</Text>
-                </Box>
-              </Box>
+              />
             ))}
             {filteredProducts.length === 0 && !productsLoading && (
               <Text color="gray.400" fontSize="sm" gridColumn="1/-1">No items found.</Text>

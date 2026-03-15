@@ -9,12 +9,12 @@ import QRCode from 'qrcode'
 import { tableClient } from '../../client'
 import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
-import { ConfirmDialog } from '../../components/ConfirmDialog'
+import { ConfirmDialog } from '../../components/shared/ConfirmDialog'
 import type { Table } from '../../gen/wargapos/table/v1/table_pb'
 
 function TableQR({ tableId }: { tableId: bigint }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const url = `${window.location.origin}/menu?table=${tableId.toString()}`
+  const url = `${window.location.origin}/guest_checkout?table=${tableId.toString()}`
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -102,7 +102,7 @@ export function TablesPage() {
                 <Box flex={1}>
                   <Text fontWeight="semibold" fontSize="lg" mb={1}>{t.name}</Text>
                   <Text fontSize="xs" color="gray.400" mb={3} wordBreak="break-all">
-                    {window.location.origin}/menu?table={t.id.toString()}
+                    {window.location.origin}/guest_checkout?table={t.id.toString()}
                   </Text>
                   <HStack gap={2}>
                     <Button size="xs" variant="outline" onClick={() => openEdit(t)}><Pencil size={12} /> Rename</Button>

@@ -57,10 +57,17 @@ message ListUsersResponse {
   int32         total = 2;
 }
 
+message ChangePasswordRequest {
+  string current_password = 1;
+  string new_password     = 2;
+}
+message ChangePasswordResponse {}
+
 service UserService {
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
-  rpc GetUser(GetUserRequest)       returns (GetUserResponse);
-  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
-  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
-  rpc ListUsers(ListUsersRequest)   returns (ListUsersResponse);
+  rpc CreateUser(CreateUserRequest)       returns (CreateUserResponse);
+  rpc GetUser(GetUserRequest)             returns (GetUserResponse);
+  rpc UpdateUser(UpdateUserRequest)       returns (UpdateUserResponse);
+  rpc DeleteUser(DeleteUserRequest)       returns (DeleteUserResponse);
+  rpc ListUsers(ListUsersRequest)         returns (ListUsersResponse);
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
 }

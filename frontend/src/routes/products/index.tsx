@@ -1,17 +1,16 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
-  Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Text, VStack,
+  Box, Button, Flex, Grid, Heading, HStack, Input, Spinner, Text,
 } from '@chakra-ui/react'
-import { Package, Plus, Pencil, Trash2 } from 'lucide-react'
+import { Package, Plus } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { productClient } from '../../client'
 import { toaster } from '../../components/ui/toaster'
-import { formatPrice } from '../../lib/format'
 import { stripError } from '../../lib/errors'
-import { ProductImage } from '../../components/ProductImage'
-import { ConfirmDialog } from '../../components/ConfirmDialog'
-import { CategorySelect } from '../../components/CategorySelect'
+import { ConfirmDialog } from '../../components/shared/ConfirmDialog'
+import { CategorySelect } from '../../components/shared/CategorySelect'
+import { ProductCard } from '../../components/shared/ProductCard'
 import type { Product } from '../../gen/wargapos/product/v1/product_pb'
 
 type StatusFilter = 'all' | 'active' | 'inactive'
@@ -25,6 +24,7 @@ function marginPct(priceCents: bigint, cogsCents: bigint): string | null {
 export function ProductsPage() {
   const qc = useQueryClient()
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null)
+  const [togglingId, setTogglingId] = useState<bigint | null>(null)
   const [categoryId, setCategoryId] = useState<bigint>(0n)
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [search, setSearch] = useState('')
@@ -45,10 +45,14 @@ export function ProductsPage() {
   }
 
   const toggleMutation = useMutation({
-    mutationFn: (p: Product) => productClient.updateProduct({
-      id: p.id, name: p.name, priceCents: p.priceCents, cogsCents: p.cogsCents,
-      isActive: !p.isActive, imageUrl: p.imageUrl,
-    }),
+    mutationFn: (p: Product) => {
+      setTogglingId(p.id)
+      return productClient.updateProduct({
+        id: p.id, name: p.name, priceCents: p.priceCents, cogsCents: p.cogsCents,
+        isActive: !p.isActive, imageUrl: p.imageUrl,
+      })
+    },
+    onSettled: () => setTogglingId(null),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['products'] }),
     onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
@@ -104,114 +108,29 @@ export function ProductsPage() {
       {isLoading ? (
         <Flex justify="center" mt={12}><Spinner /></Flex>
       ) : (
-        <>
-          {/* Mobile card list */}
-          <VStack display={{ base: 'flex', md: 'none' }} gap={3} align="stretch">
-            {products.map((p) => (
-              <Box key={String(p.id)} bg="white" borderRadius="lg" p={4} boxShadow="sm">
-                <Flex justify="space-between" align="start">
-                  <Link to="/products/$id" params={{ id: String(p.id) }} style={{ flex: 1, marginRight: 12 }}>
-                    <Flex gap={3} align="center">
-                      <ProductImage src={p.imageUrl} size={40} radius={6} />
-                      <Box>
-                        <Text fontWeight="semibold" fontSize="sm">{p.name}</Text>
-                        <Text fontSize="xs" color="gray.500">{p.sku}</Text>
-                        {categoryName(p.categoryId) && (
-                          <Text fontSize="xs" color="teal.600">{categoryName(p.categoryId)}</Text>
-                        )}
-                        <Text fontWeight="bold" color="blue.600" mt={1} fontSize="sm">{formatPrice(p.priceCents)}</Text>
-                        {marginPct(p.priceCents, p.cogsCents) && (
-                          <Text fontSize="xs" color="green.600">Margin {marginPct(p.priceCents, p.cogsCents)}</Text>
-                        )}
-                      </Box>
-                    </Flex>
-                  </Link>
-                  <HStack gap={1}>
-                    <Button
-                      size="2xs"
-                      variant="outline"
-                      colorPalette={p.isActive ? 'green' : 'gray'}
-                      loading={toggleMutation.isPending}
-                      onClick={() => toggleMutation.mutate(p)}
-                    >
-                      {p.isActive ? 'Active' : 'Inactive'}
-                    </Button>
-                    <Button asChild size="xs" variant="ghost">
-                      <Link to="/products/$id/edit" params={{ id: String(p.id) }}><Pencil size={14} /></Link>
-                    </Button>
-                    <Button size="xs" variant="ghost" colorPalette="red" onClick={() => setDeleteTarget(p)}>
-                      <Trash2 size={14} />
-                    </Button>
-                  </HStack>
-                </Flex>
-              </Box>
-            ))}
-            {products.length === 0 && (
-              <Text color="gray.400" fontSize="sm" textAlign="center" py={8}>No products found.</Text>
-            )}
-          </VStack>
-
-          {/* Desktop table */}
-          <Box display={{ base: 'none', md: 'block' }}>
-            <Table.Root variant="outline">
-              <Table.Header>
-                <Table.Row>
-                  <Table.ColumnHeader>Name</Table.ColumnHeader>
-                  <Table.ColumnHeader>SKU</Table.ColumnHeader>
-                  <Table.ColumnHeader>Category</Table.ColumnHeader>
-                  <Table.ColumnHeader>Price</Table.ColumnHeader>
-                  <Table.ColumnHeader>Margin</Table.ColumnHeader>
-                  <Table.ColumnHeader>Status</Table.ColumnHeader>
-                  <Table.ColumnHeader />
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {products.map((p) => (
-                  <Table.Row key={String(p.id)}>
-                    <Table.Cell>
-                      <Link to="/products/$id" params={{ id: String(p.id) }}>
-                        <Flex align="center" gap={2}>
-                          <ProductImage src={p.imageUrl} size={36} radius={4} />
-                          <Text fontWeight="medium">{p.name}</Text>
-                        </Flex>
-                      </Link>
-                    </Table.Cell>
-                    <Table.Cell color="gray.500" fontSize="sm">{p.sku}</Table.Cell>
-                    <Table.Cell color="gray.500" fontSize="sm">{categoryName(p.categoryId) || '—'}</Table.Cell>
-                    <Table.Cell>{formatPrice(p.priceCents)}</Table.Cell>
-                    <Table.Cell color="green.600" fontSize="sm">{marginPct(p.priceCents, p.cogsCents) ?? '—'}</Table.Cell>
-                    <Table.Cell>
-                      <Button
-                        size="xs"
-                        variant="outline"
-                        colorPalette={p.isActive ? 'green' : 'gray'}
-                        loading={toggleMutation.isPending}
-                        onClick={() => toggleMutation.mutate(p)}
-                      >
-                        {p.isActive ? 'Active' : 'Inactive'}
-                      </Button>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Flex gap={1} justify="flex-end">
-                        <Button asChild size="xs" variant="ghost">
-                          <Link to="/products/$id/edit" params={{ id: String(p.id) }}><Pencil size={14} /></Link>
-                        </Button>
-                        <Button size="xs" variant="ghost" colorPalette="red" onClick={() => setDeleteTarget(p)}>
-                          <Trash2 size={14} />
-                        </Button>
-                      </Flex>
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-                {products.length === 0 && (
-                  <Table.Row>
-                    <Table.Cell colSpan={7} textAlign="center" color="gray.400" py={8}>No products found.</Table.Cell>
-                  </Table.Row>
-                )}
-              </Table.Body>
-            </Table.Root>
-          </Box>
-        </>
+        <Grid
+          templateColumns={{
+            base: 'repeat(2, 1fr)',
+            sm: 'repeat(3, 1fr)',
+            md: 'repeat(auto-fill, minmax(180px, 1fr))',
+          }}
+          gap={3}
+        >
+          {products.map((p) => (
+            <ProductCard
+              key={String(p.id)}
+              p={p}
+              categoryName={categoryName(p.categoryId)}
+              margin={marginPct(p.priceCents, p.cogsCents)}
+              togglePending={togglingId === p.id}
+              onToggle={() => toggleMutation.mutate(p)}
+              onDelete={() => setDeleteTarget(p)}
+            />
+          ))}
+          {products.length === 0 && (
+            <Text color="gray.400" fontSize="sm" textAlign="center" py={8} gridColumn="1/-1">No products found.</Text>
+          )}
+        </Grid>
       )}
 
       <ConfirmDialog

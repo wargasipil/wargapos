@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package wargapos.settings.v1;
+
+option go_package = "wargapos/backend/gen/wargapos/settings/v1;settingsv1";
+
+message MidtransSettings {
+  string server_key  = 1;
+  string client_key  = 2;
+  string environment = 3; // "sandbox" | "production"
+}
+
+message GetSettingsRequest  {}
+message GetSettingsResponse {
+  MidtransSettings midtrans        = 1;
+  bool             midtrans_configured = 2; // true when server_key is non-empty
+}
+
+message UpdateSettingsRequest  { MidtransSettings midtrans = 1; }
+message UpdateSettingsResponse {}
+
+service SettingsService {
+  rpc GetSettings(GetSettingsRequest)       returns (GetSettingsResponse);
+  rpc UpdateSettings(UpdateSettingsRequest) returns (UpdateSettingsResponse);
+}

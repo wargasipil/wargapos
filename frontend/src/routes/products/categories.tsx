@@ -5,6 +5,8 @@ import {
   Dialog, Field, VStack,
 } from '@chakra-ui/react'
 import { Tag, Plus } from 'lucide-react'
+import { CategoryCard } from '../../components/shared/CategoryCard'
+import { CategoryTableRow } from '../../components/shared/CategoryTableRow'
 import { productClient } from '../../client'
 import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
@@ -52,14 +54,7 @@ export function CategoriesPage() {
         <>
           {/* Mobile card list */}
           <VStack display={{ base: 'flex', md: 'none' }} gap={3} align="stretch">
-            {categories.map((c) => (
-              <Box key={String(c.id)} bg="white" borderRadius="lg" p={4} boxShadow="sm">
-                <Flex justify="space-between" align="center">
-                  <Text fontWeight="semibold" fontSize="sm">{c.name}</Text>
-                  <Text fontSize="xs" color="gray.400">#{String(c.id)}</Text>
-                </Flex>
-              </Box>
-            ))}
+            {categories.map((c) => <CategoryCard key={String(c.id)} c={c} />)}
             {categories.length === 0 && (
               <Text color="gray.400" fontSize="sm" textAlign="center" py={8}>No categories yet.</Text>
             )}
@@ -75,12 +70,7 @@ export function CategoriesPage() {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {categories.map((c) => (
-                  <Table.Row key={String(c.id)}>
-                    <Table.Cell color="gray.400" fontSize="xs">#{String(c.id)}</Table.Cell>
-                    <Table.Cell fontWeight="medium">{c.name}</Table.Cell>
-                  </Table.Row>
-                ))}
+                {categories.map((c) => <CategoryTableRow key={String(c.id)} c={c} />)}
                 {categories.length === 0 && (
                   <Table.Row>
                     <Table.Cell colSpan={2} textAlign="center" color="gray.400" py={8}>No categories yet.</Table.Cell>

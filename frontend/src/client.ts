@@ -5,6 +5,8 @@ import { UserService }        from './gen/wargapos/user/v1/user_pb'
 import { ProductService }     from './gen/wargapos/product/v1/product_pb'
 import { TransactionService } from './gen/wargapos/transaction/v1/transaction_pb'
 import { TableService }       from './gen/wargapos/table/v1/table_pb'
+import { SettingsService }    from './gen/wargapos/settings/v1/settings_pb'
+import { StockService }      from './gen/wargapos/stock/v1/stock_pb'
 
 // In dev, Vite proxies /wargapos/* → http://localhost:8080
 // In production, set VITE_API_BASE_URL to your API endpoint
@@ -17,6 +19,8 @@ export const userClient        = createClient(UserService, transport)
 export const productClient     = createClient(ProductService, transport)
 export const transactionClient = createClient(TransactionService, transport)
 export const tableClient       = createClient(TableService, transport)
+export const settingsClient    = createClient(SettingsService, transport)
+export const stockClient       = createClient(StockService, transport)
 
 export async function uploadFile(file: File, token: string): Promise<string> {
   const form = new FormData()

@@ -84,6 +84,7 @@ type Product struct {
 	Sku           string                 `protobuf:"bytes,7,opt,name=sku,proto3" json:"sku,omitempty"`
 	ImageUrl      string                 `protobuf:"bytes,8,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
 	CogsCents     int64                  `protobuf:"varint,9,opt,name=cogs_cents,json=cogsCents,proto3" json:"cogs_cents,omitempty"`
+	StockQty      int32                  `protobuf:"varint,10,opt,name=stock_qty,json=stockQty,proto3" json:"stock_qty,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -177,6 +178,13 @@ func (x *Product) GetImageUrl() string {
 func (x *Product) GetCogsCents() int64 {
 	if x != nil {
 		return x.CogsCents
+	}
+	return 0
+}
+
+func (x *Product) GetStockQty() int32 {
+	if x != nil {
+		return x.StockQty
 	}
 	return 0
 }
@@ -410,6 +418,7 @@ type ListProductsRequest struct {
 	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	CategoryId    int64                  `protobuf:"varint,3,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	ActiveOnly    bool                   `protobuf:"varint,4,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"` // when true, only return is_active=true products
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -463,6 +472,13 @@ func (x *ListProductsRequest) GetCategoryId() int64 {
 		return x.CategoryId
 	}
 	return 0
+}
+
+func (x *ListProductsRequest) GetActiveOnly() bool {
+	if x != nil {
+		return x.ActiveOnly
+	}
+	return false
 }
 
 type ListProductsResponse struct {
@@ -924,7 +940,7 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"!wargapos/product/v1/product.proto\x12\x13wargapos.product.v1\".\n" +
 	"\bCategory\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\xfc\x01\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\x99\x02\n" +
 	"\aProduct\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -937,7 +953,9 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\x03sku\x18\a \x01(\tR\x03sku\x12\x1b\n" +
 	"\timage_url\x18\b \x01(\tR\bimageUrl\x12\x1d\n" +
 	"\n" +
-	"cogs_cents\x18\t \x01(\x03R\tcogsCents\"\xdc\x01\n" +
+	"cogs_cents\x18\t \x01(\x03R\tcogsCents\x12\x1b\n" +
+	"\tstock_qty\x18\n" +
+	" \x01(\x05R\bstockQty\"\xdc\x01\n" +
 	"\x14CreateProductRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1f\n" +
@@ -954,12 +972,14 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\x11GetProductRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"L\n" +
 	"\x12GetProductResponse\x126\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"g\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"\x88\x01\n" +
 	"\x13ListProductsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1f\n" +
 	"\vcategory_id\x18\x03 \x01(\x03R\n" +
-	"categoryId\"f\n" +
+	"categoryId\x12\x1f\n" +
+	"\vactive_only\x18\x04 \x01(\bR\n" +
+	"activeOnly\"f\n" +
 	"\x14ListProductsResponse\x128\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1c.wargapos.product.v1.ProductR\bproducts\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\"\x89\x02\n" +

@@ -3,6 +3,7 @@ package transaction_service
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"connectrpc.com/connect"
 	"gorm.io/gorm"
@@ -50,7 +51,35 @@ func (s *TransactionService) Checkout(
 		if req.Msg.OrderFrom != transactionv1.OrderFrom_ORDER_FROM_UNSPECIFIED {
 			updates["order_from"] = int32(req.Msg.OrderFrom)
 		}
-		return tx.Model(&order).Updates(updates).Error
+		if err := tx.Model(&order).Updates(updates).Error; err != nil {
+			return err
+		}
+
+		// Deduct stock for each item.
+		for _, item := range order.Items {
+			if item.ProductID == nil {
+				continue
+			}
+			res := tx.Model(&models.Product{}).
+				Where("id = ? AND stock_qty >= ?", *item.ProductID, item.Quantity).
+				Update("stock_qty", gorm.Expr("stock_qty - ?", item.Quantity))
+			if res.Error != nil {
+				return res.Error
+			}
+			if res.RowsAffected == 0 {
+				return fmt.Errorf("insufficient stock for product %d", *item.ProductID)
+			}
+			mov := &models.StockMovement{
+				ProductID: *item.ProductID,
+				Delta:     -item.Quantity,
+				Reason:    "sale",
+				Note:      fmt.Sprintf("Order #%d", order.ID),
+			}
+			if err := tx.Create(mov).Error; err != nil {
+				return err
+			}
+		}
+		return nil
 	})
 	if err != nil {
 		if errors.Is(err, ErrCartNotPending) || errors.Is(err, ErrCartEmpty) {
