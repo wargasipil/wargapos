@@ -14,6 +14,9 @@ POS app for cafes (monorepo). Backend: Go + ConnectRPC. Frontend: React 19 + Vit
 - `frontend/src/gen/` — buf-generated TS code (do not edit)
 - `backend/internal/service/` — domain services (implement Connect RPC interfaces directly)
 - `backend/cmd/server/` — server entrypoint, Wire DI, Midtrans webhook handler
+- `backend/cmd/connector/` — local printer connector, Wire DI, identity management
+- `backend/cmd/migrate/` — standalone migration CLI (up | down | status | reset)
+- `backend/migrations/` — Goose SQL migration files + embed.go
 
 ## Services
 | Domain | Package | Proto |
@@ -23,12 +26,28 @@ POS app for cafes (monorepo). Backend: Go + ConnectRPC. Frontend: React 19 + Vit
 | Product | `product_service` | `wargapos.product.v1` |
 | Transaction | `transaction_service` | `wargapos.transaction.v1` |
 | Table | `table_service` | `wargapos.table.v1` |
+| Connector | `connector_service` | `wargapos.connector.v1` |
 
 ## Dev Commands
 - `make backend-run` — start Go server on :8080
 - `make frontend-dev` — start Vite on :5173 (proxies `/wargapos` → :8080)
+- `make connector-run` — start local printer connector on :8081 (set `PRINTER_ADDRESS=ip:9100`)
 - `make proto-gen` — regenerate after editing .proto files
 - `wire gen ./backend/cmd/server` — regenerate Wire DI after changing providers
+- `wire gen ./backend/cmd/connector` — regenerate Wire DI for connector
+- `make migrate-up` — apply all pending migrations
+- `make migrate-down` — roll back last migration
+- `make migrate-status` — show pending/applied migrations
+- `make migrate-reset` — roll back all migrations
+
+## Database Tables
+| Table | Key columns |
+|-------|-------------|
+| users | id, username, email, password_hash, role, is_active |
+| categories | id, name |
+| products | id, name, sku, price_cents, category_id (FK), is_active |
+| orders | id, cashier_id (FK), table_id, total_cents, status, payment_method |
+| order_items | id, order_id (FK), product_id (FK), quantity, unit_price_cents |
 
 ## Design Principles
 - **Mobile-first**: primary target is mobile/tablet (POS use case)
@@ -48,3 +67,11 @@ POS app for cafes (monorepo). Backend: Go + ConnectRPC. Frontend: React 19 + Vit
 - Snap.js loaded in `frontend/index.html`
 - Config: `config.yaml` → `midtrans.server_key / client_key / environment`
 - Env vars: `MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`
+
+## Connector
+- Local bridge service between browser and ESC/POS printer hardware
+- Runs separately on :8081 (not part of the main server on :8080)
+- Persistent device identity stored in `identity.json` (UUID + hostname)
+- Registers itself with main server via long-lived device stream (exponential backoff reconnection)
+- Exposes two local Connect RPC endpoints: `Print` (raw ESC/POS bytes) and `GetStatus` (printer address + connection state)
+- Uses h2c (HTTP/2 cleartext) + permissive CORS for browser access

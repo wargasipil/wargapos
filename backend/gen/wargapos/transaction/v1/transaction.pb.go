@@ -7,6 +7,7 @@
 package transactionv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1501,7 +1502,7 @@ var File_wargapos_transaction_v1_transaction_proto protoreflect.FileDescriptor
 
 const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\n" +
-	")wargapos/transaction/v1/transaction.proto\x12\x17wargapos.transaction.v1\"\xe0\x01\n" +
+	")wargapos/transaction/v1/transaction.proto\x12\x17wargapos.transaction.v1\x1a\x1bbuf/validate/validate.proto\"\xe0\x01\n" +
 	"\tOrderItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -1527,50 +1528,50 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\x0epayment_method\x18\n" +
 	" \x01(\x0e2&.wargapos.transaction.v1.PaymentMethodR\rpaymentMethod\x12A\n" +
 	"\n" +
-	"order_from\x18\v \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\torderFrom\"\x9d\x01\n" +
-	"\x10AddToCartRequest\x12\x1d\n" +
+	"order_from\x18\v \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\torderFrom\"\xb8\x01\n" +
+	"\x10AddToCartRequest\x12&\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1d\n" +
+	"session_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tsessionId\x12&\n" +
 	"\n" +
-	"product_id\x18\x02 \x01(\x03R\tproductId\x12\x1a\n" +
-	"\bquantity\x18\x03 \x01(\x05R\bquantity\x12\x19\n" +
+	"product_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\tproductId\x12#\n" +
+	"\bquantity\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\bquantity\x12\x19\n" +
 	"\btable_id\x18\x04 \x01(\x03R\atableId\x12\x14\n" +
-	"\x05notes\x18\x05 \x01(\tR\x05notes\"6\n" +
-	"\x19CreatePaymentTokenRequest\x12\x19\n" +
-	"\border_id\x18\x01 \x01(\x03R\aorderId\"Z\n" +
+	"\x05notes\x18\x05 \x01(\tR\x05notes\"?\n" +
+	"\x19CreatePaymentTokenRequest\x12\"\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"Z\n" +
 	"\x1aCreatePaymentTokenResponse\x12\x1d\n" +
 	"\n" +
 	"snap_token\x18\x01 \x01(\tR\tsnapToken\x12\x1d\n" +
 	"\n" +
 	"client_key\x18\x02 \x01(\tR\tclientKey\"G\n" +
 	"\x11AddToCartResponse\x122\n" +
-	"\x04cart\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x04cart\"U\n" +
-	"\x15RemoveFromCartRequest\x12\x1d\n" +
+	"\x04cart\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x04cart\"g\n" +
+	"\x15RemoveFromCartRequest\x12&\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1d\n" +
+	"session_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tsessionId\x12&\n" +
 	"\n" +
-	"product_id\x18\x02 \x01(\x03R\tproductId\"L\n" +
+	"product_id\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\tproductId\"L\n" +
 	"\x16RemoveFromCartResponse\x122\n" +
-	"\x04cart\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x04cart\"/\n" +
-	"\x0eGetCartRequest\x12\x1d\n" +
+	"\x04cart\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x04cart\"8\n" +
+	"\x0eGetCartRequest\x12&\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\"E\n" +
+	"session_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tsessionId\"E\n" +
 	"\x0fGetCartResponse\x122\n" +
-	"\x04cart\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x04cart\"\xa9\x02\n" +
-	"\x0fCheckoutRequest\x12\x1d\n" +
+	"\x04cart\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x04cart\"\xbc\x02\n" +
+	"\x0fCheckoutRequest\x12&\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x1d\n" +
+	"session_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tsessionId\x12\x1d\n" +
 	"\n" +
-	"cashier_id\x18\x02 \x01(\x03R\tcashierId\x12M\n" +
-	"\x0epayment_method\x18\x03 \x01(\x0e2&.wargapos.transaction.v1.PaymentMethodR\rpaymentMethod\x12#\n" +
+	"cashier_id\x18\x02 \x01(\x03R\tcashierId\x12W\n" +
+	"\x0epayment_method\x18\x03 \x01(\x0e2&.wargapos.transaction.v1.PaymentMethodB\b\xbaH\x05\x82\x01\x02 \x00R\rpaymentMethod\x12#\n" +
 	"\rcustomer_name\x18\x04 \x01(\tR\fcustomerName\x12!\n" +
 	"\fphone_number\x18\x05 \x01(\tR\vphoneNumber\x12A\n" +
 	"\n" +
 	"order_from\x18\x06 \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\torderFrom\"H\n" +
 	"\x10CheckoutResponse\x124\n" +
-	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\",\n" +
-	"\x0fGetOrderRequest\x12\x19\n" +
-	"\border_id\x18\x01 \x01(\x03R\aorderId\"H\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"5\n" +
+	"\x0fGetOrderRequest\x12\"\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"H\n" +
 	"\x10GetOrderResponse\x124\n" +
 	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"\x99\x02\n" +
 	"\x11ListOrdersRequest\x12\x12\n" +
@@ -1583,21 +1584,21 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\x11order_from_filter\x18\x06 \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\x0forderFromFilter\"b\n" +
 	"\x12ListOrdersResponse\x126\n" +
 	"\x06orders\x18\x01 \x03(\v2\x1e.wargapos.transaction.v1.OrderR\x06orders\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"1\n" +
-	"\x14MarkOrderPaidRequest\x12\x19\n" +
-	"\border_id\x18\x01 \x01(\x03R\aorderId\"M\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\":\n" +
+	"\x14MarkOrderPaidRequest\x12\"\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"M\n" +
 	"\x15MarkOrderPaidResponse\x124\n" +
-	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"/\n" +
-	"\x12CancelOrderRequest\x12\x19\n" +
-	"\border_id\x18\x01 \x01(\x03R\aorderId\"K\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"8\n" +
+	"\x12CancelOrderRequest\x12\"\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"K\n" +
 	"\x13CancelOrderResponse\x124\n" +
-	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"2\n" +
-	"\x15MarkOrderReadyRequest\x12\x19\n" +
-	"\border_id\x18\x01 \x01(\x03R\aorderId\"N\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\";\n" +
+	"\x15MarkOrderReadyRequest\x12\"\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"N\n" +
 	"\x16MarkOrderReadyResponse\x124\n" +
-	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"6\n" +
-	"\x19MarkOrderDeliveredRequest\x12\x19\n" +
-	"\border_id\x18\x01 \x01(\x03R\aorderId\"R\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"?\n" +
+	"\x19MarkOrderDeliveredRequest\x12\"\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"R\n" +
 	"\x1aMarkOrderDeliveredResponse\x124\n" +
 	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order*a\n" +
 	"\rPaymentMethod\x12\x1e\n" +

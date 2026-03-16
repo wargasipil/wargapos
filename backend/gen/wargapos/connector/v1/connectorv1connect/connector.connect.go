@@ -38,12 +38,16 @@ const (
 	// ConnectorServiceGetStatusProcedure is the fully-qualified name of the ConnectorService's
 	// GetStatus RPC.
 	ConnectorServiceGetStatusProcedure = "/wargapos.connector.v1.ConnectorService/GetStatus"
+	// ConnectorServiceListPrintersProcedure is the fully-qualified name of the ConnectorService's
+	// ListPrinters RPC.
+	ConnectorServiceListPrintersProcedure = "/wargapos.connector.v1.ConnectorService/ListPrinters"
 )
 
 // ConnectorServiceClient is a client for the wargapos.connector.v1.ConnectorService service.
 type ConnectorServiceClient interface {
 	Print(context.Context, *connect.Request[v1.PrintRequest]) (*connect.Response[v1.PrintResponse], error)
 	GetStatus(context.Context, *connect.Request[v1.GetStatusRequest]) (*connect.Response[v1.GetStatusResponse], error)
+	ListPrinters(context.Context, *connect.Request[v1.ListPrintersRequest]) (*connect.Response[v1.ListPrintersResponse], error)
 }
 
 // NewConnectorServiceClient constructs a client for the wargapos.connector.v1.ConnectorService
@@ -69,13 +73,20 @@ func NewConnectorServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(connectorServiceMethods.ByName("GetStatus")),
 			connect.WithClientOptions(opts...),
 		),
+		listPrinters: connect.NewClient[v1.ListPrintersRequest, v1.ListPrintersResponse](
+			httpClient,
+			baseURL+ConnectorServiceListPrintersProcedure,
+			connect.WithSchema(connectorServiceMethods.ByName("ListPrinters")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // connectorServiceClient implements ConnectorServiceClient.
 type connectorServiceClient struct {
-	print     *connect.Client[v1.PrintRequest, v1.PrintResponse]
-	getStatus *connect.Client[v1.GetStatusRequest, v1.GetStatusResponse]
+	print        *connect.Client[v1.PrintRequest, v1.PrintResponse]
+	getStatus    *connect.Client[v1.GetStatusRequest, v1.GetStatusResponse]
+	listPrinters *connect.Client[v1.ListPrintersRequest, v1.ListPrintersResponse]
 }
 
 // Print calls wargapos.connector.v1.ConnectorService.Print.
@@ -88,11 +99,17 @@ func (c *connectorServiceClient) GetStatus(ctx context.Context, req *connect.Req
 	return c.getStatus.CallUnary(ctx, req)
 }
 
+// ListPrinters calls wargapos.connector.v1.ConnectorService.ListPrinters.
+func (c *connectorServiceClient) ListPrinters(ctx context.Context, req *connect.Request[v1.ListPrintersRequest]) (*connect.Response[v1.ListPrintersResponse], error) {
+	return c.listPrinters.CallUnary(ctx, req)
+}
+
 // ConnectorServiceHandler is an implementation of the wargapos.connector.v1.ConnectorService
 // service.
 type ConnectorServiceHandler interface {
 	Print(context.Context, *connect.Request[v1.PrintRequest]) (*connect.Response[v1.PrintResponse], error)
 	GetStatus(context.Context, *connect.Request[v1.GetStatusRequest]) (*connect.Response[v1.GetStatusResponse], error)
+	ListPrinters(context.Context, *connect.Request[v1.ListPrintersRequest]) (*connect.Response[v1.ListPrintersResponse], error)
 }
 
 // NewConnectorServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +131,20 @@ func NewConnectorServiceHandler(svc ConnectorServiceHandler, opts ...connect.Han
 		connect.WithSchema(connectorServiceMethods.ByName("GetStatus")),
 		connect.WithHandlerOptions(opts...),
 	)
+	connectorServiceListPrintersHandler := connect.NewUnaryHandler(
+		ConnectorServiceListPrintersProcedure,
+		svc.ListPrinters,
+		connect.WithSchema(connectorServiceMethods.ByName("ListPrinters")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.connector.v1.ConnectorService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ConnectorServicePrintProcedure:
 			connectorServicePrintHandler.ServeHTTP(w, r)
 		case ConnectorServiceGetStatusProcedure:
 			connectorServiceGetStatusHandler.ServeHTTP(w, r)
+		case ConnectorServiceListPrintersProcedure:
+			connectorServiceListPrintersHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +160,8 @@ func (UnimplementedConnectorServiceHandler) Print(context.Context, *connect.Requ
 
 func (UnimplementedConnectorServiceHandler) GetStatus(context.Context, *connect.Request[v1.GetStatusRequest]) (*connect.Response[v1.GetStatusResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.connector.v1.ConnectorService.GetStatus is not implemented"))
+}
+
+func (UnimplementedConnectorServiceHandler) ListPrinters(context.Context, *connect.Request[v1.ListPrintersRequest]) (*connect.Response[v1.ListPrintersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.connector.v1.ConnectorService.ListPrinters is not implemented"))
 }

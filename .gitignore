@@ -3,6 +3,7 @@ backend/config.yaml
 
 # ── Build outputs ────────────────────────────────────────────────
 backend/bin/
+thirdparties/bin/
 backend/cmd/server/static/
 
 # ── Dependencies ─────────────────────────────────────────────────
@@ -13,3 +14,4 @@ frontend/node_modules/
 Thumbs.db
 .exe
 connector.exe
+backend/*.exe

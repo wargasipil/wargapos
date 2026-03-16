@@ -7,6 +7,7 @@
 package productv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1129,7 +1130,7 @@ var File_wargapos_product_v1_product_proto protoreflect.FileDescriptor
 
 const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\n" +
-	"!wargapos/product/v1/product.proto\x12\x13wargapos.product.v1\".\n" +
+	"!wargapos/product/v1/product.proto\x12\x13wargapos.product.v1\x1a\x1bbuf/validate/validate.proto\".\n" +
 	"\bCategory\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\"\x99\x02\n" +
@@ -1147,22 +1148,22 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\n" +
 	"cogs_cents\x18\t \x01(\x03R\tcogsCents\x12\x1b\n" +
 	"\tstock_qty\x18\n" +
-	" \x01(\x05R\bstockQty\"\xdc\x01\n" +
-	"\x14CreateProductRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1f\n" +
-	"\vcategory_id\x18\x03 \x01(\x03R\n" +
-	"categoryId\x12\x1f\n" +
-	"\vprice_cents\x18\x04 \x01(\x03R\n" +
-	"priceCents\x12\x10\n" +
-	"\x03sku\x18\x05 \x01(\tR\x03sku\x12\x1b\n" +
+	" \x01(\x05R\bstockQty\"\x80\x02\n" +
+	"\x14CreateProductRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12(\n" +
+	"\vcategory_id\x18\x03 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\n" +
+	"categoryId\x12(\n" +
+	"\vprice_cents\x18\x04 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\n" +
+	"priceCents\x12\x19\n" +
+	"\x03sku\x18\x05 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x03sku\x12\x1b\n" +
 	"\timage_url\x18\x06 \x01(\tR\bimageUrl\x12\x1d\n" +
 	"\n" +
 	"cogs_cents\x18\a \x01(\x03R\tcogsCents\"O\n" +
 	"\x15CreateProductResponse\x126\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"#\n" +
-	"\x11GetProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"L\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\",\n" +
+	"\x11GetProductRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"L\n" +
 	"\x12GetProductResponse\x126\n" +
 	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"\xc5\x01\n" +
 	"\x13ListProductsRequest\x12\x12\n" +
@@ -1176,9 +1177,9 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\x06search\x18\x06 \x01(\tR\x06search\"f\n" +
 	"\x14ListProductsResponse\x128\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1c.wargapos.product.v1.ProductR\bproducts\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"\x89\x02\n" +
-	"\x14UpdateProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\x92\x02\n" +
+	"\x14UpdateProductRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1f\n" +
 	"\vprice_cents\x18\x03 \x01(\x03R\n" +
 	"priceCents\x12\x1b\n" +
@@ -1191,21 +1192,21 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\n" +
 	"cogs_cents\x18\t \x01(\x03R\tcogsCents\"O\n" +
 	"\x15UpdateProductResponse\x126\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"&\n" +
-	"\x14DeleteProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x17\n" +
-	"\x15DeleteProductResponse\"+\n" +
-	"\x15CreateCategoryRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"S\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"/\n" +
+	"\x14DeleteProductRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"\x17\n" +
+	"\x15DeleteProductResponse\"4\n" +
+	"\x15CreateCategoryRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"S\n" +
 	"\x16CreateCategoryResponse\x129\n" +
-	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\";\n" +
-	"\x15UpdateCategoryRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"S\n" +
+	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\"M\n" +
+	"\x15UpdateCategoryRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\x12\x1b\n" +
+	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"S\n" +
 	"\x16UpdateCategoryResponse\x129\n" +
-	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\"'\n" +
-	"\x15DeleteCategoryRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x18\n" +
+	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\"0\n" +
+	"\x15DeleteCategoryRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"\x18\n" +
 	"\x16DeleteCategoryResponse\"\x17\n" +
 	"\x15ListCategoriesRequest\"W\n" +
 	"\x16ListCategoriesResponse\x12=\n" +

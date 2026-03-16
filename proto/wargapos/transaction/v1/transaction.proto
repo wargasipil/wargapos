@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package wargapos.transaction.v1;
 
+import "buf/validate/validate.proto";
+
 option go_package = "wargapos/backend/gen/wargapos/transaction/v1;transactionv1";
 
 enum PaymentMethod {
@@ -50,14 +52,14 @@ message Order {
 }
 
 message AddToCartRequest {
-  string session_id = 1;
-  int64  product_id = 2;
-  int32  quantity   = 3;
+  string session_id = 1 [(buf.validate.field).string.min_len = 1];
+  int64  product_id = 2 [(buf.validate.field).int64.gt = 0];
+  int32  quantity   = 3 [(buf.validate.field).int32.gt = 0];
   int64  table_id   = 4;
   string notes      = 5;
 }
 
-message CreatePaymentTokenRequest  { int64 order_id = 1; }
+message CreatePaymentTokenRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
 message CreatePaymentTokenResponse {
   string snap_token  = 1;
   string client_key  = 2;
@@ -66,19 +68,19 @@ message CreatePaymentTokenResponse {
 message AddToCartResponse { Order cart = 1; }
 
 message RemoveFromCartRequest {
-  string session_id = 1;
-  int64  product_id = 2;
+  string session_id = 1 [(buf.validate.field).string.min_len = 1];
+  int64  product_id = 2 [(buf.validate.field).int64.gt = 0];
 }
 
 message RemoveFromCartResponse { Order cart = 1; }
 
-message GetCartRequest  { string session_id = 1; }
+message GetCartRequest  { string session_id = 1 [(buf.validate.field).string.min_len = 1]; }
 message GetCartResponse { Order cart = 1; }
 
 message CheckoutRequest {
-  string        session_id     = 1;
+  string        session_id     = 1 [(buf.validate.field).string.min_len = 1];
   int64         cashier_id     = 2;
-  PaymentMethod payment_method = 3;
+  PaymentMethod payment_method = 3 [(buf.validate.field).enum = {not_in: [0]}];
   string        customer_name  = 4;
   string        phone_number   = 5;
   OrderFrom     order_from     = 6;
@@ -86,7 +88,7 @@ message CheckoutRequest {
 
 message CheckoutResponse { Order order = 1; }
 
-message GetOrderRequest  { int64 order_id = 1; }
+message GetOrderRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
 message GetOrderResponse { Order order = 1; }
 
 message ListOrdersRequest {
@@ -103,16 +105,16 @@ message ListOrdersResponse {
   int32          total  = 2;
 }
 
-message MarkOrderPaidRequest  { int64 order_id = 1; }
+message MarkOrderPaidRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
 message MarkOrderPaidResponse { Order order    = 1; }
 
-message CancelOrderRequest  { int64 order_id = 1; }
+message CancelOrderRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
 message CancelOrderResponse { Order order    = 1; }
 
-message MarkOrderReadyRequest      { int64 order_id = 1; }
+message MarkOrderReadyRequest      { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
 message MarkOrderReadyResponse     { Order order    = 1; }
 
-message MarkOrderDeliveredRequest  { int64 order_id = 1; }
+message MarkOrderDeliveredRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
 message MarkOrderDeliveredResponse { Order order    = 1; }
 
 service TransactionService {

@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"connectrpc.com/connect"
+	"connectrpc.com/grpcreflect"
+	"connectrpc.com/validate"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
@@ -15,8 +17,9 @@ import (
 
 // App holds the configured HTTP server for the connector.
 type App struct {
-	addr    string
-	handler http.Handler
+	addr         string
+	connectorSvc *connector_service.ConnectorService
+	handler      http.Handler
 }
 
 // NewApp is a Wire provider that wires all connector handlers into the HTTP mux.
@@ -26,13 +29,20 @@ func NewApp(
 ) *App {
 	mux := http.NewServeMux()
 	mux.Handle(connectorv1connect.NewConnectorServiceHandler(connSvc,
-		connect.WithInterceptors(), // no auth — local service
+		connect.WithInterceptors(validate.NewInterceptor()),
 	))
+
+	reflector := grpcreflect.NewStaticReflector(
+		connectorv1connect.ConnectorServiceName,
+	)
+	mux.Handle(grpcreflect.NewHandlerV1(reflector))
+	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
 
 	addr := cfg.Host + ":" + cfg.Port
 	return &App{
-		addr:    addr,
-		handler: corsMiddleware(h2c.NewHandler(mux, &http2.Server{})),
+		addr:         addr,
+		connectorSvc: connSvc,
+		handler:      corsMiddleware(h2c.NewHandler(mux, &http2.Server{})),
 	}
 }
 

@@ -7,6 +7,7 @@
 package userv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -769,7 +770,7 @@ var File_wargapos_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/user/v1/user.proto\x12\x10wargapos.user.v1\"\xcb\x01\n" +
+	"\x1bwargapos/user/v1/user.proto\x12\x10wargapos.user.v1\x1a\x1bbuf/validate/validate.proto\"\xcb\x01\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x1b\n" +
@@ -777,39 +778,39 @@ const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\x05email\x18\x04 \x01(\tR\x05email\x12*\n" +
 	"\x04role\x18\x05 \x01(\x0e2\x16.wargapos.user.v1.RoleR\x04role\x12\x1b\n" +
 	"\tis_active\x18\x06 \x01(\bR\bisActive\x12\x1b\n" +
-	"\timage_url\x18\a \x01(\tR\bimageUrl\"\xaa\x01\n" +
-	"\x11CreateUserRequest\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\x12\x1b\n" +
-	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x04 \x01(\tR\bpassword\x12*\n" +
-	"\x04role\x18\x05 \x01(\x0e2\x16.wargapos.user.v1.RoleR\x04role\"@\n" +
+	"\timage_url\x18\a \x01(\tR\bimageUrl\"\xda\x01\n" +
+	"\x11CreateUserRequest\x12%\n" +
+	"\busername\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x182R\busername\x12$\n" +
+	"\tfull_name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bfullName\x12\x1d\n" +
+	"\x05email\x18\x03 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12#\n" +
+	"\bpassword\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x06R\bpassword\x124\n" +
+	"\x04role\x18\x05 \x01(\x0e2\x16.wargapos.user.v1.RoleB\b\xbaH\x05\x82\x01\x02 \x00R\x04role\"@\n" +
 	"\x12CreateUserResponse\x12*\n" +
-	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\" \n" +
-	"\x0eGetUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"=\n" +
+	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\")\n" +
+	"\x0eGetUserRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"=\n" +
 	"\x0fGetUserResponse\x12*\n" +
-	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\"\x9f\x01\n" +
-	"\x11UpdateUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1b\n" +
+	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\"\xa8\x01\n" +
+	"\x11UpdateUserRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\x12\x1b\n" +
 	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12*\n" +
 	"\x04role\x18\x04 \x01(\x0e2\x16.wargapos.user.v1.RoleR\x04role\x12\x1b\n" +
 	"\tis_active\x18\x05 \x01(\bR\bisActive\"@\n" +
 	"\x12UpdateUserResponse\x12*\n" +
-	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\"#\n" +
-	"\x11DeleteUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x14\n" +
+	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\",\n" +
+	"\x11DeleteUserRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"\x14\n" +
 	"\x12DeleteUserResponse\"C\n" +
 	"\x10ListUsersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\"W\n" +
 	"\x11ListUsersResponse\x12,\n" +
 	"\x05users\x18\x01 \x03(\v2\x16.wargapos.user.v1.UserR\x05users\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"e\n" +
-	"\x15ChangePasswordRequest\x12)\n" +
-	"\x10current_password\x18\x01 \x01(\tR\x0fcurrentPassword\x12!\n" +
-	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\"\x18\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"w\n" +
+	"\x15ChangePasswordRequest\x122\n" +
+	"\x10current_password\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x0fcurrentPassword\x12*\n" +
+	"\fnew_password\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x06R\vnewPassword\"\x18\n" +
 	"\x16ChangePasswordResponse*P\n" +
 	"\x04Role\x12\x14\n" +
 	"\x10ROLE_UNSPECIFIED\x10\x00\x12\x0e\n" +

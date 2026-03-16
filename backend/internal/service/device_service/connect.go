@@ -4,8 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"connectrpc.com/connect"
 	devicev1 "wargapos/backend/gen/wargapos/device/v1"
+
+	"connectrpc.com/connect"
 )
 
 func (s *DeviceService) Connect(
@@ -24,7 +25,12 @@ func (s *DeviceService) Connect(
 	}
 
 	s.mu.Lock()
-	s.devices[id] = &device{ID: id, Name: name}
+	s.devices[id] = &device{
+		ID:       id,
+		Name:     name,
+		Printers: req.Msg.PrinterNames,
+		stream:   stream,
+	}
 	s.mu.Unlock()
 
 	defer func() {
@@ -34,7 +40,13 @@ func (s *DeviceService) Connect(
 	}()
 
 	if err := stream.Send(&devicev1.ConnectResponse{
-		Device: &devicev1.Device{Id: id, Name: name},
+		Result: &devicev1.ConnectResponse_Device{
+			Device: &devicev1.Device{
+				Id:           id,
+				Name:         name,
+				PrinterNames: req.Msg.PrinterNames,
+			},
+		},
 	}); err != nil {
 		return err
 	}

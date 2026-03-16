@@ -4,13 +4,122 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
+import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/device/v1/device.proto.
  */
 export const file_wargapos_device_v1_device: GenFile = /*@__PURE__*/
-  fileDesc("Ch93YXJnYXBvcy9kZXZpY2UvdjEvZGV2aWNlLnByb3RvEhJ3YXJnYXBvcy5kZXZpY2UudjEiIgoGRGV2aWNlEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkiKgoOQ29ubmVjdFJlcXVlc3QSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCSI9Cg9Db25uZWN0UmVzcG9uc2USKgoGZGV2aWNlGAEgASgLMhoud2FyZ2Fwb3MuZGV2aWNlLnYxLkRldmljZSIUChJMaXN0RGV2aWNlc1JlcXVlc3QiQgoTTGlzdERldmljZXNSZXNwb25zZRIrCgdkZXZpY2VzGAEgAygLMhoud2FyZ2Fwb3MuZGV2aWNlLnYxLkRldmljZTLFAQoNRGV2aWNlU2VydmljZRJUCgdDb25uZWN0EiIud2FyZ2Fwb3MuZGV2aWNlLnYxLkNvbm5lY3RSZXF1ZXN0GiMud2FyZ2Fwb3MuZGV2aWNlLnYxLkNvbm5lY3RSZXNwb25zZTABEl4KC0xpc3REZXZpY2VzEiYud2FyZ2Fwb3MuZGV2aWNlLnYxLkxpc3REZXZpY2VzUmVxdWVzdBonLndhcmdhcG9zLmRldmljZS52MS5MaXN0RGV2aWNlc1Jlc3BvbnNlQjJaMHdhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL2RldmljZS92MTtkZXZpY2V2MWIGcHJvdG8z");
+  fileDesc("Ch93YXJnYXBvcy9kZXZpY2UvdjEvZGV2aWNlLnByb3RvEhJ3YXJnYXBvcy5kZXZpY2UudjEiMwoHUHJpbnRlchIaCglkZXZpY2VfaWQYASABKAlCB7pIBHICEAESDAoEbmFtZRgCIAEoCSJrCgxQcmludFJlcXVlc3QSNAoHcHJpbnRlchgBIAEoCzIbLndhcmdhcG9zLmRldmljZS52MS5QcmludGVyQga6SAPIAQESDgoEdGV4dBgCIAEoCUgAEg0KA3JhdxgDIAEoDEgAQgYKBGRhdGEiLwoNUHJpbnRSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg0KBWVycm9yGAIgASgJIhUKE0xpc3RQcmludGVyc1JlcXVlc3QiRQoUTGlzdFByaW50ZXJzUmVzcG9uc2USLQoIcHJpbnRlcnMYASADKAsyGy53YXJnYXBvcy5kZXZpY2UudjEuUHJpbnRlciI5CgZEZXZpY2USCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIVCg1wcmludGVyX25hbWVzGAMgAygJIlMKDkNvbm5lY3RSZXF1ZXN0EhMKAmlkGAEgASgJQge6SARyAhABEhUKBG5hbWUYAiABKAlCB7pIBHICEAESFQoNcHJpbnRlcl9uYW1lcxgDIAMoCSKEAQoPQ29ubmVjdFJlc3BvbnNlEiwKBmRldmljZRgBIAEoCzIaLndhcmdhcG9zLmRldmljZS52MS5EZXZpY2VIABI5Cg1wcmludF9yZXF1ZXN0GAIgASgLMiAud2FyZ2Fwb3MuZGV2aWNlLnYxLlByaW50UmVxdWVzdEgAQggKBnJlc3VsdCIUChJMaXN0RGV2aWNlc1JlcXVlc3QiQgoTTGlzdERldmljZXNSZXNwb25zZRIrCgdkZXZpY2VzGAEgAygLMhoud2FyZ2Fwb3MuZGV2aWNlLnYxLkRldmljZTL2AgoNRGV2aWNlU2VydmljZRJUCgdDb25uZWN0EiIud2FyZ2Fwb3MuZGV2aWNlLnYxLkNvbm5lY3RSZXF1ZXN0GiMud2FyZ2Fwb3MuZGV2aWNlLnYxLkNvbm5lY3RSZXNwb25zZTABEl4KC0xpc3REZXZpY2VzEiYud2FyZ2Fwb3MuZGV2aWNlLnYxLkxpc3REZXZpY2VzUmVxdWVzdBonLndhcmdhcG9zLmRldmljZS52MS5MaXN0RGV2aWNlc1Jlc3BvbnNlEmEKDExpc3RQcmludGVycxInLndhcmdhcG9zLmRldmljZS52MS5MaXN0UHJpbnRlcnNSZXF1ZXN0Gigud2FyZ2Fwb3MuZGV2aWNlLnYxLkxpc3RQcmludGVyc1Jlc3BvbnNlEkwKBVByaW50EiAud2FyZ2Fwb3MuZGV2aWNlLnYxLlByaW50UmVxdWVzdBohLndhcmdhcG9zLmRldmljZS52MS5QcmludFJlc3BvbnNlQjJaMHdhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL2RldmljZS92MTtkZXZpY2V2MWIGcHJvdG8z", [file_buf_validate_validate]);
+
+/**
+ * @generated from message wargapos.device.v1.Printer
+ */
+export type Printer = Message<"wargapos.device.v1.Printer"> & {
+  /**
+   * @generated from field: string device_id = 1;
+   */
+  deviceId: string;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message wargapos.device.v1.Printer.
+ * Use `create(PrinterSchema)` to create a new message.
+ */
+export const PrinterSchema: GenMessage<Printer> = /*@__PURE__*/
+  messageDesc(file_wargapos_device_v1_device, 0);
+
+/**
+ * @generated from message wargapos.device.v1.PrintRequest
+ */
+export type PrintRequest = Message<"wargapos.device.v1.PrintRequest"> & {
+  /**
+   * @generated from field: wargapos.device.v1.Printer printer = 1;
+   */
+  printer?: Printer;
+
+  /**
+   * @generated from oneof wargapos.device.v1.PrintRequest.data
+   */
+  data: {
+    /**
+     * @generated from field: string text = 2;
+     */
+    value: string;
+    case: "text";
+  } | {
+    /**
+     * @generated from field: bytes raw = 3;
+     */
+    value: Uint8Array;
+    case: "raw";
+  } | { case: undefined; value?: undefined };
+};
+
+/**
+ * Describes the message wargapos.device.v1.PrintRequest.
+ * Use `create(PrintRequestSchema)` to create a new message.
+ */
+export const PrintRequestSchema: GenMessage<PrintRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_device_v1_device, 1);
+
+/**
+ * @generated from message wargapos.device.v1.PrintResponse
+ */
+export type PrintResponse = Message<"wargapos.device.v1.PrintResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string error = 2;
+   */
+  error: string;
+};
+
+/**
+ * Describes the message wargapos.device.v1.PrintResponse.
+ * Use `create(PrintResponseSchema)` to create a new message.
+ */
+export const PrintResponseSchema: GenMessage<PrintResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_device_v1_device, 2);
+
+/**
+ * @generated from message wargapos.device.v1.ListPrintersRequest
+ */
+export type ListPrintersRequest = Message<"wargapos.device.v1.ListPrintersRequest"> & {
+};
+
+/**
+ * Describes the message wargapos.device.v1.ListPrintersRequest.
+ * Use `create(ListPrintersRequestSchema)` to create a new message.
+ */
+export const ListPrintersRequestSchema: GenMessage<ListPrintersRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_device_v1_device, 3);
+
+/**
+ * @generated from message wargapos.device.v1.ListPrintersResponse
+ */
+export type ListPrintersResponse = Message<"wargapos.device.v1.ListPrintersResponse"> & {
+  /**
+   * @generated from field: repeated wargapos.device.v1.Printer printers = 1;
+   */
+  printers: Printer[];
+};
+
+/**
+ * Describes the message wargapos.device.v1.ListPrintersResponse.
+ * Use `create(ListPrintersResponseSchema)` to create a new message.
+ */
+export const ListPrintersResponseSchema: GenMessage<ListPrintersResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_device_v1_device, 4);
 
 /**
  * @generated from message wargapos.device.v1.Device
@@ -25,6 +134,11 @@ export type Device = Message<"wargapos.device.v1.Device"> & {
    * @generated from field: string name = 2;
    */
   name: string;
+
+  /**
+   * @generated from field: repeated string printer_names = 3;
+   */
+  printerNames: string[];
 };
 
 /**
@@ -32,7 +146,7 @@ export type Device = Message<"wargapos.device.v1.Device"> & {
  * Use `create(DeviceSchema)` to create a new message.
  */
 export const DeviceSchema: GenMessage<Device> = /*@__PURE__*/
-  messageDesc(file_wargapos_device_v1_device, 0);
+  messageDesc(file_wargapos_device_v1_device, 5);
 
 /**
  * @generated from message wargapos.device.v1.ConnectRequest
@@ -47,6 +161,11 @@ export type ConnectRequest = Message<"wargapos.device.v1.ConnectRequest"> & {
    * @generated from field: string name = 2;
    */
   name: string;
+
+  /**
+   * @generated from field: repeated string printer_names = 3;
+   */
+  printerNames: string[];
 };
 
 /**
@@ -54,16 +173,28 @@ export type ConnectRequest = Message<"wargapos.device.v1.ConnectRequest"> & {
  * Use `create(ConnectRequestSchema)` to create a new message.
  */
 export const ConnectRequestSchema: GenMessage<ConnectRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_device_v1_device, 1);
+  messageDesc(file_wargapos_device_v1_device, 6);
 
 /**
  * @generated from message wargapos.device.v1.ConnectResponse
  */
 export type ConnectResponse = Message<"wargapos.device.v1.ConnectResponse"> & {
   /**
-   * @generated from field: wargapos.device.v1.Device device = 1;
+   * @generated from oneof wargapos.device.v1.ConnectResponse.result
    */
-  device?: Device;
+  result: {
+    /**
+     * @generated from field: wargapos.device.v1.Device device = 1;
+     */
+    value: Device;
+    case: "device";
+  } | {
+    /**
+     * @generated from field: wargapos.device.v1.PrintRequest print_request = 2;
+     */
+    value: PrintRequest;
+    case: "printRequest";
+  } | { case: undefined; value?: undefined };
 };
 
 /**
@@ -71,7 +202,7 @@ export type ConnectResponse = Message<"wargapos.device.v1.ConnectResponse"> & {
  * Use `create(ConnectResponseSchema)` to create a new message.
  */
 export const ConnectResponseSchema: GenMessage<ConnectResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_device_v1_device, 2);
+  messageDesc(file_wargapos_device_v1_device, 7);
 
 /**
  * @generated from message wargapos.device.v1.ListDevicesRequest
@@ -84,7 +215,7 @@ export type ListDevicesRequest = Message<"wargapos.device.v1.ListDevicesRequest"
  * Use `create(ListDevicesRequestSchema)` to create a new message.
  */
 export const ListDevicesRequestSchema: GenMessage<ListDevicesRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_device_v1_device, 3);
+  messageDesc(file_wargapos_device_v1_device, 8);
 
 /**
  * @generated from message wargapos.device.v1.ListDevicesResponse
@@ -101,7 +232,7 @@ export type ListDevicesResponse = Message<"wargapos.device.v1.ListDevicesRespons
  * Use `create(ListDevicesResponseSchema)` to create a new message.
  */
 export const ListDevicesResponseSchema: GenMessage<ListDevicesResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_device_v1_device, 4);
+  messageDesc(file_wargapos_device_v1_device, 9);
 
 /**
  * @generated from service wargapos.device.v1.DeviceService
@@ -122,6 +253,22 @@ export const DeviceService: GenService<{
     methodKind: "unary";
     input: typeof ListDevicesRequestSchema;
     output: typeof ListDevicesResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.device.v1.DeviceService.ListPrinters
+   */
+  listPrinters: {
+    methodKind: "unary";
+    input: typeof ListPrintersRequestSchema;
+    output: typeof ListPrintersResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.device.v1.DeviceService.Print
+   */
+  print: {
+    methodKind: "unary";
+    input: typeof PrintRequestSchema;
+    output: typeof PrintResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_wargapos_device_v1_device, 0);

@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"connectrpc.com/connect"
+	"connectrpc.com/grpcreflect"
+	"connectrpc.com/validate"
 	"gorm.io/gorm"
 
 	"wargapos/backend/gen/wargapos/auth/v1/authv1connect"
@@ -46,7 +48,7 @@ func NewApp(
 	stockSvc *stock_service.StockService,
 	deviceSvc *device_service.DeviceService,
 ) *App {
-	interceptor := connect.WithInterceptors(auth.NewInterceptor([]byte(authCfg.JWTSecret)))
+	interceptor := connect.WithInterceptors(validate.NewInterceptor(), auth.NewInterceptor([]byte(authCfg.JWTSecret)))
 
 	mux := http.NewServeMux()
 	mux.Handle(authv1connect.NewAuthServiceHandler(authSvc, interceptor))
@@ -57,6 +59,20 @@ func NewApp(
 	mux.Handle(settingsv1connect.NewSettingsServiceHandler(settingsSvc, interceptor))
 	mux.Handle(stockv1connect.NewStockServiceHandler(stockSvc, interceptor))
 	mux.Handle(devicev1connect.NewDeviceServiceHandler(deviceSvc, interceptor))
+
+	reflector := grpcreflect.NewStaticReflector(
+		authv1connect.AuthServiceName,
+		userv1connect.UserServiceName,
+		productv1connect.ProductServiceName,
+		transactionv1connect.TransactionServiceName,
+		tablev1connect.TableServiceName,
+		settingsv1connect.SettingsServiceName,
+		stockv1connect.StockServiceName,
+		devicev1connect.DeviceServiceName,
+	)
+	mux.Handle(grpcreflect.NewHandlerV1(reflector))
+	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
+
 	mux.HandleFunc("POST /midtrans/webhook", midtransWebhookHandler(db, midtransCfg))
 
 	uploadDir := cfg.Server.UploadDir

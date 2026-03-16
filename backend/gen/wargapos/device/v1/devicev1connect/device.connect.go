@@ -38,12 +38,19 @@ const (
 	// DeviceServiceListDevicesProcedure is the fully-qualified name of the DeviceService's ListDevices
 	// RPC.
 	DeviceServiceListDevicesProcedure = "/wargapos.device.v1.DeviceService/ListDevices"
+	// DeviceServiceListPrintersProcedure is the fully-qualified name of the DeviceService's
+	// ListPrinters RPC.
+	DeviceServiceListPrintersProcedure = "/wargapos.device.v1.DeviceService/ListPrinters"
+	// DeviceServicePrintProcedure is the fully-qualified name of the DeviceService's Print RPC.
+	DeviceServicePrintProcedure = "/wargapos.device.v1.DeviceService/Print"
 )
 
 // DeviceServiceClient is a client for the wargapos.device.v1.DeviceService service.
 type DeviceServiceClient interface {
 	Connect(context.Context, *connect.Request[v1.ConnectRequest]) (*connect.ServerStreamForClient[v1.ConnectResponse], error)
 	ListDevices(context.Context, *connect.Request[v1.ListDevicesRequest]) (*connect.Response[v1.ListDevicesResponse], error)
+	ListPrinters(context.Context, *connect.Request[v1.ListPrintersRequest]) (*connect.Response[v1.ListPrintersResponse], error)
+	Print(context.Context, *connect.Request[v1.PrintRequest]) (*connect.Response[v1.PrintResponse], error)
 }
 
 // NewDeviceServiceClient constructs a client for the wargapos.device.v1.DeviceService service. By
@@ -69,13 +76,27 @@ func NewDeviceServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(deviceServiceMethods.ByName("ListDevices")),
 			connect.WithClientOptions(opts...),
 		),
+		listPrinters: connect.NewClient[v1.ListPrintersRequest, v1.ListPrintersResponse](
+			httpClient,
+			baseURL+DeviceServiceListPrintersProcedure,
+			connect.WithSchema(deviceServiceMethods.ByName("ListPrinters")),
+			connect.WithClientOptions(opts...),
+		),
+		print: connect.NewClient[v1.PrintRequest, v1.PrintResponse](
+			httpClient,
+			baseURL+DeviceServicePrintProcedure,
+			connect.WithSchema(deviceServiceMethods.ByName("Print")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // deviceServiceClient implements DeviceServiceClient.
 type deviceServiceClient struct {
-	connect     *connect.Client[v1.ConnectRequest, v1.ConnectResponse]
-	listDevices *connect.Client[v1.ListDevicesRequest, v1.ListDevicesResponse]
+	connect      *connect.Client[v1.ConnectRequest, v1.ConnectResponse]
+	listDevices  *connect.Client[v1.ListDevicesRequest, v1.ListDevicesResponse]
+	listPrinters *connect.Client[v1.ListPrintersRequest, v1.ListPrintersResponse]
+	print        *connect.Client[v1.PrintRequest, v1.PrintResponse]
 }
 
 // Connect calls wargapos.device.v1.DeviceService.Connect.
@@ -88,10 +109,22 @@ func (c *deviceServiceClient) ListDevices(ctx context.Context, req *connect.Requ
 	return c.listDevices.CallUnary(ctx, req)
 }
 
+// ListPrinters calls wargapos.device.v1.DeviceService.ListPrinters.
+func (c *deviceServiceClient) ListPrinters(ctx context.Context, req *connect.Request[v1.ListPrintersRequest]) (*connect.Response[v1.ListPrintersResponse], error) {
+	return c.listPrinters.CallUnary(ctx, req)
+}
+
+// Print calls wargapos.device.v1.DeviceService.Print.
+func (c *deviceServiceClient) Print(ctx context.Context, req *connect.Request[v1.PrintRequest]) (*connect.Response[v1.PrintResponse], error) {
+	return c.print.CallUnary(ctx, req)
+}
+
 // DeviceServiceHandler is an implementation of the wargapos.device.v1.DeviceService service.
 type DeviceServiceHandler interface {
 	Connect(context.Context, *connect.Request[v1.ConnectRequest], *connect.ServerStream[v1.ConnectResponse]) error
 	ListDevices(context.Context, *connect.Request[v1.ListDevicesRequest]) (*connect.Response[v1.ListDevicesResponse], error)
+	ListPrinters(context.Context, *connect.Request[v1.ListPrintersRequest]) (*connect.Response[v1.ListPrintersResponse], error)
+	Print(context.Context, *connect.Request[v1.PrintRequest]) (*connect.Response[v1.PrintResponse], error)
 }
 
 // NewDeviceServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -113,12 +146,28 @@ func NewDeviceServiceHandler(svc DeviceServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(deviceServiceMethods.ByName("ListDevices")),
 		connect.WithHandlerOptions(opts...),
 	)
+	deviceServiceListPrintersHandler := connect.NewUnaryHandler(
+		DeviceServiceListPrintersProcedure,
+		svc.ListPrinters,
+		connect.WithSchema(deviceServiceMethods.ByName("ListPrinters")),
+		connect.WithHandlerOptions(opts...),
+	)
+	deviceServicePrintHandler := connect.NewUnaryHandler(
+		DeviceServicePrintProcedure,
+		svc.Print,
+		connect.WithSchema(deviceServiceMethods.ByName("Print")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.device.v1.DeviceService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case DeviceServiceConnectProcedure:
 			deviceServiceConnectHandler.ServeHTTP(w, r)
 		case DeviceServiceListDevicesProcedure:
 			deviceServiceListDevicesHandler.ServeHTTP(w, r)
+		case DeviceServiceListPrintersProcedure:
+			deviceServiceListPrintersHandler.ServeHTTP(w, r)
+		case DeviceServicePrintProcedure:
+			deviceServicePrintHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -134,4 +183,12 @@ func (UnimplementedDeviceServiceHandler) Connect(context.Context, *connect.Reque
 
 func (UnimplementedDeviceServiceHandler) ListDevices(context.Context, *connect.Request[v1.ListDevicesRequest]) (*connect.Response[v1.ListDevicesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.device.v1.DeviceService.ListDevices is not implemented"))
+}
+
+func (UnimplementedDeviceServiceHandler) ListPrinters(context.Context, *connect.Request[v1.ListPrintersRequest]) (*connect.Response[v1.ListPrintersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.device.v1.DeviceService.ListPrinters is not implemented"))
+}
+
+func (UnimplementedDeviceServiceHandler) Print(context.Context, *connect.Request[v1.PrintRequest]) (*connect.Response[v1.PrintResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.device.v1.DeviceService.Print is not implemented"))
 }

@@ -7,6 +7,7 @@
 package devicev1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -21,17 +22,292 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Printer struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DeviceId      string                 `protobuf:"bytes,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Printer) Reset() {
+	*x = Printer{}
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Printer) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Printer) ProtoMessage() {}
+
+func (x *Printer) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Printer.ProtoReflect.Descriptor instead.
+func (*Printer) Descriptor() ([]byte, []int) {
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Printer) GetDeviceId() string {
+	if x != nil {
+		return x.DeviceId
+	}
+	return ""
+}
+
+func (x *Printer) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type PrintRequest struct {
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Printer *Printer               `protobuf:"bytes,1,opt,name=printer,proto3" json:"printer,omitempty"`
+	// Types that are valid to be assigned to Data:
+	//
+	//	*PrintRequest_Text
+	//	*PrintRequest_Raw
+	Data          isPrintRequest_Data `protobuf_oneof:"data"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PrintRequest) Reset() {
+	*x = PrintRequest{}
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PrintRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrintRequest) ProtoMessage() {}
+
+func (x *PrintRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PrintRequest.ProtoReflect.Descriptor instead.
+func (*PrintRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *PrintRequest) GetPrinter() *Printer {
+	if x != nil {
+		return x.Printer
+	}
+	return nil
+}
+
+func (x *PrintRequest) GetData() isPrintRequest_Data {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *PrintRequest) GetText() string {
+	if x != nil {
+		if x, ok := x.Data.(*PrintRequest_Text); ok {
+			return x.Text
+		}
+	}
+	return ""
+}
+
+func (x *PrintRequest) GetRaw() []byte {
+	if x != nil {
+		if x, ok := x.Data.(*PrintRequest_Raw); ok {
+			return x.Raw
+		}
+	}
+	return nil
+}
+
+type isPrintRequest_Data interface {
+	isPrintRequest_Data()
+}
+
+type PrintRequest_Text struct {
+	Text string `protobuf:"bytes,2,opt,name=text,proto3,oneof"`
+}
+
+type PrintRequest_Raw struct {
+	Raw []byte `protobuf:"bytes,3,opt,name=raw,proto3,oneof"`
+}
+
+func (*PrintRequest_Text) isPrintRequest_Data() {}
+
+func (*PrintRequest_Raw) isPrintRequest_Data() {}
+
+type PrintResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PrintResponse) Reset() {
+	*x = PrintResponse{}
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PrintResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrintResponse) ProtoMessage() {}
+
+func (x *PrintResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PrintResponse.ProtoReflect.Descriptor instead.
+func (*PrintResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *PrintResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *PrintResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type ListPrintersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPrintersRequest) Reset() {
+	*x = ListPrintersRequest{}
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPrintersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPrintersRequest) ProtoMessage() {}
+
+func (x *ListPrintersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPrintersRequest.ProtoReflect.Descriptor instead.
+func (*ListPrintersRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{3}
+}
+
+type ListPrintersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Printers      []*Printer             `protobuf:"bytes,1,rep,name=printers,proto3" json:"printers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPrintersResponse) Reset() {
+	*x = ListPrintersResponse{}
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPrintersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPrintersResponse) ProtoMessage() {}
+
+func (x *ListPrintersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPrintersResponse.ProtoReflect.Descriptor instead.
+func (*ListPrintersResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListPrintersResponse) GetPrinters() []*Printer {
+	if x != nil {
+		return x.Printers
+	}
+	return nil
+}
+
 type Device struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	PrinterNames  []string               `protobuf:"bytes,3,rep,name=printer_names,json=printerNames,proto3" json:"printer_names,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Device) Reset() {
 	*x = Device{}
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[0]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +319,7 @@ func (x *Device) String() string {
 func (*Device) ProtoMessage() {}
 
 func (x *Device) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[0]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +332,7 @@ func (x *Device) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Device.ProtoReflect.Descriptor instead.
 func (*Device) Descriptor() ([]byte, []int) {
-	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{0}
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Device) GetId() string {
@@ -73,17 +349,25 @@ func (x *Device) GetName() string {
 	return ""
 }
 
+func (x *Device) GetPrinterNames() []string {
+	if x != nil {
+		return x.PrinterNames
+	}
+	return nil
+}
+
 type ConnectRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	PrinterNames  []string               `protobuf:"bytes,3,rep,name=printer_names,json=printerNames,proto3" json:"printer_names,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConnectRequest) Reset() {
 	*x = ConnectRequest{}
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[1]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -95,7 +379,7 @@ func (x *ConnectRequest) String() string {
 func (*ConnectRequest) ProtoMessage() {}
 
 func (x *ConnectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[1]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -108,7 +392,7 @@ func (x *ConnectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectRequest.ProtoReflect.Descriptor instead.
 func (*ConnectRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{1}
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ConnectRequest) GetId() string {
@@ -125,16 +409,27 @@ func (x *ConnectRequest) GetName() string {
 	return ""
 }
 
+func (x *ConnectRequest) GetPrinterNames() []string {
+	if x != nil {
+		return x.PrinterNames
+	}
+	return nil
+}
+
 type ConnectResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Device        *Device                `protobuf:"bytes,1,opt,name=device,proto3" json:"device,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Result:
+	//
+	//	*ConnectResponse_Device
+	//	*ConnectResponse_PrintRequest
+	Result        isConnectResponse_Result `protobuf_oneof:"result"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConnectResponse) Reset() {
 	*x = ConnectResponse{}
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[2]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -146,7 +441,7 @@ func (x *ConnectResponse) String() string {
 func (*ConnectResponse) ProtoMessage() {}
 
 func (x *ConnectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[2]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -159,15 +454,49 @@ func (x *ConnectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectResponse.ProtoReflect.Descriptor instead.
 func (*ConnectResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{2}
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ConnectResponse) GetResult() isConnectResponse_Result {
+	if x != nil {
+		return x.Result
+	}
+	return nil
 }
 
 func (x *ConnectResponse) GetDevice() *Device {
 	if x != nil {
-		return x.Device
+		if x, ok := x.Result.(*ConnectResponse_Device); ok {
+			return x.Device
+		}
 	}
 	return nil
 }
+
+func (x *ConnectResponse) GetPrintRequest() *PrintRequest {
+	if x != nil {
+		if x, ok := x.Result.(*ConnectResponse_PrintRequest); ok {
+			return x.PrintRequest
+		}
+	}
+	return nil
+}
+
+type isConnectResponse_Result interface {
+	isConnectResponse_Result()
+}
+
+type ConnectResponse_Device struct {
+	Device *Device `protobuf:"bytes,1,opt,name=device,proto3,oneof"`
+}
+
+type ConnectResponse_PrintRequest struct {
+	PrintRequest *PrintRequest `protobuf:"bytes,2,opt,name=print_request,json=printRequest,proto3,oneof"`
+}
+
+func (*ConnectResponse_Device) isConnectResponse_Result() {}
+
+func (*ConnectResponse_PrintRequest) isConnectResponse_Result() {}
 
 type ListDevicesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -177,7 +506,7 @@ type ListDevicesRequest struct {
 
 func (x *ListDevicesRequest) Reset() {
 	*x = ListDevicesRequest{}
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[3]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -189,7 +518,7 @@ func (x *ListDevicesRequest) String() string {
 func (*ListDevicesRequest) ProtoMessage() {}
 
 func (x *ListDevicesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[3]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -202,7 +531,7 @@ func (x *ListDevicesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListDevicesRequest.ProtoReflect.Descriptor instead.
 func (*ListDevicesRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{3}
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{8}
 }
 
 type ListDevicesResponse struct {
@@ -214,7 +543,7 @@ type ListDevicesResponse struct {
 
 func (x *ListDevicesResponse) Reset() {
 	*x = ListDevicesResponse{}
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[4]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -226,7 +555,7 @@ func (x *ListDevicesResponse) String() string {
 func (*ListDevicesResponse) ProtoMessage() {}
 
 func (x *ListDevicesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[4]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -239,7 +568,7 @@ func (x *ListDevicesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListDevicesResponse.ProtoReflect.Descriptor instead.
 func (*ListDevicesResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{4}
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListDevicesResponse) GetDevices() []*Device {
@@ -253,21 +582,41 @@ var File_wargapos_device_v1_device_proto protoreflect.FileDescriptor
 
 const file_wargapos_device_v1_device_proto_rawDesc = "" +
 	"\n" +
-	"\x1fwargapos/device/v1/device.proto\x12\x12wargapos.device.v1\",\n" +
+	"\x1fwargapos/device/v1/device.proto\x12\x12wargapos.device.v1\x1a\x1bbuf/validate/validate.proto\"C\n" +
+	"\aPrinter\x12$\n" +
+	"\tdevice_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bdeviceId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\x7f\n" +
+	"\fPrintRequest\x12=\n" +
+	"\aprinter\x18\x01 \x01(\v2\x1b.wargapos.device.v1.PrinterB\x06\xbaH\x03\xc8\x01\x01R\aprinter\x12\x14\n" +
+	"\x04text\x18\x02 \x01(\tH\x00R\x04text\x12\x12\n" +
+	"\x03raw\x18\x03 \x01(\fH\x00R\x03rawB\x06\n" +
+	"\x04data\"?\n" +
+	"\rPrintResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"\x15\n" +
+	"\x13ListPrintersRequest\"O\n" +
+	"\x14ListPrintersResponse\x127\n" +
+	"\bprinters\x18\x01 \x03(\v2\x1b.wargapos.device.v1.PrinterR\bprinters\"Q\n" +
 	"\x06Device\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"4\n" +
-	"\x0eConnectRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"E\n" +
-	"\x0fConnectResponse\x122\n" +
-	"\x06device\x18\x01 \x01(\v2\x1a.wargapos.device.v1.DeviceR\x06device\"\x14\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12#\n" +
+	"\rprinter_names\x18\x03 \x03(\tR\fprinterNames\"k\n" +
+	"\x0eConnectRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12\x1b\n" +
+	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12#\n" +
+	"\rprinter_names\x18\x03 \x03(\tR\fprinterNames\"\x9a\x01\n" +
+	"\x0fConnectResponse\x124\n" +
+	"\x06device\x18\x01 \x01(\v2\x1a.wargapos.device.v1.DeviceH\x00R\x06device\x12G\n" +
+	"\rprint_request\x18\x02 \x01(\v2 .wargapos.device.v1.PrintRequestH\x00R\fprintRequestB\b\n" +
+	"\x06result\"\x14\n" +
 	"\x12ListDevicesRequest\"K\n" +
 	"\x13ListDevicesResponse\x124\n" +
-	"\adevices\x18\x01 \x03(\v2\x1a.wargapos.device.v1.DeviceR\adevices2\xc5\x01\n" +
+	"\adevices\x18\x01 \x03(\v2\x1a.wargapos.device.v1.DeviceR\adevices2\xf6\x02\n" +
 	"\rDeviceService\x12T\n" +
 	"\aConnect\x12\".wargapos.device.v1.ConnectRequest\x1a#.wargapos.device.v1.ConnectResponse0\x01\x12^\n" +
-	"\vListDevices\x12&.wargapos.device.v1.ListDevicesRequest\x1a'.wargapos.device.v1.ListDevicesResponseB2Z0wargapos/backend/gen/wargapos/device/v1;devicev1b\x06proto3"
+	"\vListDevices\x12&.wargapos.device.v1.ListDevicesRequest\x1a'.wargapos.device.v1.ListDevicesResponse\x12a\n" +
+	"\fListPrinters\x12'.wargapos.device.v1.ListPrintersRequest\x1a(.wargapos.device.v1.ListPrintersResponse\x12L\n" +
+	"\x05Print\x12 .wargapos.device.v1.PrintRequest\x1a!.wargapos.device.v1.PrintResponseB2Z0wargapos/backend/gen/wargapos/device/v1;devicev1b\x06proto3"
 
 var (
 	file_wargapos_device_v1_device_proto_rawDescOnce sync.Once
@@ -281,26 +630,38 @@ func file_wargapos_device_v1_device_proto_rawDescGZIP() []byte {
 	return file_wargapos_device_v1_device_proto_rawDescData
 }
 
-var file_wargapos_device_v1_device_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_wargapos_device_v1_device_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_wargapos_device_v1_device_proto_goTypes = []any{
-	(*Device)(nil),              // 0: wargapos.device.v1.Device
-	(*ConnectRequest)(nil),      // 1: wargapos.device.v1.ConnectRequest
-	(*ConnectResponse)(nil),     // 2: wargapos.device.v1.ConnectResponse
-	(*ListDevicesRequest)(nil),  // 3: wargapos.device.v1.ListDevicesRequest
-	(*ListDevicesResponse)(nil), // 4: wargapos.device.v1.ListDevicesResponse
+	(*Printer)(nil),              // 0: wargapos.device.v1.Printer
+	(*PrintRequest)(nil),         // 1: wargapos.device.v1.PrintRequest
+	(*PrintResponse)(nil),        // 2: wargapos.device.v1.PrintResponse
+	(*ListPrintersRequest)(nil),  // 3: wargapos.device.v1.ListPrintersRequest
+	(*ListPrintersResponse)(nil), // 4: wargapos.device.v1.ListPrintersResponse
+	(*Device)(nil),               // 5: wargapos.device.v1.Device
+	(*ConnectRequest)(nil),       // 6: wargapos.device.v1.ConnectRequest
+	(*ConnectResponse)(nil),      // 7: wargapos.device.v1.ConnectResponse
+	(*ListDevicesRequest)(nil),   // 8: wargapos.device.v1.ListDevicesRequest
+	(*ListDevicesResponse)(nil),  // 9: wargapos.device.v1.ListDevicesResponse
 }
 var file_wargapos_device_v1_device_proto_depIdxs = []int32{
-	0, // 0: wargapos.device.v1.ConnectResponse.device:type_name -> wargapos.device.v1.Device
-	0, // 1: wargapos.device.v1.ListDevicesResponse.devices:type_name -> wargapos.device.v1.Device
-	1, // 2: wargapos.device.v1.DeviceService.Connect:input_type -> wargapos.device.v1.ConnectRequest
-	3, // 3: wargapos.device.v1.DeviceService.ListDevices:input_type -> wargapos.device.v1.ListDevicesRequest
-	2, // 4: wargapos.device.v1.DeviceService.Connect:output_type -> wargapos.device.v1.ConnectResponse
-	4, // 5: wargapos.device.v1.DeviceService.ListDevices:output_type -> wargapos.device.v1.ListDevicesResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // 0: wargapos.device.v1.PrintRequest.printer:type_name -> wargapos.device.v1.Printer
+	0, // 1: wargapos.device.v1.ListPrintersResponse.printers:type_name -> wargapos.device.v1.Printer
+	5, // 2: wargapos.device.v1.ConnectResponse.device:type_name -> wargapos.device.v1.Device
+	1, // 3: wargapos.device.v1.ConnectResponse.print_request:type_name -> wargapos.device.v1.PrintRequest
+	5, // 4: wargapos.device.v1.ListDevicesResponse.devices:type_name -> wargapos.device.v1.Device
+	6, // 5: wargapos.device.v1.DeviceService.Connect:input_type -> wargapos.device.v1.ConnectRequest
+	8, // 6: wargapos.device.v1.DeviceService.ListDevices:input_type -> wargapos.device.v1.ListDevicesRequest
+	3, // 7: wargapos.device.v1.DeviceService.ListPrinters:input_type -> wargapos.device.v1.ListPrintersRequest
+	1, // 8: wargapos.device.v1.DeviceService.Print:input_type -> wargapos.device.v1.PrintRequest
+	7, // 9: wargapos.device.v1.DeviceService.Connect:output_type -> wargapos.device.v1.ConnectResponse
+	9, // 10: wargapos.device.v1.DeviceService.ListDevices:output_type -> wargapos.device.v1.ListDevicesResponse
+	4, // 11: wargapos.device.v1.DeviceService.ListPrinters:output_type -> wargapos.device.v1.ListPrintersResponse
+	2, // 12: wargapos.device.v1.DeviceService.Print:output_type -> wargapos.device.v1.PrintResponse
+	9, // [9:13] is the sub-list for method output_type
+	5, // [5:9] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_device_v1_device_proto_init() }
@@ -308,13 +669,21 @@ func file_wargapos_device_v1_device_proto_init() {
 	if File_wargapos_device_v1_device_proto != nil {
 		return
 	}
+	file_wargapos_device_v1_device_proto_msgTypes[1].OneofWrappers = []any{
+		(*PrintRequest_Text)(nil),
+		(*PrintRequest_Raw)(nil),
+	}
+	file_wargapos_device_v1_device_proto_msgTypes[7].OneofWrappers = []any{
+		(*ConnectResponse_Device)(nil),
+		(*ConnectResponse_PrintRequest)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_device_v1_device_proto_rawDesc), len(file_wargapos_device_v1_device_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

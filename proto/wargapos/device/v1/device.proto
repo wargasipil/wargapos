@@ -2,26 +2,60 @@ syntax = "proto3";
 
 package wargapos.device.v1;
 
+import "buf/validate/validate.proto";
+
 option go_package = "wargapos/backend/gen/wargapos/device/v1;devicev1";
 
 service DeviceService {
-  rpc Connect(ConnectRequest)         returns (stream ConnectResponse);
+  rpc Connect(ConnectRequest) returns (stream ConnectResponse);
   rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
+  rpc ListPrinters(ListPrintersRequest) returns (ListPrintersResponse);
+  rpc Print(PrintRequest) returns (PrintResponse);
+}
+
+message Printer {
+  string device_id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 2;
+}
+
+message PrintRequest {
+  Printer printer = 1 [(buf.validate.field).required = true];
+  oneof data {
+    string text = 2;
+    bytes raw = 3;
+  }
+}
+
+message PrintResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message ListPrintersRequest {}
+message ListPrintersResponse {
+  repeated Printer printers = 1;
 }
 
 message Device {
-  string id   = 1;
+  string id = 1;
   string name = 2;
+  repeated string printer_names = 3;
 }
 
 message ConnectRequest {
-  string id   = 1;
-  string name = 2;
+  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 2 [(buf.validate.field).string.min_len = 1];
+  repeated string printer_names = 3;
 }
 
 message ConnectResponse {
-  Device device = 1;
+  oneof result {
+    Device device = 1;
+    PrintRequest print_request = 2;
+  }
 }
 
-message ListDevicesRequest  {}
-message ListDevicesResponse { repeated Device devices = 1; }
+message ListDevicesRequest {}
+message ListDevicesResponse {
+  repeated Device devices = 1;
+}

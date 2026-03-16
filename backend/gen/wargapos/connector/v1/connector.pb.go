@@ -7,6 +7,7 @@
 package connectorv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -22,8 +23,13 @@ const (
 )
 
 type PrintRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"` // Raw ESC/POS bytes
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	PrinterName string                 `protobuf:"bytes,1,opt,name=printer_name,json=printerName,proto3" json:"printer_name,omitempty"`
+	// Types that are valid to be assigned to Data:
+	//
+	//	*PrintRequest_StringData
+	//	*PrintRequest_BytesData
+	Data          isPrintRequest_Data `protobuf_oneof:"data"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,11 +64,132 @@ func (*PrintRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *PrintRequest) GetData() []byte {
+func (x *PrintRequest) GetPrinterName() string {
+	if x != nil {
+		return x.PrinterName
+	}
+	return ""
+}
+
+func (x *PrintRequest) GetData() isPrintRequest_Data {
 	if x != nil {
 		return x.Data
 	}
 	return nil
+}
+
+func (x *PrintRequest) GetStringData() string {
+	if x != nil {
+		if x, ok := x.Data.(*PrintRequest_StringData); ok {
+			return x.StringData
+		}
+	}
+	return ""
+}
+
+func (x *PrintRequest) GetBytesData() []byte {
+	if x != nil {
+		if x, ok := x.Data.(*PrintRequest_BytesData); ok {
+			return x.BytesData
+		}
+	}
+	return nil
+}
+
+type isPrintRequest_Data interface {
+	isPrintRequest_Data()
+}
+
+type PrintRequest_StringData struct {
+	StringData string `protobuf:"bytes,2,opt,name=string_data,json=stringData,proto3,oneof"`
+}
+
+type PrintRequest_BytesData struct {
+	BytesData []byte `protobuf:"bytes,3,opt,name=bytes_data,json=bytesData,proto3,oneof"`
+}
+
+func (*PrintRequest_StringData) isPrintRequest_Data() {}
+
+func (*PrintRequest_BytesData) isPrintRequest_Data() {}
+
+type ListPrintersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Names         []string               `protobuf:"bytes,1,rep,name=names,proto3" json:"names,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPrintersResponse) Reset() {
+	*x = ListPrintersResponse{}
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPrintersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPrintersResponse) ProtoMessage() {}
+
+func (x *ListPrintersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPrintersResponse.ProtoReflect.Descriptor instead.
+func (*ListPrintersResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ListPrintersResponse) GetNames() []string {
+	if x != nil {
+		return x.Names
+	}
+	return nil
+}
+
+type ListPrintersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListPrintersRequest) Reset() {
+	*x = ListPrintersRequest{}
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListPrintersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListPrintersRequest) ProtoMessage() {}
+
+func (x *ListPrintersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListPrintersRequest.ProtoReflect.Descriptor instead.
+func (*ListPrintersRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{2}
 }
 
 type PrintResponse struct {
@@ -73,7 +200,7 @@ type PrintResponse struct {
 
 func (x *PrintResponse) Reset() {
 	*x = PrintResponse{}
-	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[1]
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -85,7 +212,7 @@ func (x *PrintResponse) String() string {
 func (*PrintResponse) ProtoMessage() {}
 
 func (x *PrintResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[1]
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -98,7 +225,7 @@ func (x *PrintResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrintResponse.ProtoReflect.Descriptor instead.
 func (*PrintResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{1}
+	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{3}
 }
 
 type GetStatusRequest struct {
@@ -109,7 +236,7 @@ type GetStatusRequest struct {
 
 func (x *GetStatusRequest) Reset() {
 	*x = GetStatusRequest{}
-	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[2]
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -121,7 +248,7 @@ func (x *GetStatusRequest) String() string {
 func (*GetStatusRequest) ProtoMessage() {}
 
 func (x *GetStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[2]
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -134,7 +261,7 @@ func (x *GetStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetStatusRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{2}
+	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{4}
 }
 
 type GetStatusResponse struct {
@@ -147,7 +274,7 @@ type GetStatusResponse struct {
 
 func (x *GetStatusResponse) Reset() {
 	*x = GetStatusResponse{}
-	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[3]
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -159,7 +286,7 @@ func (x *GetStatusResponse) String() string {
 func (*GetStatusResponse) ProtoMessage() {}
 
 func (x *GetStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[3]
+	mi := &file_wargapos_connector_v1_connector_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -172,7 +299,7 @@ func (x *GetStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetStatusResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{3}
+	return file_wargapos_connector_v1_connector_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetStatusResponse) GetConnected() bool {
@@ -193,17 +320,26 @@ var File_wargapos_connector_v1_connector_proto protoreflect.FileDescriptor
 
 const file_wargapos_connector_v1_connector_proto_rawDesc = "" +
 	"\n" +
-	"%wargapos/connector/v1/connector.proto\x12\x15wargapos.connector.v1\"\"\n" +
-	"\fPrintRequest\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04data\"\x0f\n" +
+	"%wargapos/connector/v1/connector.proto\x12\x15wargapos.connector.v1\x1a\x1bbuf/validate/validate.proto\"\x86\x01\n" +
+	"\fPrintRequest\x12*\n" +
+	"\fprinter_name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vprinterName\x12!\n" +
+	"\vstring_data\x18\x02 \x01(\tH\x00R\n" +
+	"stringData\x12\x1f\n" +
+	"\n" +
+	"bytes_data\x18\x03 \x01(\fH\x00R\tbytesDataB\x06\n" +
+	"\x04data\",\n" +
+	"\x14ListPrintersResponse\x12\x14\n" +
+	"\x05names\x18\x01 \x03(\tR\x05names\"\x15\n" +
+	"\x13ListPrintersRequest\"\x0f\n" +
 	"\rPrintResponse\"\x12\n" +
 	"\x10GetStatusRequest\"Z\n" +
 	"\x11GetStatusResponse\x12\x1c\n" +
 	"\tconnected\x18\x01 \x01(\bR\tconnected\x12'\n" +
-	"\x0fprinter_address\x18\x02 \x01(\tR\x0eprinterAddress2\xc6\x01\n" +
+	"\x0fprinter_address\x18\x02 \x01(\tR\x0eprinterAddress2\xaf\x02\n" +
 	"\x10ConnectorService\x12R\n" +
 	"\x05Print\x12#.wargapos.connector.v1.PrintRequest\x1a$.wargapos.connector.v1.PrintResponse\x12^\n" +
-	"\tGetStatus\x12'.wargapos.connector.v1.GetStatusRequest\x1a(.wargapos.connector.v1.GetStatusResponseB8Z6wargapos/backend/gen/wargapos/connector/v1;connectorv1b\x06proto3"
+	"\tGetStatus\x12'.wargapos.connector.v1.GetStatusRequest\x1a(.wargapos.connector.v1.GetStatusResponse\x12g\n" +
+	"\fListPrinters\x12*.wargapos.connector.v1.ListPrintersRequest\x1a+.wargapos.connector.v1.ListPrintersResponseB8Z6wargapos/backend/gen/wargapos/connector/v1;connectorv1b\x06proto3"
 
 var (
 	file_wargapos_connector_v1_connector_proto_rawDescOnce sync.Once
@@ -217,20 +353,24 @@ func file_wargapos_connector_v1_connector_proto_rawDescGZIP() []byte {
 	return file_wargapos_connector_v1_connector_proto_rawDescData
 }
 
-var file_wargapos_connector_v1_connector_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_wargapos_connector_v1_connector_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_wargapos_connector_v1_connector_proto_goTypes = []any{
-	(*PrintRequest)(nil),      // 0: wargapos.connector.v1.PrintRequest
-	(*PrintResponse)(nil),     // 1: wargapos.connector.v1.PrintResponse
-	(*GetStatusRequest)(nil),  // 2: wargapos.connector.v1.GetStatusRequest
-	(*GetStatusResponse)(nil), // 3: wargapos.connector.v1.GetStatusResponse
+	(*PrintRequest)(nil),         // 0: wargapos.connector.v1.PrintRequest
+	(*ListPrintersResponse)(nil), // 1: wargapos.connector.v1.ListPrintersResponse
+	(*ListPrintersRequest)(nil),  // 2: wargapos.connector.v1.ListPrintersRequest
+	(*PrintResponse)(nil),        // 3: wargapos.connector.v1.PrintResponse
+	(*GetStatusRequest)(nil),     // 4: wargapos.connector.v1.GetStatusRequest
+	(*GetStatusResponse)(nil),    // 5: wargapos.connector.v1.GetStatusResponse
 }
 var file_wargapos_connector_v1_connector_proto_depIdxs = []int32{
 	0, // 0: wargapos.connector.v1.ConnectorService.Print:input_type -> wargapos.connector.v1.PrintRequest
-	2, // 1: wargapos.connector.v1.ConnectorService.GetStatus:input_type -> wargapos.connector.v1.GetStatusRequest
-	1, // 2: wargapos.connector.v1.ConnectorService.Print:output_type -> wargapos.connector.v1.PrintResponse
-	3, // 3: wargapos.connector.v1.ConnectorService.GetStatus:output_type -> wargapos.connector.v1.GetStatusResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	4, // 1: wargapos.connector.v1.ConnectorService.GetStatus:input_type -> wargapos.connector.v1.GetStatusRequest
+	2, // 2: wargapos.connector.v1.ConnectorService.ListPrinters:input_type -> wargapos.connector.v1.ListPrintersRequest
+	3, // 3: wargapos.connector.v1.ConnectorService.Print:output_type -> wargapos.connector.v1.PrintResponse
+	5, // 4: wargapos.connector.v1.ConnectorService.GetStatus:output_type -> wargapos.connector.v1.GetStatusResponse
+	1, // 5: wargapos.connector.v1.ConnectorService.ListPrinters:output_type -> wargapos.connector.v1.ListPrintersResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -241,13 +381,17 @@ func file_wargapos_connector_v1_connector_proto_init() {
 	if File_wargapos_connector_v1_connector_proto != nil {
 		return
 	}
+	file_wargapos_connector_v1_connector_proto_msgTypes[0].OneofWrappers = []any{
+		(*PrintRequest_StringData)(nil),
+		(*PrintRequest_BytesData)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_connector_v1_connector_proto_rawDesc), len(file_wargapos_connector_v1_connector_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

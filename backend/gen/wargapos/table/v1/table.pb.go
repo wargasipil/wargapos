@@ -7,6 +7,7 @@
 package tablev1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -525,22 +526,22 @@ var File_wargapos_table_v1_table_proto protoreflect.FileDescriptor
 
 const file_wargapos_table_v1_table_proto_rawDesc = "" +
 	"\n" +
-	"\x1dwargapos/table/v1/table.proto\x12\x11wargapos.table.v1\"?\n" +
+	"\x1dwargapos/table/v1/table.proto\x12\x11wargapos.table.v1\x1a\x1bbuf/validate/validate.proto\"?\n" +
 	"\x05Table\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
-	"\x04uuid\x18\x03 \x01(\tR\x04uuid\"(\n" +
-	"\x12CreateTableRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"E\n" +
+	"\x04uuid\x18\x03 \x01(\tR\x04uuid\"1\n" +
+	"\x12CreateTableRequest\x12\x1b\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"E\n" +
 	"\x13CreateTableResponse\x12.\n" +
-	"\x05table\x18\x01 \x01(\v2\x18.wargapos.table.v1.TableR\x05table\"8\n" +
-	"\x12UpdateTableRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"E\n" +
+	"\x05table\x18\x01 \x01(\v2\x18.wargapos.table.v1.TableR\x05table\"J\n" +
+	"\x12UpdateTableRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\x12\x1b\n" +
+	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"E\n" +
 	"\x13UpdateTableResponse\x12.\n" +
-	"\x05table\x18\x01 \x01(\v2\x18.wargapos.table.v1.TableR\x05table\"$\n" +
-	"\x12DeleteTableRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\x15\n" +
+	"\x05table\x18\x01 \x01(\v2\x18.wargapos.table.v1.TableR\x05table\"-\n" +
+	"\x12DeleteTableRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"\x15\n" +
 	"\x13DeleteTableResponse\"\x13\n" +
 	"\x11ListTablesRequest\"F\n" +
 	"\x12ListTablesResponse\x120\n" +

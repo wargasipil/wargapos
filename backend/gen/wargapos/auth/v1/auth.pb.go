@@ -7,6 +7,7 @@
 package authv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -425,26 +426,26 @@ var File_wargapos_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_wargapos_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/auth/v1/auth.proto\x12\x10wargapos.auth.v1\"F\n" +
-	"\fLoginRequest\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"v\n" +
+	"\x1bwargapos/auth/v1/auth.proto\x12\x10wargapos.auth.v1\x1a\x1bbuf/validate/validate.proto\"X\n" +
+	"\fLoginRequest\x12#\n" +
+	"\busername\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\busername\x12#\n" +
+	"\bpassword\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bpassword\"v\n" +
 	"\rLoginResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x1d\n" +
 	"\n" +
-	"expires_at\x18\x03 \x01(\x03R\texpiresAt\"2\n" +
-	"\rLogoutRequest\x12!\n" +
-	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\"\x10\n" +
-	"\x0eLogoutResponse\",\n" +
-	"\x14ValidateTokenRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"Z\n" +
+	"expires_at\x18\x03 \x01(\x03R\texpiresAt\";\n" +
+	"\rLogoutRequest\x12*\n" +
+	"\faccess_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vaccessToken\"\x10\n" +
+	"\x0eLogoutResponse\"5\n" +
+	"\x14ValidateTokenRequest\x12\x1d\n" +
+	"\x05token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x05token\"Z\n" +
 	"\x15ValidateTokenResponse\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x03R\x06userId\x12\x12\n" +
-	"\x04role\x18\x03 \x01(\tR\x04role\":\n" +
-	"\x13RefreshTokenRequest\x12#\n" +
-	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"}\n" +
+	"\x04role\x18\x03 \x01(\tR\x04role\"C\n" +
+	"\x13RefreshTokenRequest\x12,\n" +
+	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken\"}\n" +
 	"\x14RefreshTokenResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x1d\n" +

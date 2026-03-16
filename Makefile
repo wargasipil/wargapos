@@ -2,7 +2,7 @@ PROTO_DIR    := proto
 BACKEND_DIR  := backend
 FRONTEND_DIR := frontend
 
-.PHONY: help proto-gen proto-lint proto-format backend-tidy backend-build backend-run frontend-install frontend-dev frontend-build build docker-push generate setup migrate-up migrate-down migrate-status migrate-reset
+.PHONY: help proto-gen proto-lint proto-format backend-tidy backend-build backend-run frontend-install frontend-dev frontend-build build docker-push generate setup migrate-up migrate-down migrate-status migrate-reset download-tools
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?##"}; {printf "  %-20s %s\n", $$1, $$2}'
@@ -65,3 +65,6 @@ migrate-reset: ## Roll back all migrations
 generate: proto-gen ## Alias for proto-gen
 
 setup: backend-tidy frontend-install ## Install all dependencies
+
+download-tools: ## Download third-party dev tools into thirdparties/bin/
+	powershell -ExecutionPolicy Bypass -File scripts/download-tools.ps1

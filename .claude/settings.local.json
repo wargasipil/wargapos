@@ -60,7 +60,11 @@
       "Read(//c/Users/heris/.docker/**)",
       "Bash(docker login:*)",
       "Bash(docker context:*)",
-      "Bash(docker pull:*)"
+      "Bash(docker pull:*)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:protovalidate.com)",
+      "Bash(buf dep:*)"
     ],
     "additionalDirectories": [
       "C:\\Users\\heris\\.docker"

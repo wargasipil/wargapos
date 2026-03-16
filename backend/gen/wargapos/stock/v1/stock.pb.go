@@ -7,6 +7,7 @@
 package stockv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -365,7 +366,7 @@ var File_wargapos_stock_v1_stock_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"\n" +
-	"\x1dwargapos/stock/v1/stock.proto\x12\x11wargapos.stock.v1\"\xe6\x01\n" +
+	"\x1dwargapos/stock/v1/stock.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\"\xe6\x01\n" +
 	"\rStockMovement\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -377,18 +378,19 @@ const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"created_by\x18\x06 \x01(\x03R\tcreatedBy\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\a \x01(\tR\tcreatedAt\x12&\n" +
-	"\x0fcreated_by_name\x18\b \x01(\tR\rcreatedByName\"u\n" +
-	"\x12AdjustStockRequest\x12\x1d\n" +
+	"\x0fcreated_by_name\x18\b \x01(\tR\rcreatedByName\"\xa3\x01\n" +
+	"\x12AdjustStockRequest\x12&\n" +
 	"\n" +
-	"product_id\x18\x01 \x01(\x03R\tproductId\x12\x14\n" +
-	"\x05delta\x18\x02 \x01(\x05R\x05delta\x12\x16\n" +
-	"\x06reason\x18\x03 \x01(\tR\x06reason\x12\x12\n" +
+	"product_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\tproductId\x12\x1d\n" +
+	"\x05delta\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\x05delta\x122\n" +
+	"\x06reason\x18\x03 \x01(\tB\x1a\xbaH\x17r\x15R\arestockR\n" +
+	"adjustmentR\x06reason\x12\x12\n" +
 	"\x04note\x18\x04 \x01(\tR\x04note\"9\n" +
 	"\x13AdjustStockResponse\x12\"\n" +
-	"\rnew_stock_qty\x18\x01 \x01(\x05R\vnewStockQty\"\xa1\x01\n" +
-	"\x19ListStockMovementsRequest\x12\x1d\n" +
+	"\rnew_stock_qty\x18\x01 \x01(\x05R\vnewStockQty\"\xaa\x01\n" +
+	"\x19ListStockMovementsRequest\x12&\n" +
 	"\n" +
-	"product_id\x18\x01 \x01(\x03R\tproductId\x12\x12\n" +
+	"product_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\tproductId\x12\x12\n" +
 	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12\x1b\n" +
 	"\tdate_from\x18\x04 \x01(\tR\bdateFrom\x12\x17\n" +
