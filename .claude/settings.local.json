@@ -55,7 +55,15 @@
       "Bash(make -C d:/research/wargapos proto-gen)",
       "Bash(find /d/research/wargapos/frontend/node_modules/@chakra-ui -name createListCollection* -o -name *listCollection*)",
       "Bash(find /d/research/wargapos/frontend/src/routes -type f -name *.tsx -o -name *.ts)",
-      "Bash(npx vitest:*)"
+      "Bash(npx vitest:*)",
+      "Bash(make docker-push:*)",
+      "Read(//c/Users/heris/.docker/**)",
+      "Bash(docker login:*)",
+      "Bash(docker context:*)",
+      "Bash(docker pull:*)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\heris\\.docker"
     ]
   },
   "enableAllProjectMcpServers": true,

@@ -7,7 +7,8 @@ import { TransactionService } from './gen/wargapos/transaction/v1/transaction_pb
 import { TableService }       from './gen/wargapos/table/v1/table_pb'
 import { SettingsService }    from './gen/wargapos/settings/v1/settings_pb'
 import { StockService }      from './gen/wargapos/stock/v1/stock_pb'
-import { PrinterService }   from './gen/wargapos/printer/v1/printer_pb'
+import { ConnectorService } from './gen/wargapos/connector/v1/connector_pb'
+import { DeviceService }   from './gen/wargapos/device/v1/device_pb'
 import { useAuthStore } from './store/auth'
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL ?? ''
@@ -67,7 +68,7 @@ const transport = createConnectTransport({
 const connectorTransport = createConnectTransport({
   baseUrl: import.meta.env.VITE_CONNECTOR_BASE_URL ?? '',
 })
-export const printerClient = createClient(PrinterService, connectorTransport)
+export const printerClient = createClient(ConnectorService, connectorTransport)
 
 export const userClient        = createClient(UserService, transport)
 export const productClient     = createClient(ProductService, transport)
@@ -75,6 +76,7 @@ export const transactionClient = createClient(TransactionService, transport)
 export const tableClient       = createClient(TableService, transport)
 export const settingsClient    = createClient(SettingsService, transport)
 export const stockClient       = createClient(StockService, transport)
+export const deviceClient      = createClient(DeviceService, transport)
 
 export async function uploadFile(file: File, token: string): Promise<string> {
   const form = new FormData()

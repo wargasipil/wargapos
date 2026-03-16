@@ -12,12 +12,14 @@ type Config struct {
 	Database DatabaseConfig `yaml:"database"`
 	Auth     AuthConfig     `yaml:"auth"`
 	Midtrans MidtransConfig `yaml:"midtrans"`
-	Printer  PrinterConfig  `yaml:"printer"`
+	Printer  ConnectorConfig `yaml:"printer"`
 }
 
-type PrinterConfig struct {
-	Address string `yaml:"address"` // e.g. "192.168.1.100:9100"
-	Port    string `yaml:"port"`    // connector HTTP port, default "8081"
+type ConnectorConfig struct {
+	Address   string `yaml:"address"`    // e.g. "192.168.1.100:9100"
+	Host      string `yaml:"host"`       // connector listen host, default "127.0.0.1"
+	Port      string `yaml:"port"`       // connector HTTP port, default "8081"
+	ServerURL string `yaml:"server_url"` // main server URL, default "http://localhost:8080"
 }
 
 type MidtransConfig struct {
@@ -58,9 +60,11 @@ var defaults = Config{
 		ClientKey:   "",
 		Environment: "sandbox",
 	},
-	Printer: PrinterConfig{
-		Address: "localhost:9100",
-		Port:    "8081",
+	Printer: ConnectorConfig{
+		Address:   "localhost:9100",
+		Host:      "127.0.0.1",
+		Port:      "8081",
+		ServerURL: "http://localhost:8080",
 	},
 }
 
@@ -70,8 +74,8 @@ func ProvideAuthConfig(cfg *Config) AuthConfig { return cfg.Auth }
 // ProvideMidtransConfig is a Wire provider that extracts MidtransConfig from Config.
 func ProvideMidtransConfig(cfg *Config) MidtransConfig { return cfg.Midtrans }
 
-// ProvidePrinterConfig is a Wire provider that extracts PrinterConfig from Config.
-func ProvidePrinterConfig(cfg *Config) PrinterConfig { return cfg.Printer }
+// ProvideConnectorConfig is a Wire provider that extracts ConnectorConfig from Config.
+func ProvideConnectorConfig(cfg *Config) ConnectorConfig { return cfg.Printer }
 
 // Load reads config.yaml (or CONFIG_PATH env var) and returns a Config.
 // If the file is not found, dev defaults are returned so the server can
@@ -131,6 +135,9 @@ func applyEnv(cfg *Config) {
 	}
 	if v := os.Getenv("PRINTER_ADDRESS"); v != "" {
 		cfg.Printer.Address = v
+	}
+	if v := os.Getenv("CONNECTOR_HOST"); v != "" {
+		cfg.Printer.Host = v
 	}
 	if v := os.Getenv("CONNECTOR_PORT"); v != "" {
 		cfg.Printer.Port = v

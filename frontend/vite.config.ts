@@ -16,8 +16,8 @@ export default defineConfig({
       // Proxy all Connect RPCs to the Go backend.
       // All Connect paths start with the proto package name e.g.:
       //   /wargapos.auth.v1.AuthService/Login
-      // Printer connector — must be before the general /wargapos rule
-      '/wargapos.printer.v1': {
+      // Connector service — must be before the general /wargapos rule
+      '/wargapos.connector.v1': {
         target: 'http://localhost:8081',
         changeOrigin: true,
       },

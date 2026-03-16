@@ -7,6 +7,7 @@ import (
 	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/db"
 	"wargapos/backend/internal/service/auth_service"
+	"wargapos/backend/internal/service/device_service"
 	"wargapos/backend/internal/service/product_service"
 	"wargapos/backend/internal/service/settings_service"
 	"wargapos/backend/internal/service/stock_service"
@@ -27,6 +28,7 @@ func InitializeApp(cfg *config.Config) (*App, error) {
 		table_service.NewTableService,
 		settings_service.NewSettingsService,
 		stock_service.NewStockService,
+		device_service.NewDeviceService,
 		NewApp,
 	)
 	return nil, nil

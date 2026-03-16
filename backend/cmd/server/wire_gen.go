@@ -10,6 +10,7 @@ import (
 	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/db"
 	"wargapos/backend/internal/service/auth_service"
+	"wargapos/backend/internal/service/device_service"
 	"wargapos/backend/internal/service/product_service"
 	"wargapos/backend/internal/service/settings_service"
 	"wargapos/backend/internal/service/stock_service"
@@ -31,6 +32,7 @@ func InitializeApp(cfg *config.Config) (*App, error) {
 	tableService := table_service.NewTableService(gormDB)
 	settingsService := settings_service.NewSettingsService(gormDB, midtransConfig)
 	stockService := stock_service.NewStockService(gormDB)
-	app := NewApp(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService)
+	deviceService := device_service.NewDeviceService()
+	app := NewApp(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, deviceService)
 	return app, nil
 }

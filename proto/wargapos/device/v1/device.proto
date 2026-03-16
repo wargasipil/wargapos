@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package wargapos.device.v1;
+
+option go_package = "wargapos/backend/gen/wargapos/device/v1;devicev1";
+
+service DeviceService {
+  rpc Connect(ConnectRequest)         returns (stream ConnectResponse);
+  rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse);
+}
+
+message Device {
+  string id   = 1;
+  string name = 2;
+}
+
+message ConnectRequest {
+  string id   = 1;
+  string name = 2;
+}
+
+message ConnectResponse {
+  Device device = 1;
+}
+
+message ListDevicesRequest  {}
+message ListDevicesResponse { repeated Device devices = 1; }

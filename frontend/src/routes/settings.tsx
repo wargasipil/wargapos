@@ -4,8 +4,8 @@ import {
   Alert, Box, Button, Field, Flex, Heading, HStack, Input, NativeSelect,
   Spinner, Tabs, Text, VStack,
 } from '@chakra-ui/react'
-import { KeyRound, CreditCard, User } from 'lucide-react'
-import { userClient, settingsClient } from '../client'
+import { KeyRound, CreditCard, User, MonitorSmartphone } from 'lucide-react'
+import { userClient, settingsClient, deviceClient } from '../client'
 import { useAuthStore } from '../store/auth'
 import { toaster } from '../components/ui/toaster'
 import { stripError } from '../lib/errors'
@@ -39,6 +39,12 @@ export function SettingsPage() {
               </HStack>
             </Tabs.Trigger>
           )}
+          <Tabs.Trigger value="devices">
+            <HStack gap={1.5}>
+              <MonitorSmartphone size={14} />
+              Devices
+            </HStack>
+          </Tabs.Trigger>
         </Tabs.List>
 
         <Tabs.Content value="profile">
@@ -52,6 +58,9 @@ export function SettingsPage() {
             <MidtransSection token={token} />
           </Tabs.Content>
         )}
+        <Tabs.Content value="devices">
+          <DevicesSection />
+        </Tabs.Content>
       </Tabs.Root>
     </Box>
   )
@@ -213,6 +222,41 @@ function ChangePasswordSection({ token }: { token: string | null }) {
           </Button>
         </Flex>
       </VStack>
+    </Box>
+  )
+}
+
+// ── Devices ────────────────────────────────────────────────────────────────────
+
+function DevicesSection() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['devices'],
+    queryFn: () => deviceClient.listDevices({}),
+    refetchInterval: 5000,
+  })
+
+  if (isLoading) return <Box pt={4}><Spinner size="sm" /></Box>
+
+  const devices = data?.devices ?? []
+
+  return (
+    <Box pt={4}>
+      <Text fontSize="xs" color="gray.500" mb={4}>
+        Connector devices currently connected to the server.
+      </Text>
+      {devices.length === 0 ? (
+        <Text fontSize="sm" color="gray.400">No devices connected.</Text>
+      ) : (
+        <VStack align="stretch" gap={2}>
+          {devices.map((d) => (
+            <HStack key={d.id} px={3} py={2} borderRadius="md" borderWidth="1px" borderColor="border.subtle">
+              <MonitorSmartphone size={16} />
+              <Text fontSize="sm" fontWeight="medium">{d.name}</Text>
+              <Text fontSize="xs" color="gray.500" ml="auto">{d.id}</Text>
+            </HStack>
+          ))}
+        </VStack>
+      )}
     </Box>
   )
 }

@@ -4,6 +4,11 @@ set -euo pipefail
 IMAGE="kampretcode/wargapos"
 TAG="${1:-latest}"
 
+echo "==> Pulling base images ..."
+docker pull node:24-alpine
+docker pull golang:1.25-alpine
+docker pull alpine:3.21
+
 echo "==> Building $IMAGE:$TAG ..."
 docker build -t "$IMAGE:$TAG" .
 

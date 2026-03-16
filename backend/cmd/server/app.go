@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 
 	"wargapos/backend/gen/wargapos/auth/v1/authv1connect"
+	devicev1connect "wargapos/backend/gen/wargapos/device/v1/devicev1connect"
 	"wargapos/backend/gen/wargapos/product/v1/productv1connect"
 	settingsv1connect "wargapos/backend/gen/wargapos/settings/v1/settingsv1connect"
 	stockv1connect "wargapos/backend/gen/wargapos/stock/v1/stockv1connect"
@@ -16,6 +17,7 @@ import (
 	"wargapos/backend/internal/auth"
 	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/service/auth_service"
+	"wargapos/backend/internal/service/device_service"
 	"wargapos/backend/internal/service/product_service"
 	"wargapos/backend/internal/service/settings_service"
 	"wargapos/backend/internal/service/stock_service"
@@ -42,6 +44,7 @@ func NewApp(
 	tableSvc *table_service.TableService,
 	settingsSvc *settings_service.SettingsService,
 	stockSvc *stock_service.StockService,
+	deviceSvc *device_service.DeviceService,
 ) *App {
 	interceptor := connect.WithInterceptors(auth.NewInterceptor([]byte(authCfg.JWTSecret)))
 
@@ -53,6 +56,7 @@ func NewApp(
 	mux.Handle(tablev1connect.NewTableServiceHandler(tableSvc, interceptor))
 	mux.Handle(settingsv1connect.NewSettingsServiceHandler(settingsSvc, interceptor))
 	mux.Handle(stockv1connect.NewStockServiceHandler(stockSvc, interceptor))
+	mux.Handle(devicev1connect.NewDeviceServiceHandler(deviceSvc, interceptor))
 	mux.HandleFunc("POST /midtrans/webhook", midtransWebhookHandler(db, midtransCfg))
 
 	uploadDir := cfg.Server.UploadDir

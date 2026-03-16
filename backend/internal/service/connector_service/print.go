@@ -1,4 +1,4 @@
-package printer_service
+package connector_service
 
 import (
 	"context"
@@ -7,13 +7,13 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	printerv1 "wargapos/backend/gen/wargapos/printer/v1"
+	connectorv1 "wargapos/backend/gen/wargapos/connector/v1"
 )
 
-func (s *PrinterService) Print(
+func (s *ConnectorService) Print(
 	_ context.Context,
-	req *connect.Request[printerv1.PrintRequest],
-) (*connect.Response[printerv1.PrintResponse], error) {
+	req *connect.Request[connectorv1.PrintRequest],
+) (*connect.Response[connectorv1.PrintResponse], error) {
 	if len(req.Msg.Data) == 0 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("data is empty"))
 	}
@@ -29,5 +29,5 @@ func (s *PrinterService) Print(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	return connect.NewResponse(&printerv1.PrintResponse{}), nil
+	return connect.NewResponse(&connectorv1.PrintResponse{}), nil
 }

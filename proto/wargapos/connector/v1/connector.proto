@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package wargapos.printer.v1;
+package wargapos.connector.v1;
 
-option go_package = "wargapos/backend/gen/wargapos/printer/v1;printerv1";
+option go_package = "wargapos/backend/gen/wargapos/connector/v1;connectorv1";
 
-service PrinterService {
+service ConnectorService {
   rpc Print(PrintRequest) returns (PrintResponse);
   rpc GetStatus(GetStatusRequest) returns (GetStatusResponse);
 }

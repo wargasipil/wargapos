@@ -1,50 +1,69 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"connectrpc.com/connect"
-	"golang.org/x/net/http2"
-	"golang.org/x/net/http2/h2c"
 
-	"wargapos/backend/gen/wargapos/printer/v1/printerv1connect"
+	devicev1 "wargapos/backend/gen/wargapos/device/v1"
+	"wargapos/backend/gen/wargapos/device/v1/devicev1connect"
 	"wargapos/backend/internal/config"
-	"wargapos/backend/internal/service/printer_service"
 )
 
 func main() {
 	cfg := config.Load()
-	pc := config.ProvidePrinterConfig(cfg)
 
-	svc := printer_service.NewPrinterService(pc)
+	id, err := loadOrCreateIdentity("connector-identity.json")
+	if err != nil {
+		log.Fatalf("connector: failed to load identity: %v", err)
+	}
+	fmt.Printf("WargaPOS connector identity: %s (%s)\n", id.Name, id.ID)
 
-	mux := http.NewServeMux()
-	mux.Handle(printerv1connect.NewPrinterServiceHandler(svc,
-		connect.WithInterceptors(), // no auth — local service
-	))
+	go runDeviceConnect(cfg.Printer.ServerURL, id.ID, id.Name)
 
-	addr := ":" + pc.Port
-	fmt.Printf("WargaPOS connector listening on %s (printer: %s)\n", addr, pc.Address)
-
-	handler := corsMiddleware(h2c.NewHandler(mux, &http2.Server{}))
-	if err := http.ListenAndServe(addr, handler); err != nil {
-		log.Fatalf("connector error: %v", err)
+	app := InitializeApp(cfg)
+	if err := app.ListenAndServe(); err != nil {
+		log.Fatalf("connector: %v", err)
 	}
 }
 
-// corsMiddleware allows cross-origin requests from the browser.
-// The connector is a local service so * is acceptable.
-func corsMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Connect-Protocol-Version, Connect-Timeout-Ms")
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusNoContent)
-			return
+// runDeviceConnect connects to the main server and holds the stream open.
+// Reconnects with exponential backoff on failure.
+func runDeviceConnect(serverURL, id, name string) {
+	client := devicev1connect.NewDeviceServiceClient(
+		&http.Client{},
+		serverURL,
+	)
+
+	backoff := time.Second
+	for {
+		if err := connectOnce(client, id, name); err != nil {
+			log.Printf("connector: device connect lost (%v), retrying in %s", err, backoff)
 		}
-		next.ServeHTTP(w, r)
-	})
+		time.Sleep(backoff)
+		if backoff < 30*time.Second {
+			backoff *= 2
+		}
+	}
+}
+
+func connectOnce(client devicev1connect.DeviceServiceClient, id, name string) error {
+	ctx := context.Background()
+	stream, err := client.Connect(ctx, connect.NewRequest(&devicev1.ConnectRequest{
+		Id:   id,
+		Name: name,
+	}))
+	if err != nil {
+		return err
+	}
+	defer stream.Close()
+
+	for stream.Receive() {
+		// first message confirms registration; further messages are not expected
+	}
+	return stream.Err()
 }
