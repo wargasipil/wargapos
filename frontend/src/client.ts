@@ -7,7 +7,6 @@ import { TransactionService } from './gen/wargapos/transaction/v1/transaction_pb
 import { TableService }       from './gen/wargapos/table/v1/table_pb'
 import { SettingsService }    from './gen/wargapos/settings/v1/settings_pb'
 import { StockService }      from './gen/wargapos/stock/v1/stock_pb'
-import { ConnectorService } from './gen/wargapos/connector/v1/connector_pb'
 import { DeviceService }   from './gen/wargapos/device/v1/device_pb'
 import { useAuthStore } from './store/auth'
 
@@ -62,13 +61,6 @@ const transport = createConnectTransport({
   baseUrl,
   interceptors: [refreshInterceptor, unauthInterceptor, authInterceptor],
 })
-
-// Connector transport — routes to the local printer connector (port 8081 via Vite proxy in dev).
-// In production set VITE_CONNECTOR_BASE_URL to the connector's origin.
-const connectorTransport = createConnectTransport({
-  baseUrl: import.meta.env.VITE_CONNECTOR_BASE_URL ?? '',
-})
-export const printerClient = createClient(ConnectorService, connectorTransport)
 
 export const userClient        = createClient(UserService, transport)
 export const productClient     = createClient(ProductService, transport)

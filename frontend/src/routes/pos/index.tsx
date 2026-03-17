@@ -1,18 +1,22 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
-  Alert, Box, Button, Dialog, Drawer, Field, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, VStack,
+  Alert, Badge, Box, Button, Dialog, Drawer, Field, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, VStack,
 } from '@chakra-ui/react'
 import { Printer } from 'lucide-react'
 import { productClient, transactionClient, tableClient } from '../../client'
 import { TableSelect } from '../../components/shared/TableSelect'
+import { PrinterSettingsDialog } from '../../components/shared/PrinterSettingsDialog'
 import { useCartStore } from '../../store/cart'
 import { useAuthStore } from '../../store/auth'
+import { usePrinterStore } from '../../store/printer'
 import { formatPrice, formatTime } from '../../lib/format'
 import { stripError } from '../../lib/errors'
+import { printReceiptRemote } from '../../lib/printer'
 import { POSProductCard } from '../../components/shared/POSProductCard'
 import { ProductFilter } from '../../components/shared/ProductFilter'
 import { syncCartToServer } from '../../lib/syncCart'
+import { toaster } from '../../components/ui/toaster'
 import type { Product } from '../../gen/wargapos/product/v1/product_pb'
 import { PaymentMethod, OrderFrom } from '../../gen/wargapos/transaction/v1/transaction_pb'
 import type { Order } from '../../gen/wargapos/transaction/v1/transaction_pb'
@@ -22,6 +26,7 @@ type Step = 'browse' | 'receipt'
 export function PosPage() {
   const { items, totalCents, sessionId, addItem, removeItem, clear } = useCartStore()
   const { userId } = useAuthStore()
+  const { selectedPrinter } = usePrinterStore()
   const [step, setStep] = useState<Step>('browse')
   const [receiptOrder, setReceiptOrder] = useState<Order | null>(null)
   const [cartOpen, setCartOpen] = useState(false)
@@ -33,6 +38,8 @@ export function PosPage() {
   const [tableId, setTableId] = useState<bigint>(0n)
   const [categoryId, setCategoryId] = useState<bigint>(0n)
   const [search, setSearch] = useState('')
+  const [printerSettingsOpen, setPrinterSettingsOpen] = useState(false)
+  const [printLoading, setPrintLoading] = useState(false)
 
   const { data, isLoading } = useQuery({
     queryKey: ['pos-products'],
@@ -99,11 +106,37 @@ export function PosPage() {
     setStep('browse')
   }
 
+  async function handlePrint(order: Order, orderTableName: string) {
+    if (!selectedPrinter) return
+    setPrintLoading(true)
+    try {
+      await printReceiptRemote(order, orderTableName, selectedPrinter)
+    } catch (err) {
+      toaster.create({ type: 'error', title: 'Print failed', description: stripError(err) })
+    } finally {
+      setPrintLoading(false)
+    }
+  }
+
+  // ── Printer warning banner ────────────────────────────────────────────────────
+  const printerWarning = !selectedPrinter ? (
+    <Alert.Root status="warning" mb={3}>
+      <Alert.Indicator />
+      <Alert.Description fontSize="sm">
+        No printer selected.{' '}
+        <Text as="span" textDecor="underline" cursor="pointer" onClick={() => setPrinterSettingsOpen(true)}>
+          Select a printer
+        </Text>
+      </Alert.Description>
+    </Alert.Root>
+  ) : null
+
   // ── Receipt screen ───────────────────────────────────────────────────────────
   if (step === 'receipt' && receiptOrder) {
     const order = receiptOrder
     const orderTable = tables.find((t) => t.id === order.tableId)
     const receiptTotal = order.items.reduce((s, i) => s + i.subtotalCents, 0n)
+    const orderTableName = orderTable ? orderTable.name : 'Walk-in'
 
     return (
       <Box minH="100svh" bg="gray.50" display="flex" alignItems="center" justifyContent="center" p={4}>
@@ -123,7 +156,7 @@ export function PosPage() {
             </HStack>
             <HStack justify="space-between" fontSize="sm" mb={1}>
               <Text color="gray.500">Table</Text>
-              <Text>{orderTable ? orderTable.name : 'Walk-in'}</Text>
+              <Text>{orderTableName}</Text>
             </HStack>
             {order.customerName && (
               <HStack justify="space-between" fontSize="sm" mb={1}>
@@ -162,8 +195,15 @@ export function PosPage() {
 
           {/* Actions — hidden on print */}
           <Box p={4} borderTop="1px solid" borderColor="gray.100" className="no-print">
+            {printerWarning}
             <HStack gap={3}>
-              <Button flex={1} variant="outline" onClick={() => window.print()}>
+              <Button
+                flex={1}
+                variant="outline"
+                loading={printLoading}
+                disabled={!selectedPrinter}
+                onClick={() => handlePrint(order, orderTableName)}
+              >
                 <Printer size={16} />
                 Print
               </Button>
@@ -182,6 +222,8 @@ export function PosPage() {
             .no-print { display: none !important; }
           }
         `}</style>
+
+        <PrinterSettingsDialog open={printerSettingsOpen} onClose={() => setPrinterSettingsOpen(false)} />
       </Box>
     )
   }
@@ -244,7 +286,18 @@ export function PosPage() {
             onChange={setTableId}
             placeholder="Walk-in"
           />
+          {/* Printer button */}
+          <Button size="sm" variant="ghost" onClick={() => setPrinterSettingsOpen(true)}>
+            <Printer size={16} />
+            {selectedPrinter
+              ? <Text fontSize="xs" maxW="80px" truncate>{selectedPrinter.name}</Text>
+              : <Badge colorPalette="orange" size="sm">!</Badge>
+            }
+          </Button>
         </HStack>
+
+        {printerWarning}
+
         {isLoading ? (
           <Flex justify="center" mt={12}><Spinner /></Flex>
         ) : (
@@ -361,6 +414,9 @@ export function PosPage() {
           </Dialog.Content>
         </Dialog.Positioner>
       </Dialog.Root>
+
+      {/* Printer settings dialog */}
+      <PrinterSettingsDialog open={printerSettingsOpen} onClose={() => setPrinterSettingsOpen(false)} />
     </Flex>
   )
 }

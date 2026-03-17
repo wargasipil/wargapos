@@ -1,0 +1,57 @@
+name: Release Connector
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+
+      - name: Build Windows connector
+        run: |
+          mkdir -p dist/connector
+          cd backend
+          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" \
+            -o ../dist/connector/wargapos-connector.exe ./cmd/connector
+          cd ..
+          cp backend/cmd/connector/config.yaml.example dist/connector/
+          cp backend/cmd/connector/start.bat           dist/connector/
+          cp backend/cmd/connector/start.ps1           dist/connector/
+          cd dist && zip -r "../dist/wargapos-connector-${{ github.ref_name }}-windows-amd64.zip" connector/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/wargapos-connector-${{ github.ref_name }}-windows-amd64.zip
+          generate_release_notes: false
+          body: |
+            ## WargaPOS Connector ${{ github.ref_name }}
+
+            Windows connector that bridges WargaPOS to ESC/POS printers via the Windows print spooler.
+
+            ### Quick Start
+            1. Extract the zip
+            2. Copy `config.yaml.example` → `config.yaml` and edit if needed
+            3. Run `start.bat` or `start.ps1`
+
+            > A `connector-identity.json` file is created automatically on first run — do not delete it.
+
+            ### Config
+            | Field | Default | Env var |
+            |-------|---------|---------|
+            | `printer.host` | `localhost` | `CONNECTOR_HOST` |
+            | `printer.port` | `8081` | `CONNECTOR_PORT` |
+            | `printer.server_url` | `https://wargapos-production.up.railway.app` | `CONNECTOR_SERVER_URL` |
+
+            Printer selection uses the Windows print spooler — no IP address needed.

@@ -21,6 +21,7 @@ func (a *App) StartStream(serverURL, id, name string) error {
 
 	backoff := time.Second
 	for {
+		slog.Info("connecting to server", "url", serverURL)
 		if err := a.connectOnce(client, id, name); err != nil {
 			log.Printf("connector: device connect lost (%v), retrying in %s", err, backoff)
 		}

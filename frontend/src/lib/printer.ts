@@ -1,5 +1,5 @@
 import type { Order } from '../gen/wargapos/transaction/v1/transaction_pb'
-import { printerClient } from '../client'
+import { deviceClient } from '../client'
 import { PaymentMethod } from '../gen/wargapos/transaction/v1/transaction_pb'
 import { formatPrice, formatTime } from './format'
 
@@ -112,9 +112,15 @@ export async function printReceipt(order: Order, tableName: string): Promise<voi
   }
 }
 
-// printReceiptRemote sends ESC/POS bytes to the local connector service (port 8081).
-// Use this instead of printReceipt() when the printer is not USB-connected to the browser machine.
-export async function printReceiptRemote(order: Order, tableName: string): Promise<void> {
+// printReceiptRemote sends ESC/POS bytes via the device service (main server routes to connector).
+export async function printReceiptRemote(
+  order: Order,
+  tableName: string,
+  printer: { deviceId: string; name: string },
+): Promise<void> {
   const data = buildReceipt(order, tableName)
-  await printerClient.print({ data })
+  await deviceClient.print({
+    printer: { deviceId: printer.deviceId, name: printer.name },
+    data: { case: 'raw', value: data },
+  })
 }

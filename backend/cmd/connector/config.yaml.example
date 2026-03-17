@@ -1,0 +1,23 @@
+# WargaPOS Connector — example config
+# Copy this file to config.yaml and edit before running.
+
+printer:
+  # Address the connector HTTP server listens on.
+  # Use "localhost" (local only) or "0.0.0.0" (all interfaces).
+  host: "localhost"
+
+  # Port the connector listens on.
+  # Must match what the WargaPOS browser app connects to.
+  port: "8081"
+
+  # URL of the main WargaPOS server (used for device registration).
+  server_url: "https://wargapos-production.up.railway.app"
+
+# Printer selection uses the Windows print spooler — no IP address needed.
+# Available printers are listed automatically from Windows.
+
+# Environment variable overrides (no config.yaml needed):
+#   CONNECTOR_HOST        — listen host
+#   CONNECTOR_PORT        — listen port
+#   CONNECTOR_SERVER_URL  — main server URL
+#   CONFIG_PATH           — path to this config file

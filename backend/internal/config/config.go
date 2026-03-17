@@ -16,10 +16,9 @@ type Config struct {
 }
 
 type ConnectorConfig struct {
-	Address   string `yaml:"address"`    // e.g. "192.168.1.100:9100"
-	Host      string `yaml:"host"`       // connector listen host, default "127.0.0.1"
+	Host      string `yaml:"host"`       // connector listen host, default "localhost"
 	Port      string `yaml:"port"`       // connector HTTP port, default "8081"
-	ServerURL string `yaml:"server_url"` // main server URL, default "http://localhost:8080"
+	ServerURL string `yaml:"server_url"` // main server URL
 }
 
 type MidtransConfig struct {
@@ -61,10 +60,9 @@ var defaults = Config{
 		Environment: "sandbox",
 	},
 	Printer: ConnectorConfig{
-		Address:   "localhost:9100",
-		Host:      "127.0.0.1",
+		Host:      "localhost",
 		Port:      "8081",
-		ServerURL: "http://localhost:8080",
+		ServerURL: "https://wargapos-production.up.railway.app",
 	},
 }
 
@@ -133,13 +131,13 @@ func applyEnv(cfg *Config) {
 	if v := os.Getenv("MIDTRANS_CLIENT_KEY"); v != "" {
 		cfg.Midtrans.ClientKey = v
 	}
-	if v := os.Getenv("PRINTER_ADDRESS"); v != "" {
-		cfg.Printer.Address = v
-	}
 	if v := os.Getenv("CONNECTOR_HOST"); v != "" {
 		cfg.Printer.Host = v
 	}
 	if v := os.Getenv("CONNECTOR_PORT"); v != "" {
 		cfg.Printer.Port = v
+	}
+	if v := os.Getenv("CONNECTOR_SERVER_URL"); v != "" {
+		cfg.Printer.ServerURL = v
 	}
 }

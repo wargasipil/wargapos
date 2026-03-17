@@ -17,6 +17,7 @@ plugins:
   # With protobuf-es v2, service descriptors are in _pb.ts — no separate connect plugin needed
   - remote: buf.build/bufbuild/es:v2.2.3
     out: ../frontend/src/gen
+    include_imports: true
     opt:
       - target=ts
       - import_extension=none

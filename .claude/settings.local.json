@@ -64,7 +64,8 @@
       "WebFetch(domain:api.github.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:protovalidate.com)",
-      "Bash(buf dep:*)"
+      "Bash(buf dep:*)",
+      "Bash(npm config:*)"
     ],
     "additionalDirectories": [
       "C:\\Users\\heris\\.docker"
