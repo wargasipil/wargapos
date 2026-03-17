@@ -12,7 +12,7 @@ const LF  = 0x0a
 function makeOrder(overrides = {}) {
   return {
     id: 42n,
-    createdAt: 0n,
+    createdAt: { seconds: 0n, nanos: 0 },
     tableId: 0n,
     customerName: '',
     phoneNumber: '',
@@ -57,9 +57,9 @@ function buildTestReceipt(order: ReturnType<typeof makeOrder>, tableName: string
   function formatPrice(cents: bigint) {
     return 'Rp ' + Number(cents / 100n).toLocaleString('id-ID')
   }
-  function formatTime(_: bigint) { return '01 Jan 00:00' }
+  function formatTime(_: { seconds: bigint; nanos: number } | undefined) { return '01 Jan 00:00' }
 
-  const payment = order.paymentMethod === 2 ? 'QRIS' : 'Cash'
+  const payment = order.paymentMethod === 2 ? 'Online' : 'Cash'
   const parts: Uint8Array[] = [
     new Uint8Array([ESC, 0x40]),          // INIT
     new Uint8Array([ESC, 0x61, 0x01]),    // CENTER
@@ -131,10 +131,10 @@ describe('receipt bytes', () => {
     expect(text).toContain('Meja 5')
   })
 
-  it('shows QRIS payment when applicable', () => {
+  it('shows Online payment when applicable', () => {
     const bytes = buildTestReceipt(makeOrder({ paymentMethod: 2 }), 'Walk-in')
     const text = new TextDecoder().decode(bytes)
-    expect(text).toContain('QRIS')
+    expect(text).toContain('Online')
   })
 
   it('row width does not exceed COLS', () => {

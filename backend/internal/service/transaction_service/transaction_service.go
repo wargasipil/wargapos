@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"gorm.io/gorm"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	transactionv1 "wargapos/backend/gen/wargapos/transaction/v1"
 	"wargapos/backend/gen/wargapos/transaction/v1/transactionv1connect"
@@ -19,11 +20,16 @@ var ErrCartNotPending = errors.New("cart is not in pending state")
 // Package-level status constants for use across all handlers.
 const (
 	statusPending   = int32(transactionv1.OrderStatus_ORDER_STATUS_PENDING)
-	statusPaid      = int32(transactionv1.OrderStatus_ORDER_STATUS_PAID)
-	statusCancelled = int32(transactionv1.OrderStatus_ORDER_STATUS_CANCELLED)
-	statusReady     = int32(transactionv1.OrderStatus_ORDER_STATUS_READY)
+	statusPrepared  = int32(transactionv1.OrderStatus_ORDER_STATUS_PREPARED)
 	statusDelivered = int32(transactionv1.OrderStatus_ORDER_STATUS_DELIVERED)
+	statusCancelled = int32(transactionv1.OrderStatus_ORDER_STATUS_CANCELLED)
+
+	paymentUnpaid   = int32(transactionv1.PaymentStatus_PAYMENT_STATUS_UNPAID)
+	paymentPaid     = int32(transactionv1.PaymentStatus_PAYMENT_STATUS_PAID)
+	paymentRefunded = int32(transactionv1.PaymentStatus_PAYMENT_STATUS_REFUNDED)
 )
+
+var _ = paymentRefunded // suppress unused warning
 
 // TransactionService implements transactionv1connect.TransactionServiceHandler directly.
 type TransactionService struct {
@@ -117,12 +123,13 @@ func toProtoOrder(o *models.Order) *transactionv1.Order {
 		Items:         items,
 		TotalCents:    o.TotalCents,
 		Status:        transactionv1.OrderStatus(o.Status),
-		CreatedAt:     o.CreatedAt.Unix(),
+		CreatedAt:     timestamppb.New(o.CreatedAt),
 		TableId:       tableID,
 		CustomerName:  customerName,
 		PhoneNumber:   phoneNumber,
 		PaymentMethod: pm,
 		OrderFrom:     transactionv1.OrderFrom(o.OrderFrom),
+		PaymentStatus: transactionv1.PaymentStatus(o.PaymentStatus),
 	}
 }
 

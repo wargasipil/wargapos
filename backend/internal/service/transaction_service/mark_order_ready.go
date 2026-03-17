@@ -26,10 +26,10 @@ func (s *TransactionService) MarkOrderReady(
 		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("order is not pending"))
 	}
 
-	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Update("status", statusReady).Error; err != nil {
+	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Update("status", statusPrepared).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	order.Status = statusReady
+	order.Status = statusPrepared
 
 	return connect.NewResponse(&transactionv1.MarkOrderReadyResponse{Order: toProtoOrder(order)}), nil
 }

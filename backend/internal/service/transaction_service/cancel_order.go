@@ -22,8 +22,8 @@ func (s *TransactionService) CancelOrder(
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("order not found"))
 	}
-	if order.Status != statusPending && order.Status != statusReady && order.Status != statusDelivered {
-		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("only pending, ready, or delivered orders can be cancelled"))
+	if order.Status != statusPending && order.Status != statusPrepared && order.Status != statusDelivered {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("only pending, prepared, or delivered orders can be cancelled"))
 	}
 
 	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Update("status", statusCancelled).Error; err != nil {

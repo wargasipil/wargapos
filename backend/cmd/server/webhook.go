@@ -10,8 +10,15 @@ import (
 
 	"gorm.io/gorm"
 
+	transactionv1 "wargapos/backend/gen/wargapos/transaction/v1"
 	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/models"
+)
+
+const (
+	webhookStatusPending   = int32(transactionv1.OrderStatus_ORDER_STATUS_PENDING)
+	webhookStatusCancelled = int32(transactionv1.OrderStatus_ORDER_STATUS_CANCELLED)
+	webhookPaymentPaid     = int32(transactionv1.PaymentStatus_PAYMENT_STATUS_PAID)
 )
 
 type midtransNotification struct {
@@ -59,8 +66,8 @@ func midtransWebhookHandler(db *gorm.DB, midtransCfg config.MidtransConfig) http
 
 		if isPaid {
 			result := db.Model(&models.Order{}).
-				Where("id = ? AND status = 'pending'", orderID). // idempotency guard
-				Updates(map[string]any{"status": "paid", "payment_method": "qris"})
+				Where("id = ? AND status != ?", orderID, webhookStatusCancelled).
+				Updates(map[string]any{"payment_status": webhookPaymentPaid, "session_token": nil})
 			if result.Error != nil {
 				log.Printf("[webhook] DB error marking order %d paid: %v", orderID, result.Error)
 			} else {
@@ -68,8 +75,8 @@ func midtransWebhookHandler(db *gorm.DB, midtransCfg config.MidtransConfig) http
 			}
 		} else if isCancelled {
 			result := db.Model(&models.Order{}).
-				Where("id = ? AND status = 'pending'", orderID).
-				Updates(map[string]any{"status": "cancelled"})
+				Where("id = ? AND status = ?", orderID, webhookStatusPending).
+				Updates(map[string]any{"status": webhookStatusCancelled})
 			if result.Error != nil {
 				log.Printf("[webhook] DB error cancelling order %d: %v", orderID, result.Error)
 			} else {

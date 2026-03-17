@@ -22,8 +22,8 @@ func (s *TransactionService) MarkOrderDelivered(
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("order not found"))
 	}
-	if order.Status != statusReady {
-		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("order is not ready"))
+	if order.Status != statusPrepared {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("order is not prepared"))
 	}
 
 	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Update("status", statusDelivered).Error; err != nil {

@@ -36,9 +36,19 @@ func (s *TransactionService) Checkout(
 		orderID = order.ID
 
 		pm := int32(req.Msg.PaymentMethod)
+
+		// POS orders: cash collected at register, so mark payment as paid immediately.
+		// Guest orders: payment collected later (cashier or online webhook).
+		ps := paymentUnpaid
+		if req.Msg.OrderFrom == transactionv1.OrderFrom_ORDER_FROM_POS {
+			ps = paymentPaid
+		}
+
 		updates := map[string]any{
-			"status":         statusPaid,
+			"session_token":  nil, // detach from cart session
 			"payment_method": pm,
+			"payment_status": ps,
+			// status stays PENDING — order enters kitchen queue
 		}
 		if req.Msg.CashierId != 0 {
 			updates["cashier_id"] = req.Msg.CashierId

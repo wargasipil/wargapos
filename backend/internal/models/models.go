@@ -59,6 +59,7 @@ type Order struct {
 	CustomerName  *string     `gorm:"column:customer_name"`
 	PhoneNumber   *string     `gorm:"column:phone_number"`
 	OrderFrom     int32       `gorm:"column:order_from;not null;default:0"`
+	PaymentStatus int32       `gorm:"column:payment_status;not null;default:1"`
 	Items         []OrderItem `gorm:"foreignKey:OrderID"`
 	CreatedAt     time.Time
 	UpdatedAt     time.Time

@@ -38,6 +38,7 @@ export function ProtectedLayout() {
     <Flex h="100vh" direction="column">
       {/* Mobile top header */}
       <Flex
+        className="layout-nav"
         display={{ base: 'flex', md: 'none' }}
         h="48px"
         bg="white"
@@ -60,6 +61,7 @@ export function ProtectedLayout() {
       <Flex flex={1} overflow="hidden">
         {/* Sidebar — desktop only */}
         <Flex
+          className="layout-nav"
           display={{ base: 'none', md: 'flex' }}
           direction="column"
           w="220px"
@@ -115,6 +117,7 @@ export function ProtectedLayout() {
 
       {/* Bottom nav — mobile only */}
       <Box
+        className="layout-nav"
         display={{ base: 'flex', md: 'none' }}
         position="fixed"
         bottom={0}

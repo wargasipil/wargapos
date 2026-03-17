@@ -2,48 +2,125 @@ import { useEffect, useRef, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import {
-  Badge, Box, Button, Flex, Heading, HStack, Spinner, Text, VStack,
+  Box, Button, Drawer, Flex, Grid, Heading, HStack, Input, Popover, Select,
+  Spinner, Text, VStack, createListCollection, type ListCollection,
 } from '@chakra-ui/react'
-import { Receipt, Filter, CheckCircle, XCircle, ChevronRight, Truck, ChefHat } from 'lucide-react'
+import { Receipt, SlidersHorizontal, Download } from 'lucide-react'
+import { create } from '@bufbuild/protobuf'
+import { TimestampSchema } from '@bufbuild/protobuf/wkt'
 import { transactionClient, tableClient } from '../../client'
 import { TableSelect } from '../../components/shared/TableSelect'
-import { OrderFrom, OrderStatus, PaymentMethod } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderCard } from '../../components/shared/OrderCard'
+import { OrderFrom, OrderStatus, PaymentStatus } from '../../gen/wargapos/transaction/v1/transaction_pb'
 import { toaster } from '../../components/ui/toaster'
-import { formatPrice, formatTime } from '../../lib/format'
 import { stripError } from '../../lib/errors'
+import { ordersToCSV, downloadCSV } from '../../lib/csv'
 
-const STATUS_FILTERS = [
-  { label: 'All',       value: OrderStatus.UNSPECIFIED },
-  { label: 'Pending',   value: OrderStatus.PENDING },
-  { label: 'Ready',     value: OrderStatus.READY },
-  { label: 'Delivered', value: OrderStatus.DELIVERED },
-  { label: 'Paid',      value: OrderStatus.PAID },
-  { label: 'Cancelled', value: OrderStatus.CANCELLED },
-]
+const statusCollection = createListCollection({ items: [
+  { label: 'All Status',  value: String(OrderStatus.UNSPECIFIED) },
+  { label: 'Pending',     value: String(OrderStatus.PENDING) },
+  { label: 'Prepared',    value: String(OrderStatus.PREPARED) },
+  { label: 'Delivered',   value: String(OrderStatus.DELIVERED) },
+  { label: 'Cancelled',   value: String(OrderStatus.CANCELLED) },
+]})
 
-const SOURCE_FILTERS = [
-  { label: 'All Sources', value: OrderFrom.UNSPECIFIED },
-  { label: 'Guest',       value: OrderFrom.GUEST },
-  { label: 'POS',         value: OrderFrom.POS },
-]
+const paymentCollection = createListCollection({ items: [
+  { label: 'All Payments', value: String(PaymentStatus.UNSPECIFIED) },
+  { label: 'Unpaid',       value: String(PaymentStatus.UNPAID) },
+  { label: 'Paid',         value: String(PaymentStatus.PAID) },
+]})
+
+const sourceCollection = createListCollection({ items: [
+  { label: 'All Sources', value: String(OrderFrom.UNSPECIFIED) },
+  { label: 'Guest',       value: String(OrderFrom.GUEST) },
+  { label: 'POS',         value: String(OrderFrom.POS) },
+]})
+
+function dateToTimestamp(dateStr: string, endOfDay = false) {
+  if (!dateStr) return undefined
+  const d = new Date(dateStr)
+  if (endOfDay) d.setHours(23, 59, 59, 999)
+  return create(TimestampSchema, { seconds: BigInt(Math.floor(d.getTime() / 1000)), nanos: 0 })
+}
+
+function FilterSelect({ collection, value, onChange }: {
+  collection: ListCollection<{ label: string; value: string }>
+  value: number
+  onChange: (v: number) => void
+}) {
+  return (
+    <Select.Root
+      collection={collection}
+      size="sm"
+      value={[String(value)]}
+      onValueChange={(e) => onChange(Number(e.value[0]))}
+    >
+      <Select.HiddenSelect />
+      <Select.Control>
+        <Select.Trigger><Select.ValueText /></Select.Trigger>
+        <Select.IndicatorGroup><Select.Indicator /></Select.IndicatorGroup>
+      </Select.Control>
+      <Select.Positioner>
+        <Select.Content>
+          {collection.items.map((item) => (
+            <Select.Item item={item} key={item.value}>
+              <Select.ItemText>{item.label}</Select.ItemText>
+              <Select.ItemIndicator />
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select.Positioner>
+    </Select.Root>
+  )
+}
 
 export function OrdersPage() {
   const qc = useQueryClient()
   const navigate = useNavigate()
   const [statusFilter, setStatusFilter] = useState<OrderStatus>(OrderStatus.UNSPECIFIED)
+  const [paymentStatusFilter, setPaymentStatusFilter] = useState<PaymentStatus>(PaymentStatus.UNSPECIFIED)
   const [tableFilter, setTableFilter] = useState<bigint>(0n)
   const [orderFromFilter, setOrderFromFilter] = useState<OrderFrom>(OrderFrom.UNSPECIFIED)
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const [exporting, setExporting] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  const activeFilterCount = [
+    statusFilter !== OrderStatus.UNSPECIFIED,
+    paymentStatusFilter !== PaymentStatus.UNSPECIFIED,
+    orderFromFilter !== OrderFrom.UNSPECIFIED,
+    tableFilter !== 0n,
+    !!dateFrom || !!dateTo,
+    !!search,
+  ].filter(Boolean).length
+
+  function resetFilters() {
+    setStatusFilter(OrderStatus.UNSPECIFIED)
+    setPaymentStatusFilter(PaymentStatus.UNSPECIFIED)
+    setOrderFromFilter(OrderFrom.UNSPECIFIED)
+    setTableFilter(0n)
+    setDateFrom('')
+    setDateTo('')
+    setSearch('')
+    setPage(1)
+  }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['orders', statusFilter, String(tableFilter), String(orderFromFilter), page],
+    queryKey: ['orders', statusFilter, paymentStatusFilter, String(tableFilter), String(orderFromFilter), dateFrom, dateTo, search, page],
     queryFn: () => transactionClient.listOrders({
       page,
       pageSize: 20,
       statusFilter,
+      paymentStatusFilter,
       tableId: tableFilter,
       cashierId: 0n,
       orderFromFilter,
+      createdAtFrom: dateToTimestamp(dateFrom),
+      createdAtTo: dateToTimestamp(dateTo, true),
+      search,
     }),
     staleTime: 0,
     gcTime: 0,
@@ -54,10 +131,9 @@ export function OrdersPage() {
     queryFn: () => tableClient.listTables({}),
   })
 
-  // Poll for ready orders — notify staff when count increases
   const { data: readyData } = useQuery({
     queryKey: ['orders-ready-count'],
-    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.READY, pageSize: 1, page: 1 }),
+    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.PREPARED, pageSize: 1, page: 1 }),
     refetchInterval: 15_000,
   })
   const prevReadyCount = useRef(0)
@@ -105,150 +181,201 @@ export function OrdersPage() {
     return tables.find((t) => t.id === id)?.name ?? `#${String(id)}`
   }
 
-  function statusBadge(status: OrderStatus) {
-    switch (status) {
-      case OrderStatus.PENDING:   return <Badge colorPalette="orange" size="sm">Pending</Badge>
-      case OrderStatus.READY:     return <Badge colorPalette="blue"   size="sm">Ready</Badge>
-      case OrderStatus.DELIVERED: return <Badge colorPalette="purple" size="sm">Delivered</Badge>
-      case OrderStatus.PAID:      return <Badge colorPalette="green"  size="sm">Paid</Badge>
-      case OrderStatus.CANCELLED: return <Badge colorPalette="red"    size="sm">Cancelled</Badge>
-      default: return null
+  async function handleExportCSV() {
+    setExporting(true)
+    try {
+      const res = await transactionClient.listOrders({
+        page: 1,
+        pageSize: 1000,
+        statusFilter,
+        paymentStatusFilter,
+        tableId: tableFilter,
+        cashierId: 0n,
+        orderFromFilter,
+        createdAtFrom: dateToTimestamp(dateFrom),
+        createdAtTo: dateToTimestamp(dateTo, true),
+        search,
+      })
+      const csv = ordersToCSV(res.orders, tableNameById)
+      downloadCSV(`orders-${new Date().toISOString().slice(0, 10)}.csv`, csv)
+    } catch (e) {
+      toaster.create({ title: stripError(e), type: 'error', duration: 4000 })
+    } finally {
+      setExporting(false)
     }
   }
 
+  const dateInputStyle: React.CSSProperties = {
+    fontSize: '12px',
+    border: '1px solid #e2e8f0',
+    borderRadius: '6px',
+    padding: '4px 8px',
+    background: 'white',
+  }
+
+  const filterBadge = activeFilterCount > 0 && (
+    <Box
+      as="span"
+      bg="white"
+      color="blue.600"
+      borderRadius="full"
+      px={1.5}
+      fontSize="10px"
+      fontWeight="bold"
+      ml={1}
+    >
+      {activeFilterCount}
+    </Box>
+  )
+
+  // Shared filter controls rendered inside both drawer and popover
+  const filterBody = (
+    <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={3}>
+      <Box>
+        <Text fontSize="xs" color="gray.500" mb={1}>Order Status</Text>
+        <FilterSelect collection={statusCollection} value={statusFilter}
+          onChange={(v) => { setStatusFilter(v); setPage(1) }} />
+      </Box>
+      <Box>
+        <Text fontSize="xs" color="gray.500" mb={1}>Payment</Text>
+        <FilterSelect collection={paymentCollection} value={paymentStatusFilter}
+          onChange={(v) => { setPaymentStatusFilter(v); setPage(1) }} />
+      </Box>
+      <Box>
+        <Text fontSize="xs" color="gray.500" mb={1}>Source</Text>
+        <FilterSelect collection={sourceCollection} value={orderFromFilter}
+          onChange={(v) => { setOrderFromFilter(v); setPage(1) }} />
+      </Box>
+      <Box>
+        <Text fontSize="xs" color="gray.500" mb={1}>Table</Text>
+        <TableSelect tables={tables} value={tableFilter}
+          onChange={(id) => { setTableFilter(id); setPage(1) }} placeholder="All Tables" />
+      </Box>
+      <Box gridColumn={{ md: 'span 2' }}>
+        <Text fontSize="xs" color="gray.500" mb={1}>Search</Text>
+        <Input size="sm" placeholder="Customer name or order ID"
+          value={search} onChange={(e) => { setSearch(e.target.value); setPage(1) }} />
+      </Box>
+      <Box gridColumn={{ md: 'span 2' }}>
+        <Text fontSize="xs" color="gray.500" mb={1}>Date Range</Text>
+        <HStack gap={2} wrap="wrap">
+          <Text fontSize="xs" color="gray.500">From</Text>
+          <input type="date" value={dateFrom}
+            onChange={(e) => { setDateFrom(e.target.value); setPage(1) }} style={dateInputStyle} />
+          <Text fontSize="xs" color="gray.500">To</Text>
+          <input type="date" value={dateTo}
+            onChange={(e) => { setDateTo(e.target.value); setPage(1) }} style={dateInputStyle} />
+          {(dateFrom || dateTo) && (
+            <Button size="xs" variant="ghost"
+              onClick={() => { setDateFrom(''); setDateTo(''); setPage(1) }}>
+              Clear
+            </Button>
+          )}
+        </HStack>
+      </Box>
+    </Grid>
+  )
+
   return (
     <Box p={{ base: 3, md: 6 }}>
-      <HStack gap={2} mb={4}>
-        <Receipt size={22} />
-        <Heading size="md">Orders</Heading>
-      </HStack>
-
-      {/* Filter bar */}
-      <Flex gap={2} mb={4} wrap="wrap" align="center">
-        <HStack gap={1} flexWrap="wrap">
-          {STATUS_FILTERS.map((f) => (
-            <Button
-              key={f.value}
-              size="sm"
-              variant={statusFilter === f.value ? 'solid' : 'outline'}
-              colorPalette={statusFilter === f.value ? 'blue' : 'gray'}
-              onClick={() => { setStatusFilter(f.value); setPage(1) }}
-            >
-              {f.label}
-            </Button>
-          ))}
+      {/* Header + toolbar */}
+      <Flex align="center" justify="space-between" mb={4} gap={2}>
+        <HStack gap={2}>
+          <Receipt size={22} />
+          <Heading size="md">Orders</Heading>
         </HStack>
 
-        <HStack gap={2} ml="auto">
-          {SOURCE_FILTERS.map((f) => (
-            <Button
-              key={String(f.value)}
-              size="sm"
-              variant={orderFromFilter === f.value ? 'solid' : 'outline'}
-              colorPalette={orderFromFilter === f.value ? 'teal' : 'gray'}
-              onClick={() => { setOrderFromFilter(f.value); setPage(1) }}
-            >
-              {f.label}
-            </Button>
-          ))}
-          <HStack gap={1}>
-            <Filter size={14} color="gray" />
-            <TableSelect
-              tables={tables}
-              value={tableFilter}
-              onChange={(id) => { setTableFilter(id); setPage(1) }}
-              placeholder="All Tables"
-            />
-          </HStack>
+        <HStack gap={2}>
+          {/* Mobile trigger — Drawer */}
+          <Button
+            display={{ base: 'flex', md: 'none' }}
+            size="sm"
+            variant={activeFilterCount > 0 ? 'solid' : 'outline'}
+            colorPalette={activeFilterCount > 0 ? 'blue' : 'gray'}
+            onClick={() => setDrawerOpen(true)}
+          >
+            <SlidersHorizontal size={14} />
+            Filters
+            {filterBadge}
+          </Button>
+
+          {/* Desktop trigger — Popover */}
+          <Popover.Root positioning={{ placement: 'bottom-end' }}>
+            <Popover.Trigger asChild>
+              <Button
+                display={{ base: 'none', md: 'flex' }}
+                size="sm"
+                variant={activeFilterCount > 0 ? 'solid' : 'outline'}
+                colorPalette={activeFilterCount > 0 ? 'blue' : 'gray'}
+              >
+                <SlidersHorizontal size={14} />
+                Filters
+                {filterBadge}
+              </Button>
+            </Popover.Trigger>
+            <Popover.Positioner>
+              <Popover.Content w="440px">
+                <Popover.Body p={4}>
+                  {filterBody}
+                </Popover.Body>
+                <Flex borderTopWidth="1px" px={4} py={3} justify="space-between">
+                  <Button size="sm" variant="ghost" onClick={resetFilters}>Reset All</Button>
+                  <Popover.CloseTrigger asChild>
+                    <Button size="sm" colorPalette="blue">Done</Button>
+                  </Popover.CloseTrigger>
+                </Flex>
+              </Popover.Content>
+            </Popover.Positioner>
+          </Popover.Root>
+
+          <Button size="sm" variant="outline" loading={exporting} onClick={handleExportCSV}>
+            <Download size={14} />
+            Export CSV
+          </Button>
         </HStack>
       </Flex>
+
+      {/* Mobile filter drawer */}
+      <Drawer.Root placement="bottom" open={drawerOpen} onOpenChange={(d) => setDrawerOpen(d.open)}>
+        <Drawer.Backdrop />
+        <Drawer.Positioner>
+          <Drawer.Content borderTopRadius="xl" maxH="80vh">
+            <Drawer.Header borderBottomWidth="1px">
+              <Drawer.Title>Filter Orders</Drawer.Title>
+              <Drawer.CloseTrigger />
+            </Drawer.Header>
+            <Drawer.Body overflowY="auto">
+              {filterBody}
+            </Drawer.Body>
+            <Drawer.Footer borderTopWidth="1px" gap={3}>
+              <Button size="sm" variant="ghost" onClick={() => { resetFilters(); setDrawerOpen(false) }}>
+                Reset All
+              </Button>
+              <Button size="sm" colorPalette="blue" onClick={() => setDrawerOpen(false)}>
+                Done
+              </Button>
+            </Drawer.Footer>
+          </Drawer.Content>
+        </Drawer.Positioner>
+      </Drawer.Root>
 
       {isLoading ? (
         <Flex justify="center" mt={12}><Spinner /></Flex>
       ) : (
         <VStack gap={3} align="stretch">
           {orders.map((order) => (
-            <Box
+            <OrderCard
               key={String(order.id)}
-              bg="white"
-              borderRadius="lg"
-              p={4}
-              boxShadow="sm"
-              cursor="pointer"
-              _hover={{ boxShadow: 'md' }}
-              onClick={() => navigate({ to: '/orders/$id', params: { id: String(order.id) } })}
-            >
-              <Flex justify="space-between" align="start" mb={2}>
-                <Box>
-                  <HStack gap={2} mb={1} flexWrap="wrap">
-                    <Text fontWeight="semibold" fontSize="sm">#{String(order.id)}</Text>
-                    {statusBadge(order.status)}
-                    {order.paymentMethod === PaymentMethod.CASH && (
-                      <Badge colorPalette="gray" size="sm">Cash</Badge>
-                    )}
-                    {order.paymentMethod === PaymentMethod.QRIS && (
-                      <Badge colorPalette="purple" size="sm">QRIS</Badge>
-                    )}
-                    {order.orderFrom === OrderFrom.GUEST && (
-                      <Badge colorPalette="teal" size="sm">Guest</Badge>
-                    )}
-                    {order.orderFrom === OrderFrom.POS && (
-                      <Badge colorPalette="blue" size="sm">POS</Badge>
-                    )}
-                  </HStack>
-                  <Text fontSize="xs" color="gray.500">
-                    {formatTime(order.createdAt)} · {tableNameById(order.tableId)} · {order.items.length} item(s)
-                  </Text>
-                  {order.customerName && (
-                    <Text fontSize="xs" color="gray.600" mt={0.5}>{order.customerName}</Text>
-                  )}
-                </Box>
-                <HStack gap={2} align="center">
-                  <Text fontWeight="bold" fontSize="sm">{formatPrice(order.totalCents)}</Text>
-                  <ChevronRight size={14} color="gray" />
-                </HStack>
-              </Flex>
-
-              {/* Action buttons — stop propagation so clicks don't navigate */}
-              {(order.status === OrderStatus.PENDING ||
-                order.status === OrderStatus.READY ||
-                order.status === OrderStatus.DELIVERED) && (
-                <HStack gap={2} onClick={(e) => e.stopPropagation()}>
-                  {order.status === OrderStatus.READY && (
-                    <Button
-                      size="xs"
-                      colorPalette="purple"
-                      loading={markDeliveredMutation.isPending}
-                      onClick={() => markDeliveredMutation.mutate(order.id)}
-                    >
-                      <Truck size={11} />
-                      Mark Delivered
-                    </Button>
-                  )}
-                  {order.status === OrderStatus.DELIVERED && (
-                    <Button
-                      size="xs"
-                      colorPalette="green"
-                      loading={markPaidMutation.isPending}
-                      onClick={() => markPaidMutation.mutate(order.id)}
-                    >
-                      <CheckCircle size={11} />
-                      Mark as Paid
-                    </Button>
-                  )}
-                  <Button
-                    size="xs"
-                    variant="outline"
-                    colorPalette="red"
-                    loading={cancelMutation.isPending}
-                    onClick={() => cancelMutation.mutate(order.id)}
-                  >
-                    <XCircle size={11} />
-                    Cancel
-                  </Button>
-                </HStack>
-              )}
-            </Box>
+              order={order}
+              tableName={tableNameById(order.tableId)}
+              onNavigate={() => navigate({ to: '/orders/$id', params: { id: String(order.id) } })}
+              onMarkDelivered={() => markDeliveredMutation.mutate(order.id)}
+              onMarkPaid={() => markPaidMutation.mutate(order.id)}
+              onCancel={() => cancelMutation.mutate(order.id)}
+              markDeliveredLoading={markDeliveredMutation.isPending}
+              markPaidLoading={markPaidMutation.isPending}
+              cancelLoading={cancelMutation.isPending}
+            />
           ))}
 
           {orders.length === 0 && (

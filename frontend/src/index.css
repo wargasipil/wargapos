@@ -1,0 +1,5 @@
+/* Hide navigation elements when in fullscreen mode (kitchen display) */
+:fullscreen .layout-nav,
+:-webkit-full-screen .layout-nav {
+  display: none !important;
+}

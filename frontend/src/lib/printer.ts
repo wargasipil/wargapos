@@ -1,6 +1,6 @@
 import type { Order } from '../gen/wargapos/transaction/v1/transaction_pb'
 import { deviceClient } from '../client'
-import { PaymentMethod } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { PaymentMethod, PaymentStatus } from '../gen/wargapos/transaction/v1/transaction_pb'
 import { formatPrice, formatTime } from './format'
 
 // 58mm paper = 32 chars per line
@@ -46,7 +46,9 @@ function rowLR(left: string, right: string): string {
 }
 
 function buildReceipt(order: Order, tableName: string): Uint8Array {
-  const payment = order.paymentMethod === PaymentMethod.QRIS ? 'QRIS' : 'Cash'
+  const method = order.paymentMethod === PaymentMethod.ONLINE ? 'Online' : 'Cash'
+  const paid = order.paymentStatus === PaymentStatus.PAID ? 'Paid' : 'Unpaid'
+  const payment = `${method} - ${paid}`
   const parts: Uint8Array[] = [
     CMD_INIT,
     CMD_CENTER, CMD_BOLD_ON,  lf('WargaPOS'), CMD_BOLD_OFF,
@@ -55,6 +57,8 @@ function buildReceipt(order: Order, tableName: string): Uint8Array {
     lf(`Date   : ${formatTime(order.createdAt)}`),
     lf(`Table  : ${tableName}`),
     lf(`Payment: ${payment}`),
+    ...(order.customerName ? [lf(`Name   : ${order.customerName.slice(0, COLS - 9)}`)] : []),
+    ...(order.phoneNumber  ? [lf(`Phone  : ${order.phoneNumber.slice(0, COLS - 9)}`)]  : []),
     sep(),
   ]
 
@@ -63,6 +67,9 @@ function buildReceipt(order: Order, tableName: string): Uint8Array {
     const sub  = formatPrice(item.subtotalCents)
     parts.push(lf(rowLR(name, sub)))
     parts.push(lf(`  ${item.quantity} x ${formatPrice(item.unitPriceCents)}`))
+    if (item.notes) {
+      parts.push(lf(`  * ${item.notes.slice(0, COLS - 4)}`))
+    }
   }
 
   const total = formatPrice(order.totalCents)

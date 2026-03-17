@@ -7,7 +7,9 @@
       "Bash(powershell.exe -NoProfile -Command \"Get-Command gh -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
       "Bash(powershell.exe -NoProfile -Command \"winget install --id GitHub.cli --accept-package-agreements --accept-source-agreements\")",
       "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Bash(node -e \"const p = require\\(''@bufbuild/protobuf/package.json''\\); console.log\\(p.version, JSON.stringify\\(p.exports ? Object.keys\\(p.exports\\) : ''no exports''\\)\\)\")",
+      "Bash(node -e \":*)"
     ]
   }
 }

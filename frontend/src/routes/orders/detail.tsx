@@ -7,19 +7,26 @@ import {
 import { ArrowLeft, CheckCircle, Phone, Printer, XCircle, ChefHat, Truck } from 'lucide-react'
 import { printReceipt } from '../../lib/printer'
 import { transactionClient, tableClient } from '../../client'
-import { OrderStatus, OrderFrom, PaymentMethod } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderStatus, PaymentStatus, OrderFrom, PaymentMethod } from '../../gen/wargapos/transaction/v1/transaction_pb'
 import { toaster } from '../../components/ui/toaster'
-import { formatPrice, formatTime } from '../../lib/format'
+import { formatPrice, formatTime, formatDateTime } from '../../lib/format'
 import { stripError } from '../../lib/errors'
 
 function statusBadge(status: OrderStatus) {
   switch (status) {
     case OrderStatus.PENDING:   return <Badge colorPalette="orange" size="sm">Pending</Badge>
-    case OrderStatus.READY:     return <Badge colorPalette="blue"   size="sm">Ready</Badge>
+    case OrderStatus.PREPARED:  return <Badge colorPalette="blue"   size="sm">Prepared</Badge>
     case OrderStatus.DELIVERED: return <Badge colorPalette="purple" size="sm">Delivered</Badge>
-    case OrderStatus.PAID:      return <Badge colorPalette="green"  size="sm">Paid</Badge>
     case OrderStatus.CANCELLED: return <Badge colorPalette="red"    size="sm">Cancelled</Badge>
     default: return null
+  }
+}
+
+function paymentBadge(ps: PaymentStatus) {
+  switch (ps) {
+    case PaymentStatus.PAID:     return <Badge colorPalette="green"  size="sm">Paid</Badge>
+    case PaymentStatus.REFUNDED: return <Badge colorPalette="gray"   size="sm">Refunded</Badge>
+    default:                     return <Badge colorPalette="orange" size="sm">Unpaid</Badge>
   }
 }
 
@@ -101,7 +108,7 @@ export function OrderDetailPage() {
 
   const canCancel =
     order.status === OrderStatus.PENDING ||
-    order.status === OrderStatus.READY ||
+    order.status === OrderStatus.PREPARED ||
     order.status === OrderStatus.DELIVERED
 
   return (
@@ -115,6 +122,7 @@ export function OrderDetailPage() {
         </Link>
         <Heading size="md">Order #{String(order.id)}</Heading>
         {statusBadge(order.status)}
+        {paymentBadge(order.paymentStatus)}
       </HStack>
 
       {/* Meta */}
@@ -122,7 +130,7 @@ export function OrderDetailPage() {
         <VStack align="stretch" gap={2}>
           <Flex justify="space-between">
             <Text fontSize="sm" color="gray.500">Date</Text>
-            <Text fontSize="sm">{formatTime(order.createdAt)}</Text>
+            <Text fontSize="sm">{formatDateTime(order.createdAt)}</Text>
           </Flex>
           <Flex justify="space-between">
             <Text fontSize="sm" color="gray.500">Table</Text>
@@ -136,8 +144,8 @@ export function OrderDetailPage() {
           </Flex>
           <Flex justify="space-between">
             <Text fontSize="sm" color="gray.500">Payment</Text>
-            <Badge colorPalette={order.paymentMethod === PaymentMethod.QRIS ? 'purple' : 'gray'} size="sm">
-              {order.paymentMethod === PaymentMethod.QRIS ? 'QRIS' : 'Cash'}
+            <Badge colorPalette={order.paymentMethod === PaymentMethod.ONLINE ? 'purple' : 'gray'} size="sm">
+              {order.paymentMethod === PaymentMethod.ONLINE ? 'Online' : 'Cash'}
             </Badge>
           </Flex>
           {order.customerName && (
@@ -200,16 +208,16 @@ export function OrderDetailPage() {
         {order.status === OrderStatus.PENDING && (
           <Button size="sm" colorPalette="blue" loading={markReadyMutation.isPending} onClick={() => markReadyMutation.mutate()}>
             <ChefHat size={14} />
-            Mark Ready
+            Mark Prepared
           </Button>
         )}
-        {order.status === OrderStatus.READY && (
+        {order.status === OrderStatus.PREPARED && (
           <Button size="sm" colorPalette="purple" loading={markDeliveredMutation.isPending} onClick={() => markDeliveredMutation.mutate()}>
             <Truck size={14} />
             Mark Delivered
           </Button>
         )}
-        {order.status === OrderStatus.DELIVERED && (
+        {order.paymentStatus === PaymentStatus.UNPAID && order.status !== OrderStatus.CANCELLED && (
           <Button size="sm" colorPalette="green" loading={markPaidMutation.isPending} onClick={() => markPaidMutation.mutate()}>
             <CheckCircle size={14} />
             Mark as Paid

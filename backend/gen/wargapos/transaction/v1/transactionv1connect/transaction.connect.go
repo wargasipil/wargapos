@@ -66,6 +66,9 @@ const (
 	// TransactionServiceMarkOrderDeliveredProcedure is the fully-qualified name of the
 	// TransactionService's MarkOrderDelivered RPC.
 	TransactionServiceMarkOrderDeliveredProcedure = "/wargapos.transaction.v1.TransactionService/MarkOrderDelivered"
+	// TransactionServiceGetDashboardStatsProcedure is the fully-qualified name of the
+	// TransactionService's GetDashboardStats RPC.
+	TransactionServiceGetDashboardStatsProcedure = "/wargapos.transaction.v1.TransactionService/GetDashboardStats"
 )
 
 // TransactionServiceClient is a client for the wargapos.transaction.v1.TransactionService service.
@@ -81,6 +84,7 @@ type TransactionServiceClient interface {
 	CancelOrder(context.Context, *connect.Request[v1.CancelOrderRequest]) (*connect.Response[v1.CancelOrderResponse], error)
 	MarkOrderReady(context.Context, *connect.Request[v1.MarkOrderReadyRequest]) (*connect.Response[v1.MarkOrderReadyResponse], error)
 	MarkOrderDelivered(context.Context, *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error)
+	GetDashboardStats(context.Context, *connect.Request[v1.GetDashboardStatsRequest]) (*connect.Response[v1.GetDashboardStatsResponse], error)
 }
 
 // NewTransactionServiceClient constructs a client for the
@@ -160,6 +164,12 @@ func NewTransactionServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(transactionServiceMethods.ByName("MarkOrderDelivered")),
 			connect.WithClientOptions(opts...),
 		),
+		getDashboardStats: connect.NewClient[v1.GetDashboardStatsRequest, v1.GetDashboardStatsResponse](
+			httpClient,
+			baseURL+TransactionServiceGetDashboardStatsProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("GetDashboardStats")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -176,6 +186,7 @@ type transactionServiceClient struct {
 	cancelOrder        *connect.Client[v1.CancelOrderRequest, v1.CancelOrderResponse]
 	markOrderReady     *connect.Client[v1.MarkOrderReadyRequest, v1.MarkOrderReadyResponse]
 	markOrderDelivered *connect.Client[v1.MarkOrderDeliveredRequest, v1.MarkOrderDeliveredResponse]
+	getDashboardStats  *connect.Client[v1.GetDashboardStatsRequest, v1.GetDashboardStatsResponse]
 }
 
 // AddToCart calls wargapos.transaction.v1.TransactionService.AddToCart.
@@ -233,6 +244,11 @@ func (c *transactionServiceClient) MarkOrderDelivered(ctx context.Context, req *
 	return c.markOrderDelivered.CallUnary(ctx, req)
 }
 
+// GetDashboardStats calls wargapos.transaction.v1.TransactionService.GetDashboardStats.
+func (c *transactionServiceClient) GetDashboardStats(ctx context.Context, req *connect.Request[v1.GetDashboardStatsRequest]) (*connect.Response[v1.GetDashboardStatsResponse], error) {
+	return c.getDashboardStats.CallUnary(ctx, req)
+}
+
 // TransactionServiceHandler is an implementation of the wargapos.transaction.v1.TransactionService
 // service.
 type TransactionServiceHandler interface {
@@ -247,6 +263,7 @@ type TransactionServiceHandler interface {
 	CancelOrder(context.Context, *connect.Request[v1.CancelOrderRequest]) (*connect.Response[v1.CancelOrderResponse], error)
 	MarkOrderReady(context.Context, *connect.Request[v1.MarkOrderReadyRequest]) (*connect.Response[v1.MarkOrderReadyResponse], error)
 	MarkOrderDelivered(context.Context, *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error)
+	GetDashboardStats(context.Context, *connect.Request[v1.GetDashboardStatsRequest]) (*connect.Response[v1.GetDashboardStatsResponse], error)
 }
 
 // NewTransactionServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -322,6 +339,12 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 		connect.WithSchema(transactionServiceMethods.ByName("MarkOrderDelivered")),
 		connect.WithHandlerOptions(opts...),
 	)
+	transactionServiceGetDashboardStatsHandler := connect.NewUnaryHandler(
+		TransactionServiceGetDashboardStatsProcedure,
+		svc.GetDashboardStats,
+		connect.WithSchema(transactionServiceMethods.ByName("GetDashboardStats")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.transaction.v1.TransactionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TransactionServiceAddToCartProcedure:
@@ -346,6 +369,8 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 			transactionServiceMarkOrderReadyHandler.ServeHTTP(w, r)
 		case TransactionServiceMarkOrderDeliveredProcedure:
 			transactionServiceMarkOrderDeliveredHandler.ServeHTTP(w, r)
+		case TransactionServiceGetDashboardStatsProcedure:
+			transactionServiceGetDashboardStatsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -397,4 +422,8 @@ func (UnimplementedTransactionServiceHandler) MarkOrderReady(context.Context, *c
 
 func (UnimplementedTransactionServiceHandler) MarkOrderDelivered(context.Context, *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.MarkOrderDelivered is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) GetDashboardStats(context.Context, *connect.Request[v1.GetDashboardStatsRequest]) (*connect.Response[v1.GetDashboardStatsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.GetDashboardStats is not implemented"))
 }

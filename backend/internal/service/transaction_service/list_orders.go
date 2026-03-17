@@ -21,8 +21,8 @@ func (s *TransactionService) ListOrders(
 	if pageSize < 1 {
 		pageSize = 20
 	}
-	if pageSize > 100 {
-		pageSize = 100
+	if pageSize > 1000 {
+		pageSize = 1000
 	}
 
 	db := s.db.WithContext(ctx).Model(&models.Order{})
@@ -37,6 +37,18 @@ func (s *TransactionService) ListOrders(
 	}
 	if req.Msg.OrderFromFilter != transactionv1.OrderFrom_ORDER_FROM_UNSPECIFIED {
 		db = db.Where("order_from = ?", int32(req.Msg.OrderFromFilter))
+	}
+	if req.Msg.PaymentStatusFilter != transactionv1.PaymentStatus_PAYMENT_STATUS_UNSPECIFIED {
+		db = db.Where("payment_status = ?", int32(req.Msg.PaymentStatusFilter))
+	}
+	if req.Msg.CreatedAtFrom != nil {
+		db = db.Where("created_at >= ?", req.Msg.CreatedAtFrom.AsTime())
+	}
+	if req.Msg.CreatedAtTo != nil {
+		db = db.Where("created_at <= ?", req.Msg.CreatedAtTo.AsTime())
+	}
+	if req.Msg.Search != "" {
+		db = db.Where("customer_name ILIKE ? OR CAST(id AS TEXT) = ?", "%"+req.Msg.Search+"%", req.Msg.Search)
 	}
 
 	var total int64

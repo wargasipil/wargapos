@@ -5,14 +5,16 @@ export interface CartItem {
   name: string
   qty: number
   unitPriceCents: bigint
+  notes: string
 }
 
 interface CartState {
   sessionId: string
   items: CartItem[]
   totalCents: bigint
-  addItem: (item: Omit<CartItem, 'qty'>) => void
+  addItem: (item: Omit<CartItem, 'qty' | 'notes'>) => void
   removeItem: (productId: bigint) => void
+  updateNotes: (productId: bigint, notes: string) => void
   clear: () => void
 }
 
@@ -35,7 +37,7 @@ export const useCartStore = create<CartState>()((set) => ({
         ? state.items.map((i) =>
             i.productId === newItem.productId ? { ...i, qty: i.qty + 1 } : i
           )
-        : [...state.items, { ...newItem, qty: 1 }]
+        : [...state.items, { ...newItem, qty: 1, notes: '' }]
       return { items, totalCents: calcTotal(items) }
     }),
   removeItem: (productId) =>
@@ -45,5 +47,9 @@ export const useCartStore = create<CartState>()((set) => ({
         .filter((i) => i.qty > 0)
       return { items, totalCents: calcTotal(items) }
     }),
+  updateNotes: (productId, notes) =>
+    set((state) => ({
+      items: state.items.map((i) => i.productId === productId ? { ...i, notes } : i),
+    })),
   clear: () => set({ items: [], totalCents: 0n, sessionId: newSessionId() }),
 }))

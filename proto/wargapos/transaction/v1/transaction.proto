@@ -3,22 +3,30 @@ syntax = "proto3";
 package wargapos.transaction.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/transaction/v1;transactionv1";
 
 enum PaymentMethod {
   PAYMENT_METHOD_UNSPECIFIED = 0;
   PAYMENT_METHOD_CASH        = 1;
-  PAYMENT_METHOD_QRIS        = 2;
+  PAYMENT_METHOD_ONLINE      = 2;
 }
 
 enum OrderStatus {
   ORDER_STATUS_UNSPECIFIED = 0;
   ORDER_STATUS_PENDING     = 1;
-  ORDER_STATUS_PAID        = 2;
+  // 2 reserved (was PAID — now tracked in PaymentStatus)
   ORDER_STATUS_CANCELLED   = 3;
-  ORDER_STATUS_READY       = 4;
+  ORDER_STATUS_PREPARED    = 4;   // renamed from READY, same integer value
   ORDER_STATUS_DELIVERED   = 5;
+}
+
+enum PaymentStatus {
+  PAYMENT_STATUS_UNSPECIFIED = 0;
+  PAYMENT_STATUS_UNPAID      = 1;
+  PAYMENT_STATUS_PAID        = 2;
+  PAYMENT_STATUS_REFUNDED    = 3;
 }
 
 enum OrderFrom {
@@ -43,12 +51,13 @@ message Order {
   repeated OrderItem items          = 3;
   int64              total_cents    = 4;
   OrderStatus        status         = 5;
-  int64              created_at     = 6;
+  google.protobuf.Timestamp created_at = 6;
   int64              table_id       = 7;
   string             customer_name  = 8;
   string             phone_number   = 9;
   PaymentMethod      payment_method = 10;
   OrderFrom          order_from     = 11;
+  PaymentStatus      payment_status = 13;
 }
 
 message AddToCartRequest {
@@ -97,12 +106,45 @@ message ListOrdersRequest {
   int64     cashier_id        = 3;
   OrderStatus status_filter   = 4;
   int64     table_id          = 5;
-  OrderFrom order_from_filter = 6;
+  OrderFrom                 order_from_filter     = 6;
+  PaymentStatus             payment_status_filter = 7;
+  google.protobuf.Timestamp created_at_from       = 8;
+  google.protobuf.Timestamp created_at_to         = 9;
+  string                    search                = 10;
 }
 
 message ListOrdersResponse {
   repeated Order orders = 1;
   int32          total  = 2;
+}
+
+enum DashboardPeriod {
+  DASHBOARD_PERIOD_UNSPECIFIED = 0;
+  DASHBOARD_PERIOD_TODAY       = 1;
+  DASHBOARD_PERIOD_THIS_WEEK   = 2;
+  DASHBOARD_PERIOD_THIS_MONTH  = 3;
+}
+
+message DashboardOrderCounts {
+  int32 total     = 1;
+  int32 pending   = 2;
+  int32 prepared  = 3;
+  int32 delivered = 4;
+  int32 cancelled = 5;
+}
+
+message DashboardTopProduct {
+  string product_name  = 1;
+  int32  quantity_sold = 2;
+  int64  revenue_cents = 3;
+}
+
+message GetDashboardStatsRequest  { DashboardPeriod period = 1; }
+message GetDashboardStatsResponse {
+  int64                        total_revenue_cents = 1;
+  DashboardOrderCounts         order_counts        = 2;
+  repeated DashboardTopProduct top_products        = 3;
+  repeated Order               recent_orders       = 4;
 }
 
 message MarkOrderPaidRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
@@ -129,4 +171,5 @@ service TransactionService {
   rpc CancelOrder(CancelOrderRequest)                   returns (CancelOrderResponse);
   rpc MarkOrderReady(MarkOrderReadyRequest)             returns (MarkOrderReadyResponse);
   rpc MarkOrderDelivered(MarkOrderDeliveredRequest)     returns (MarkOrderDeliveredResponse);
+  rpc GetDashboardStats(GetDashboardStatsRequest)       returns (GetDashboardStatsResponse);
 }

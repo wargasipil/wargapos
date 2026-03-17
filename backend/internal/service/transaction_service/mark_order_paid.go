@@ -22,19 +22,14 @@ func (s *TransactionService) MarkOrderPaid(
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("order not found"))
 	}
-	if order.Status != statusDelivered {
-		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("order is not delivered"))
+	if order.Status == statusCancelled {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("order is cancelled"))
 	}
 
-	pm := int32(transactionv1.PaymentMethod_PAYMENT_METHOD_CASH)
-	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Updates(map[string]any{
-		"status":         statusPaid,
-		"payment_method": pm,
-	}).Error; err != nil {
+	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Update("payment_status", paymentPaid).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	order.Status = statusPaid
-	order.PaymentMethod = &pm
+	order.PaymentStatus = paymentPaid
 
 	return connect.NewResponse(&transactionv1.MarkOrderPaidResponse{Order: toProtoOrder(order)}), nil
 }

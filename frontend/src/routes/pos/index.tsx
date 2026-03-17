@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
-  Alert, Badge, Box, Button, Dialog, Drawer, Field, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, VStack,
+  Alert, Badge, Box, Button, Dialog, Drawer, Field, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, Textarea, VStack,
 } from '@chakra-ui/react'
 import { Printer } from 'lucide-react'
 import { productClient, transactionClient, tableClient } from '../../client'
@@ -24,7 +24,7 @@ import type { Order } from '../../gen/wargapos/transaction/v1/transaction_pb'
 type Step = 'browse' | 'receipt'
 
 export function PosPage() {
-  const { items, totalCents, sessionId, addItem, removeItem, clear } = useCartStore()
+  const { items, totalCents, sessionId, addItem, removeItem, updateNotes, clear } = useCartStore()
   const { userId } = useAuthStore()
   const { selectedPrinter } = usePrinterStore()
   const [step, setStep] = useState<Step>('browse')
@@ -73,7 +73,7 @@ export function PosPage() {
     setCheckoutLoading(true)
     setCheckoutError(null)
     try {
-      await syncCartToServer(sessionId, tableId, items.map((i) => ({ productId: i.productId, qty: i.qty })))
+      await syncCartToServer(sessionId, tableId, items.map((i) => ({ productId: i.productId, qty: i.qty, notes: i.notes })))
       const res = await transactionClient.checkout({
         sessionId,
         cashierId: userId ? BigInt(userId) : 0n,
@@ -235,17 +235,29 @@ export function PosPage() {
           <Text color="gray.400" fontSize="sm" textAlign="center" mt={8}>Tap a product to add it</Text>
         )}
         {items.map((item) => (
-          <HStack key={item.productId} justify="space-between">
-            <Box flex={1}>
-              <Text fontSize="sm" fontWeight="medium">{item.name}</Text>
-              <Text fontSize="xs" color="gray.500">{formatPrice(item.unitPriceCents)} x {item.qty}</Text>
-            </Box>
-            <HStack gap={1}>
-              <Button size="xs" variant="outline" onClick={() => removeItem(item.productId)}>-</Button>
-              <Text fontSize="sm" w={6} textAlign="center">{item.qty}</Text>
-              <Button size="xs" variant="outline" onClick={() => handleAdd({ id: item.productId, name: item.name, priceCents: item.unitPriceCents } as Product)}>+</Button>
+          <Box key={item.productId}>
+            <HStack justify="space-between">
+              <Box flex={1}>
+                <Text fontSize="sm" fontWeight="medium">{item.name}</Text>
+                <Text fontSize="xs" color="gray.500">{formatPrice(item.unitPriceCents)} x {item.qty}</Text>
+              </Box>
+              <HStack gap={1}>
+                <Button size="xs" variant="outline" onClick={() => removeItem(item.productId)}>-</Button>
+                <Text fontSize="sm" w={6} textAlign="center">{item.qty}</Text>
+                <Button size="xs" variant="outline" onClick={() => handleAdd({ id: item.productId, name: item.name, priceCents: item.unitPriceCents } as Product)}>+</Button>
+              </HStack>
             </HStack>
-          </HStack>
+            <Textarea
+              size="xs"
+              variant="subtle"
+              placeholder="Notes (e.g. no onions)"
+              value={item.notes}
+              onChange={(e) => updateNotes(item.productId, e.target.value)}
+              rows={1}
+              mt={1}
+              resize="none"
+            />
+          </Box>
         ))}
       </VStack>
       <Box p={4} borderTop="1px solid" borderColor="gray.100">
