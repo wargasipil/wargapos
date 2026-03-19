@@ -25,7 +25,9 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install NSIS
-        run: choco install nsis --no-progress -y
+        run: |
+          choco install nsis --no-progress -y
+          Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\NSIS"
 
       - name: Cache PostgreSQL + NSSM downloads
         uses: actions/cache@v4
