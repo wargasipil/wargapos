@@ -78,20 +78,27 @@ if (!(Test-Path $PgDir)) {
     # EnterpriseDB zip contains a single top-level 'pgsql' folder
 }
 
-# ── 4. Download NSSM (cached) ───────────────────────────────────────────────
-$NssmZip = Join-Path $Cache 'nssm.zip'
+# ── 4. Get NSSM (PATH-first, then cached download) ──────────────────────────
 $NssmExe = Join-Path $Build 'nssm.exe'
 
 if (!(Test-Path $NssmExe)) {
-    if (!(Test-Path $NssmZip)) {
-        Log "Downloading NSSM..."
-        Invoke-WebRequest 'https://nssm.cc/release/nssm-2.24.zip' -OutFile $NssmZip -UseBasicParsing
+    # Prefer NSSM already on PATH (e.g. installed via Chocolatey in CI)
+    $NssmOnPath = Get-Command nssm.exe -ErrorAction SilentlyContinue
+    if ($NssmOnPath) {
+        Log "Using NSSM from PATH: $($NssmOnPath.Source)"
+        Copy-Item $NssmOnPath.Source $NssmExe
+    } else {
+        $NssmZip = Join-Path $Cache 'nssm.zip'
+        if (!(Test-Path $NssmZip)) {
+            Log "Downloading NSSM..."
+            Invoke-WebRequest 'https://nssm.cc/release/nssm-2.24.zip' -OutFile $NssmZip -UseBasicParsing
+        }
+        Log "Extracting NSSM..."
+        $NssmTmp = Join-Path $Build 'nssm-tmp'
+        Expand-Archive $NssmZip $NssmTmp -Force
+        Copy-Item (Join-Path $NssmTmp 'nssm-2.24\win64\nssm.exe') $NssmExe
+        Remove-Item $NssmTmp -Recurse -Force
     }
-    Log "Extracting NSSM..."
-    $NssmTmp = Join-Path $Build 'nssm-tmp'
-    Expand-Archive $NssmZip $NssmTmp -Force
-    Copy-Item (Join-Path $NssmTmp 'nssm-2.24\win64\nssm.exe') $NssmExe
-    Remove-Item $NssmTmp -Recurse -Force
 }
 
 # ── 5. Run NSIS ─────────────────────────────────────────────────────────────
