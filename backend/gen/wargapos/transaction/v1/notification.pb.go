@@ -154,6 +154,42 @@ func (x *ConnectedEvent) GetStreamId() string {
 	return ""
 }
 
+type PingEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PingEvent) Reset() {
+	*x = PingEvent{}
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PingEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PingEvent) ProtoMessage() {}
+
+func (x *PingEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PingEvent.ProtoReflect.Descriptor instead.
+func (*PingEvent) Descriptor() ([]byte, []int) {
+	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{3}
+}
+
 type Event struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Event:
@@ -161,6 +197,7 @@ type Event struct {
 	//	*Event_NewOrder
 	//	*Event_UpdateOrder
 	//	*Event_Connected
+	//	*Event_Ping
 	Event         isEvent_Event `protobuf_oneof:"event"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -168,7 +205,7 @@ type Event struct {
 
 func (x *Event) Reset() {
 	*x = Event{}
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[3]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -180,7 +217,7 @@ func (x *Event) String() string {
 func (*Event) ProtoMessage() {}
 
 func (x *Event) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[3]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -193,7 +230,7 @@ func (x *Event) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Event.ProtoReflect.Descriptor instead.
 func (*Event) Descriptor() ([]byte, []int) {
-	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{3}
+	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Event) GetEvent() isEvent_Event {
@@ -230,6 +267,15 @@ func (x *Event) GetConnected() *ConnectedEvent {
 	return nil
 }
 
+func (x *Event) GetPing() *PingEvent {
+	if x != nil {
+		if x, ok := x.Event.(*Event_Ping); ok {
+			return x.Ping
+		}
+	}
+	return nil
+}
+
 type isEvent_Event interface {
 	isEvent_Event()
 }
@@ -246,11 +292,17 @@ type Event_Connected struct {
 	Connected *ConnectedEvent `protobuf:"bytes,3,opt,name=connected,proto3,oneof"`
 }
 
+type Event_Ping struct {
+	Ping *PingEvent `protobuf:"bytes,4,opt,name=ping,proto3,oneof"`
+}
+
 func (*Event_NewOrder) isEvent_Event() {}
 
 func (*Event_UpdateOrder) isEvent_Event() {}
 
 func (*Event_Connected) isEvent_Event() {}
+
+func (*Event_Ping) isEvent_Event() {}
 
 type PushRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -261,7 +313,7 @@ type PushRequest struct {
 
 func (x *PushRequest) Reset() {
 	*x = PushRequest{}
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[4]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -273,7 +325,7 @@ func (x *PushRequest) String() string {
 func (*PushRequest) ProtoMessage() {}
 
 func (x *PushRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[4]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -286,7 +338,7 @@ func (x *PushRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushRequest.ProtoReflect.Descriptor instead.
 func (*PushRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{4}
+	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *PushRequest) GetEvent() *Event {
@@ -304,7 +356,7 @@ type PushResponse struct {
 
 func (x *PushResponse) Reset() {
 	*x = PushResponse{}
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[5]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -316,7 +368,7 @@ func (x *PushResponse) String() string {
 func (*PushResponse) ProtoMessage() {}
 
 func (x *PushResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[5]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +381,7 @@ func (x *PushResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushResponse.ProtoReflect.Descriptor instead.
 func (*PushResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{5}
+	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{6}
 }
 
 type SubscribeRequest struct {
@@ -340,7 +392,7 @@ type SubscribeRequest struct {
 
 func (x *SubscribeRequest) Reset() {
 	*x = SubscribeRequest{}
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[6]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -352,7 +404,7 @@ func (x *SubscribeRequest) String() string {
 func (*SubscribeRequest) ProtoMessage() {}
 
 func (x *SubscribeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[6]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -365,7 +417,7 @@ func (x *SubscribeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeRequest.ProtoReflect.Descriptor instead.
 func (*SubscribeRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{6}
+	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{7}
 }
 
 type SubscribeResponse struct {
@@ -377,7 +429,7 @@ type SubscribeResponse struct {
 
 func (x *SubscribeResponse) Reset() {
 	*x = SubscribeResponse{}
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[7]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -389,7 +441,7 @@ func (x *SubscribeResponse) String() string {
 func (*SubscribeResponse) ProtoMessage() {}
 
 func (x *SubscribeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[7]
+	mi := &file_wargapos_transaction_v1_notification_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -402,7 +454,7 @@ func (x *SubscribeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeResponse.ProtoReflect.Descriptor instead.
 func (*SubscribeResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{7}
+	return file_wargapos_transaction_v1_notification_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *SubscribeResponse) GetEvent() *Event {
@@ -422,11 +474,13 @@ const file_wargapos_transaction_v1_notification_proto_rawDesc = "" +
 	"\x10UpdateOrderEvent\x12\x19\n" +
 	"\border_id\x18\x01 \x01(\x03R\aorderId\"-\n" +
 	"\x0eConnectedEvent\x12\x1b\n" +
-	"\tstream_id\x18\x01 \x01(\tR\bstreamId\"\xf0\x01\n" +
+	"\tstream_id\x18\x01 \x01(\tR\bstreamId\"\v\n" +
+	"\tPingEvent\"\xaa\x02\n" +
 	"\x05Event\x12E\n" +
 	"\tnew_order\x18\x01 \x01(\v2&.wargapos.transaction.v1.NewOrderEventH\x00R\bnewOrder\x12N\n" +
 	"\fupdate_order\x18\x02 \x01(\v2).wargapos.transaction.v1.UpdateOrderEventH\x00R\vupdateOrder\x12G\n" +
-	"\tconnected\x18\x03 \x01(\v2'.wargapos.transaction.v1.ConnectedEventH\x00R\tconnectedB\a\n" +
+	"\tconnected\x18\x03 \x01(\v2'.wargapos.transaction.v1.ConnectedEventH\x00R\tconnected\x128\n" +
+	"\x04ping\x18\x04 \x01(\v2\".wargapos.transaction.v1.PingEventH\x00R\x04pingB\a\n" +
 	"\x05event\"K\n" +
 	"\vPushRequest\x12<\n" +
 	"\x05event\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.EventB\x06\xbaH\x03\xc8\x01\x01R\x05event\"\x0e\n" +
@@ -447,28 +501,30 @@ func file_wargapos_transaction_v1_notification_proto_rawDescGZIP() []byte {
 	return file_wargapos_transaction_v1_notification_proto_rawDescData
 }
 
-var file_wargapos_transaction_v1_notification_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_wargapos_transaction_v1_notification_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_wargapos_transaction_v1_notification_proto_goTypes = []any{
 	(*NewOrderEvent)(nil),     // 0: wargapos.transaction.v1.NewOrderEvent
 	(*UpdateOrderEvent)(nil),  // 1: wargapos.transaction.v1.UpdateOrderEvent
 	(*ConnectedEvent)(nil),    // 2: wargapos.transaction.v1.ConnectedEvent
-	(*Event)(nil),             // 3: wargapos.transaction.v1.Event
-	(*PushRequest)(nil),       // 4: wargapos.transaction.v1.PushRequest
-	(*PushResponse)(nil),      // 5: wargapos.transaction.v1.PushResponse
-	(*SubscribeRequest)(nil),  // 6: wargapos.transaction.v1.SubscribeRequest
-	(*SubscribeResponse)(nil), // 7: wargapos.transaction.v1.SubscribeResponse
+	(*PingEvent)(nil),         // 3: wargapos.transaction.v1.PingEvent
+	(*Event)(nil),             // 4: wargapos.transaction.v1.Event
+	(*PushRequest)(nil),       // 5: wargapos.transaction.v1.PushRequest
+	(*PushResponse)(nil),      // 6: wargapos.transaction.v1.PushResponse
+	(*SubscribeRequest)(nil),  // 7: wargapos.transaction.v1.SubscribeRequest
+	(*SubscribeResponse)(nil), // 8: wargapos.transaction.v1.SubscribeResponse
 }
 var file_wargapos_transaction_v1_notification_proto_depIdxs = []int32{
 	0, // 0: wargapos.transaction.v1.Event.new_order:type_name -> wargapos.transaction.v1.NewOrderEvent
 	1, // 1: wargapos.transaction.v1.Event.update_order:type_name -> wargapos.transaction.v1.UpdateOrderEvent
 	2, // 2: wargapos.transaction.v1.Event.connected:type_name -> wargapos.transaction.v1.ConnectedEvent
-	3, // 3: wargapos.transaction.v1.PushRequest.event:type_name -> wargapos.transaction.v1.Event
-	3, // 4: wargapos.transaction.v1.SubscribeResponse.event:type_name -> wargapos.transaction.v1.Event
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	3, // 3: wargapos.transaction.v1.Event.ping:type_name -> wargapos.transaction.v1.PingEvent
+	4, // 4: wargapos.transaction.v1.PushRequest.event:type_name -> wargapos.transaction.v1.Event
+	4, // 5: wargapos.transaction.v1.SubscribeResponse.event:type_name -> wargapos.transaction.v1.Event
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_transaction_v1_notification_proto_init() }
@@ -476,10 +532,11 @@ func file_wargapos_transaction_v1_notification_proto_init() {
 	if File_wargapos_transaction_v1_notification_proto != nil {
 		return
 	}
-	file_wargapos_transaction_v1_notification_proto_msgTypes[3].OneofWrappers = []any{
+	file_wargapos_transaction_v1_notification_proto_msgTypes[4].OneofWrappers = []any{
 		(*Event_NewOrder)(nil),
 		(*Event_UpdateOrder)(nil),
 		(*Event_Connected)(nil),
+		(*Event_Ping)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -487,7 +544,7 @@ func file_wargapos_transaction_v1_notification_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_transaction_v1_notification_proto_rawDesc), len(file_wargapos_transaction_v1_notification_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

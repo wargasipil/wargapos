@@ -22,7 +22,7 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeApp(cfg *config.Config) (*App, error) {
+func InitializeApp(cfg *config.Config) (App, error) {
 	gormDB := db.NewDB(cfg)
 	midtransConfig := config.ProvideMidtransConfig(cfg)
 	authConfig := config.ProvideAuthConfig(cfg)
@@ -35,6 +35,8 @@ func InitializeApp(cfg *config.Config) (*App, error) {
 	stockService := stock_service.NewStockService(gormDB)
 	deviceService := device_service.NewDeviceService()
 	notificationService := notification_service.NewNotificationService(gormDB)
-	app := NewApp(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, deviceService, notificationService)
+	webRunnerFunc := NewWebRunnerFunc(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, deviceService, notificationService)
+	runner := transaction_service.NewTransactionRunner()
+	app := NewApp(webRunnerFunc, runner)
 	return app, nil
 }

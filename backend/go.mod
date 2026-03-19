@@ -14,6 +14,7 @@ require (
 	github.com/jackc/pgx/v5 v5.8.0
 	github.com/midtrans/midtrans-go v1.3.8
 	github.com/pressly/goose/v3 v3.27.0
+	github.com/urfave/cli/v3 v3.7.0
 	golang.org/x/crypto v0.49.0
 	golang.org/x/net v0.51.0
 	google.golang.org/protobuf v1.36.11

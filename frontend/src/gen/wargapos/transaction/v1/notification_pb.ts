@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/transaction/v1/notification.proto.
  */
 export const file_wargapos_transaction_v1_notification: GenFile = /*@__PURE__*/
-  fileDesc("Cip3YXJnYXBvcy90cmFuc2FjdGlvbi92MS9ub3RpZmljYXRpb24ucHJvdG8SF3dhcmdhcG9zLnRyYW5zYWN0aW9uLnYxIiEKDU5ld09yZGVyRXZlbnQSEAoIb3JkZXJfaWQYASABKAMiJAoQVXBkYXRlT3JkZXJFdmVudBIQCghvcmRlcl9pZBgBIAEoAyIjCg5Db25uZWN0ZWRFdmVudBIRCglzdHJlYW1faWQYASABKAkizgEKBUV2ZW50EjsKCW5ld19vcmRlchgBIAEoCzImLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk5ld09yZGVyRXZlbnRIABJBCgx1cGRhdGVfb3JkZXIYAiABKAsyKS53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5VcGRhdGVPcmRlckV2ZW50SAASPAoJY29ubmVjdGVkGAMgASgLMicud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuQ29ubmVjdGVkRXZlbnRIAEIHCgVldmVudCJECgtQdXNoUmVxdWVzdBI1CgVldmVudBgBIAEoCzIeLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkV2ZW50Qga6SAPIAQEiDgoMUHVzaFJlc3BvbnNlIhIKEFN1YnNjcmliZVJlcXVlc3QiQgoRU3Vic2NyaWJlUmVzcG9uc2USLQoFZXZlbnQYASABKAsyHi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5FdmVudEI8Wjp3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy90cmFuc2FjdGlvbi92MTt0cmFuc2FjdGlvbnYxYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("Cip3YXJnYXBvcy90cmFuc2FjdGlvbi92MS9ub3RpZmljYXRpb24ucHJvdG8SF3dhcmdhcG9zLnRyYW5zYWN0aW9uLnYxIiEKDU5ld09yZGVyRXZlbnQSEAoIb3JkZXJfaWQYASABKAMiJAoQVXBkYXRlT3JkZXJFdmVudBIQCghvcmRlcl9pZBgBIAEoAyIjCg5Db25uZWN0ZWRFdmVudBIRCglzdHJlYW1faWQYASABKAkiCwoJUGluZ0V2ZW50IoICCgVFdmVudBI7CgluZXdfb3JkZXIYASABKAsyJi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5OZXdPcmRlckV2ZW50SAASQQoMdXBkYXRlX29yZGVyGAIgASgLMikud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuVXBkYXRlT3JkZXJFdmVudEgAEjwKCWNvbm5lY3RlZBgDIAEoCzInLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkNvbm5lY3RlZEV2ZW50SAASMgoEcGluZxgEIAEoCzIiLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLlBpbmdFdmVudEgAQgcKBWV2ZW50IkQKC1B1c2hSZXF1ZXN0EjUKBWV2ZW50GAEgASgLMh4ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuRXZlbnRCBrpIA8gBASIOCgxQdXNoUmVzcG9uc2UiEgoQU3Vic2NyaWJlUmVxdWVzdCJCChFTdWJzY3JpYmVSZXNwb25zZRItCgVldmVudBgBIAEoCzIeLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkV2ZW50QjxaOndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3RyYW5zYWN0aW9uL3YxO3RyYW5zYWN0aW9udjFiBnByb3RvMw", [file_buf_validate_validate]);
 
 /**
  * @generated from message wargapos.transaction.v1.NewOrderEvent
@@ -65,6 +65,19 @@ export const ConnectedEventSchema: GenMessage<ConnectedEvent> = /*@__PURE__*/
   messageDesc(file_wargapos_transaction_v1_notification, 2);
 
 /**
+ * @generated from message wargapos.transaction.v1.PingEvent
+ */
+export type PingEvent = Message<"wargapos.transaction.v1.PingEvent"> & {
+};
+
+/**
+ * Describes the message wargapos.transaction.v1.PingEvent.
+ * Use `create(PingEventSchema)` to create a new message.
+ */
+export const PingEventSchema: GenMessage<PingEvent> = /*@__PURE__*/
+  messageDesc(file_wargapos_transaction_v1_notification, 3);
+
+/**
  * @generated from message wargapos.transaction.v1.Event
  */
 export type Event = Message<"wargapos.transaction.v1.Event"> & {
@@ -89,6 +102,12 @@ export type Event = Message<"wargapos.transaction.v1.Event"> & {
      */
     value: ConnectedEvent;
     case: "connected";
+  } | {
+    /**
+     * @generated from field: wargapos.transaction.v1.PingEvent ping = 4;
+     */
+    value: PingEvent;
+    case: "ping";
   } | { case: undefined; value?: undefined };
 };
 
@@ -97,7 +116,7 @@ export type Event = Message<"wargapos.transaction.v1.Event"> & {
  * Use `create(EventSchema)` to create a new message.
  */
 export const EventSchema: GenMessage<Event> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_notification, 3);
+  messageDesc(file_wargapos_transaction_v1_notification, 4);
 
 /**
  * @generated from message wargapos.transaction.v1.PushRequest
@@ -114,7 +133,7 @@ export type PushRequest = Message<"wargapos.transaction.v1.PushRequest"> & {
  * Use `create(PushRequestSchema)` to create a new message.
  */
 export const PushRequestSchema: GenMessage<PushRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_notification, 4);
+  messageDesc(file_wargapos_transaction_v1_notification, 5);
 
 /**
  * @generated from message wargapos.transaction.v1.PushResponse
@@ -127,7 +146,7 @@ export type PushResponse = Message<"wargapos.transaction.v1.PushResponse"> & {
  * Use `create(PushResponseSchema)` to create a new message.
  */
 export const PushResponseSchema: GenMessage<PushResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_notification, 5);
+  messageDesc(file_wargapos_transaction_v1_notification, 6);
 
 /**
  * @generated from message wargapos.transaction.v1.SubscribeRequest
@@ -140,7 +159,7 @@ export type SubscribeRequest = Message<"wargapos.transaction.v1.SubscribeRequest
  * Use `create(SubscribeRequestSchema)` to create a new message.
  */
 export const SubscribeRequestSchema: GenMessage<SubscribeRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_notification, 6);
+  messageDesc(file_wargapos_transaction_v1_notification, 7);
 
 /**
  * @generated from message wargapos.transaction.v1.SubscribeResponse
@@ -157,5 +176,5 @@ export type SubscribeResponse = Message<"wargapos.transaction.v1.SubscribeRespon
  * Use `create(SubscribeResponseSchema)` to create a new message.
  */
 export const SubscribeResponseSchema: GenMessage<SubscribeResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_notification, 7);
+  messageDesc(file_wargapos_transaction_v1_notification, 8);
 

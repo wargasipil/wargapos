@@ -45,16 +45,15 @@ export function KitchenPage() {
       setLiveStatus('idle')
       return
     }
-    let cancelled = false
+    const ac = new AbortController()
     let delay = 1000
 
     async function connect() {
-      while (!cancelled) {
+      while (!ac.signal.aborted) {
         try {
           setLiveStatus('connecting')
-          const stream = transactionClient.subscribe({})
+          const stream = transactionClient.subscribe({}, { signal: ac.signal })
           for await (const res of stream) {
-            if (cancelled) break
             setLiveStatus('connected')
             delay = 1000
             const ev = res.event?.event
@@ -66,7 +65,7 @@ export function KitchenPage() {
             }
           }
         } catch {
-          if (cancelled) break
+          if (ac.signal.aborted) break
           setLiveStatus('reconnecting')
           await new Promise((r) => setTimeout(r, delay))
           delay = Math.min(delay * 2, 30_000)
@@ -75,7 +74,7 @@ export function KitchenPage() {
     }
 
     connect()
-    return () => { cancelled = true }
+    return () => { ac.abort() }
   }, [live]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Sync fullscreen icon + auto-live

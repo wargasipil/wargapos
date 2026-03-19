@@ -38,7 +38,7 @@ func Connect(cfg *config.Config) {
 
 	var err error
 	DB, err = gorm.Open(postgres.Open(cfg.Database.URL), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logger.Error),
 	})
 	if err != nil {
 		log.Fatalf("database: failed to connect: %v", err)

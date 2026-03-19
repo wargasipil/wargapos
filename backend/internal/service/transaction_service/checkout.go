@@ -104,9 +104,14 @@ func (s *TransactionService) Checkout(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	pushEvent(&transactionv1.Event{Event: &transactionv1.Event_NewOrder{
-		NewOrder: &transactionv1.NewOrderEvent{OrderId: order.ID},
-	}})
+	_, err = s.Push(ctx, connect.NewRequest(&transactionv1.PushRequest{
+		Event: &transactionv1.Event{Event: &transactionv1.Event_NewOrder{
+			NewOrder: &transactionv1.NewOrderEvent{OrderId: order.ID},
+		}},
+	}))
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
 
 	return connect.NewResponse(&transactionv1.CheckoutResponse{Order: toProtoOrder(order)}), nil
 }

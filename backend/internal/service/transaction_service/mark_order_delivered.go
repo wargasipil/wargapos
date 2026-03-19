@@ -31,9 +31,14 @@ func (s *TransactionService) MarkOrderDelivered(
 	}
 	order.Status = statusDelivered
 
-	pushEvent(&transactionv1.Event{Event: &transactionv1.Event_UpdateOrder{
-		UpdateOrder: &transactionv1.UpdateOrderEvent{OrderId: order.ID},
-	}})
+	_, err = s.Push(ctx, connect.NewRequest(&transactionv1.PushRequest{
+		Event: &transactionv1.Event{Event: &transactionv1.Event_UpdateOrder{
+			UpdateOrder: &transactionv1.UpdateOrderEvent{OrderId: order.ID},
+		}},
+	}))
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
 
 	return connect.NewResponse(&transactionv1.MarkOrderDeliveredResponse{Order: toProtoOrder(order)}), nil
 }

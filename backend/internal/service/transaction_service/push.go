@@ -18,7 +18,7 @@ func (s *TransactionService) Push(
 	select {
 	case <-ctx.Done():
 		return nil, fmt.Errorf("channel is full")
-	case defautlPool.eventChan <- event:
+	case defaultPool.eventChan <- event:
 		return connect.NewResponse(&transactionv1.PushResponse{}), nil
 	}
 

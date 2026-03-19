@@ -2,7 +2,9 @@ package transaction_service
 
 import (
 	"context"
+	"log/slog"
 	"sync"
+	"time"
 	transactionv1 "wargapos/backend/gen/wargapos/transaction/v1"
 
 	"connectrpc.com/connect"
@@ -15,16 +17,10 @@ type pool struct {
 	conn      map[string]*connect.ServerStream[transactionv1.SubscribeResponse]
 }
 
-var defautlPool = &pool{
+var defaultPool = &pool{
+	Mutex:     sync.Mutex{},
 	eventChan: make(chan *transactionv1.Event, 1000),
 	conn:      make(map[string]*connect.ServerStream[transactionv1.SubscribeResponse]),
-}
-
-func pushEvent(event *transactionv1.Event) {
-	select {
-	case defautlPool.eventChan <- event:
-	default: // drop silently if channel full
-	}
 }
 
 // Subscribe implements [transactionv1connect.TransactionServiceHandler].
@@ -36,14 +32,17 @@ func (s *TransactionService) Subscribe(
 	var err error
 
 	idstr := uuid.New().String()
-	defautlPool.Lock()
-	defautlPool.conn[idstr] = stream
-	defautlPool.Unlock()
+	slog.Info("new subscription", "stream_id", idstr)
+
+	defaultPool.Lock()
+	defaultPool.conn[idstr] = stream
+	defaultPool.Unlock()
 
 	defer func() { // for removing the connection from pool when stream is closed
-		defautlPool.Lock()
-		delete(defautlPool.conn, idstr)
-		defautlPool.Unlock()
+		defaultPool.Lock()
+		defer defaultPool.Unlock()
+		delete(defaultPool.conn, idstr)
+		slog.Info("removing subscription", "stream_id", idstr)
 
 	}()
 
@@ -56,25 +55,28 @@ func (s *TransactionService) Subscribe(
 			},
 		},
 	})
+
 	if err != nil {
 		return err
 	}
 
+	tick := time.NewTicker(time.Second * 10)
+	defer tick.Stop()
+
 	for {
 		select {
 		case <-ctx.Done():
-
-			return err
-		case event := <-defautlPool.eventChan:
-			for _, conn := range defautlPool.conn {
-				err = conn.Send(&transactionv1.SubscribeResponse{
-					Event: event,
-				})
-				if err != nil {
-					return err
-				}
+			return nil
+		case <-tick.C:
+			err = stream.Send(&transactionv1.SubscribeResponse{
+				Event: &transactionv1.Event{
+					Event: &transactionv1.Event_Ping{},
+				},
+			})
+			if err != nil {
+				return err
 			}
-
 		}
 	}
+
 }

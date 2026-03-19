@@ -3,7 +3,6 @@
 package main
 
 import (
-	"github.com/google/wire"
 	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/db"
 	"wargapos/backend/internal/service/auth_service"
@@ -15,9 +14,11 @@ import (
 	"wargapos/backend/internal/service/table_service"
 	"wargapos/backend/internal/service/transaction_service"
 	"wargapos/backend/internal/service/user_service"
+
+	"github.com/google/wire"
 )
 
-func InitializeApp(cfg *config.Config) (*App, error) {
+func InitializeApp(cfg *config.Config) (App, error) {
 	wire.Build(
 		db.NewDB,
 		config.ProvideAuthConfig,
@@ -27,10 +28,13 @@ func InitializeApp(cfg *config.Config) (*App, error) {
 		product_service.NewProductService,
 		notification_service.NewNotificationService,
 		transaction_service.NewTransactionService,
+		transaction_service.NewTransactionRunner,
 		table_service.NewTableService,
 		settings_service.NewSettingsService,
 		stock_service.NewStockService,
 		device_service.NewDeviceService,
+
+		NewWebRunnerFunc,
 		NewApp,
 	)
 	return nil, nil

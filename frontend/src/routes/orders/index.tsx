@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import {
-  Box, Button, Drawer, Flex, Grid, Heading, HStack, Input, Popover, Select,
-  Spinner, Text, VStack, createListCollection, type ListCollection,
+  Badge, Box, Button, Drawer, Flex, Grid, Heading, HStack, IconButton, Input, InputGroup,
+  Popover, Select, Spinner, Tabs, Text, VStack, createListCollection, type ListCollection,
 } from '@chakra-ui/react'
-import { Receipt, SlidersHorizontal, Download } from 'lucide-react'
+import { Receipt, SlidersHorizontal, Download, X } from 'lucide-react'
 import { create } from '@bufbuild/protobuf'
 import { TimestampSchema } from '@bufbuild/protobuf/wkt'
 import { transactionClient, tableClient, productClient } from '../../client'
@@ -16,14 +16,6 @@ import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
 import { ordersToCSV, downloadCSV } from '../../lib/csv'
 import { ConfirmDialog } from '../../components/shared/ConfirmDialog'
-
-const statusCollection = createListCollection({ items: [
-  { label: 'All Status',  value: String(OrderStatus.UNSPECIFIED) },
-  { label: 'Pending',     value: String(OrderStatus.PENDING) },
-  { label: 'Prepared',    value: String(OrderStatus.PREPARED) },
-  { label: 'Delivered',   value: String(OrderStatus.DELIVERED) },
-  { label: 'Cancelled',   value: String(OrderStatus.CANCELLED) },
-]})
 
 const paymentCollection = createListCollection({ items: [
   { label: 'All Payments', value: String(PaymentStatus.UNSPECIFIED) },
@@ -100,13 +92,11 @@ export function OrdersPage() {
   const [pendingAction, setPendingAction] = useState<{ type: 'delivered' | 'paid' | 'cancel'; orderId: bigint } | null>(null)
 
   const activeFilterCount = [
-    statusFilter !== OrderStatus.UNSPECIFIED,
     paymentStatusFilter !== PaymentStatus.UNSPECIFIED,
     orderFromFilter !== OrderFrom.UNSPECIFIED,
     paymentMethodFilter !== PaymentMethod.UNSPECIFIED,
     tableFilter !== 0n,
     !!dateFrom || !!dateTo,
-    !!search,
   ].filter(Boolean).length
 
   function resetFilters() {
@@ -166,11 +156,65 @@ export function OrdersPage() {
     prevReadyCount.current = count
   }, [readyData?.total])
 
+  // Count queries for tab badges
+  const { data: countPending } = useQuery({
+    queryKey: ['orders-count', 'pending'],
+    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.PENDING, pageSize: 1, page: 1 }),
+  })
+  const { data: countPrepared } = useQuery({
+    queryKey: ['orders-count', 'prepared'],
+    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.PREPARED, pageSize: 1, page: 1 }),
+  })
+  const { data: countDelivered } = useQuery({
+    queryKey: ['orders-count', 'delivered'],
+    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.DELIVERED, pageSize: 1, page: 1 }),
+  })
+  const { data: countCancelled } = useQuery({
+    queryKey: ['orders-count', 'cancelled'],
+    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.CANCELLED, pageSize: 1, page: 1 }),
+  })
+
+  // Auto-refresh on live events
+  useEffect(() => {
+    const ac = new AbortController()
+    let delay = 1000
+
+    async function connect() {
+      while (!ac.signal.aborted) {
+        try {
+          const stream = transactionClient.subscribe({}, { signal: ac.signal })
+          for await (const res of stream) {
+            delay = 1000
+            const ev = res.event?.event
+            if (ev?.case === 'newOrder' || ev?.case === 'updateOrder') {
+              qc.invalidateQueries({ queryKey: ['orders'] })
+              qc.invalidateQueries({ queryKey: ['orders-count'] })
+              qc.invalidateQueries({ queryKey: ['orders-ready-count'] })
+            }
+          }
+        } catch {
+          if (ac.signal.aborted) break
+          await new Promise((r) => setTimeout(r, delay))
+          delay = Math.min(delay * 2, 30_000)
+        }
+      }
+    }
+
+    connect()
+    return () => { ac.abort() }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const invalidateAll = () => {
+    qc.invalidateQueries({ queryKey: ['orders'] })
+    qc.invalidateQueries({ queryKey: ['orders-count'] })
+    qc.invalidateQueries({ queryKey: ['orders-ready-count'] })
+  }
+
   const markDeliveredMutation = useMutation({
     mutationFn: (orderId: bigint) => transactionClient.markOrderDelivered({ orderId }),
     onSuccess: () => {
       setPendingAction(null)
-      qc.invalidateQueries({ queryKey: ['orders'] })
+      invalidateAll()
       toaster.create({ title: 'Order marked as delivered', type: 'success', duration: 3000 })
     },
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
@@ -180,7 +224,7 @@ export function OrdersPage() {
     mutationFn: (orderId: bigint) => transactionClient.markOrderPaid({ orderId }),
     onSuccess: () => {
       setPendingAction(null)
-      qc.invalidateQueries({ queryKey: ['orders'] })
+      invalidateAll()
       toaster.create({ title: 'Order marked as paid', type: 'success', duration: 3000 })
     },
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
@@ -190,7 +234,7 @@ export function OrdersPage() {
     mutationFn: (orderId: bigint) => transactionClient.cancelOrder({ orderId }),
     onSuccess: () => {
       setPendingAction(null)
-      qc.invalidateQueries({ queryKey: ['orders'] })
+      invalidateAll()
       toaster.create({ title: 'Order cancelled', type: 'success', duration: 3000 })
     },
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
@@ -257,11 +301,6 @@ export function OrdersPage() {
   const filterBody = (
     <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={3}>
       <Box>
-        <Text fontSize="xs" color="gray.500" mb={1}>Order Status</Text>
-        <FilterSelect collection={statusCollection} value={statusFilter}
-          onChange={(v) => { setStatusFilter(v); setPage(1) }} />
-      </Box>
-      <Box>
         <Text fontSize="xs" color="gray.500" mb={1}>Payment</Text>
         <FilterSelect collection={paymentCollection} value={paymentStatusFilter}
           onChange={(v) => { setPaymentStatusFilter(v); setPage(1) }} />
@@ -280,11 +319,6 @@ export function OrdersPage() {
         <Text fontSize="xs" color="gray.500" mb={1}>Table</Text>
         <TableSelect tables={tables} value={tableFilter}
           onChange={(id) => { setTableFilter(id); setPage(1) }} placeholder="All Tables" />
-      </Box>
-      <Box gridColumn={{ md: 'span 2' }}>
-        <Text fontSize="xs" color="gray.500" mb={1}>Search</Text>
-        <Input size="sm" placeholder="Customer name or order ID"
-          value={search} onChange={(e) => { setSearch(e.target.value); setPage(1) }} />
       </Box>
       <Box gridColumn={{ md: 'span 2' }}>
         <Text fontSize="xs" color="gray.500" mb={1}>Date Range</Text>
@@ -309,13 +343,31 @@ export function OrdersPage() {
   return (
     <Box p={{ base: 3, md: 6 }}>
       {/* Header + toolbar */}
-      <Flex align="center" justify="space-between" mb={4} gap={2}>
-        <HStack gap={2}>
+      <Flex align="center" justify="space-between" mb={4} gap={2} wrap="wrap">
+        <HStack gap={2} flexShrink={0}>
           <Receipt size={22} />
           <Heading size="md">Orders</Heading>
         </HStack>
 
-        <HStack gap={2}>
+        <HStack gap={2} flex={1} justify="flex-end">
+          {/* Inline search */}
+          <InputGroup
+            maxW="200px"
+            flex={1}
+            endElement={
+              search
+                ? <IconButton size="xs" variant="ghost" aria-label="Clear" onClick={() => { setSearch(''); setPage(1) }}><X size={12} /></IconButton>
+                : undefined
+            }
+          >
+            <Input
+              size="sm"
+              placeholder="Cari order…"
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1) }}
+            />
+          </InputGroup>
+
           {/* Mobile trigger — Drawer */}
           <Button
             display={{ base: 'flex', md: 'none' }}
@@ -364,6 +416,43 @@ export function OrdersPage() {
           </Button>
         </HStack>
       </Flex>
+
+      {/* Status tabs */}
+      <Tabs.Root
+        value={String(statusFilter)}
+        onValueChange={(e) => { setStatusFilter(Number(e.value) as OrderStatus); setPage(1) }}
+        variant="line"
+        size="sm"
+        mb={3}
+      >
+        <Tabs.List>
+          <Tabs.Trigger value={String(OrderStatus.UNSPECIFIED)}>All</Tabs.Trigger>
+          <Tabs.Trigger value={String(OrderStatus.PENDING)}>
+            Pending
+            {(countPending?.total ?? 0) > 0 && (
+              <Badge size="sm" colorPalette="orange" ml={1}>{countPending!.total}</Badge>
+            )}
+          </Tabs.Trigger>
+          <Tabs.Trigger value={String(OrderStatus.PREPARED)}>
+            Prepared
+            {(countPrepared?.total ?? 0) > 0 && (
+              <Badge size="sm" colorPalette="blue" ml={1}>{countPrepared!.total}</Badge>
+            )}
+          </Tabs.Trigger>
+          <Tabs.Trigger value={String(OrderStatus.DELIVERED)}>
+            Delivered
+            {(countDelivered?.total ?? 0) > 0 && (
+              <Badge size="sm" colorPalette="purple" ml={1}>{countDelivered!.total}</Badge>
+            )}
+          </Tabs.Trigger>
+          <Tabs.Trigger value={String(OrderStatus.CANCELLED)}>
+            Cancelled
+            {(countCancelled?.total ?? 0) > 0 && (
+              <Badge size="sm" colorPalette="gray" ml={1}>{countCancelled!.total}</Badge>
+            )}
+          </Tabs.Trigger>
+        </Tabs.List>
+      </Tabs.Root>
 
       {/* Mobile filter drawer */}
       <Drawer.Root placement="bottom" open={drawerOpen} onOpenChange={(d) => setDrawerOpen(d.open)}>

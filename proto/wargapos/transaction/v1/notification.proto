@@ -19,11 +19,14 @@ message ConnectedEvent {
   string stream_id = 1;
 }
 
+message PingEvent {}
+
 message Event {
   oneof event {
     NewOrderEvent new_order = 1;
     UpdateOrderEvent update_order = 2;
     ConnectedEvent connected = 3;
+    PingEvent ping = 4;
   }
 }
 
