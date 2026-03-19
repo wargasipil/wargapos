@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { Outlet, Link, useNavigate } from '@tanstack/react-router'
-import { Box, Button, Flex, IconButton, Text, VStack, HStack } from '@chakra-ui/react'
-import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat } from 'lucide-react'
+import { Box, Button, Flex, IconButton, Text, Tooltip, VStack, HStack } from '@chakra-ui/react'
+import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
 import { Toaster } from '../components/ui/toaster'
 
@@ -22,12 +23,25 @@ const baseSidebarItems = [
   { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
+function SidebarTooltip({ label, collapsed, children }: { label: string; collapsed: boolean; children: React.ReactNode }) {
+  if (!collapsed) return <>{children}</>
+  return (
+    <Tooltip.Root positioning={{ placement: 'right' }}>
+      <Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
+      <Tooltip.Positioner>
+        <Tooltip.Content>{label}</Tooltip.Content>
+      </Tooltip.Positioner>
+    </Tooltip.Root>
+  )
+}
+
 export function ProtectedLayout() {
   const { role, logout } = useAuthStore()
   const isAdmin = role === 'admin'
   const navItems = isAdmin ? [...baseNavItems, { label: 'Team', to: '/users', Icon: Users }] : baseNavItems
   const sidebarItems = isAdmin ? [...baseSidebarItems, { label: 'Team', to: '/users', Icon: Users }] : baseSidebarItems
   const navigate = useNavigate()
+  const [collapsed, setCollapsed] = useState(false)
 
   function handleLogout() {
     logout()
@@ -64,48 +78,88 @@ export function ProtectedLayout() {
           className="layout-nav"
           display={{ base: 'none', md: 'flex' }}
           direction="column"
-          w="220px"
+          w={collapsed ? '60px' : '220px'}
+          transition="width 0.2s ease"
           bg="white"
           borderRight="1px solid"
           borderColor="gray.200"
           py={6}
-          px={4}
+          px={collapsed ? 2 : 4}
           flexShrink={0}
           h="full"
+          overflow="hidden"
         >
-          <HStack gap={2} mb={8} px={2}>
+          {/* Logo */}
+          <HStack gap={2} mb={8} px={2} justify={collapsed ? 'center' : 'flex-start'}>
             <ShoppingCart size={20} color="#3b82f6" />
-            <Text fontWeight="bold" fontSize="lg">WargaPOS</Text>
+            {!collapsed && <Text fontWeight="bold" fontSize="lg" whiteSpace="nowrap">WargaPOS</Text>}
           </HStack>
+
+          {/* Nav items */}
           <VStack align="stretch" gap={1} flex={1}>
             {sidebarItems.map((item) => (
-              <Link key={item.to} to={item.to} activeOptions={item.exact ? { exact: true } : undefined}>
-                {({ isActive }) => (
-                  <HStack
-                    px={3}
-                    py={2}
-                    borderRadius="md"
-                    bg={isActive ? 'blue.50' : 'transparent'}
-                    color={isActive ? 'blue.600' : 'gray.600'}
-                    fontWeight={isActive ? 'medium' : 'normal'}
-                    _hover={{ bg: isActive ? 'blue.50' : 'gray.100' }}
-                    cursor="pointer"
-                    fontSize="sm"
-                    gap={2.5}
-                  >
-                    <item.Icon size={16} />
-                    <Text>{item.label}</Text>
-                  </HStack>
-                )}
-              </Link>
+              <SidebarTooltip key={item.to} label={item.label} collapsed={collapsed}>
+                <Link to={item.to} activeOptions={item.exact ? { exact: true } : undefined}>
+                  {({ isActive }) => (
+                    <HStack
+                      px={collapsed ? 0 : 3}
+                      py={2}
+                      borderRadius="md"
+                      justify={collapsed ? 'center' : 'flex-start'}
+                      bg={isActive ? 'blue.50' : 'transparent'}
+                      color={isActive ? 'blue.600' : 'gray.600'}
+                      fontWeight={isActive ? 'medium' : 'normal'}
+                      _hover={{ bg: isActive ? 'blue.50' : 'gray.100' }}
+                      cursor="pointer"
+                      fontSize="sm"
+                      gap={2.5}
+                    >
+                      <item.Icon size={16} />
+                      {!collapsed && <Text whiteSpace="nowrap">{item.label}</Text>}
+                    </HStack>
+                  )}
+                </Link>
+              </SidebarTooltip>
             ))}
           </VStack>
+
+          {/* Collapse toggle */}
+          <Box pb={2} display="flex" justifyContent={collapsed ? 'center' : 'flex-end'}>
+            <IconButton
+              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              variant="ghost"
+              size="xs"
+              colorPalette="gray"
+              onClick={() => setCollapsed((c) => !c)}
+            >
+              {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+            </IconButton>
+          </Box>
+
+          {/* Role + logout */}
           <Box pt={4} borderTop="1px solid" borderColor="gray.200">
-            <Text fontSize="xs" color="gray.500" mb={2} px={2}>Role: {role ?? '—'}</Text>
-            <Button size="sm" variant="ghost" colorPalette="red" width="full" onClick={handleLogout}>
-              <LogOut size={14} />
-              Logout
-            </Button>
+            {!collapsed && (
+              <Text fontSize="xs" color="gray.500" mb={2} px={2}>Role: {role ?? '—'}</Text>
+            )}
+            <SidebarTooltip label="Logout" collapsed={collapsed}>
+              {collapsed ? (
+                <IconButton
+                  aria-label="Logout"
+                  variant="ghost"
+                  colorPalette="red"
+                  size="sm"
+                  width="full"
+                  onClick={handleLogout}
+                >
+                  <LogOut size={14} />
+                </IconButton>
+              ) : (
+                <Button size="sm" variant="ghost" colorPalette="red" width="full" onClick={handleLogout}>
+                  <LogOut size={14} />
+                  Logout
+                </Button>
+              )}
+            </SidebarTooltip>
           </Box>
         </Flex>
 

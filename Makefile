@@ -2,7 +2,7 @@ PROTO_DIR    := proto
 BACKEND_DIR  := backend
 FRONTEND_DIR := frontend
 
-.PHONY: help proto-gen proto-lint proto-format backend-tidy backend-build backend-run frontend-install frontend-dev frontend-build build docker-push connector-release generate setup migrate-up migrate-down migrate-status migrate-reset download-tools
+.PHONY: help proto-gen proto-lint proto-format backend-tidy backend-build backend-run frontend-install frontend-dev frontend-build build docker-push connector-release installer generate setup migrate-up migrate-down migrate-status migrate-reset download-tools
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?##"}; {printf "  %-20s %s\n", $$1, $$2}'
@@ -47,6 +47,9 @@ build: frontend-build backend-build ## Build frontend into backend/cmd/server/st
 
 docker-push: ## Build Docker image and push to kampretcode/wargapos (TAG=x.y.z for versioned tag)
 	bash scripts/docker-push.sh $(if $(TAG),$(TAG),latest)
+
+installer: ## Build Windows all-in-one installer with PostgreSQL (VERSION=1.0.0)
+	pwsh -ExecutionPolicy Bypass -File scripts/build-installer.ps1 -Version $(if $(VERSION),$(VERSION),1.0.0)
 
 connector-release: ## Build Windows connector and release to GitHub (TAG=v1.0.0 required)
 	@[ -n "$(TAG)" ] || (echo "Usage: make connector-release TAG=v1.0.0" && exit 1)

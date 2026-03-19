@@ -18,6 +18,17 @@ import { SettingsPage } from './routes/settings'
 import { UsersPage } from './routes/users/index'
 import { KitchenPage } from './routes/kitchen'
 import { PlaygroundPage } from './routes/playground'
+import { SetupPage } from './routes/setup'
+
+async function checkSetupNeeded(): Promise<boolean> {
+  try {
+    const res = await fetch('/setup-needed')
+    const data: { needed: boolean } = await res.json()
+    return data.needed
+  } catch {
+    return false
+  }
+}
 
 // Root route with devtools
 const rootRoute = createRootRoute({
@@ -34,6 +45,18 @@ const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/login',
   component: LoginPage,
+  beforeLoad: async () => {
+    if (await checkSetupNeeded()) throw redirect({ to: '/setup' })
+  },
+})
+
+const setupRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/setup',
+  component: SetupPage,
+  beforeLoad: async () => {
+    if (!(await checkSetupNeeded())) throw redirect({ to: '/login' })
+  },
 })
 
 const menuRoute = createRoute({
@@ -137,6 +160,7 @@ const playgroundRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
+  setupRoute,
   menuRoute,
   playgroundRoute,
   layoutRoute.addChildren([

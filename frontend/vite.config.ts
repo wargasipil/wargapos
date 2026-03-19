@@ -33,6 +33,14 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
       },
+      '/setup-needed': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+      '/setup': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
     },
   },
 })

@@ -1,0 +1,21 @@
+server:
+  host: 0.0.0.0
+  port: 8080
+  upload_dir: "{{UPLOAD_DIR}}"
+
+database:
+  url: "postgres://wargapos:{{DB_PASSWORD}}@localhost:5432/wargapos?sslmode=disable"
+
+auth:
+  jwt_secret: "{{JWT_SECRET}}"
+  token_expire_hours: 24
+
+midtrans:
+  server_key: ""
+  client_key: ""
+  environment: production
+
+printer:
+  host: localhost
+  port: 8081
+  server_url: "http://localhost:8080"

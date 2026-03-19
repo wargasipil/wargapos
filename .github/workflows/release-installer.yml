@@ -1,0 +1,79 @@
+name: Release Installer
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-installer:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install NSIS
+        run: choco install nsis --no-progress -y
+
+      - name: Cache PostgreSQL + NSSM downloads
+        uses: actions/cache@v4
+        with:
+          path: build/cache
+          key: installer-deps-pg16.8-1-nssm2.24
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = '${{ github.ref_name }}'.TrimStart('v')
+          .\scripts\build-installer.ps1 -Version $version
+
+      - name: Upload installer to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/wargapos-setup-*.exe
+          generate_release_notes: false
+          body: |
+            ## WargaPOS ${{ github.ref_name }}
+
+            All-in-one Windows installer: Go server + PostgreSQL 16 + automatic service setup.
+
+            ### Included
+            | Component | Version |
+            |-----------|---------|
+            | WargaPOS Server | ${{ github.ref_name }} |
+            | PostgreSQL | 16.8 (portable, no separate install needed) |
+            | NSSM | 2.24 (service manager) |
+
+            ### Installation
+            1. Run `wargapos-setup-*.exe` as Administrator
+            2. Choose an install directory (default: `C:\WargaPOS`)
+            3. The installer will:
+               - Initialise the PostgreSQL database
+               - Generate a random DB password and JWT secret in `config.yaml`
+               - Register `WargaPOS-DB` and `WargaPOS-Server` as Windows services (auto-start)
+               - Add a firewall rule for port 8080
+            4. When finished, open `http://localhost:8080` and create your admin account
+
+            ### After Install
+            - Config: `C:\WargaPOS\server\config.yaml` (Midtrans keys go here)
+            - Logs: Windows Event Log → `WargaPOS-Server` / `WargaPOS-DB`
+            - Uninstall via Add/Remove Programs
+
+            ### Connector (optional)
+            To print receipts wirelessly, also download **wargapos-connector-*-windows-amd64.zip** from the assets below and run it on the PC attached to the printer.

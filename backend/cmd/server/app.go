@@ -75,6 +75,10 @@ func NewApp(
 
 	mux.HandleFunc("POST /midtrans/webhook", midtransWebhookHandler(db, midtransCfg))
 
+	// First-run setup endpoints — no auth required, become no-ops after first user created
+	mux.HandleFunc("GET /setup-needed", setupNeededHandler(db))
+	mux.HandleFunc("POST /setup", setupHandler(db, authCfg))
+
 	uploadDir := cfg.Server.UploadDir
 	mux.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir(uploadDir))))
 	mux.HandleFunc("POST /upload", uploadHandler(uploadDir, authCfg))
