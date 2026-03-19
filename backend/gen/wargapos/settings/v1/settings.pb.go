@@ -117,17 +117,171 @@ func (*GetSettingsRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{1}
 }
 
+type ManualPaymentSettings struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	BankName          string                 `protobuf:"bytes,1,opt,name=bank_name,json=bankName,proto3" json:"bank_name,omitempty"`
+	BankAccountNumber string                 `protobuf:"bytes,2,opt,name=bank_account_number,json=bankAccountNumber,proto3" json:"bank_account_number,omitempty"`
+	BankAccountName   string                 `protobuf:"bytes,3,opt,name=bank_account_name,json=bankAccountName,proto3" json:"bank_account_name,omitempty"`
+	QrisImageUrl      string                 `protobuf:"bytes,4,opt,name=qris_image_url,json=qrisImageUrl,proto3" json:"qris_image_url,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *ManualPaymentSettings) Reset() {
+	*x = ManualPaymentSettings{}
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ManualPaymentSettings) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ManualPaymentSettings) ProtoMessage() {}
+
+func (x *ManualPaymentSettings) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ManualPaymentSettings.ProtoReflect.Descriptor instead.
+func (*ManualPaymentSettings) Descriptor() ([]byte, []int) {
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ManualPaymentSettings) GetBankName() string {
+	if x != nil {
+		return x.BankName
+	}
+	return ""
+}
+
+func (x *ManualPaymentSettings) GetBankAccountNumber() string {
+	if x != nil {
+		return x.BankAccountNumber
+	}
+	return ""
+}
+
+func (x *ManualPaymentSettings) GetBankAccountName() string {
+	if x != nil {
+		return x.BankAccountName
+	}
+	return ""
+}
+
+func (x *ManualPaymentSettings) GetQrisImageUrl() string {
+	if x != nil {
+		return x.QrisImageUrl
+	}
+	return ""
+}
+
+type PrinterSettings struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Address       string                 `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
+	Address2      string                 `protobuf:"bytes,4,opt,name=address2,proto3" json:"address2,omitempty"`
+	Contact       string                 `protobuf:"bytes,5,opt,name=contact,proto3" json:"contact,omitempty"`
+	Footer        string                 `protobuf:"bytes,6,opt,name=footer,proto3" json:"footer,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PrinterSettings) Reset() {
+	*x = PrinterSettings{}
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PrinterSettings) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrinterSettings) ProtoMessage() {}
+
+func (x *PrinterSettings) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PrinterSettings.ProtoReflect.Descriptor instead.
+func (*PrinterSettings) Descriptor() ([]byte, []int) {
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *PrinterSettings) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *PrinterSettings) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *PrinterSettings) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *PrinterSettings) GetAddress2() string {
+	if x != nil {
+		return x.Address2
+	}
+	return ""
+}
+
+func (x *PrinterSettings) GetContact() string {
+	if x != nil {
+		return x.Contact
+	}
+	return ""
+}
+
+func (x *PrinterSettings) GetFooter() string {
+	if x != nil {
+		return x.Footer
+	}
+	return ""
+}
+
 type GetSettingsResponse struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Midtrans           *MidtransSettings      `protobuf:"bytes,1,opt,name=midtrans,proto3" json:"midtrans,omitempty"`
 	MidtransConfigured bool                   `protobuf:"varint,2,opt,name=midtrans_configured,json=midtransConfigured,proto3" json:"midtrans_configured,omitempty"` // true when server_key is non-empty
+	ManualPayment      *ManualPaymentSettings `protobuf:"bytes,3,opt,name=manual_payment,json=manualPayment,proto3" json:"manual_payment,omitempty"`
+	Printer            *PrinterSettings       `protobuf:"bytes,4,opt,name=printer,proto3" json:"printer,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
 
 func (x *GetSettingsResponse) Reset() {
 	*x = GetSettingsResponse{}
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[2]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -139,7 +293,7 @@ func (x *GetSettingsResponse) String() string {
 func (*GetSettingsResponse) ProtoMessage() {}
 
 func (x *GetSettingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[2]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -152,7 +306,7 @@ func (x *GetSettingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSettingsResponse.ProtoReflect.Descriptor instead.
 func (*GetSettingsResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{2}
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetSettingsResponse) GetMidtrans() *MidtransSettings {
@@ -169,16 +323,32 @@ func (x *GetSettingsResponse) GetMidtransConfigured() bool {
 	return false
 }
 
+func (x *GetSettingsResponse) GetManualPayment() *ManualPaymentSettings {
+	if x != nil {
+		return x.ManualPayment
+	}
+	return nil
+}
+
+func (x *GetSettingsResponse) GetPrinter() *PrinterSettings {
+	if x != nil {
+		return x.Printer
+	}
+	return nil
+}
+
 type UpdateSettingsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Midtrans      *MidtransSettings      `protobuf:"bytes,1,opt,name=midtrans,proto3" json:"midtrans,omitempty"`
+	ManualPayment *ManualPaymentSettings `protobuf:"bytes,2,opt,name=manual_payment,json=manualPayment,proto3" json:"manual_payment,omitempty"`
+	Printer       *PrinterSettings       `protobuf:"bytes,3,opt,name=printer,proto3" json:"printer,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateSettingsRequest) Reset() {
 	*x = UpdateSettingsRequest{}
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[3]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -190,7 +360,7 @@ func (x *UpdateSettingsRequest) String() string {
 func (*UpdateSettingsRequest) ProtoMessage() {}
 
 func (x *UpdateSettingsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[3]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -203,12 +373,26 @@ func (x *UpdateSettingsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSettingsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSettingsRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{3}
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *UpdateSettingsRequest) GetMidtrans() *MidtransSettings {
 	if x != nil {
 		return x.Midtrans
+	}
+	return nil
+}
+
+func (x *UpdateSettingsRequest) GetManualPayment() *ManualPaymentSettings {
+	if x != nil {
+		return x.ManualPayment
+	}
+	return nil
+}
+
+func (x *UpdateSettingsRequest) GetPrinter() *PrinterSettings {
+	if x != nil {
+		return x.Printer
 	}
 	return nil
 }
@@ -221,7 +405,7 @@ type UpdateSettingsResponse struct {
 
 func (x *UpdateSettingsResponse) Reset() {
 	*x = UpdateSettingsResponse{}
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[4]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -233,7 +417,7 @@ func (x *UpdateSettingsResponse) String() string {
 func (*UpdateSettingsResponse) ProtoMessage() {}
 
 func (x *UpdateSettingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[4]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -246,7 +430,7 @@ func (x *UpdateSettingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSettingsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateSettingsResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{4}
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{6}
 }
 
 var File_wargapos_settings_v1_settings_proto protoreflect.FileDescriptor
@@ -260,12 +444,28 @@ const file_wargapos_settings_v1_settings_proto_rawDesc = "" +
 	"\n" +
 	"client_key\x18\x02 \x01(\tR\tclientKey\x12 \n" +
 	"\venvironment\x18\x03 \x01(\tR\venvironment\"\x14\n" +
-	"\x12GetSettingsRequest\"\x8a\x01\n" +
+	"\x12GetSettingsRequest\"\xb6\x01\n" +
+	"\x15ManualPaymentSettings\x12\x1b\n" +
+	"\tbank_name\x18\x01 \x01(\tR\bbankName\x12.\n" +
+	"\x13bank_account_number\x18\x02 \x01(\tR\x11bankAccountNumber\x12*\n" +
+	"\x11bank_account_name\x18\x03 \x01(\tR\x0fbankAccountName\x12$\n" +
+	"\x0eqris_image_url\x18\x04 \x01(\tR\fqrisImageUrl\"\xb1\x01\n" +
+	"\x0fPrinterSettings\x12\x14\n" +
+	"\x05title\x18\x01 \x01(\tR\x05title\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x18\n" +
+	"\aaddress\x18\x03 \x01(\tR\aaddress\x12\x1a\n" +
+	"\baddress2\x18\x04 \x01(\tR\baddress2\x12\x18\n" +
+	"\acontact\x18\x05 \x01(\tR\acontact\x12\x16\n" +
+	"\x06footer\x18\x06 \x01(\tR\x06footer\"\x9f\x02\n" +
 	"\x13GetSettingsResponse\x12B\n" +
 	"\bmidtrans\x18\x01 \x01(\v2&.wargapos.settings.v1.MidtransSettingsR\bmidtrans\x12/\n" +
-	"\x13midtrans_configured\x18\x02 \x01(\bR\x12midtransConfigured\"[\n" +
+	"\x13midtrans_configured\x18\x02 \x01(\bR\x12midtransConfigured\x12R\n" +
+	"\x0emanual_payment\x18\x03 \x01(\v2+.wargapos.settings.v1.ManualPaymentSettingsR\rmanualPayment\x12?\n" +
+	"\aprinter\x18\x04 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\"\xf0\x01\n" +
 	"\x15UpdateSettingsRequest\x12B\n" +
-	"\bmidtrans\x18\x01 \x01(\v2&.wargapos.settings.v1.MidtransSettingsR\bmidtrans\"\x18\n" +
+	"\bmidtrans\x18\x01 \x01(\v2&.wargapos.settings.v1.MidtransSettingsR\bmidtrans\x12R\n" +
+	"\x0emanual_payment\x18\x02 \x01(\v2+.wargapos.settings.v1.ManualPaymentSettingsR\rmanualPayment\x12?\n" +
+	"\aprinter\x18\x03 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\"\x18\n" +
 	"\x16UpdateSettingsResponse2\xe2\x01\n" +
 	"\x0fSettingsService\x12b\n" +
 	"\vGetSettings\x12(.wargapos.settings.v1.GetSettingsRequest\x1a).wargapos.settings.v1.GetSettingsResponse\x12k\n" +
@@ -283,26 +483,32 @@ func file_wargapos_settings_v1_settings_proto_rawDescGZIP() []byte {
 	return file_wargapos_settings_v1_settings_proto_rawDescData
 }
 
-var file_wargapos_settings_v1_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_wargapos_settings_v1_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_wargapos_settings_v1_settings_proto_goTypes = []any{
 	(*MidtransSettings)(nil),       // 0: wargapos.settings.v1.MidtransSettings
 	(*GetSettingsRequest)(nil),     // 1: wargapos.settings.v1.GetSettingsRequest
-	(*GetSettingsResponse)(nil),    // 2: wargapos.settings.v1.GetSettingsResponse
-	(*UpdateSettingsRequest)(nil),  // 3: wargapos.settings.v1.UpdateSettingsRequest
-	(*UpdateSettingsResponse)(nil), // 4: wargapos.settings.v1.UpdateSettingsResponse
+	(*ManualPaymentSettings)(nil),  // 2: wargapos.settings.v1.ManualPaymentSettings
+	(*PrinterSettings)(nil),        // 3: wargapos.settings.v1.PrinterSettings
+	(*GetSettingsResponse)(nil),    // 4: wargapos.settings.v1.GetSettingsResponse
+	(*UpdateSettingsRequest)(nil),  // 5: wargapos.settings.v1.UpdateSettingsRequest
+	(*UpdateSettingsResponse)(nil), // 6: wargapos.settings.v1.UpdateSettingsResponse
 }
 var file_wargapos_settings_v1_settings_proto_depIdxs = []int32{
 	0, // 0: wargapos.settings.v1.GetSettingsResponse.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
-	0, // 1: wargapos.settings.v1.UpdateSettingsRequest.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
-	1, // 2: wargapos.settings.v1.SettingsService.GetSettings:input_type -> wargapos.settings.v1.GetSettingsRequest
-	3, // 3: wargapos.settings.v1.SettingsService.UpdateSettings:input_type -> wargapos.settings.v1.UpdateSettingsRequest
-	2, // 4: wargapos.settings.v1.SettingsService.GetSettings:output_type -> wargapos.settings.v1.GetSettingsResponse
-	4, // 5: wargapos.settings.v1.SettingsService.UpdateSettings:output_type -> wargapos.settings.v1.UpdateSettingsResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 1: wargapos.settings.v1.GetSettingsResponse.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
+	3, // 2: wargapos.settings.v1.GetSettingsResponse.printer:type_name -> wargapos.settings.v1.PrinterSettings
+	0, // 3: wargapos.settings.v1.UpdateSettingsRequest.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
+	2, // 4: wargapos.settings.v1.UpdateSettingsRequest.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
+	3, // 5: wargapos.settings.v1.UpdateSettingsRequest.printer:type_name -> wargapos.settings.v1.PrinterSettings
+	1, // 6: wargapos.settings.v1.SettingsService.GetSettings:input_type -> wargapos.settings.v1.GetSettingsRequest
+	5, // 7: wargapos.settings.v1.SettingsService.UpdateSettings:input_type -> wargapos.settings.v1.UpdateSettingsRequest
+	4, // 8: wargapos.settings.v1.SettingsService.GetSettings:output_type -> wargapos.settings.v1.GetSettingsResponse
+	6, // 9: wargapos.settings.v1.SettingsService.UpdateSettings:output_type -> wargapos.settings.v1.UpdateSettingsResponse
+	8, // [8:10] is the sub-list for method output_type
+	6, // [6:8] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_settings_v1_settings_proto_init() }
@@ -316,7 +522,7 @@ func file_wargapos_settings_v1_settings_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_settings_v1_settings_proto_rawDesc), len(file_wargapos_settings_v1_settings_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

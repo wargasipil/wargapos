@@ -31,5 +31,9 @@ func (s *TransactionService) MarkOrderPaid(
 	}
 	order.PaymentStatus = paymentPaid
 
+	pushEvent(&transactionv1.Event{Event: &transactionv1.Event_UpdateOrder{
+		UpdateOrder: &transactionv1.UpdateOrderEvent{OrderId: order.ID},
+	}})
+
 	return connect.NewResponse(&transactionv1.MarkOrderPaidResponse{Order: toProtoOrder(order)}), nil
 }

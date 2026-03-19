@@ -69,6 +69,11 @@ const (
 	// TransactionServiceGetDashboardStatsProcedure is the fully-qualified name of the
 	// TransactionService's GetDashboardStats RPC.
 	TransactionServiceGetDashboardStatsProcedure = "/wargapos.transaction.v1.TransactionService/GetDashboardStats"
+	// TransactionServiceSubscribeProcedure is the fully-qualified name of the TransactionService's
+	// Subscribe RPC.
+	TransactionServiceSubscribeProcedure = "/wargapos.transaction.v1.TransactionService/Subscribe"
+	// TransactionServicePushProcedure is the fully-qualified name of the TransactionService's Push RPC.
+	TransactionServicePushProcedure = "/wargapos.transaction.v1.TransactionService/Push"
 )
 
 // TransactionServiceClient is a client for the wargapos.transaction.v1.TransactionService service.
@@ -85,6 +90,9 @@ type TransactionServiceClient interface {
 	MarkOrderReady(context.Context, *connect.Request[v1.MarkOrderReadyRequest]) (*connect.Response[v1.MarkOrderReadyResponse], error)
 	MarkOrderDelivered(context.Context, *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error)
 	GetDashboardStats(context.Context, *connect.Request[v1.GetDashboardStatsRequest]) (*connect.Response[v1.GetDashboardStatsResponse], error)
+	// notification for kitchen display, order updates, etc. Stream will be closed by server after some idle timeout (e.g. 1 hour) or when server restarts, client should reconnect with exponential backoff
+	Subscribe(context.Context, *connect.Request[v1.SubscribeRequest]) (*connect.ServerStreamForClient[v1.SubscribeResponse], error)
+	Push(context.Context, *connect.Request[v1.PushRequest]) (*connect.Response[v1.PushResponse], error)
 }
 
 // NewTransactionServiceClient constructs a client for the
@@ -170,6 +178,18 @@ func NewTransactionServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(transactionServiceMethods.ByName("GetDashboardStats")),
 			connect.WithClientOptions(opts...),
 		),
+		subscribe: connect.NewClient[v1.SubscribeRequest, v1.SubscribeResponse](
+			httpClient,
+			baseURL+TransactionServiceSubscribeProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("Subscribe")),
+			connect.WithClientOptions(opts...),
+		),
+		push: connect.NewClient[v1.PushRequest, v1.PushResponse](
+			httpClient,
+			baseURL+TransactionServicePushProcedure,
+			connect.WithSchema(transactionServiceMethods.ByName("Push")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -187,6 +207,8 @@ type transactionServiceClient struct {
 	markOrderReady     *connect.Client[v1.MarkOrderReadyRequest, v1.MarkOrderReadyResponse]
 	markOrderDelivered *connect.Client[v1.MarkOrderDeliveredRequest, v1.MarkOrderDeliveredResponse]
 	getDashboardStats  *connect.Client[v1.GetDashboardStatsRequest, v1.GetDashboardStatsResponse]
+	subscribe          *connect.Client[v1.SubscribeRequest, v1.SubscribeResponse]
+	push               *connect.Client[v1.PushRequest, v1.PushResponse]
 }
 
 // AddToCart calls wargapos.transaction.v1.TransactionService.AddToCart.
@@ -249,6 +271,16 @@ func (c *transactionServiceClient) GetDashboardStats(ctx context.Context, req *c
 	return c.getDashboardStats.CallUnary(ctx, req)
 }
 
+// Subscribe calls wargapos.transaction.v1.TransactionService.Subscribe.
+func (c *transactionServiceClient) Subscribe(ctx context.Context, req *connect.Request[v1.SubscribeRequest]) (*connect.ServerStreamForClient[v1.SubscribeResponse], error) {
+	return c.subscribe.CallServerStream(ctx, req)
+}
+
+// Push calls wargapos.transaction.v1.TransactionService.Push.
+func (c *transactionServiceClient) Push(ctx context.Context, req *connect.Request[v1.PushRequest]) (*connect.Response[v1.PushResponse], error) {
+	return c.push.CallUnary(ctx, req)
+}
+
 // TransactionServiceHandler is an implementation of the wargapos.transaction.v1.TransactionService
 // service.
 type TransactionServiceHandler interface {
@@ -264,6 +296,9 @@ type TransactionServiceHandler interface {
 	MarkOrderReady(context.Context, *connect.Request[v1.MarkOrderReadyRequest]) (*connect.Response[v1.MarkOrderReadyResponse], error)
 	MarkOrderDelivered(context.Context, *connect.Request[v1.MarkOrderDeliveredRequest]) (*connect.Response[v1.MarkOrderDeliveredResponse], error)
 	GetDashboardStats(context.Context, *connect.Request[v1.GetDashboardStatsRequest]) (*connect.Response[v1.GetDashboardStatsResponse], error)
+	// notification for kitchen display, order updates, etc. Stream will be closed by server after some idle timeout (e.g. 1 hour) or when server restarts, client should reconnect with exponential backoff
+	Subscribe(context.Context, *connect.Request[v1.SubscribeRequest], *connect.ServerStream[v1.SubscribeResponse]) error
+	Push(context.Context, *connect.Request[v1.PushRequest]) (*connect.Response[v1.PushResponse], error)
 }
 
 // NewTransactionServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -345,6 +380,18 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 		connect.WithSchema(transactionServiceMethods.ByName("GetDashboardStats")),
 		connect.WithHandlerOptions(opts...),
 	)
+	transactionServiceSubscribeHandler := connect.NewServerStreamHandler(
+		TransactionServiceSubscribeProcedure,
+		svc.Subscribe,
+		connect.WithSchema(transactionServiceMethods.ByName("Subscribe")),
+		connect.WithHandlerOptions(opts...),
+	)
+	transactionServicePushHandler := connect.NewUnaryHandler(
+		TransactionServicePushProcedure,
+		svc.Push,
+		connect.WithSchema(transactionServiceMethods.ByName("Push")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.transaction.v1.TransactionService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TransactionServiceAddToCartProcedure:
@@ -371,6 +418,10 @@ func NewTransactionServiceHandler(svc TransactionServiceHandler, opts ...connect
 			transactionServiceMarkOrderDeliveredHandler.ServeHTTP(w, r)
 		case TransactionServiceGetDashboardStatsProcedure:
 			transactionServiceGetDashboardStatsHandler.ServeHTTP(w, r)
+		case TransactionServiceSubscribeProcedure:
+			transactionServiceSubscribeHandler.ServeHTTP(w, r)
+		case TransactionServicePushProcedure:
+			transactionServicePushHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -426,4 +477,12 @@ func (UnimplementedTransactionServiceHandler) MarkOrderDelivered(context.Context
 
 func (UnimplementedTransactionServiceHandler) GetDashboardStats(context.Context, *connect.Request[v1.GetDashboardStatsRequest]) (*connect.Response[v1.GetDashboardStatsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.GetDashboardStats is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) Subscribe(context.Context, *connect.Request[v1.SubscribeRequest], *connect.ServerStream[v1.SubscribeResponse]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.Subscribe is not implemented"))
+}
+
+func (UnimplementedTransactionServiceHandler) Push(context.Context, *connect.Request[v1.PushRequest]) (*connect.Response[v1.PushResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.transaction.v1.TransactionService.Push is not implemented"))
 }

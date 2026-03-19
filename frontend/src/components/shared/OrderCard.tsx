@@ -1,12 +1,13 @@
 import { Badge, Box, Button, Flex, HStack, Separator, Text, VStack } from '@chakra-ui/react'
 import { CheckCircle, ChevronRight, Truck, XCircle } from 'lucide-react'
-import { OrderFrom, OrderStatus, PaymentMethod, PaymentStatus } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderFrom, OrderStatus, PaymentStatus } from '../../gen/wargapos/transaction/v1/transaction_pb'
 import type { Order } from '../../gen/wargapos/transaction/v1/transaction_pb'
-import { formatPrice, formatTime } from '../../lib/format'
+import { formatPrice, formatTime, paymentMethodLabel, paymentMethodColor } from '../../lib/format'
 
 interface OrderCardProps {
   order: Order
   tableName: string
+  skuById?: (id: bigint) => string
   onNavigate: () => void
   onMarkDelivered: () => void
   onMarkPaid: () => void
@@ -49,6 +50,7 @@ const isActive = (status: OrderStatus) =>
 export function OrderCard({
   order,
   tableName,
+  skuById,
   onNavigate,
   onMarkDelivered,
   onMarkPaid,
@@ -82,12 +84,9 @@ export function OrderCard({
             <Text fontWeight="bold" fontSize="sm">#{String(order.id)}</Text>
             {statusBadge(order.status)}
             {paymentBadge(order.paymentStatus)}
-            {order.paymentMethod === PaymentMethod.CASH && (
-              <Badge colorPalette="gray" size="sm">Cash</Badge>
-            )}
-            {order.paymentMethod === PaymentMethod.ONLINE && (
-              <Badge colorPalette="purple" size="sm">Online</Badge>
-            )}
+            <Badge colorPalette={paymentMethodColor(order.paymentMethod)} size="sm">
+              {paymentMethodLabel(order.paymentMethod)}
+            </Badge>
             {order.orderFrom === OrderFrom.GUEST && (
               <Badge colorPalette="teal" size="sm">Guest</Badge>
             )}
@@ -140,6 +139,9 @@ export function OrderCard({
                     {' '}
                     <Text as="span" color="gray.400" fontSize="xs">{formatPrice(item.unitPriceCents)}</Text>
                   </Text>
+                  {skuById?.(item.productId) && (
+                    <Text fontSize="xs" color="gray.400" ml={0}>{skuById(item.productId)}</Text>
+                  )}
                   {item.notes && (
                     <Text fontSize="xs" color="gray.400" fontStyle="italic" ml={2}>
                       ↳ {item.notes}

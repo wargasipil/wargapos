@@ -50,6 +50,9 @@ func (s *TransactionService) ListOrders(
 	if req.Msg.Search != "" {
 		db = db.Where("customer_name ILIKE ? OR CAST(id AS TEXT) = ?", "%"+req.Msg.Search+"%", req.Msg.Search)
 	}
+	if req.Msg.PaymentMethodFilter != transactionv1.PaymentMethod_PAYMENT_METHOD_UNSPECIFIED {
+		db = db.Where("payment_method = ?", int32(req.Msg.PaymentMethodFilter))
+	}
 
 	var total int64
 	if err := db.Count(&total).Error; err != nil {

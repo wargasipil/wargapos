@@ -1,15 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import {
   Badge, Box, Button, Flex, Grid, Heading, HStack, Spinner, Text,
 } from '@chakra-ui/react'
-import { ChefHat, Maximize2, Minimize2, RefreshCw } from 'lucide-react'
-import { transactionClient, tableClient } from '../client'
+import { ChefHat, Maximize2, Minimize2, Radio, RefreshCw } from 'lucide-react'
+import { transactionClient, tableClient, productClient } from '../client'
 import { OrderStatus } from '../gen/wargapos/transaction/v1/transaction_pb'
 import { toaster } from '../components/ui/toaster'
 import { stripError } from '../lib/errors'
 import { KitchenCard } from '../components/shared/KitchenCard'
+import { ConfirmDialog } from '../components/shared/ConfirmDialog'
 
 function beep() {
   try {
@@ -22,31 +23,68 @@ function beep() {
   } catch { /* ignore if audio not available */ }
 }
 
+type LiveStatus = 'idle' | 'connecting' | 'connected' | 'reconnecting'
+
 export function KitchenPage() {
   const qc = useQueryClient()
   const navigate = useNavigate()
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [readyTarget, setReadyTarget] = useState<bigint | null>(null)
+  const [live, setLive] = useState(() => localStorage.getItem('kitchen-live') === '1')
+  const [liveStatus, setLiveStatus] = useState<LiveStatus>('idle')
 
   const { data, isLoading, dataUpdatedAt } = useQuery({
     queryKey: ['kitchen-orders'],
     queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.PENDING, pageSize: 50, page: 1 }),
-    refetchInterval: 5_000,
     staleTime: 0,
   })
 
-  const prevCount = useRef<number | null>(null)
+  // Live subscription
   useEffect(() => {
-    const count = data?.orders.length ?? 0
-    if (prevCount.current !== null && count > prevCount.current) {
-      beep()
+    if (!live) {
+      setLiveStatus('idle')
+      return
     }
-    prevCount.current = count
-  }, [data?.orders.length])
+    let cancelled = false
+    let delay = 1000
 
-  // Sync fullscreen icon with Esc key / external fullscreen changes
+    async function connect() {
+      while (!cancelled) {
+        try {
+          setLiveStatus('connecting')
+          const stream = transactionClient.subscribe({})
+          for await (const res of stream) {
+            if (cancelled) break
+            setLiveStatus('connected')
+            delay = 1000
+            const ev = res.event?.event
+            if (ev?.case === 'newOrder') {
+              beep()
+              qc.invalidateQueries({ queryKey: ['kitchen-orders'] })
+            } else if (ev?.case === 'updateOrder') {
+              qc.invalidateQueries({ queryKey: ['kitchen-orders'] })
+            }
+          }
+        } catch {
+          if (cancelled) break
+          setLiveStatus('reconnecting')
+          await new Promise((r) => setTimeout(r, delay))
+          delay = Math.min(delay * 2, 30_000)
+        }
+      }
+    }
+
+    connect()
+    return () => { cancelled = true }
+  }, [live]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Sync fullscreen icon + auto-live
   useEffect(() => {
     function onFsChange() {
-      setIsFullscreen(!!document.fullscreenElement)
+      const fs = !!document.fullscreenElement
+      setIsFullscreen(fs)
+      setLive(fs)
+      localStorage.setItem('kitchen-live', fs ? '1' : '0')
     }
     document.addEventListener('fullscreenchange', onFsChange)
     return () => document.removeEventListener('fullscreenchange', onFsChange)
@@ -57,9 +95,17 @@ export function KitchenPage() {
     queryFn: () => tableClient.listTables({}),
   })
 
+  const { data: productsData } = useQuery({
+    queryKey: ['products-all'],
+    queryFn: () => productClient.listProducts({ pageSize: 1000 }),
+    staleTime: 5 * 60_000,
+  })
+  const skuByProductId = new Map(productsData?.products.map((p) => [p.id, p.sku]) ?? [])
+
   const markReadyMutation = useMutation({
     mutationFn: (orderId: bigint) => transactionClient.markOrderReady({ orderId }),
     onSuccess: () => {
+      setReadyTarget(null)
       qc.invalidateQueries({ queryKey: ['kitchen-orders'] })
       qc.invalidateQueries({ queryKey: ['orders-ready-count'] })
       qc.invalidateQueries({ queryKey: ['orders'] })
@@ -76,6 +122,12 @@ export function KitchenPage() {
     return tables.find((t) => t.id === id)?.name ?? `#${String(id)}`
   }
 
+  function toggleLive() {
+    const next = !live
+    setLive(next)
+    localStorage.setItem('kitchen-live', next ? '1' : '0')
+  }
+
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen()
@@ -88,6 +140,11 @@ export function KitchenPage() {
     ? new Date(dataUpdatedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
     : '—'
 
+  const liveLabel = !live ? 'Go Live'
+    : liveStatus === 'connecting' ? 'Connecting...'
+    : liveStatus === 'reconnecting' ? 'Reconnecting...'
+    : 'Live'
+
   return (
     <Box p={{ base: 3, md: 6 }} minH="100%">
       {/* Header */}
@@ -97,9 +154,22 @@ export function KitchenPage() {
           <Heading size="lg">Kitchen Display</Heading>
           <Badge colorPalette="orange" fontSize="sm">{orders.length} pending</Badge>
         </HStack>
-        <HStack gap={2} color="gray.400" fontSize="xs">
-          <RefreshCw size={12} />
-          <Text>Updated {updatedTime} · auto-refreshes every 5s</Text>
+        <HStack gap={2}>
+          <Button
+            size="xs"
+            colorPalette={live ? 'green' : 'gray'}
+            variant={live ? 'solid' : 'outline'}
+            onClick={toggleLive}
+          >
+            <Radio size={12} />
+            {liveLabel}
+          </Button>
+          {!live && (
+            <Button size="xs" variant="ghost" onClick={() => qc.invalidateQueries({ queryKey: ['kitchen-orders'] })}>
+              <RefreshCw size={12} />
+            </Button>
+          )}
+          <Text color="gray.400" fontSize="xs">Updated {updatedTime}</Text>
           <Button size="xs" variant="ghost" onClick={toggleFullscreen} aria-label="Toggle fullscreen">
             {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
           </Button>
@@ -123,13 +193,23 @@ export function KitchenPage() {
               key={String(order.id)}
               order={order}
               tableName={tableNameById(order.tableId)}
+              skuById={(id) => skuByProductId.get(id) ?? ''}
               markReadyLoading={markReadyMutation.isPending}
-              onMarkReady={() => markReadyMutation.mutate(order.id)}
+              onMarkReady={() => setReadyTarget(order.id)}
               onNavigate={() => navigate({ to: '/orders/$id', params: { id: String(order.id) } })}
             />
           ))}
         </Grid>
       )}
+      <ConfirmDialog
+        open={readyTarget !== null}
+        title="Tandai Siap?"
+        description="Konfirmasi order ini sudah siap disajikan."
+        confirmLabel="Tandai Siap"
+        loading={markReadyMutation.isPending}
+        onConfirm={() => readyTarget !== null && markReadyMutation.mutate(readyTarget)}
+        onCancel={() => setReadyTarget(null)}
+      />
     </Box>
   )
 }

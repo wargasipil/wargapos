@@ -1,7 +1,7 @@
 import type { Order } from '../gen/wargapos/transaction/v1/transaction_pb'
 import { deviceClient } from '../client'
-import { PaymentMethod, PaymentStatus } from '../gen/wargapos/transaction/v1/transaction_pb'
-import { formatPrice, formatTime } from './format'
+import { PaymentStatus } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { formatPrice, formatDateTime, paymentMethodLabel } from './format'
 
 // 58mm paper = 32 chars per line
 const COLS = 32
@@ -45,16 +45,34 @@ function rowLR(left: string, right: string): string {
   return left + ' '.repeat(Math.max(1, gap)) + right
 }
 
-function buildReceipt(order: Order, tableName: string): Uint8Array {
-  const method = order.paymentMethod === PaymentMethod.ONLINE ? 'Online' : 'Cash'
+export interface PrinterOpts {
+  title?:       string
+  description?: string
+  address?:     string
+  address2?:    string
+  contact?:     string
+  footer?:      string
+}
+
+function buildReceipt(order: Order, tableName: string, opts?: PrinterOpts): Uint8Array {
+  const method = paymentMethodLabel(order.paymentMethod)
   const paid = order.paymentStatus === PaymentStatus.PAID ? 'Paid' : 'Unpaid'
   const payment = `${method} - ${paid}`
+
+  const title       = opts?.title       || 'WargaPOS'
+  const description = opts?.description || 'Café Point of Sale'
+  const footer      = opts?.footer      || 'Terima kasih!'
+
   const parts: Uint8Array[] = [
     CMD_INIT,
-    CMD_CENTER, CMD_BOLD_ON,  lf('WargaPOS'), CMD_BOLD_OFF,
-    CMD_LEFT,   sep(),
-    lf(`Order  : #${String(order.id)}`),
-    lf(`Date   : ${formatTime(order.createdAt)}`),
+    CMD_CENTER, CMD_BOLD_ON, lf(center(title.slice(0, COLS))), CMD_BOLD_OFF,
+    lf(center(description.slice(0, COLS))),
+    ...(opts?.address  ? [lf(center(opts.address.slice(0, COLS)))]  : []),
+    ...(opts?.address2 ? [lf(center(opts.address2.slice(0, COLS)))] : []),
+    ...(opts?.contact  ? [lf(center(opts.contact.slice(0, COLS)))]  : []),
+    CMD_LEFT, sep(),
+    CMD_BOLD_ON, lf(`Order  : #${String(order.id)}`), CMD_BOLD_OFF,
+    lf(`Date   : ${formatDateTime(order.createdAt)}`),
     lf(`Table  : ${tableName}`),
     lf(`Payment: ${payment}`),
     ...(order.customerName ? [lf(`Name   : ${order.customerName.slice(0, COLS - 9)}`)] : []),
@@ -77,7 +95,7 @@ function buildReceipt(order: Order, tableName: string): Uint8Array {
     sep(),
     CMD_BOLD_ON,  lf(rowLR('TOTAL', total)), CMD_BOLD_OFF,
     sep(),
-    CMD_CENTER,   lf(center('Terima kasih!')),
+    CMD_CENTER,   lf(center(footer.slice(0, COLS))),
     CMD_LF, CMD_LF, CMD_LF,
     CMD_CUT,
   )
@@ -124,8 +142,9 @@ export async function printReceiptRemote(
   order: Order,
   tableName: string,
   printer: { deviceId: string; name: string },
+  opts?: PrinterOpts,
 ): Promise<void> {
-  const data = buildReceipt(order, tableName)
+  const data = buildReceipt(order, tableName, opts)
   await deviceClient.print({
     printer: { deviceId: printer.deviceId, name: printer.name },
     data: { case: 'raw', value: data },

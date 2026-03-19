@@ -1,6 +1,7 @@
+import type { Product } from '../gen/wargapos/product/v1/product_pb'
 import type { Order } from '../gen/wargapos/transaction/v1/transaction_pb'
-import { OrderStatus, PaymentStatus, PaymentMethod, OrderFrom } from '../gen/wargapos/transaction/v1/transaction_pb'
-import { formatDateTime } from './format'
+import { OrderStatus, PaymentStatus, OrderFrom } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { formatDateTime, paymentMethodLabel } from './format'
 
 function escapeCell(v: string): string {
   if (v.includes(',') || v.includes('"') || v.includes('\n')) {
@@ -23,6 +24,31 @@ function statusLabel(s: OrderStatus): string {
   }
 }
 
+export function productsToCSV(
+  products: Product[],
+  categoryNameById: (id: bigint) => string,
+): string {
+  const header = csvRow(['ID', 'Name', 'SKU', 'Category', 'Price (IDR)', 'COGS (IDR)', 'Margin %', 'Stock', 'Status', 'Description'])
+  const lines = products.map((p) => {
+    const price = Number(p.priceCents) / 100
+    const cogs  = Number(p.cogsCents)  / 100
+    const margin = price > 0 ? Math.round((price - cogs) * 100 / price) : 0
+    return csvRow([
+      String(p.id),
+      p.name,
+      p.sku,
+      categoryNameById(p.categoryId),
+      String(price),
+      String(cogs),
+      String(margin),
+      String(p.stockQty),
+      p.isActive ? 'Active' : 'Inactive',
+      p.description,
+    ])
+  })
+  return [header, ...lines].join('\n')
+}
+
 export function ordersToCSV(orders: Order[], tableNameById: (id: bigint) => string): string {
   const header = csvRow([
     'ID', 'Date', 'Table', 'Customer', 'Phone',
@@ -39,7 +65,7 @@ export function ordersToCSV(orders: Order[], tableNameById: (id: bigint) => stri
     o.paymentStatus === PaymentStatus.PAID ? 'Paid'
       : o.paymentStatus === PaymentStatus.REFUNDED ? 'Refunded'
       : 'Unpaid',
-    o.paymentMethod === PaymentMethod.ONLINE ? 'Online' : 'Cash',
+    paymentMethodLabel(o.paymentMethod),
     String(Number(o.totalCents) / 100),
   ]))
   return [header, ...lines].join('\n')

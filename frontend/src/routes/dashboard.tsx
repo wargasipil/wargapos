@@ -6,9 +6,9 @@ import {
 } from '@chakra-ui/react'
 import { ShoppingCart, TrendingUp, Package, Clock } from 'lucide-react'
 import { transactionClient } from '../client'
-import { DashboardPeriod, OrderStatus, PaymentStatus } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { DashboardPeriod, OrderStatus, PaymentMethod, PaymentStatus } from '../gen/wargapos/transaction/v1/transaction_pb'
 import { useAuthStore } from '../store/auth'
-import { formatPrice, formatTime } from '../lib/format'
+import { formatPrice, formatTime, paymentMethodLabel } from '../lib/format'
 
 const PERIODS = [
   { label: 'Today',      value: DashboardPeriod.TODAY },
@@ -113,6 +113,23 @@ export function DashboardPage() {
               </Text>
             </Box>
           </Grid>
+
+          {/* Payment breakdown */}
+          {stats?.paymentBreakdown && (
+            <HStack gap={3} flexWrap="wrap">
+              {[
+                { method: PaymentMethod.CASH,            cents: stats.paymentBreakdown.cashCents },
+                { method: PaymentMethod.MIDTRANS,        cents: stats.paymentBreakdown.midtransCents },
+                { method: PaymentMethod.MANUAL_QRIS,     cents: stats.paymentBreakdown.manualQrisCents },
+                { method: PaymentMethod.MANUAL_TRANSFER, cents: stats.paymentBreakdown.manualTransferCents },
+              ].map(({ method, cents }) => (
+                <Box key={method} bg="white" borderRadius="md" px={3} py={2} boxShadow="sm" minW="120px">
+                  <Text fontSize="xs" color="gray.500">{paymentMethodLabel(method)}</Text>
+                  <Text fontWeight="bold" fontSize="sm">{formatPrice(BigInt(cents))}</Text>
+                </Box>
+              ))}
+            </HStack>
+          )}
 
           {/* Bottom row: top products + recent orders */}
           <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={4}>

@@ -4,172 +4,227 @@ package wargapos.transaction.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
+import "wargapos/transaction/v1/notification.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/transaction/v1;transactionv1";
 
 enum PaymentMethod {
   PAYMENT_METHOD_UNSPECIFIED = 0;
-  PAYMENT_METHOD_CASH        = 1;
-  PAYMENT_METHOD_ONLINE      = 2;
+  PAYMENT_METHOD_CASH = 1;
+  // Paid via Midtrans Snap (card / QRIS / bank transfer via gateway)
+  PAYMENT_METHOD_MIDTRANS = 2;
+  // Customer scans staff QR code — staff confirms receipt manually
+  PAYMENT_METHOD_MANUAL_QRIS = 3;
+  // Customer transfers to bank account — staff confirms receipt manually
+  PAYMENT_METHOD_MANUAL_TRANSFER = 4;
 }
 
 enum OrderStatus {
   ORDER_STATUS_UNSPECIFIED = 0;
-  ORDER_STATUS_PENDING     = 1;
+  ORDER_STATUS_PENDING = 1;
   // 2 reserved (was PAID — now tracked in PaymentStatus)
-  ORDER_STATUS_CANCELLED   = 3;
-  ORDER_STATUS_PREPARED    = 4;   // renamed from READY, same integer value
-  ORDER_STATUS_DELIVERED   = 5;
+  ORDER_STATUS_CANCELLED = 3;
+  ORDER_STATUS_PREPARED = 4; // renamed from READY, same integer value
+  ORDER_STATUS_DELIVERED = 5;
 }
 
 enum PaymentStatus {
   PAYMENT_STATUS_UNSPECIFIED = 0;
-  PAYMENT_STATUS_UNPAID      = 1;
-  PAYMENT_STATUS_PAID        = 2;
-  PAYMENT_STATUS_REFUNDED    = 3;
+  PAYMENT_STATUS_UNPAID = 1;
+  PAYMENT_STATUS_PAID = 2;
+  PAYMENT_STATUS_REFUNDED = 3;
 }
 
 enum OrderFrom {
   ORDER_FROM_UNSPECIFIED = 0;
-  ORDER_FROM_GUEST       = 1;
-  ORDER_FROM_POS         = 2;
+  ORDER_FROM_GUEST = 1;
+  ORDER_FROM_POS = 2;
 }
 
 message OrderItem {
-  int64  id               = 1;
-  int64  product_id       = 2;
-  string product_name     = 3;
-  int32  quantity         = 4;
-  int64  unit_price_cents = 5;
-  int64  subtotal_cents   = 6;
-  string notes            = 7;
+  int64 id = 1;
+  int64 product_id = 2;
+  string product_name = 3;
+  int32 quantity = 4;
+  int64 unit_price_cents = 5;
+  int64 subtotal_cents = 6;
+  string notes = 7;
 }
 
 message Order {
-  int64              id             = 1;
-  int64              cashier_id     = 2;
-  repeated OrderItem items          = 3;
-  int64              total_cents    = 4;
-  OrderStatus        status         = 5;
+  int64 id = 1;
+  int64 cashier_id = 2;
+  repeated OrderItem items = 3;
+  int64 total_cents = 4;
+  OrderStatus status = 5;
   google.protobuf.Timestamp created_at = 6;
-  int64              table_id       = 7;
-  string             customer_name  = 8;
-  string             phone_number   = 9;
-  PaymentMethod      payment_method = 10;
-  OrderFrom          order_from     = 11;
-  PaymentStatus      payment_status = 13;
+  int64 table_id = 7;
+  string customer_name = 8;
+  string phone_number = 9;
+  PaymentMethod payment_method = 10;
+  OrderFrom order_from = 11;
+  PaymentStatus payment_status = 13;
 }
 
 message AddToCartRequest {
   string session_id = 1 [(buf.validate.field).string.min_len = 1];
-  int64  product_id = 2 [(buf.validate.field).int64.gt = 0];
-  int32  quantity   = 3 [(buf.validate.field).int32.gt = 0];
-  int64  table_id   = 4;
-  string notes      = 5;
+  int64 product_id = 2 [(buf.validate.field).int64.gt = 0];
+  int32 quantity = 3 [(buf.validate.field).int32.gt = 0];
+  int64 table_id = 4;
+  string notes = 5;
 }
 
-message CreatePaymentTokenRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
+message CreatePaymentTokenRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
 message CreatePaymentTokenResponse {
-  string snap_token  = 1;
-  string client_key  = 2;
+  string snap_token = 1;
+  string client_key = 2;
 }
 
-message AddToCartResponse { Order cart = 1; }
+message AddToCartResponse {
+  Order cart = 1;
+}
 
 message RemoveFromCartRequest {
   string session_id = 1 [(buf.validate.field).string.min_len = 1];
-  int64  product_id = 2 [(buf.validate.field).int64.gt = 0];
+  int64 product_id = 2 [(buf.validate.field).int64.gt = 0];
 }
 
-message RemoveFromCartResponse { Order cart = 1; }
+message RemoveFromCartResponse {
+  Order cart = 1;
+}
 
-message GetCartRequest  { string session_id = 1 [(buf.validate.field).string.min_len = 1]; }
-message GetCartResponse { Order cart = 1; }
+message GetCartRequest {
+  string session_id = 1 [(buf.validate.field).string.min_len = 1];
+}
+message GetCartResponse {
+  Order cart = 1;
+}
 
 message CheckoutRequest {
-  string        session_id     = 1 [(buf.validate.field).string.min_len = 1];
-  int64         cashier_id     = 2;
-  PaymentMethod payment_method = 3 [(buf.validate.field).enum = {not_in: [0]}];
-  string        customer_name  = 4;
-  string        phone_number   = 5;
-  OrderFrom     order_from     = 6;
+  string session_id = 1 [(buf.validate.field).string.min_len = 1];
+  int64 cashier_id = 2;
+  PaymentMethod payment_method = 3 [(buf.validate.field).enum = {
+    not_in: [0]
+  }];
+  string customer_name = 4;
+  string phone_number = 5;
+  OrderFrom order_from = 6;
 }
 
-message CheckoutResponse { Order order = 1; }
+message CheckoutResponse {
+  Order order = 1;
+}
 
-message GetOrderRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
-message GetOrderResponse { Order order = 1; }
+message GetOrderRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message GetOrderResponse {
+  Order order = 1;
+}
 
 message ListOrdersRequest {
-  int32     page              = 1;
-  int32     page_size         = 2;
-  int64     cashier_id        = 3;
-  OrderStatus status_filter   = 4;
-  int64     table_id          = 5;
-  OrderFrom                 order_from_filter     = 6;
-  PaymentStatus             payment_status_filter = 7;
-  google.protobuf.Timestamp created_at_from       = 8;
-  google.protobuf.Timestamp created_at_to         = 9;
-  string                    search                = 10;
+  int32 page = 1;
+  int32 page_size = 2;
+  int64 cashier_id = 3;
+  OrderStatus status_filter = 4;
+  int64 table_id = 5;
+  OrderFrom order_from_filter = 6;
+  PaymentStatus payment_status_filter = 7;
+  google.protobuf.Timestamp created_at_from = 8;
+  google.protobuf.Timestamp created_at_to = 9;
+  string search = 10;
+  PaymentMethod payment_method_filter = 11;
 }
 
 message ListOrdersResponse {
   repeated Order orders = 1;
-  int32          total  = 2;
+  int32 total = 2;
 }
 
 enum DashboardPeriod {
   DASHBOARD_PERIOD_UNSPECIFIED = 0;
-  DASHBOARD_PERIOD_TODAY       = 1;
-  DASHBOARD_PERIOD_THIS_WEEK   = 2;
-  DASHBOARD_PERIOD_THIS_MONTH  = 3;
+  DASHBOARD_PERIOD_TODAY = 1;
+  DASHBOARD_PERIOD_THIS_WEEK = 2;
+  DASHBOARD_PERIOD_THIS_MONTH = 3;
 }
 
 message DashboardOrderCounts {
-  int32 total     = 1;
-  int32 pending   = 2;
-  int32 prepared  = 3;
+  int32 total = 1;
+  int32 pending = 2;
+  int32 prepared = 3;
   int32 delivered = 4;
   int32 cancelled = 5;
 }
 
 message DashboardTopProduct {
-  string product_name  = 1;
-  int32  quantity_sold = 2;
-  int64  revenue_cents = 3;
+  string product_name = 1;
+  int32 quantity_sold = 2;
+  int64 revenue_cents = 3;
 }
 
-message GetDashboardStatsRequest  { DashboardPeriod period = 1; }
+message DashboardPaymentBreakdown {
+  int64 cash_cents = 1;
+  int64 midtrans_cents = 2;
+  int64 manual_qris_cents = 3;
+  int64 manual_transfer_cents = 4;
+}
+
+message GetDashboardStatsRequest {
+  DashboardPeriod period = 1;
+}
 message GetDashboardStatsResponse {
-  int64                        total_revenue_cents = 1;
-  DashboardOrderCounts         order_counts        = 2;
-  repeated DashboardTopProduct top_products        = 3;
-  repeated Order               recent_orders       = 4;
+  int64 total_revenue_cents = 1;
+  DashboardOrderCounts order_counts = 2;
+  repeated DashboardTopProduct top_products = 3;
+  repeated Order recent_orders = 4;
+  DashboardPaymentBreakdown payment_breakdown = 5;
 }
 
-message MarkOrderPaidRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
-message MarkOrderPaidResponse { Order order    = 1; }
+message MarkOrderPaidRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message MarkOrderPaidResponse {
+  Order order = 1;
+}
 
-message CancelOrderRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
-message CancelOrderResponse { Order order    = 1; }
+message CancelOrderRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message CancelOrderResponse {
+  Order order = 1;
+}
 
-message MarkOrderReadyRequest      { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
-message MarkOrderReadyResponse     { Order order    = 1; }
+message MarkOrderReadyRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message MarkOrderReadyResponse {
+  Order order = 1;
+}
 
-message MarkOrderDeliveredRequest  { int64 order_id = 1 [(buf.validate.field).int64.gt = 0]; }
-message MarkOrderDeliveredResponse { Order order    = 1; }
+message MarkOrderDeliveredRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message MarkOrderDeliveredResponse {
+  Order order = 1;
+}
 
 service TransactionService {
-  rpc AddToCart(AddToCartRequest)                       returns (AddToCartResponse);
-  rpc RemoveFromCart(RemoveFromCartRequest)             returns (RemoveFromCartResponse);
-  rpc GetCart(GetCartRequest)                           returns (GetCartResponse);
-  rpc Checkout(CheckoutRequest)                         returns (CheckoutResponse);
-  rpc GetOrder(GetOrderRequest)                         returns (GetOrderResponse);
-  rpc ListOrders(ListOrdersRequest)                     returns (ListOrdersResponse);
-  rpc CreatePaymentToken(CreatePaymentTokenRequest)     returns (CreatePaymentTokenResponse);
-  rpc MarkOrderPaid(MarkOrderPaidRequest)               returns (MarkOrderPaidResponse);
-  rpc CancelOrder(CancelOrderRequest)                   returns (CancelOrderResponse);
-  rpc MarkOrderReady(MarkOrderReadyRequest)             returns (MarkOrderReadyResponse);
-  rpc MarkOrderDelivered(MarkOrderDeliveredRequest)     returns (MarkOrderDeliveredResponse);
-  rpc GetDashboardStats(GetDashboardStatsRequest)       returns (GetDashboardStatsResponse);
+  rpc AddToCart(AddToCartRequest) returns (AddToCartResponse);
+  rpc RemoveFromCart(RemoveFromCartRequest) returns (RemoveFromCartResponse);
+  rpc GetCart(GetCartRequest) returns (GetCartResponse);
+  rpc Checkout(CheckoutRequest) returns (CheckoutResponse);
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+  rpc CreatePaymentToken(CreatePaymentTokenRequest) returns (CreatePaymentTokenResponse);
+  rpc MarkOrderPaid(MarkOrderPaidRequest) returns (MarkOrderPaidResponse);
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+  rpc MarkOrderReady(MarkOrderReadyRequest) returns (MarkOrderReadyResponse);
+  rpc MarkOrderDelivered(MarkOrderDeliveredRequest) returns (MarkOrderDeliveredResponse);
+  rpc GetDashboardStats(GetDashboardStatsRequest) returns (GetDashboardStatsResponse);
+
+  // notification for kitchen display, order updates, etc. Stream will be closed by server after some idle timeout (e.g. 1 hour) or when server restarts, client should reconnect with exponential backoff
+  rpc Subscribe(SubscribeRequest) returns (stream SubscribeResponse);
+  rpc Push(PushRequest) returns (PushResponse);
 }

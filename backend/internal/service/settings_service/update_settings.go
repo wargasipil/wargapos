@@ -25,11 +25,28 @@ func (s *SettingsService) UpdateSettings(
 		env = "sandbox"
 	}
 
+	mp := req.Msg.ManualPayment
+	pp := req.Msg.Printer
+
 	updates := map[string]any{
 		"midtrans_server_key":  m.ServerKey,
 		"midtrans_client_key":  m.ClientKey,
 		"midtrans_environment": env,
 		"updated_at":           time.Now(),
+	}
+	if mp != nil {
+		updates["bank_name"]            = mp.BankName
+		updates["bank_account_number"]  = mp.BankAccountNumber
+		updates["bank_account_name"]    = mp.BankAccountName
+		updates["qris_image_url"]       = mp.QrisImageUrl
+	}
+	if pp != nil {
+		updates["printer_title"]       = pp.Title
+		updates["printer_description"] = pp.Description
+		updates["printer_address"]     = pp.Address
+		updates["printer_address2"]    = pp.Address2
+		updates["printer_contact"]     = pp.Contact
+		updates["printer_footer"]      = pp.Footer
 	}
 	result := s.db.WithContext(ctx).Model(&models.AppSettings{}).Where("id = 1").Updates(updates)
 	if result.Error != nil {
@@ -41,6 +58,20 @@ func (s *SettingsService) UpdateSettings(
 			MidtransServerKey:   m.ServerKey,
 			MidtransClientKey:   m.ClientKey,
 			MidtransEnvironment: env,
+		}
+		if mp != nil {
+			row.BankName          = mp.BankName
+			row.BankAccountNumber = mp.BankAccountNumber
+			row.BankAccountName   = mp.BankAccountName
+			row.QrisImageUrl      = mp.QrisImageUrl
+		}
+		if pp != nil {
+			row.PrinterTitle       = pp.Title
+			row.PrinterDescription = pp.Description
+			row.PrinterAddress     = pp.Address
+			row.PrinterAddress2    = pp.Address2
+			row.PrinterContact     = pp.Contact
+			row.PrinterFooter      = pp.Footer
 		}
 		if err := s.db.WithContext(ctx).Create(&row).Error; err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)

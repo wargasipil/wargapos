@@ -7,15 +7,15 @@ interface SelectedPrinter {
 }
 
 interface PrinterState {
-  selectedPrinter: SelectedPrinter | null
-  setSelectedPrinter: (printer: SelectedPrinter | null) => void
+  selectedPrinters: SelectedPrinter[]
+  setSelectedPrinters: (printers: SelectedPrinter[]) => void
 }
 
 export const usePrinterStore = create<PrinterState>()(
   persist(
     (set) => ({
-      selectedPrinter: null,
-      setSelectedPrinter: (printer) => set({ selectedPrinter: printer }),
+      selectedPrinters: [],
+      setSelectedPrinters: (printers) => set({ selectedPrinters: printers }),
     }),
     { name: 'wargapos-printer' }
   )

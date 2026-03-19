@@ -48,9 +48,13 @@ message ConnectRequest {
   repeated string printer_names = 3;
 }
 
+message DeviceList {
+  repeated Device devices = 1;
+}
+
 message ConnectResponse {
   oneof result {
-    Device device = 1;
+    DeviceList device_list = 1;
     PrintRequest print_request = 2;
   }
 }

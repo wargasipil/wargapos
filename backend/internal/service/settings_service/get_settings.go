@@ -23,6 +23,8 @@ func (s *SettingsService) GetSettings(
 				Environment: s.cfg.Environment,
 			},
 			MidtransConfigured: s.cfg.ServerKey != "",
+			ManualPayment:      &settingsv1.ManualPaymentSettings{},
+			Printer:            &settingsv1.PrinterSettings{},
 		}), nil
 	}
 
@@ -47,5 +49,19 @@ func (s *SettingsService) GetSettings(
 			Environment: environment,
 		},
 		MidtransConfigured: serverKey != "",
+		ManualPayment: &settingsv1.ManualPaymentSettings{
+			BankName:          row.BankName,
+			BankAccountNumber: row.BankAccountNumber,
+			BankAccountName:   row.BankAccountName,
+			QrisImageUrl:      row.QrisImageUrl,
+		},
+		Printer: &settingsv1.PrinterSettings{
+			Title:       row.PrinterTitle,
+			Description: row.PrinterDescription,
+			Address:     row.PrinterAddress,
+			Address2:    row.PrinterAddress2,
+			Contact:     row.PrinterContact,
+			Footer:      row.PrinterFooter,
+		},
 	}), nil
 }

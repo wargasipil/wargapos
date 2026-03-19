@@ -7,10 +7,11 @@ import {
 import { ArrowLeft, CheckCircle, Phone, Printer, XCircle, ChefHat, Truck } from 'lucide-react'
 import { printReceipt } from '../../lib/printer'
 import { transactionClient, tableClient } from '../../client'
-import { OrderStatus, PaymentStatus, OrderFrom, PaymentMethod } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderStatus, PaymentStatus, OrderFrom } from '../../gen/wargapos/transaction/v1/transaction_pb'
 import { toaster } from '../../components/ui/toaster'
-import { formatPrice, formatTime, formatDateTime } from '../../lib/format'
+import { formatPrice, formatTime, formatDateTime, paymentMethodLabel, paymentMethodColor } from '../../lib/format'
 import { stripError } from '../../lib/errors'
+import { ConfirmDialog } from '../../components/shared/ConfirmDialog'
 
 function statusBadge(status: OrderStatus) {
   switch (status) {
@@ -51,27 +52,30 @@ export function OrderDetailPage() {
     qc.invalidateQueries({ queryKey: ['orders-ready-count'] })
   }
 
+  const [confirmAction, setConfirmAction] = useState<'prepared' | 'delivered' | 'paid' | 'cancel' | null>(null)
+
   const markReadyMutation = useMutation({
     mutationFn: () => transactionClient.markOrderReady({ orderId: BigInt(id) }),
-    onSuccess: () => { invalidate(); toaster.create({ title: 'Order marked as ready', type: 'success', duration: 3000 }) },
+    onSuccess: () => { setConfirmAction(null); invalidate(); toaster.create({ title: 'Order marked as ready', type: 'success', duration: 3000 }) },
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
 
   const markDeliveredMutation = useMutation({
     mutationFn: () => transactionClient.markOrderDelivered({ orderId: BigInt(id) }),
-    onSuccess: () => { invalidate(); toaster.create({ title: 'Order marked as delivered', type: 'success', duration: 3000 }) },
+    onSuccess: () => { setConfirmAction(null); invalidate(); toaster.create({ title: 'Order marked as delivered', type: 'success', duration: 3000 }) },
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
 
   const markPaidMutation = useMutation({
     mutationFn: () => transactionClient.markOrderPaid({ orderId: BigInt(id) }),
-    onSuccess: () => { invalidate(); toaster.create({ title: 'Order marked as paid', type: 'success', duration: 3000 }) },
+    onSuccess: () => { setConfirmAction(null); invalidate(); toaster.create({ title: 'Order marked as paid', type: 'success', duration: 3000 }) },
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
 
   const cancelMutation = useMutation({
     mutationFn: () => transactionClient.cancelOrder({ orderId: BigInt(id) }),
     onSuccess: () => {
+      setConfirmAction(null)
       invalidate()
       toaster.create({ title: 'Order cancelled', type: 'success', duration: 3000 })
       navigate({ to: '/orders' })
@@ -144,8 +148,8 @@ export function OrderDetailPage() {
           </Flex>
           <Flex justify="space-between">
             <Text fontSize="sm" color="gray.500">Payment</Text>
-            <Badge colorPalette={order.paymentMethod === PaymentMethod.ONLINE ? 'purple' : 'gray'} size="sm">
-              {order.paymentMethod === PaymentMethod.ONLINE ? 'Online' : 'Cash'}
+            <Badge colorPalette={paymentMethodColor(order.paymentMethod)} size="sm">
+              {paymentMethodLabel(order.paymentMethod)}
             </Badge>
           </Flex>
           {order.customerName && (
@@ -206,30 +210,64 @@ export function OrderDetailPage() {
           Print
         </Button>
         {order.status === OrderStatus.PENDING && (
-          <Button size="sm" colorPalette="blue" loading={markReadyMutation.isPending} onClick={() => markReadyMutation.mutate()}>
+          <Button size="sm" colorPalette="blue" onClick={() => setConfirmAction('prepared')}>
             <ChefHat size={14} />
             Mark Prepared
           </Button>
         )}
         {order.status === OrderStatus.PREPARED && (
-          <Button size="sm" colorPalette="purple" loading={markDeliveredMutation.isPending} onClick={() => markDeliveredMutation.mutate()}>
+          <Button size="sm" colorPalette="purple" onClick={() => setConfirmAction('delivered')}>
             <Truck size={14} />
             Mark Delivered
           </Button>
         )}
         {order.paymentStatus === PaymentStatus.UNPAID && order.status !== OrderStatus.CANCELLED && (
-          <Button size="sm" colorPalette="green" loading={markPaidMutation.isPending} onClick={() => markPaidMutation.mutate()}>
+          <Button size="sm" colorPalette="green" onClick={() => setConfirmAction('paid')}>
             <CheckCircle size={14} />
             Mark as Paid
           </Button>
         )}
         {canCancel && (
-          <Button size="sm" variant="outline" colorPalette="red" loading={cancelMutation.isPending} onClick={() => cancelMutation.mutate()}>
+          <Button size="sm" variant="outline" colorPalette="red" onClick={() => setConfirmAction('cancel')}>
             <XCircle size={14} />
             Cancel Order
           </Button>
         )}
       </HStack>
+
+      <ConfirmDialog
+        open={confirmAction !== null}
+        title={
+          confirmAction === 'prepared'  ? 'Tandai Siap?' :
+          confirmAction === 'delivered' ? 'Tandai Terkirim?' :
+          confirmAction === 'paid'      ? 'Tandai Lunas?' :
+                                          'Batalkan Order?'
+        }
+        description={
+          confirmAction === 'cancel'
+            ? <>Order <strong>#{String(order.id)}</strong> akan dibatalkan.</>
+            : 'Konfirmasi perubahan status order ini.'
+        }
+        confirmLabel={
+          confirmAction === 'prepared'  ? 'Tandai Siap' :
+          confirmAction === 'delivered' ? 'Tandai Terkirim' :
+          confirmAction === 'paid'      ? 'Tandai Lunas' :
+                                          'Ya, Batalkan'
+        }
+        loading={
+          markReadyMutation.isPending ||
+          markDeliveredMutation.isPending ||
+          markPaidMutation.isPending ||
+          cancelMutation.isPending
+        }
+        onConfirm={() => {
+          if (confirmAction === 'prepared')  markReadyMutation.mutate()
+          if (confirmAction === 'delivered') markDeliveredMutation.mutate()
+          if (confirmAction === 'paid')      markPaidMutation.mutate()
+          if (confirmAction === 'cancel')    cancelMutation.mutate()
+        }}
+        onCancel={() => setConfirmAction(null)}
+      />
     </Box>
   )
 }

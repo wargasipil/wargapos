@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
-  Alert, Badge, Box, Button, Dialog, Drawer, Field, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, Textarea, VStack,
+  Alert, Badge, Box, Button, Dialog, Drawer, Field, Flex, Grid, Heading, HStack, IconButton, Input, InputGroup, Separator, Spinner, Text, Textarea, VStack,
 } from '@chakra-ui/react'
-import { Printer } from 'lucide-react'
-import { productClient, transactionClient, tableClient } from '../../client'
+import { Printer, X } from 'lucide-react'
+import { productClient, transactionClient, tableClient, settingsClient } from '../../client'
 import { TableSelect } from '../../components/shared/TableSelect'
 import { PrinterSettingsDialog } from '../../components/shared/PrinterSettingsDialog'
 import { useCartStore } from '../../store/cart'
 import { useAuthStore } from '../../store/auth'
 import { usePrinterStore } from '../../store/printer'
-import { formatPrice, formatTime } from '../../lib/format'
+import { formatPrice, formatTime, paymentMethodLabel } from '../../lib/format'
 import { stripError } from '../../lib/errors'
-import { printReceiptRemote } from '../../lib/printer'
+import { printReceiptRemote, type PrinterOpts } from '../../lib/printer'
 import { POSProductCard } from '../../components/shared/POSProductCard'
 import { ProductFilter } from '../../components/shared/ProductFilter'
 import { syncCartToServer } from '../../lib/syncCart'
@@ -26,7 +26,7 @@ type Step = 'browse' | 'receipt'
 export function PosPage() {
   const { items, totalCents, sessionId, addItem, removeItem, updateNotes, clear } = useCartStore()
   const { userId } = useAuthStore()
-  const { selectedPrinter } = usePrinterStore()
+  const { selectedPrinters } = usePrinterStore()
   const [step, setStep] = useState<Step>('browse')
   const [receiptOrder, setReceiptOrder] = useState<Order | null>(null)
   const [cartOpen, setCartOpen] = useState(false)
@@ -38,6 +38,8 @@ export function PosPage() {
   const [tableId, setTableId] = useState<bigint>(0n)
   const [categoryId, setCategoryId] = useState<bigint>(0n)
   const [search, setSearch] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.CASH)
+  const [manualPaymentConfirmOpen, setManualPaymentConfirmOpen] = useState(false)
   const [printerSettingsOpen, setPrinterSettingsOpen] = useState(false)
   const [printLoading, setPrintLoading] = useState(false)
 
@@ -56,6 +58,12 @@ export function PosPage() {
     queryFn: () => tableClient.listTables({}),
   })
 
+  const { data: settingsData } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsClient.getSettings({}),
+    staleTime: 60_000,
+  })
+
   const tables = tableData?.tables ?? []
   const categories = catData?.categories ?? []
   const selectedTable = tables.find((t) => t.id === tableId)
@@ -64,12 +72,24 @@ export function PosPage() {
   const allProducts = (data?.products ?? []).filter((p) => p.isActive)
   const products = allProducts.filter((p) => {
     const matchesCategory = categoryId === 0n || p.categoryId === categoryId
-    const matchesSearch = search === '' || p.name.toLowerCase().includes(search.toLowerCase())
+    const matchesSearch = search === '' || p.name.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
   async function handleCheckout() {
     if (items.length === 0) return
+    // For manual methods, show confirmation modal first
+    if (
+      paymentMethod === PaymentMethod.MANUAL_QRIS ||
+      paymentMethod === PaymentMethod.MANUAL_TRANSFER
+    ) {
+      setManualPaymentConfirmOpen(true)
+      return
+    }
+    await submitCheckout()
+  }
+
+  async function submitCheckout() {
     setCheckoutLoading(true)
     setCheckoutError(null)
     try {
@@ -77,7 +97,7 @@ export function PosPage() {
       const res = await transactionClient.checkout({
         sessionId,
         cashierId: userId ? BigInt(userId) : 0n,
-        paymentMethod: PaymentMethod.CASH,
+        paymentMethod,
         orderFrom: OrderFrom.POS,
         customerName: customerName.trim(),
         phoneNumber: phoneNumber.trim(),
@@ -86,8 +106,10 @@ export function PosPage() {
       setTableId(0n)
       setCartOpen(false)
       setCheckoutOpen(false)
+      setManualPaymentConfirmOpen(false)
       setCustomerName('')
       setPhoneNumber('')
+      setPaymentMethod(PaymentMethod.CASH)
       setReceiptOrder(res.order ?? null)
       setStep('receipt')
     } catch (err) {
@@ -107,10 +129,20 @@ export function PosPage() {
   }
 
   async function handlePrint(order: Order, orderTableName: string) {
-    if (!selectedPrinter) return
+    if (selectedPrinters.length === 0) return
     setPrintLoading(true)
+    const printerOpts: PrinterOpts = {
+      title:       settingsData?.printer?.title,
+      description: settingsData?.printer?.description,
+      address:     settingsData?.printer?.address,
+      address2:    settingsData?.printer?.address2,
+      contact:     settingsData?.printer?.contact,
+      footer:      settingsData?.printer?.footer,
+    }
     try {
-      await printReceiptRemote(order, orderTableName, selectedPrinter)
+      for (const p of selectedPrinters) {
+        await printReceiptRemote(order, orderTableName, p, printerOpts)
+      }
     } catch (err) {
       toaster.create({ type: 'error', title: 'Print failed', description: stripError(err) })
     } finally {
@@ -119,7 +151,7 @@ export function PosPage() {
   }
 
   // ── Printer warning banner ────────────────────────────────────────────────────
-  const printerWarning = !selectedPrinter ? (
+  const printerWarning = selectedPrinters.length === 0 ? (
     <Alert.Root status="warning" mb={3}>
       <Alert.Indicator />
       <Alert.Description fontSize="sm">
@@ -143,8 +175,12 @@ export function PosPage() {
         <Box bg="white" borderRadius="xl" boxShadow="md" w="full" maxW="420px">
           {/* Receipt content — also used for print */}
           <Box className="receipt-print" p={6}>
-            <Text fontWeight="bold" fontSize="lg" textAlign="center">WargaPOS</Text>
-            <Text fontSize="xs" color="gray.500" textAlign="center" mb={4}>Café Point of Sale</Text>
+            <Text fontWeight="bold" fontSize="lg" textAlign="center">
+              {settingsData?.printer?.title || 'WargaPOS'}
+            </Text>
+            <Text fontSize="xs" color="gray.500" textAlign="center" mb={4}>
+              {settingsData?.printer?.description || 'Café Point of Sale'}
+            </Text>
 
             <HStack justify="space-between" fontSize="sm" mb={1}>
               <Text color="gray.500">Order</Text>
@@ -201,7 +237,7 @@ export function PosPage() {
                 flex={1}
                 variant="outline"
                 loading={printLoading}
-                disabled={!selectedPrinter}
+                disabled={selectedPrinters.length === 0}
                 onClick={() => handlePrint(order, orderTableName)}
               >
                 <Printer size={16} />
@@ -282,30 +318,47 @@ export function PosPage() {
     <Flex h="100%" minH="100svh">
       {/* Product Grid */}
       <Box flex={1} p={{ base: 3, md: 6 }} overflow="auto" pb={{ base: '80px', md: 6 }}>
-        <HStack mb={4} gap={3} align="center" wrap="wrap">
-          <Heading size="md" flex={1}>Products</Heading>
-          <ProductFilter
-            categories={categories}
-            categoryId={categoryId}
-            search={search}
-            onCategoryChange={setCategoryId}
-            onSearchChange={setSearch}
-            onReset={() => { setCategoryId(0n); setSearch('') }}
-          />
-          <TableSelect
-            tables={tables}
-            value={tableId}
-            onChange={setTableId}
-            placeholder="Walk-in"
-          />
-          {/* Printer button */}
-          <Button size="sm" variant="ghost" onClick={() => setPrinterSettingsOpen(true)}>
-            <Printer size={16} />
-            {selectedPrinter
-              ? <Text fontSize="xs" maxW="80px" truncate>{selectedPrinter.name}</Text>
-              : <Badge colorPalette="orange" size="sm">!</Badge>
-            }
-          </Button>
+        <HStack mb={4} gap={3} align="center" overflow="hidden">
+          <Heading size="md" flexShrink={0}>Products</Heading>
+          <HStack flex={1} ml="auto" gap={2} align="center" overflow="hidden">
+            <InputGroup
+              flex={1}
+              minW="0"
+              endElement={
+                search ? (
+                  <IconButton aria-label="Clear search" variant="ghost" size="xs" onClick={() => setSearch('')}>
+                    <X size={12} />
+                  </IconButton>
+                ) : undefined
+              }
+            >
+              <Input
+                size="sm"
+                placeholder="Cari produk…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </InputGroup>
+            <ProductFilter
+              categories={categories}
+              categoryId={categoryId}
+              onCategoryChange={setCategoryId}
+              onReset={() => setCategoryId(0n)}
+            />
+            <TableSelect
+              tables={tables}
+              value={tableId}
+              onChange={setTableId}
+              placeholder="Walk-in"
+            />
+            <Button size="sm" variant="ghost" onClick={() => setPrinterSettingsOpen(true)}>
+              <Printer size={16} />
+              {selectedPrinters.length > 0
+                ? <Badge colorPalette="green" size="sm">{selectedPrinters.length}</Badge>
+                : <Badge colorPalette="orange" size="sm">!</Badge>
+              }
+            </Button>
+          </HStack>
         </HStack>
 
         {printerWarning}
@@ -318,6 +371,7 @@ export function PosPage() {
               <POSProductCard
                 key={String(p.id)}
                 name={p.name}
+                sku={p.sku || undefined}
                 imageUrl={p.imageUrl}
                 priceCents={p.priceCents}
                 stockQty={p.stockQty}
@@ -409,6 +463,27 @@ export function PosPage() {
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </Field.Root>
+                <Field.Root w="full">
+                  <Field.Label>Metode Pembayaran</Field.Label>
+                  <HStack gap={2} flexWrap="wrap">
+                    {[
+                      PaymentMethod.CASH,
+                      PaymentMethod.MIDTRANS,
+                      PaymentMethod.MANUAL_QRIS,
+                      PaymentMethod.MANUAL_TRANSFER,
+                    ].map((m) => (
+                      <Button
+                        key={m}
+                        size="sm"
+                        variant={paymentMethod === m ? 'solid' : 'outline'}
+                        colorPalette={paymentMethod === m ? 'blue' : 'gray'}
+                        onClick={() => setPaymentMethod(m)}
+                      >
+                        {paymentMethodLabel(m)}
+                      </Button>
+                    ))}
+                  </HStack>
+                </Field.Root>
                 {checkoutError && (
                   <Alert.Root status="error" borderRadius="md" w="full">
                     <Alert.Indicator />
@@ -421,6 +496,56 @@ export function PosPage() {
               <Button variant="outline" onClick={() => setCheckoutOpen(false)}>Cancel</Button>
               <Button colorPalette="blue" loading={checkoutLoading} onClick={handleCheckout}>
                 Confirm Checkout
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
+
+      {/* Manual payment confirmation dialog */}
+      <Dialog.Root open={manualPaymentConfirmOpen} onOpenChange={(d) => setManualPaymentConfirmOpen(d.open)}>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>
+                {paymentMethod === PaymentMethod.MANUAL_QRIS ? 'Konfirmasi QRIS Manual' : 'Konfirmasi Transfer Manual'}
+              </Dialog.Title>
+            </Dialog.Header>
+            <Dialog.Body>
+              <VStack gap={4} align="stretch">
+                <Text fontWeight="bold" fontSize="lg" textAlign="center">
+                  Total: {formatPrice(totalCents)}
+                </Text>
+                {paymentMethod === PaymentMethod.MANUAL_QRIS && settingsData?.manualPayment?.qrisImageUrl && (
+                  <Box borderRadius="md" overflow="hidden" mx="auto" maxW="200px">
+                    <img
+                      src={settingsData.manualPayment.qrisImageUrl}
+                      alt="QRIS"
+                      style={{ width: '100%' }}
+                    />
+                  </Box>
+                )}
+                {paymentMethod === PaymentMethod.MANUAL_TRANSFER && settingsData?.manualPayment && (
+                  <Box bg="gray.50" borderRadius="md" p={4}>
+                    <Text fontSize="sm" color="gray.500" mb={1}>Transfer ke rekening:</Text>
+                    <Text fontWeight="bold">{settingsData.manualPayment.bankName}</Text>
+                    <Text fontWeight="bold" fontSize="lg">{settingsData.manualPayment.bankAccountNumber}</Text>
+                    <Text fontSize="sm">a/n {settingsData.manualPayment.bankAccountName}</Text>
+                  </Box>
+                )}
+                {checkoutError && (
+                  <Alert.Root status="error" borderRadius="md">
+                    <Alert.Indicator />
+                    <Alert.Description fontSize="sm">{checkoutError}</Alert.Description>
+                  </Alert.Root>
+                )}
+              </VStack>
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Button variant="outline" onClick={() => setManualPaymentConfirmOpen(false)}>Batal</Button>
+              <Button colorPalette="green" loading={checkoutLoading} onClick={submitCheckout}>
+                Konfirmasi Pembayaran Diterima
               </Button>
             </Dialog.Footer>
           </Dialog.Content>

@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Box, Button, Dialog, Field, Flex, Grid, Heading, HStack, IconButton, Input, Popover, Spinner, Tabs, Text, VStack,
 } from '@chakra-ui/react'
-import { Package, Plus, Search, Tag, Pencil, Trash2 } from 'lucide-react'
+import { Package, Plus, Search, Tag, Pencil, Trash2, Download } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { productClient } from '../../client'
 import { toaster } from '../../components/ui/toaster'
@@ -13,6 +13,7 @@ import { CategorySelect } from '../../components/shared/CategorySelect'
 import { ProductCard } from '../../components/shared/ProductCard'
 import type { Product } from '../../gen/wargapos/product/v1/product_pb'
 import type { Category } from '../../gen/wargapos/product/v1/product_pb'
+import { productsToCSV, downloadCSV } from '../../lib/csv'
 
 type StatusFilter = 'all' | 'active' | 'inactive'
 
@@ -26,6 +27,7 @@ export function ProductsPage() {
   const qc = useQueryClient()
 
   // Product state
+  const [exporting, setExporting] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null)
   const [togglingId, setTogglingId] = useState<bigint | null>(null)
   const [categoryId, setCategoryId] = useState<bigint>(0n)
@@ -70,6 +72,20 @@ export function ProductsPage() {
 
   function categoryName(id: bigint): string {
     return categories.find((c) => c.id === id)?.name ?? ''
+  }
+
+  async function handleExport() {
+    setExporting(true)
+    try {
+      const res = await productClient.listProducts({ pageSize: 1000 })
+      const catMap = new Map(categories.map((c) => [c.id, c.name]))
+      const csv = productsToCSV(res.products, (id) => catMap.get(id) ?? '')
+      downloadCSV(`products-${new Date().toISOString().slice(0, 10)}.csv`, csv)
+    } catch (e) {
+      toaster.create({ title: stripError(e), type: 'error', duration: 4000 })
+    } finally {
+      setExporting(false)
+    }
   }
 
   // Product mutations
@@ -146,6 +162,9 @@ export function ProductsPage() {
         <HStack gap={2} width={{ base: 'full', md: 'auto' }}>
           <Button size="sm" variant="outline" onClick={() => setCatOpen(true)}>
             <Tag size={14} /> Categories
+          </Button>
+          <Button size="sm" variant="outline" onClick={handleExport} loading={exporting}>
+            <Download size={14} /> Export
           </Button>
           <Button asChild colorPalette="blue" size="sm" flex={{ base: 1, md: 'unset' }}>
             <Link to="/products/new"><Plus size={16} /> Add Product</Link>

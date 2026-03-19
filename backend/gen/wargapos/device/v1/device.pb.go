@@ -416,11 +416,55 @@ func (x *ConnectRequest) GetPrinterNames() []string {
 	return nil
 }
 
+type DeviceList struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Devices       []*Device              `protobuf:"bytes,1,rep,name=devices,proto3" json:"devices,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeviceList) Reset() {
+	*x = DeviceList{}
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeviceList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeviceList) ProtoMessage() {}
+
+func (x *DeviceList) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeviceList.ProtoReflect.Descriptor instead.
+func (*DeviceList) Descriptor() ([]byte, []int) {
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *DeviceList) GetDevices() []*Device {
+	if x != nil {
+		return x.Devices
+	}
+	return nil
+}
+
 type ConnectResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Result:
 	//
-	//	*ConnectResponse_Device
+	//	*ConnectResponse_DeviceList
 	//	*ConnectResponse_PrintRequest
 	Result        isConnectResponse_Result `protobuf_oneof:"result"`
 	unknownFields protoimpl.UnknownFields
@@ -429,7 +473,7 @@ type ConnectResponse struct {
 
 func (x *ConnectResponse) Reset() {
 	*x = ConnectResponse{}
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[7]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -441,7 +485,7 @@ func (x *ConnectResponse) String() string {
 func (*ConnectResponse) ProtoMessage() {}
 
 func (x *ConnectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[7]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -454,7 +498,7 @@ func (x *ConnectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectResponse.ProtoReflect.Descriptor instead.
 func (*ConnectResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{7}
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ConnectResponse) GetResult() isConnectResponse_Result {
@@ -464,10 +508,10 @@ func (x *ConnectResponse) GetResult() isConnectResponse_Result {
 	return nil
 }
 
-func (x *ConnectResponse) GetDevice() *Device {
+func (x *ConnectResponse) GetDeviceList() *DeviceList {
 	if x != nil {
-		if x, ok := x.Result.(*ConnectResponse_Device); ok {
-			return x.Device
+		if x, ok := x.Result.(*ConnectResponse_DeviceList); ok {
+			return x.DeviceList
 		}
 	}
 	return nil
@@ -486,15 +530,15 @@ type isConnectResponse_Result interface {
 	isConnectResponse_Result()
 }
 
-type ConnectResponse_Device struct {
-	Device *Device `protobuf:"bytes,1,opt,name=device,proto3,oneof"`
+type ConnectResponse_DeviceList struct {
+	DeviceList *DeviceList `protobuf:"bytes,1,opt,name=device_list,json=deviceList,proto3,oneof"`
 }
 
 type ConnectResponse_PrintRequest struct {
 	PrintRequest *PrintRequest `protobuf:"bytes,2,opt,name=print_request,json=printRequest,proto3,oneof"`
 }
 
-func (*ConnectResponse_Device) isConnectResponse_Result() {}
+func (*ConnectResponse_DeviceList) isConnectResponse_Result() {}
 
 func (*ConnectResponse_PrintRequest) isConnectResponse_Result() {}
 
@@ -506,7 +550,7 @@ type ListDevicesRequest struct {
 
 func (x *ListDevicesRequest) Reset() {
 	*x = ListDevicesRequest{}
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[8]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -518,7 +562,7 @@ func (x *ListDevicesRequest) String() string {
 func (*ListDevicesRequest) ProtoMessage() {}
 
 func (x *ListDevicesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[8]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -531,7 +575,7 @@ func (x *ListDevicesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListDevicesRequest.ProtoReflect.Descriptor instead.
 func (*ListDevicesRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{8}
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{9}
 }
 
 type ListDevicesResponse struct {
@@ -543,7 +587,7 @@ type ListDevicesResponse struct {
 
 func (x *ListDevicesResponse) Reset() {
 	*x = ListDevicesResponse{}
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[9]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -555,7 +599,7 @@ func (x *ListDevicesResponse) String() string {
 func (*ListDevicesResponse) ProtoMessage() {}
 
 func (x *ListDevicesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_device_v1_device_proto_msgTypes[9]
+	mi := &file_wargapos_device_v1_device_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -568,7 +612,7 @@ func (x *ListDevicesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListDevicesResponse.ProtoReflect.Descriptor instead.
 func (*ListDevicesResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{9}
+	return file_wargapos_device_v1_device_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ListDevicesResponse) GetDevices() []*Device {
@@ -604,9 +648,13 @@ const file_wargapos_device_v1_device_proto_rawDesc = "" +
 	"\x0eConnectRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x02id\x12\x1b\n" +
 	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12#\n" +
-	"\rprinter_names\x18\x03 \x03(\tR\fprinterNames\"\x9a\x01\n" +
-	"\x0fConnectResponse\x124\n" +
-	"\x06device\x18\x01 \x01(\v2\x1a.wargapos.device.v1.DeviceH\x00R\x06device\x12G\n" +
+	"\rprinter_names\x18\x03 \x03(\tR\fprinterNames\"B\n" +
+	"\n" +
+	"DeviceList\x124\n" +
+	"\adevices\x18\x01 \x03(\v2\x1a.wargapos.device.v1.DeviceR\adevices\"\xa7\x01\n" +
+	"\x0fConnectResponse\x12A\n" +
+	"\vdevice_list\x18\x01 \x01(\v2\x1e.wargapos.device.v1.DeviceListH\x00R\n" +
+	"deviceList\x12G\n" +
 	"\rprint_request\x18\x02 \x01(\v2 .wargapos.device.v1.PrintRequestH\x00R\fprintRequestB\b\n" +
 	"\x06result\"\x14\n" +
 	"\x12ListDevicesRequest\"K\n" +
@@ -630,7 +678,7 @@ func file_wargapos_device_v1_device_proto_rawDescGZIP() []byte {
 	return file_wargapos_device_v1_device_proto_rawDescData
 }
 
-var file_wargapos_device_v1_device_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_wargapos_device_v1_device_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_wargapos_device_v1_device_proto_goTypes = []any{
 	(*Printer)(nil),              // 0: wargapos.device.v1.Printer
 	(*PrintRequest)(nil),         // 1: wargapos.device.v1.PrintRequest
@@ -639,29 +687,31 @@ var file_wargapos_device_v1_device_proto_goTypes = []any{
 	(*ListPrintersResponse)(nil), // 4: wargapos.device.v1.ListPrintersResponse
 	(*Device)(nil),               // 5: wargapos.device.v1.Device
 	(*ConnectRequest)(nil),       // 6: wargapos.device.v1.ConnectRequest
-	(*ConnectResponse)(nil),      // 7: wargapos.device.v1.ConnectResponse
-	(*ListDevicesRequest)(nil),   // 8: wargapos.device.v1.ListDevicesRequest
-	(*ListDevicesResponse)(nil),  // 9: wargapos.device.v1.ListDevicesResponse
+	(*DeviceList)(nil),           // 7: wargapos.device.v1.DeviceList
+	(*ConnectResponse)(nil),      // 8: wargapos.device.v1.ConnectResponse
+	(*ListDevicesRequest)(nil),   // 9: wargapos.device.v1.ListDevicesRequest
+	(*ListDevicesResponse)(nil),  // 10: wargapos.device.v1.ListDevicesResponse
 }
 var file_wargapos_device_v1_device_proto_depIdxs = []int32{
-	0, // 0: wargapos.device.v1.PrintRequest.printer:type_name -> wargapos.device.v1.Printer
-	0, // 1: wargapos.device.v1.ListPrintersResponse.printers:type_name -> wargapos.device.v1.Printer
-	5, // 2: wargapos.device.v1.ConnectResponse.device:type_name -> wargapos.device.v1.Device
-	1, // 3: wargapos.device.v1.ConnectResponse.print_request:type_name -> wargapos.device.v1.PrintRequest
-	5, // 4: wargapos.device.v1.ListDevicesResponse.devices:type_name -> wargapos.device.v1.Device
-	6, // 5: wargapos.device.v1.DeviceService.Connect:input_type -> wargapos.device.v1.ConnectRequest
-	8, // 6: wargapos.device.v1.DeviceService.ListDevices:input_type -> wargapos.device.v1.ListDevicesRequest
-	3, // 7: wargapos.device.v1.DeviceService.ListPrinters:input_type -> wargapos.device.v1.ListPrintersRequest
-	1, // 8: wargapos.device.v1.DeviceService.Print:input_type -> wargapos.device.v1.PrintRequest
-	7, // 9: wargapos.device.v1.DeviceService.Connect:output_type -> wargapos.device.v1.ConnectResponse
-	9, // 10: wargapos.device.v1.DeviceService.ListDevices:output_type -> wargapos.device.v1.ListDevicesResponse
-	4, // 11: wargapos.device.v1.DeviceService.ListPrinters:output_type -> wargapos.device.v1.ListPrintersResponse
-	2, // 12: wargapos.device.v1.DeviceService.Print:output_type -> wargapos.device.v1.PrintResponse
-	9, // [9:13] is the sub-list for method output_type
-	5, // [5:9] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0,  // 0: wargapos.device.v1.PrintRequest.printer:type_name -> wargapos.device.v1.Printer
+	0,  // 1: wargapos.device.v1.ListPrintersResponse.printers:type_name -> wargapos.device.v1.Printer
+	5,  // 2: wargapos.device.v1.DeviceList.devices:type_name -> wargapos.device.v1.Device
+	7,  // 3: wargapos.device.v1.ConnectResponse.device_list:type_name -> wargapos.device.v1.DeviceList
+	1,  // 4: wargapos.device.v1.ConnectResponse.print_request:type_name -> wargapos.device.v1.PrintRequest
+	5,  // 5: wargapos.device.v1.ListDevicesResponse.devices:type_name -> wargapos.device.v1.Device
+	6,  // 6: wargapos.device.v1.DeviceService.Connect:input_type -> wargapos.device.v1.ConnectRequest
+	9,  // 7: wargapos.device.v1.DeviceService.ListDevices:input_type -> wargapos.device.v1.ListDevicesRequest
+	3,  // 8: wargapos.device.v1.DeviceService.ListPrinters:input_type -> wargapos.device.v1.ListPrintersRequest
+	1,  // 9: wargapos.device.v1.DeviceService.Print:input_type -> wargapos.device.v1.PrintRequest
+	8,  // 10: wargapos.device.v1.DeviceService.Connect:output_type -> wargapos.device.v1.ConnectResponse
+	10, // 11: wargapos.device.v1.DeviceService.ListDevices:output_type -> wargapos.device.v1.ListDevicesResponse
+	4,  // 12: wargapos.device.v1.DeviceService.ListPrinters:output_type -> wargapos.device.v1.ListPrintersResponse
+	2,  // 13: wargapos.device.v1.DeviceService.Print:output_type -> wargapos.device.v1.PrintResponse
+	10, // [10:14] is the sub-list for method output_type
+	6,  // [6:10] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_device_v1_device_proto_init() }
@@ -673,8 +723,8 @@ func file_wargapos_device_v1_device_proto_init() {
 		(*PrintRequest_Text)(nil),
 		(*PrintRequest_Raw)(nil),
 	}
-	file_wargapos_device_v1_device_proto_msgTypes[7].OneofWrappers = []any{
-		(*ConnectResponse_Device)(nil),
+	file_wargapos_device_v1_device_proto_msgTypes[8].OneofWrappers = []any{
+		(*ConnectResponse_DeviceList)(nil),
 		(*ConnectResponse_PrintRequest)(nil),
 	}
 	type x struct{}
@@ -683,7 +733,7 @@ func file_wargapos_device_v1_device_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_device_v1_device_proto_rawDesc), len(file_wargapos_device_v1_device_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

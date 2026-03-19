@@ -1,5 +1,26 @@
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
 import { timestampDate } from '@bufbuild/protobuf/wkt'
+import { PaymentMethod } from '../gen/wargapos/transaction/v1/transaction_pb'
+
+export function paymentMethodLabel(m: PaymentMethod): string {
+  switch (m) {
+    case PaymentMethod.CASH:             return 'Tunai'
+    case PaymentMethod.MIDTRANS:         return 'Midtrans'
+    case PaymentMethod.MANUAL_QRIS:      return 'QRIS Manual'
+    case PaymentMethod.MANUAL_TRANSFER:  return 'Transfer Manual'
+    default:                             return '—'
+  }
+}
+
+export function paymentMethodColor(m: PaymentMethod): string {
+  switch (m) {
+    case PaymentMethod.CASH:             return 'green'
+    case PaymentMethod.MIDTRANS:         return 'blue'
+    case PaymentMethod.MANUAL_QRIS:      return 'purple'
+    case PaymentMethod.MANUAL_TRANSFER:  return 'orange'
+    default:                             return 'gray'
+  }
+}
 
 export function formatPrice(cents: bigint): string {
   return new Intl.NumberFormat('id-ID', {

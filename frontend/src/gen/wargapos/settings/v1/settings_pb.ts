@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/settings/v1/settings.proto.
  */
 export const file_wargapos_settings_v1_settings: GenFile = /*@__PURE__*/
-  fileDesc("CiN3YXJnYXBvcy9zZXR0aW5ncy92MS9zZXR0aW5ncy5wcm90bxIUd2FyZ2Fwb3Muc2V0dGluZ3MudjEiTwoQTWlkdHJhbnNTZXR0aW5ncxISCgpzZXJ2ZXJfa2V5GAEgASgJEhIKCmNsaWVudF9rZXkYAiABKAkSEwoLZW52aXJvbm1lbnQYAyABKAkiFAoSR2V0U2V0dGluZ3NSZXF1ZXN0ImwKE0dldFNldHRpbmdzUmVzcG9uc2USOAoIbWlkdHJhbnMYASABKAsyJi53YXJnYXBvcy5zZXR0aW5ncy52MS5NaWR0cmFuc1NldHRpbmdzEhsKE21pZHRyYW5zX2NvbmZpZ3VyZWQYAiABKAgiUQoVVXBkYXRlU2V0dGluZ3NSZXF1ZXN0EjgKCG1pZHRyYW5zGAEgASgLMiYud2FyZ2Fwb3Muc2V0dGluZ3MudjEuTWlkdHJhbnNTZXR0aW5ncyIYChZVcGRhdGVTZXR0aW5nc1Jlc3BvbnNlMuIBCg9TZXR0aW5nc1NlcnZpY2USYgoLR2V0U2V0dGluZ3MSKC53YXJnYXBvcy5zZXR0aW5ncy52MS5HZXRTZXR0aW5nc1JlcXVlc3QaKS53YXJnYXBvcy5zZXR0aW5ncy52MS5HZXRTZXR0aW5nc1Jlc3BvbnNlEmsKDlVwZGF0ZVNldHRpbmdzEisud2FyZ2Fwb3Muc2V0dGluZ3MudjEuVXBkYXRlU2V0dGluZ3NSZXF1ZXN0Giwud2FyZ2Fwb3Muc2V0dGluZ3MudjEuVXBkYXRlU2V0dGluZ3NSZXNwb25zZUI2WjR3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zZXR0aW5ncy92MTtzZXR0aW5nc3YxYgZwcm90bzM");
+  fileDesc("CiN3YXJnYXBvcy9zZXR0aW5ncy92MS9zZXR0aW5ncy5wcm90bxIUd2FyZ2Fwb3Muc2V0dGluZ3MudjEiTwoQTWlkdHJhbnNTZXR0aW5ncxISCgpzZXJ2ZXJfa2V5GAEgASgJEhIKCmNsaWVudF9rZXkYAiABKAkSEwoLZW52aXJvbm1lbnQYAyABKAkiFAoSR2V0U2V0dGluZ3NSZXF1ZXN0InoKFU1hbnVhbFBheW1lbnRTZXR0aW5ncxIRCgliYW5rX25hbWUYASABKAkSGwoTYmFua19hY2NvdW50X251bWJlchgCIAEoCRIZChFiYW5rX2FjY291bnRfbmFtZRgDIAEoCRIWCg5xcmlzX2ltYWdlX3VybBgEIAEoCSJ5Cg9QcmludGVyU2V0dGluZ3MSDQoFdGl0bGUYASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSDwoHYWRkcmVzcxgDIAEoCRIQCghhZGRyZXNzMhgEIAEoCRIPCgdjb250YWN0GAUgASgJEg4KBmZvb3RlchgGIAEoCSLpAQoTR2V0U2V0dGluZ3NSZXNwb25zZRI4CghtaWR0cmFucxgBIAEoCzImLndhcmdhcG9zLnNldHRpbmdzLnYxLk1pZHRyYW5zU2V0dGluZ3MSGwoTbWlkdHJhbnNfY29uZmlndXJlZBgCIAEoCBJDCg5tYW51YWxfcGF5bWVudBgDIAEoCzIrLndhcmdhcG9zLnNldHRpbmdzLnYxLk1hbnVhbFBheW1lbnRTZXR0aW5ncxI2CgdwcmludGVyGAQgASgLMiUud2FyZ2Fwb3Muc2V0dGluZ3MudjEuUHJpbnRlclNldHRpbmdzIs4BChVVcGRhdGVTZXR0aW5nc1JlcXVlc3QSOAoIbWlkdHJhbnMYASABKAsyJi53YXJnYXBvcy5zZXR0aW5ncy52MS5NaWR0cmFuc1NldHRpbmdzEkMKDm1hbnVhbF9wYXltZW50GAIgASgLMisud2FyZ2Fwb3Muc2V0dGluZ3MudjEuTWFudWFsUGF5bWVudFNldHRpbmdzEjYKB3ByaW50ZXIYAyABKAsyJS53YXJnYXBvcy5zZXR0aW5ncy52MS5QcmludGVyU2V0dGluZ3MiGAoWVXBkYXRlU2V0dGluZ3NSZXNwb25zZTLiAQoPU2V0dGluZ3NTZXJ2aWNlEmIKC0dldFNldHRpbmdzEigud2FyZ2Fwb3Muc2V0dGluZ3MudjEuR2V0U2V0dGluZ3NSZXF1ZXN0Gikud2FyZ2Fwb3Muc2V0dGluZ3MudjEuR2V0U2V0dGluZ3NSZXNwb25zZRJrCg5VcGRhdGVTZXR0aW5ncxIrLndhcmdhcG9zLnNldHRpbmdzLnYxLlVwZGF0ZVNldHRpbmdzUmVxdWVzdBosLndhcmdhcG9zLnNldHRpbmdzLnYxLlVwZGF0ZVNldHRpbmdzUmVzcG9uc2VCNlo0d2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc2V0dGluZ3MvdjE7c2V0dGluZ3N2MWIGcHJvdG8z");
 
 /**
  * @generated from message wargapos.settings.v1.MidtransSettings
@@ -55,6 +55,80 @@ export const GetSettingsRequestSchema: GenMessage<GetSettingsRequest> = /*@__PUR
   messageDesc(file_wargapos_settings_v1_settings, 1);
 
 /**
+ * @generated from message wargapos.settings.v1.ManualPaymentSettings
+ */
+export type ManualPaymentSettings = Message<"wargapos.settings.v1.ManualPaymentSettings"> & {
+  /**
+   * @generated from field: string bank_name = 1;
+   */
+  bankName: string;
+
+  /**
+   * @generated from field: string bank_account_number = 2;
+   */
+  bankAccountNumber: string;
+
+  /**
+   * @generated from field: string bank_account_name = 3;
+   */
+  bankAccountName: string;
+
+  /**
+   * @generated from field: string qris_image_url = 4;
+   */
+  qrisImageUrl: string;
+};
+
+/**
+ * Describes the message wargapos.settings.v1.ManualPaymentSettings.
+ * Use `create(ManualPaymentSettingsSchema)` to create a new message.
+ */
+export const ManualPaymentSettingsSchema: GenMessage<ManualPaymentSettings> = /*@__PURE__*/
+  messageDesc(file_wargapos_settings_v1_settings, 2);
+
+/**
+ * @generated from message wargapos.settings.v1.PrinterSettings
+ */
+export type PrinterSettings = Message<"wargapos.settings.v1.PrinterSettings"> & {
+  /**
+   * @generated from field: string title = 1;
+   */
+  title: string;
+
+  /**
+   * @generated from field: string description = 2;
+   */
+  description: string;
+
+  /**
+   * @generated from field: string address = 3;
+   */
+  address: string;
+
+  /**
+   * @generated from field: string address2 = 4;
+   */
+  address2: string;
+
+  /**
+   * @generated from field: string contact = 5;
+   */
+  contact: string;
+
+  /**
+   * @generated from field: string footer = 6;
+   */
+  footer: string;
+};
+
+/**
+ * Describes the message wargapos.settings.v1.PrinterSettings.
+ * Use `create(PrinterSettingsSchema)` to create a new message.
+ */
+export const PrinterSettingsSchema: GenMessage<PrinterSettings> = /*@__PURE__*/
+  messageDesc(file_wargapos_settings_v1_settings, 3);
+
+/**
  * @generated from message wargapos.settings.v1.GetSettingsResponse
  */
 export type GetSettingsResponse = Message<"wargapos.settings.v1.GetSettingsResponse"> & {
@@ -69,6 +143,16 @@ export type GetSettingsResponse = Message<"wargapos.settings.v1.GetSettingsRespo
    * @generated from field: bool midtrans_configured = 2;
    */
   midtransConfigured: boolean;
+
+  /**
+   * @generated from field: wargapos.settings.v1.ManualPaymentSettings manual_payment = 3;
+   */
+  manualPayment?: ManualPaymentSettings;
+
+  /**
+   * @generated from field: wargapos.settings.v1.PrinterSettings printer = 4;
+   */
+  printer?: PrinterSettings;
 };
 
 /**
@@ -76,7 +160,7 @@ export type GetSettingsResponse = Message<"wargapos.settings.v1.GetSettingsRespo
  * Use `create(GetSettingsResponseSchema)` to create a new message.
  */
 export const GetSettingsResponseSchema: GenMessage<GetSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_settings_v1_settings, 2);
+  messageDesc(file_wargapos_settings_v1_settings, 4);
 
 /**
  * @generated from message wargapos.settings.v1.UpdateSettingsRequest
@@ -86,6 +170,16 @@ export type UpdateSettingsRequest = Message<"wargapos.settings.v1.UpdateSettings
    * @generated from field: wargapos.settings.v1.MidtransSettings midtrans = 1;
    */
   midtrans?: MidtransSettings;
+
+  /**
+   * @generated from field: wargapos.settings.v1.ManualPaymentSettings manual_payment = 2;
+   */
+  manualPayment?: ManualPaymentSettings;
+
+  /**
+   * @generated from field: wargapos.settings.v1.PrinterSettings printer = 3;
+   */
+  printer?: PrinterSettings;
 };
 
 /**
@@ -93,7 +187,7 @@ export type UpdateSettingsRequest = Message<"wargapos.settings.v1.UpdateSettings
  * Use `create(UpdateSettingsRequestSchema)` to create a new message.
  */
 export const UpdateSettingsRequestSchema: GenMessage<UpdateSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_settings_v1_settings, 3);
+  messageDesc(file_wargapos_settings_v1_settings, 5);
 
 /**
  * @generated from message wargapos.settings.v1.UpdateSettingsResponse
@@ -106,7 +200,7 @@ export type UpdateSettingsResponse = Message<"wargapos.settings.v1.UpdateSetting
  * Use `create(UpdateSettingsResponseSchema)` to create a new message.
  */
 export const UpdateSettingsResponseSchema: GenMessage<UpdateSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_settings_v1_settings, 4);
+  messageDesc(file_wargapos_settings_v1_settings, 6);
 
 /**
  * @generated from service wargapos.settings.v1.SettingsService

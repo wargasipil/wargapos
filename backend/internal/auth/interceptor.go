@@ -36,8 +36,10 @@ var publicRoutes = map[string]bool{
 	"/wargapos.table.v1.TableService/GetTable":                      true,
 	"/wargapos.table.v1.TableService/ListTables":                    true,
 	"/wargapos.settings.v1.SettingsService/GetSettings":             true,
-	"/wargapos.device.v1.DeviceService/Connect":                     true,
-	"/wargapos.device.v1.DeviceService/ListDevices":                 true,
+	"/wargapos.device.v1.DeviceService/Connect":                                    true,
+	"/wargapos.device.v1.DeviceService/ListDevices":                               true,
+	"/wargapos.notification.v1.NotificationService/ListNotifications":             true,
+	"/wargapos.notification.v1.NotificationService/MarkAllRead":                   true,
 }
 
 // routeRoles maps procedures to allowed roles.

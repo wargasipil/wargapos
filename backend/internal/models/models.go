@@ -85,10 +85,30 @@ type OrderItem struct {
 	CreatedAt      time.Time
 }
 
+type Notification struct {
+	ID        int64     `gorm:"primaryKey;autoIncrement"`
+	Type      int16     `gorm:"column:type;not null"`
+	Title     string    `gorm:"column:title;type:text;not null"`
+	Body      string    `gorm:"column:body;type:text;not null;default:''"`
+	OrderID   *int64    `gorm:"column:order_id"`
+	IsRead    bool      `gorm:"column:is_read;not null;default:false"`
+	CreatedAt time.Time `gorm:"column:created_at"`
+}
+
 type AppSettings struct {
 	ID                  int    `gorm:"primaryKey;autoIncrement"`
 	MidtransServerKey   string `gorm:"column:midtrans_server_key;not null;default:''"`
 	MidtransClientKey   string `gorm:"column:midtrans_client_key;not null;default:''"`
 	MidtransEnvironment string `gorm:"column:midtrans_environment;not null;default:'sandbox'"`
+	BankName            string `gorm:"column:bank_name;not null;default:''"`
+	BankAccountNumber   string `gorm:"column:bank_account_number;not null;default:''"`
+	BankAccountName     string `gorm:"column:bank_account_name;not null;default:''"`
+	QrisImageUrl        string `gorm:"column:qris_image_url;not null;default:''"`
+	PrinterTitle        string `gorm:"column:printer_title;not null;default:''"`
+	PrinterDescription  string `gorm:"column:printer_description;not null;default:''"`
+	PrinterAddress      string `gorm:"column:printer_address;not null;default:''"`
+	PrinterAddress2     string `gorm:"column:printer_address2;not null;default:''"`
+	PrinterContact      string `gorm:"column:printer_contact;not null;default:''"`
+	PrinterFooter       string `gorm:"column:printer_footer;not null;default:''"`
 	UpdatedAt           time.Time
 }

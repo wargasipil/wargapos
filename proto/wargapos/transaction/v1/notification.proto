@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package wargapos.transaction.v1;
+
+import "buf/validate/validate.proto";
+// import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/transaction/v1;transactionv1";
+
+message NewOrderEvent {
+  int64 order_id = 1;
+}
+
+message UpdateOrderEvent {
+  int64 order_id = 1;
+}
+
+message ConnectedEvent {
+  string stream_id = 1;
+}
+
+message Event {
+  oneof event {
+    NewOrderEvent new_order = 1;
+    UpdateOrderEvent update_order = 2;
+    ConnectedEvent connected = 3;
+  }
+}
+
+message PushRequest {
+  Event event = 1 [(buf.validate.field).required = true];
+}
+
+message PushResponse {}
+
+message SubscribeRequest {}
+message SubscribeResponse {
+  Event event = 1;
+}

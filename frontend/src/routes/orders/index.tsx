@@ -8,13 +8,14 @@ import {
 import { Receipt, SlidersHorizontal, Download } from 'lucide-react'
 import { create } from '@bufbuild/protobuf'
 import { TimestampSchema } from '@bufbuild/protobuf/wkt'
-import { transactionClient, tableClient } from '../../client'
+import { transactionClient, tableClient, productClient } from '../../client'
 import { TableSelect } from '../../components/shared/TableSelect'
 import { OrderCard } from '../../components/shared/OrderCard'
-import { OrderFrom, OrderStatus, PaymentStatus } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderFrom, OrderStatus, PaymentMethod, PaymentStatus } from '../../gen/wargapos/transaction/v1/transaction_pb'
 import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
 import { ordersToCSV, downloadCSV } from '../../lib/csv'
+import { ConfirmDialog } from '../../components/shared/ConfirmDialog'
 
 const statusCollection = createListCollection({ items: [
   { label: 'All Status',  value: String(OrderStatus.UNSPECIFIED) },
@@ -34,6 +35,14 @@ const sourceCollection = createListCollection({ items: [
   { label: 'All Sources', value: String(OrderFrom.UNSPECIFIED) },
   { label: 'Guest',       value: String(OrderFrom.GUEST) },
   { label: 'POS',         value: String(OrderFrom.POS) },
+]})
+
+const paymentMethodCollection = createListCollection({ items: [
+  { label: 'Semua Metode',    value: String(PaymentMethod.UNSPECIFIED) },
+  { label: 'Tunai',           value: String(PaymentMethod.CASH) },
+  { label: 'Midtrans',        value: String(PaymentMethod.MIDTRANS) },
+  { label: 'QRIS Manual',     value: String(PaymentMethod.MANUAL_QRIS) },
+  { label: 'Transfer Manual', value: String(PaymentMethod.MANUAL_TRANSFER) },
 ]})
 
 function dateToTimestamp(dateStr: string, endOfDay = false) {
@@ -81,17 +90,20 @@ export function OrdersPage() {
   const [paymentStatusFilter, setPaymentStatusFilter] = useState<PaymentStatus>(PaymentStatus.UNSPECIFIED)
   const [tableFilter, setTableFilter] = useState<bigint>(0n)
   const [orderFromFilter, setOrderFromFilter] = useState<OrderFrom>(OrderFrom.UNSPECIFIED)
+  const [paymentMethodFilter, setPaymentMethodFilter] = useState<PaymentMethod>(PaymentMethod.UNSPECIFIED)
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [exporting, setExporting] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [pendingAction, setPendingAction] = useState<{ type: 'delivered' | 'paid' | 'cancel'; orderId: bigint } | null>(null)
 
   const activeFilterCount = [
     statusFilter !== OrderStatus.UNSPECIFIED,
     paymentStatusFilter !== PaymentStatus.UNSPECIFIED,
     orderFromFilter !== OrderFrom.UNSPECIFIED,
+    paymentMethodFilter !== PaymentMethod.UNSPECIFIED,
     tableFilter !== 0n,
     !!dateFrom || !!dateTo,
     !!search,
@@ -101,6 +113,7 @@ export function OrdersPage() {
     setStatusFilter(OrderStatus.UNSPECIFIED)
     setPaymentStatusFilter(PaymentStatus.UNSPECIFIED)
     setOrderFromFilter(OrderFrom.UNSPECIFIED)
+    setPaymentMethodFilter(PaymentMethod.UNSPECIFIED)
     setTableFilter(0n)
     setDateFrom('')
     setDateTo('')
@@ -109,12 +122,13 @@ export function OrdersPage() {
   }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['orders', statusFilter, paymentStatusFilter, String(tableFilter), String(orderFromFilter), dateFrom, dateTo, search, page],
+    queryKey: ['orders', statusFilter, paymentStatusFilter, paymentMethodFilter, String(tableFilter), String(orderFromFilter), dateFrom, dateTo, search, page],
     queryFn: () => transactionClient.listOrders({
       page,
       pageSize: 20,
       statusFilter,
       paymentStatusFilter,
+      paymentMethodFilter,
       tableId: tableFilter,
       cashierId: 0n,
       orderFromFilter,
@@ -130,6 +144,13 @@ export function OrdersPage() {
     queryKey: ['tables'],
     queryFn: () => tableClient.listTables({}),
   })
+
+  const { data: productsData } = useQuery({
+    queryKey: ['products-all'],
+    queryFn: () => productClient.listProducts({ pageSize: 1000 }),
+    staleTime: 5 * 60_000,
+  })
+  const skuByProductId = new Map(productsData?.products.map((p) => [p.id, p.sku]) ?? [])
 
   const { data: readyData } = useQuery({
     queryKey: ['orders-ready-count'],
@@ -148,6 +169,7 @@ export function OrdersPage() {
   const markDeliveredMutation = useMutation({
     mutationFn: (orderId: bigint) => transactionClient.markOrderDelivered({ orderId }),
     onSuccess: () => {
+      setPendingAction(null)
       qc.invalidateQueries({ queryKey: ['orders'] })
       toaster.create({ title: 'Order marked as delivered', type: 'success', duration: 3000 })
     },
@@ -157,6 +179,7 @@ export function OrdersPage() {
   const markPaidMutation = useMutation({
     mutationFn: (orderId: bigint) => transactionClient.markOrderPaid({ orderId }),
     onSuccess: () => {
+      setPendingAction(null)
       qc.invalidateQueries({ queryKey: ['orders'] })
       toaster.create({ title: 'Order marked as paid', type: 'success', duration: 3000 })
     },
@@ -166,6 +189,7 @@ export function OrdersPage() {
   const cancelMutation = useMutation({
     mutationFn: (orderId: bigint) => transactionClient.cancelOrder({ orderId }),
     onSuccess: () => {
+      setPendingAction(null)
       qc.invalidateQueries({ queryKey: ['orders'] })
       toaster.create({ title: 'Order cancelled', type: 'success', duration: 3000 })
     },
@@ -189,6 +213,7 @@ export function OrdersPage() {
         pageSize: 1000,
         statusFilter,
         paymentStatusFilter,
+        paymentMethodFilter,
         tableId: tableFilter,
         cashierId: 0n,
         orderFromFilter,
@@ -245,6 +270,11 @@ export function OrdersPage() {
         <Text fontSize="xs" color="gray.500" mb={1}>Source</Text>
         <FilterSelect collection={sourceCollection} value={orderFromFilter}
           onChange={(v) => { setOrderFromFilter(v); setPage(1) }} />
+      </Box>
+      <Box>
+        <Text fontSize="xs" color="gray.500" mb={1}>Metode Bayar</Text>
+        <FilterSelect collection={paymentMethodCollection} value={paymentMethodFilter}
+          onChange={(v) => { setPaymentMethodFilter(v); setPage(1) }} />
       </Box>
       <Box>
         <Text fontSize="xs" color="gray.500" mb={1}>Table</Text>
@@ -368,10 +398,11 @@ export function OrdersPage() {
               key={String(order.id)}
               order={order}
               tableName={tableNameById(order.tableId)}
+              skuById={(id) => skuByProductId.get(id) ?? ''}
               onNavigate={() => navigate({ to: '/orders/$id', params: { id: String(order.id) } })}
-              onMarkDelivered={() => markDeliveredMutation.mutate(order.id)}
-              onMarkPaid={() => markPaidMutation.mutate(order.id)}
-              onCancel={() => cancelMutation.mutate(order.id)}
+              onMarkDelivered={() => setPendingAction({ type: 'delivered', orderId: order.id })}
+              onMarkPaid={() => setPendingAction({ type: 'paid', orderId: order.id })}
+              onCancel={() => setPendingAction({ type: 'cancel', orderId: order.id })}
               markDeliveredLoading={markDeliveredMutation.isPending}
               markPaidLoading={markPaidMutation.isPending}
               cancelLoading={cancelMutation.isPending}
@@ -398,6 +429,28 @@ export function OrdersPage() {
           </Button>
         </HStack>
       )}
+      <ConfirmDialog
+        open={pendingAction !== null}
+        title={
+          pendingAction?.type === 'delivered' ? 'Tandai Terkirim?' :
+          pendingAction?.type === 'paid'      ? 'Tandai Lunas?' :
+                                                'Batalkan Order?'
+        }
+        description="Konfirmasi perubahan status order ini."
+        confirmLabel={
+          pendingAction?.type === 'delivered' ? 'Tandai Terkirim' :
+          pendingAction?.type === 'paid'      ? 'Tandai Lunas' :
+                                                'Ya, Batalkan'
+        }
+        loading={markDeliveredMutation.isPending || markPaidMutation.isPending || cancelMutation.isPending}
+        onConfirm={() => {
+          if (!pendingAction) return
+          if (pendingAction.type === 'delivered') markDeliveredMutation.mutate(pendingAction.orderId)
+          if (pendingAction.type === 'paid')      markPaidMutation.mutate(pendingAction.orderId)
+          if (pendingAction.type === 'cancel')    cancelMutation.mutate(pendingAction.orderId)
+        }}
+        onCancel={() => setPendingAction(null)}
+      />
     </Box>
   )
 }

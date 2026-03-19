@@ -40,11 +40,15 @@ func (s *DeviceService) Connect(
 	}()
 
 	if err := stream.Send(&devicev1.ConnectResponse{
-		Result: &devicev1.ConnectResponse_Device{
-			Device: &devicev1.Device{
-				Id:           id,
-				Name:         name,
-				PrinterNames: req.Msg.PrinterNames,
+		Result: &devicev1.ConnectResponse_DeviceList{
+			DeviceList: &devicev1.DeviceList{
+				Devices: []*devicev1.Device{
+					{
+						Id:           id,
+						Name:         name,
+						PrinterNames: req.Msg.PrinterNames,
+					},
+				},
 			},
 		},
 	}); err != nil {

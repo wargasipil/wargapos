@@ -4,7 +4,7 @@
 ALTER TABLE orders DROP COLUMN status;
 ALTER TABLE orders ADD COLUMN status SMALLINT NOT NULL DEFAULT 0;
 
--- payment_method: TEXT → SMALLINT (proto PaymentMethod: 1=cash, 2=qris, NULL=not set)
+-- payment_method: TEXT → SMALLINT (proto PaymentMethod: 1=cash, 2=midtrans, 3=manual_qris, 4=manual_transfer)
 ALTER TABLE orders DROP COLUMN payment_method;
 ALTER TABLE orders ADD COLUMN payment_method SMALLINT;
 

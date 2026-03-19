@@ -4,6 +4,7 @@ import { Box, Button, Flex, IconButton, Text, Tooltip, VStack, HStack } from '@c
 import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
 import { Toaster } from '../components/ui/toaster'
+import { toaster } from '../components/ui/toaster'
 
 const baseNavItems = [
   { label: 'Dashboard', to: '/', Icon: LayoutDashboard },
@@ -36,13 +37,12 @@ function SidebarTooltip({ label, collapsed, children }: { label: string; collaps
 }
 
 export function ProtectedLayout() {
-  const { role, logout } = useAuthStore()
+  const { role, logout, token } = useAuthStore()
   const isAdmin = role === 'admin'
   const navItems = isAdmin ? [...baseNavItems, { label: 'Team', to: '/users', Icon: Users }] : baseNavItems
   const sidebarItems = isAdmin ? [...baseSidebarItems, { label: 'Team', to: '/users', Icon: Users }] : baseSidebarItems
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState(false)
-
   function handleLogout() {
     logout()
     navigate({ to: '/login' })
@@ -67,9 +67,12 @@ export function ProtectedLayout() {
           <ShoppingCart size={18} color="#3b82f6" />
           <Text fontWeight="bold" fontSize="md">WargaPOS</Text>
         </HStack>
-        <IconButton aria-label="Logout" variant="ghost" size="sm" colorPalette="red" onClick={handleLogout}>
-          <LogOut size={18} />
-        </IconButton>
+        <HStack gap={1}>
+          {/* <NotificationPanel unreadCount={unreadCount} /> */}
+          <IconButton aria-label="Logout" variant="ghost" size="sm" colorPalette="red" onClick={handleLogout}>
+            <LogOut size={18} />
+          </IconButton>
+        </HStack>
       </Flex>
 
       <Flex flex={1} overflow="hidden">
@@ -90,9 +93,12 @@ export function ProtectedLayout() {
           overflow="hidden"
         >
           {/* Logo */}
-          <HStack gap={2} mb={8} px={2} justify={collapsed ? 'center' : 'flex-start'}>
-            <ShoppingCart size={20} color="#3b82f6" />
-            {!collapsed && <Text fontWeight="bold" fontSize="lg" whiteSpace="nowrap">WargaPOS</Text>}
+          <HStack gap={2} mb={8} px={2} justify={collapsed ? 'center' : 'space-between'}>
+            <HStack gap={2}>
+              <ShoppingCart size={20} color="#3b82f6" />
+              {!collapsed && <Text fontWeight="bold" fontSize="lg" whiteSpace="nowrap">WargaPOS</Text>}
+            </HStack>
+            {/* !collapsed && <NotificationPanel unreadCount={unreadCount} /> */}
           </HStack>
 
           {/* Nav items */}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Button, Drawer, Flex, Input, Text } from '@chakra-ui/react'
+import { Box, Button, Drawer, Flex, Text } from '@chakra-ui/react'
 import { SlidersHorizontal } from 'lucide-react'
 
 interface Category {
@@ -10,15 +10,13 @@ interface Category {
 interface Props {
   categories: Category[]
   categoryId: bigint
-  search: string
   onCategoryChange: (id: bigint) => void
-  onSearchChange: (q: string) => void
   onReset: () => void
 }
 
-export function ProductFilter({ categories, categoryId, search, onCategoryChange, onSearchChange, onReset }: Props) {
+export function ProductFilter({ categories, categoryId, onCategoryChange, onReset }: Props) {
   const [open, setOpen] = useState(false)
-  const activeCount = (search ? 1 : 0) + (categoryId !== 0n ? 1 : 0)
+  const activeCount = categoryId !== 0n ? 1 : 0
 
   return (
     <>
@@ -55,15 +53,6 @@ export function ProductFilter({ categories, categoryId, search, onCategoryChange
               <Drawer.CloseTrigger />
             </Drawer.Header>
             <Drawer.Body>
-              <Box mb={4}>
-                <Text fontSize="sm" fontWeight="medium" mb={2}>Search</Text>
-                <Input
-                  placeholder="Search products…"
-                  value={search}
-                  onChange={(e) => onSearchChange(e.target.value)}
-                  size="sm"
-                />
-              </Box>
               <Box>
                 <Text fontSize="sm" fontWeight="medium" mb={2}>Category</Text>
                 <Flex gap={2} wrap="wrap">

@@ -103,5 +103,10 @@ func (s *TransactionService) Checkout(
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
+
+	pushEvent(&transactionv1.Event{Event: &transactionv1.Event_NewOrder{
+		NewOrder: &transactionv1.NewOrderEvent{OrderId: order.ID},
+	}})
+
 	return connect.NewResponse(&transactionv1.CheckoutResponse{Order: toProtoOrder(order)}), nil
 }

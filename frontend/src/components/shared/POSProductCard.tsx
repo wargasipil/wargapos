@@ -4,6 +4,7 @@ import { formatPrice } from '../../lib/format'
 
 interface Props {
   name: string
+  sku?: string
   imageUrl?: string
   priceCents: bigint
   categoryName?: string
@@ -12,7 +13,7 @@ interface Props {
   onClick: () => void
 }
 
-export function POSProductCard({ name, imageUrl, priceCents, categoryName, qtyInCart, stockQty, onClick }: Props) {
+export function POSProductCard({ name, sku, imageUrl, priceCents, categoryName, qtyInCart, stockQty, onClick }: Props) {
   const inCart = (qtyInCart ?? 0) > 0
   const outOfStock = (stockQty ?? 1) <= 0
   const lowStock = !outOfStock && stockQty !== undefined && stockQty <= 5
@@ -95,6 +96,7 @@ export function POSProductCard({ name, imageUrl, priceCents, categoryName, qtyIn
       <ProductImage src={imageUrl} />
       <Box p={3} flex="1" display="flex" flexDir="column">
         <Text fontWeight="semibold" fontSize="sm" mb={0.5} lineClamp={2}>{name}</Text>
+        {sku && <Text fontSize="xs" color="gray.400" mb={0.5}>{sku}</Text>}
         {categoryName && <Text fontSize="xs" color="gray.400" mb={1}>{categoryName}</Text>}
         <Text fontWeight="bold" color="blue.600" fontSize="sm" mt="auto">{formatPrice(priceCents)}</Text>
       </Box>

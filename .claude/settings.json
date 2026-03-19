@@ -10,7 +10,8 @@
       "Bash(gh auth:*)",
       "Bash(node -e \"const p = require\\(''@bufbuild/protobuf/package.json''\\); console.log\\(p.version, JSON.stringify\\(p.exports ? Object.keys\\(p.exports\\) : ''no exports''\\)\\)\")",
       "Bash(node -e \":*)",
-      "Bash(find d:/research/wargapos/backend/internal/models -name *.go)"
+      "Bash(find d:/research/wargapos/backend/internal/models -name *.go)",
+      "Bash(head -40 /d/research/wargapos/backend/internal/models/*.go)"
     ]
   }
 }

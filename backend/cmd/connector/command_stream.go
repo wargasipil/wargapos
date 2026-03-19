@@ -55,8 +55,10 @@ func (a *App) connectOnce(client devicev1connect.DeviceServiceClient, id, name s
 		// first message confirms registration; further messages are not expected
 		msg := stream.Msg()
 		switch scmd := msg.GetResult().(type) {
-		case *devicev1.ConnectResponse_Device:
-			log.Printf("connector: registered device %s (%s)", scmd.Device.Name, scmd.Device.Id)
+		case *devicev1.ConnectResponse_DeviceList:
+			for _, d := range scmd.DeviceList.Devices {
+				log.Printf("connector: registered device %s (%s)", d.Name, d.Id)
+			}
 		case *devicev1.ConnectResponse_PrintRequest:
 			slog.Info("connector: received print request")
 			ctx, cancel := context.WithTimeout(context.Background(), time.Minute)

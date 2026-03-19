@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Alert, Button, Dialog, RadioGroup, Spinner, Text, VStack } from '@chakra-ui/react'
+import { Alert, Button, Checkbox, Dialog, Spinner, Text, VStack } from '@chakra-ui/react'
 import { deviceClient } from '../../client'
 import { usePrinterStore } from '../../store/printer'
 
@@ -14,9 +14,9 @@ function printerKey(deviceId: string, name: string) {
 }
 
 export function PrinterSettingsDialog({ open, onClose }: Props) {
-  const { selectedPrinter, setSelectedPrinter } = usePrinterStore()
-  const [value, setValue] = useState<string>(
-    selectedPrinter ? printerKey(selectedPrinter.deviceId, selectedPrinter.name) : ''
+  const { selectedPrinters, setSelectedPrinters } = usePrinterStore()
+  const [values, setValues] = useState<string[]>(
+    selectedPrinters.map((p) => printerKey(p.deviceId, p.name))
   )
 
   const { data, isLoading, isError } = useQuery({
@@ -28,13 +28,17 @@ export function PrinterSettingsDialog({ open, onClose }: Props) {
 
   const printers = data?.printers ?? []
 
+  function toggle(key: string) {
+    setValues((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+    )
+  }
+
   function handleSave() {
-    if (!value) {
-      setSelectedPrinter(null)
-    } else {
-      const found = printers.find((p) => printerKey(p.deviceId, p.name) === value)
-      setSelectedPrinter(found ? { deviceId: found.deviceId, name: found.name } : null)
-    }
+    const selected = printers
+      .filter((p) => values.includes(printerKey(p.deviceId, p.name)))
+      .map((p) => ({ deviceId: p.deviceId, name: p.name }))
+    setSelectedPrinters(selected)
     onClose()
   }
 
@@ -59,20 +63,25 @@ export function PrinterSettingsDialog({ open, onClose }: Props) {
               <Text color="gray.500" fontSize="sm">No printers found. Connect a device first.</Text>
             )}
             {printers.length > 0 && (
-              <RadioGroup.Root value={value} onValueChange={(e) => setValue(e.value ?? '')}>
-                <VStack align="start" gap={2}>
-                  {printers.map((p) => (
-                    <RadioGroup.Item key={printerKey(p.deviceId, p.name)} value={printerKey(p.deviceId, p.name)}>
-                      <RadioGroup.ItemHiddenInput />
-                      <RadioGroup.ItemIndicator />
-                      <RadioGroup.ItemText>
+              <VStack align="start" gap={2}>
+                {printers.map((p) => {
+                  const key = printerKey(p.deviceId, p.name)
+                  return (
+                    <Checkbox.Root
+                      key={key}
+                      checked={values.includes(key)}
+                      onCheckedChange={() => toggle(key)}
+                    >
+                      <Checkbox.HiddenInput />
+                      <Checkbox.Control />
+                      <Checkbox.Label>
                         {p.name}
                         <Text as="span" fontSize="xs" color="gray.500" ml={1}>({p.deviceId})</Text>
-                      </RadioGroup.ItemText>
-                    </RadioGroup.Item>
-                  ))}
-                </VStack>
-              </RadioGroup.Root>
+                      </Checkbox.Label>
+                    </Checkbox.Root>
+                  )
+                })}
+              </VStack>
             )}
           </Dialog.Body>
           <Dialog.Footer>

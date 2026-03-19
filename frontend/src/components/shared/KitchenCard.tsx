@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Box, Button, Flex, HStack, Text, VStack, Badge } from '@chakra-ui/react'
 import { ChefHat } from 'lucide-react'
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
@@ -6,6 +7,7 @@ import type { Order } from '../../gen/wargapos/transaction/v1/transaction_pb'
 interface KitchenCardProps {
   order: Order
   tableName: string
+  skuById: (id: bigint) => string
   markReadyLoading: boolean
   onMarkReady: () => void
   onNavigate: () => void
@@ -19,7 +21,13 @@ function elapsedLabel(createdAt: Timestamp | undefined): { label: string; color:
   return { label, color, mins }
 }
 
-export function KitchenCard({ order, tableName, markReadyLoading, onMarkReady, onNavigate }: KitchenCardProps) {
+export function KitchenCard({ order, tableName, skuById, markReadyLoading, onMarkReady, onNavigate }: KitchenCardProps) {
+  const [, setTick] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => setTick((n) => n + 1), 30_000)
+    return () => clearInterval(id)
+  }, [])
+
   const { label: elapsed, color: elapsedColor, mins } = elapsedLabel(order.createdAt)
   const borderColor = mins >= 20 ? 'red.400' : mins >= 10 ? 'orange.400' : 'gray.200'
 
@@ -59,6 +67,9 @@ export function KitchenCard({ order, tableName, markReadyLoading, onMarkReady, o
                 <Text fontSize="md" fontWeight="medium">{item.productName}</Text>
                 <Badge colorPalette="orange" fontSize="md" px={2}>×{item.quantity}</Badge>
               </HStack>
+              {skuById(item.productId) && (
+                <Text fontSize="xs" color="gray.400">{skuById(item.productId)}</Text>
+              )}
               {item.notes && (
                 <Text fontSize="xs" color="orange.500" pl={2}>↳ {item.notes}</Text>
               )}

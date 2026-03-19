@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/device/v1/device.proto.
  */
 export const file_wargapos_device_v1_device: GenFile = /*@__PURE__*/
-  fileDesc("Ch93YXJnYXBvcy9kZXZpY2UvdjEvZGV2aWNlLnByb3RvEhJ3YXJnYXBvcy5kZXZpY2UudjEiMwoHUHJpbnRlchIaCglkZXZpY2VfaWQYASABKAlCB7pIBHICEAESDAoEbmFtZRgCIAEoCSJrCgxQcmludFJlcXVlc3QSNAoHcHJpbnRlchgBIAEoCzIbLndhcmdhcG9zLmRldmljZS52MS5QcmludGVyQga6SAPIAQESDgoEdGV4dBgCIAEoCUgAEg0KA3JhdxgDIAEoDEgAQgYKBGRhdGEiLwoNUHJpbnRSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg0KBWVycm9yGAIgASgJIhUKE0xpc3RQcmludGVyc1JlcXVlc3QiRQoUTGlzdFByaW50ZXJzUmVzcG9uc2USLQoIcHJpbnRlcnMYASADKAsyGy53YXJnYXBvcy5kZXZpY2UudjEuUHJpbnRlciI5CgZEZXZpY2USCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIVCg1wcmludGVyX25hbWVzGAMgAygJIlMKDkNvbm5lY3RSZXF1ZXN0EhMKAmlkGAEgASgJQge6SARyAhABEhUKBG5hbWUYAiABKAlCB7pIBHICEAESFQoNcHJpbnRlcl9uYW1lcxgDIAMoCSKEAQoPQ29ubmVjdFJlc3BvbnNlEiwKBmRldmljZRgBIAEoCzIaLndhcmdhcG9zLmRldmljZS52MS5EZXZpY2VIABI5Cg1wcmludF9yZXF1ZXN0GAIgASgLMiAud2FyZ2Fwb3MuZGV2aWNlLnYxLlByaW50UmVxdWVzdEgAQggKBnJlc3VsdCIUChJMaXN0RGV2aWNlc1JlcXVlc3QiQgoTTGlzdERldmljZXNSZXNwb25zZRIrCgdkZXZpY2VzGAEgAygLMhoud2FyZ2Fwb3MuZGV2aWNlLnYxLkRldmljZTL2AgoNRGV2aWNlU2VydmljZRJUCgdDb25uZWN0EiIud2FyZ2Fwb3MuZGV2aWNlLnYxLkNvbm5lY3RSZXF1ZXN0GiMud2FyZ2Fwb3MuZGV2aWNlLnYxLkNvbm5lY3RSZXNwb25zZTABEl4KC0xpc3REZXZpY2VzEiYud2FyZ2Fwb3MuZGV2aWNlLnYxLkxpc3REZXZpY2VzUmVxdWVzdBonLndhcmdhcG9zLmRldmljZS52MS5MaXN0RGV2aWNlc1Jlc3BvbnNlEmEKDExpc3RQcmludGVycxInLndhcmdhcG9zLmRldmljZS52MS5MaXN0UHJpbnRlcnNSZXF1ZXN0Gigud2FyZ2Fwb3MuZGV2aWNlLnYxLkxpc3RQcmludGVyc1Jlc3BvbnNlEkwKBVByaW50EiAud2FyZ2Fwb3MuZGV2aWNlLnYxLlByaW50UmVxdWVzdBohLndhcmdhcG9zLmRldmljZS52MS5QcmludFJlc3BvbnNlQjJaMHdhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL2RldmljZS92MTtkZXZpY2V2MWIGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("Ch93YXJnYXBvcy9kZXZpY2UvdjEvZGV2aWNlLnByb3RvEhJ3YXJnYXBvcy5kZXZpY2UudjEiMwoHUHJpbnRlchIaCglkZXZpY2VfaWQYASABKAlCB7pIBHICEAESDAoEbmFtZRgCIAEoCSJrCgxQcmludFJlcXVlc3QSNAoHcHJpbnRlchgBIAEoCzIbLndhcmdhcG9zLmRldmljZS52MS5QcmludGVyQga6SAPIAQESDgoEdGV4dBgCIAEoCUgAEg0KA3JhdxgDIAEoDEgAQgYKBGRhdGEiLwoNUHJpbnRSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg0KBWVycm9yGAIgASgJIhUKE0xpc3RQcmludGVyc1JlcXVlc3QiRQoUTGlzdFByaW50ZXJzUmVzcG9uc2USLQoIcHJpbnRlcnMYASADKAsyGy53YXJnYXBvcy5kZXZpY2UudjEuUHJpbnRlciI5CgZEZXZpY2USCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIVCg1wcmludGVyX25hbWVzGAMgAygJIlMKDkNvbm5lY3RSZXF1ZXN0EhMKAmlkGAEgASgJQge6SARyAhABEhUKBG5hbWUYAiABKAlCB7pIBHICEAESFQoNcHJpbnRlcl9uYW1lcxgDIAMoCSI5CgpEZXZpY2VMaXN0EisKB2RldmljZXMYASADKAsyGi53YXJnYXBvcy5kZXZpY2UudjEuRGV2aWNlIo0BCg9Db25uZWN0UmVzcG9uc2USNQoLZGV2aWNlX2xpc3QYASABKAsyHi53YXJnYXBvcy5kZXZpY2UudjEuRGV2aWNlTGlzdEgAEjkKDXByaW50X3JlcXVlc3QYAiABKAsyIC53YXJnYXBvcy5kZXZpY2UudjEuUHJpbnRSZXF1ZXN0SABCCAoGcmVzdWx0IhQKEkxpc3REZXZpY2VzUmVxdWVzdCJCChNMaXN0RGV2aWNlc1Jlc3BvbnNlEisKB2RldmljZXMYASADKAsyGi53YXJnYXBvcy5kZXZpY2UudjEuRGV2aWNlMvYCCg1EZXZpY2VTZXJ2aWNlElQKB0Nvbm5lY3QSIi53YXJnYXBvcy5kZXZpY2UudjEuQ29ubmVjdFJlcXVlc3QaIy53YXJnYXBvcy5kZXZpY2UudjEuQ29ubmVjdFJlc3BvbnNlMAESXgoLTGlzdERldmljZXMSJi53YXJnYXBvcy5kZXZpY2UudjEuTGlzdERldmljZXNSZXF1ZXN0Gicud2FyZ2Fwb3MuZGV2aWNlLnYxLkxpc3REZXZpY2VzUmVzcG9uc2USYQoMTGlzdFByaW50ZXJzEicud2FyZ2Fwb3MuZGV2aWNlLnYxLkxpc3RQcmludGVyc1JlcXVlc3QaKC53YXJnYXBvcy5kZXZpY2UudjEuTGlzdFByaW50ZXJzUmVzcG9uc2USTAoFUHJpbnQSIC53YXJnYXBvcy5kZXZpY2UudjEuUHJpbnRSZXF1ZXN0GiEud2FyZ2Fwb3MuZGV2aWNlLnYxLlByaW50UmVzcG9uc2VCMlowd2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3MvZGV2aWNlL3YxO2RldmljZXYxYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message wargapos.device.v1.Printer
@@ -176,6 +176,23 @@ export const ConnectRequestSchema: GenMessage<ConnectRequest> = /*@__PURE__*/
   messageDesc(file_wargapos_device_v1_device, 6);
 
 /**
+ * @generated from message wargapos.device.v1.DeviceList
+ */
+export type DeviceList = Message<"wargapos.device.v1.DeviceList"> & {
+  /**
+   * @generated from field: repeated wargapos.device.v1.Device devices = 1;
+   */
+  devices: Device[];
+};
+
+/**
+ * Describes the message wargapos.device.v1.DeviceList.
+ * Use `create(DeviceListSchema)` to create a new message.
+ */
+export const DeviceListSchema: GenMessage<DeviceList> = /*@__PURE__*/
+  messageDesc(file_wargapos_device_v1_device, 7);
+
+/**
  * @generated from message wargapos.device.v1.ConnectResponse
  */
 export type ConnectResponse = Message<"wargapos.device.v1.ConnectResponse"> & {
@@ -184,10 +201,10 @@ export type ConnectResponse = Message<"wargapos.device.v1.ConnectResponse"> & {
    */
   result: {
     /**
-     * @generated from field: wargapos.device.v1.Device device = 1;
+     * @generated from field: wargapos.device.v1.DeviceList device_list = 1;
      */
-    value: Device;
-    case: "device";
+    value: DeviceList;
+    case: "deviceList";
   } | {
     /**
      * @generated from field: wargapos.device.v1.PrintRequest print_request = 2;
@@ -202,7 +219,7 @@ export type ConnectResponse = Message<"wargapos.device.v1.ConnectResponse"> & {
  * Use `create(ConnectResponseSchema)` to create a new message.
  */
 export const ConnectResponseSchema: GenMessage<ConnectResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_device_v1_device, 7);
+  messageDesc(file_wargapos_device_v1_device, 8);
 
 /**
  * @generated from message wargapos.device.v1.ListDevicesRequest
@@ -215,7 +232,7 @@ export type ListDevicesRequest = Message<"wargapos.device.v1.ListDevicesRequest"
  * Use `create(ListDevicesRequestSchema)` to create a new message.
  */
 export const ListDevicesRequestSchema: GenMessage<ListDevicesRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_device_v1_device, 8);
+  messageDesc(file_wargapos_device_v1_device, 9);
 
 /**
  * @generated from message wargapos.device.v1.ListDevicesResponse
@@ -232,7 +249,7 @@ export type ListDevicesResponse = Message<"wargapos.device.v1.ListDevicesRespons
  * Use `create(ListDevicesResponseSchema)` to create a new message.
  */
 export const ListDevicesResponseSchema: GenMessage<ListDevicesResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_device_v1_device, 9);
+  messageDesc(file_wargapos_device_v1_device, 10);
 
 /**
  * @generated from service wargapos.device.v1.DeviceService

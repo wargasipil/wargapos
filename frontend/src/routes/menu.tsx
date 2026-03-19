@@ -2,8 +2,9 @@ import { useRef, useState } from 'react'
 import { useSearch } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import {
-  Alert, Box, Button, Drawer, Field, Flex, Grid, Heading, HStack, Input, Separator, Spinner, Text, VStack,
+  Alert, Box, Button, Drawer, Field, Flex, Grid, Heading, HStack, IconButton, Input, InputGroup, Separator, Spinner, Text, VStack,
 } from '@chakra-ui/react'
+import { X } from 'lucide-react'
 import { productClient, settingsClient, tableClient, transactionClient } from '../client'
 import type { Product } from '../gen/wargapos/product/v1/product_pb'
 import { OrderFrom, PaymentMethod } from '../gen/wargapos/transaction/v1/transaction_pb'
@@ -370,7 +371,12 @@ export function MenuPage() {
       <Box bg="white" boxShadow="sm" px={4} py={3} position="sticky" top={0} zIndex={10}>
         <Flex justify="space-between" align="center">
           <Box>
-            <Text fontWeight="bold" fontSize="md" color="gray.800">WargaPOS</Text>
+            <Text fontWeight="bold" fontSize="md" color="gray.800">
+              {settingsData?.printer?.title || 'WargaPOS'}
+            </Text>
+            {settingsData?.printer?.description && (
+              <Text fontSize="xs" color="gray.400">{settingsData.printer.description}</Text>
+            )}
             {tableId !== 0n && (
               <Text fontSize="xs" color="gray.500">Table: {tableName}</Text>
             )}
@@ -378,16 +384,33 @@ export function MenuPage() {
         </Flex>
       </Box>
 
-      {/* Filter button */}
+      {/* Search + Filter */}
       <Box px={{ base: 3, md: 6 }} pt={4} pb={2}>
-        <ProductFilter
-          categories={categories}
-          categoryId={selectedCategory}
-          search={searchQuery}
-          onCategoryChange={setSelectedCategory}
-          onSearchChange={setSearchQuery}
-          onReset={() => { setSelectedCategory(0n); setSearchQuery('') }}
-        />
+        <HStack gap={2}>
+          <InputGroup
+            flex={1}
+            endElement={
+              searchQuery ? (
+                <IconButton aria-label="Clear search" variant="ghost" size="xs" onClick={() => setSearchQuery('')}>
+                  <X size={12} />
+                </IconButton>
+              ) : undefined
+            }
+          >
+            <Input
+              placeholder="Cari produk…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              size="sm"
+            />
+          </InputGroup>
+          <ProductFilter
+            categories={categories}
+            categoryId={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            onReset={() => setSelectedCategory(0n)}
+          />
+        </HStack>
       </Box>
 
       {/* Product Grid */}

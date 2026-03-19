@@ -97,10 +97,37 @@ func (s *TransactionService) GetDashboardStats(
 		recentProto[i] = toProtoOrder(&recentOrders[i])
 	}
 
+	// 5. Payment breakdown by method (paid orders only)
+	type paymentRow struct {
+		PaymentMethod int32
+		Revenue       int64
+	}
+	var paymentRows []paymentRow
+	if err := db.Model(&models.Order{}).
+		Where("created_at >= ? AND payment_status = ?", start, paymentPaid).
+		Select("payment_method, COALESCE(SUM(total_cents), 0) AS revenue").
+		Group("payment_method").Scan(&paymentRows).Error; err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	breakdown := &transactionv1.DashboardPaymentBreakdown{}
+	for _, r := range paymentRows {
+		switch transactionv1.PaymentMethod(r.PaymentMethod) {
+		case transactionv1.PaymentMethod_PAYMENT_METHOD_CASH:
+			breakdown.CashCents = r.Revenue
+		case transactionv1.PaymentMethod_PAYMENT_METHOD_MIDTRANS:
+			breakdown.MidtransCents = r.Revenue
+		case transactionv1.PaymentMethod_PAYMENT_METHOD_MANUAL_QRIS:
+			breakdown.ManualQrisCents = r.Revenue
+		case transactionv1.PaymentMethod_PAYMENT_METHOD_MANUAL_TRANSFER:
+			breakdown.ManualTransferCents = r.Revenue
+		}
+	}
+
 	return connect.NewResponse(&transactionv1.GetDashboardStatsResponse{
 		TotalRevenueCents: revenue,
 		OrderCounts:       counts,
 		TopProducts:       topProducts,
 		RecentOrders:      recentProto,
+		PaymentBreakdown:  breakdown,
 	}), nil
 }
