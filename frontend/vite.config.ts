@@ -12,6 +12,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
+    allowedHosts: true,
     proxy: {
       // Proxy all Connect RPCs to the Go backend.
       // All Connect paths start with the proto package name e.g.:

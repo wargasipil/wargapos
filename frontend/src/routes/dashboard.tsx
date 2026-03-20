@@ -6,7 +6,8 @@ import {
 } from '@chakra-ui/react'
 import { ShoppingCart, TrendingUp, Package, Clock } from 'lucide-react'
 import { transactionClient } from '../client'
-import { DashboardPeriod, OrderStatus, PaymentMethod, PaymentStatus } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { DashboardPeriod } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderStatus, PaymentMethod, PaymentStatus } from '../gen/wargapos/transaction/v1/order_pb'
 import { useAuthStore } from '../store/auth'
 import { formatPrice, formatTime, paymentMethodLabel } from '../lib/format'
 

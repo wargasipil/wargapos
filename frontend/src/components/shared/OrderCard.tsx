@@ -1,7 +1,7 @@
 import { Badge, Box, Button, Flex, HStack, Separator, Text, VStack } from '@chakra-ui/react'
 import { CheckCircle, ChevronRight, Truck, XCircle } from 'lucide-react'
-import { OrderFrom, OrderStatus, PaymentStatus } from '../../gen/wargapos/transaction/v1/transaction_pb'
-import type { Order } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderFrom, OrderStatus, PaymentStatus } from '../../gen/wargapos/transaction/v1/order_pb'
+import type { Order } from '../../gen/wargapos/transaction/v1/order_pb'
 import { formatPrice, formatTime, paymentMethodLabel, paymentMethodColor } from '../../lib/format'
 
 interface OrderCardProps {

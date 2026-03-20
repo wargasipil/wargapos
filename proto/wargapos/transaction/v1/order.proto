@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package wargapos.transaction.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/transaction/v1;transactionv1";
+
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  ORDER_STATUS_PENDING = 1;
+  // 2 reserved (was PAID — now tracked in PaymentStatus)
+  ORDER_STATUS_CANCELLED = 3;
+  ORDER_STATUS_PREPARED = 4; // renamed from READY, same integer value
+  ORDER_STATUS_DELIVERED = 5;
+}
+
+enum PaymentStatus {
+  PAYMENT_STATUS_UNSPECIFIED = 0;
+  PAYMENT_STATUS_UNPAID = 1;
+  PAYMENT_STATUS_PAID = 2;
+  PAYMENT_STATUS_REFUNDED = 3;
+}
+
+enum OrderFrom {
+  ORDER_FROM_UNSPECIFIED = 0;
+  ORDER_FROM_GUEST = 1;
+  ORDER_FROM_POS = 2;
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CASH = 1;
+  // Paid via Midtrans Snap (card / QRIS / bank transfer via gateway)
+  PAYMENT_METHOD_MIDTRANS = 2;
+  // Customer scans staff QR code — staff confirms receipt manually
+  PAYMENT_METHOD_MANUAL_QRIS = 3;
+  // Customer transfers to bank account — staff confirms receipt manually
+  PAYMENT_METHOD_MANUAL_TRANSFER = 4;
+}
+
+message OrderItem {
+  int64 id = 1;
+  int64 product_id = 2;
+  string product_name = 3;
+  int32 quantity = 4;
+  int64 unit_price_cents = 5;
+  int64 subtotal_cents = 6;
+  string notes = 7;
+}
+
+message Order {
+  int64 id = 1;
+  int64 cashier_id = 2;
+  repeated OrderItem items = 3;
+  int64 total_cents = 4;
+  OrderStatus status = 5;
+  google.protobuf.Timestamp created_at = 6;
+  int64 table_id = 7;
+  string customer_name = 8;
+  string phone_number = 9;
+  PaymentMethod payment_method = 10;
+  OrderFrom order_from = 11;
+  PaymentStatus payment_status = 13;
+}
+
+message MarkOrderPaidRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message MarkOrderPaidResponse {
+  Order order = 1;
+}
+
+message CancelOrderRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message CancelOrderResponse {
+  Order order = 1;
+}
+
+message MarkOrderReadyRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message MarkOrderReadyResponse {
+  Order order = 1;
+}
+
+message MarkOrderDeliveredRequest {
+  int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+}
+message MarkOrderDeliveredResponse {
+  Order order = 1;
+}
+
+message ListOrdersFilter {
+  int64 cashier_id = 3;
+  OrderStatus status_filter = 4;
+  int64 table_id = 5;
+  OrderFrom order_from_filter = 6;
+  PaymentStatus payment_status_filter = 7;
+  google.protobuf.Timestamp created_at_from = 8;
+  google.protobuf.Timestamp created_at_to = 9;
+  string search = 10;
+  PaymentMethod payment_method_filter = 11;
+}
+
+message LostOrdersSort {
+  enum SortBy {
+    SORT_BY_UNSPECIFIED = 0;
+    SORT_BY_CREATED_AT = 1;
+    SORT_BY_ORDERID = 2;
+  }
+  SortBy sort_by = 1 [(buf.validate.field).enum = {
+    not_in: [0]
+  }];
+  bool descending = 2;
+}
+
+message ListOrdersRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  ListOrdersFilter filter = 3;
+  LostOrdersSort sort = 4;
+}
+
+message ListOrdersResponse {
+  repeated Order orders = 1;
+  int32 total = 2;
+}

@@ -7,7 +7,7 @@ import {
 import { ArrowLeft, CheckCircle, Phone, Printer, XCircle, ChefHat, Truck } from 'lucide-react'
 import { printReceipt } from '../../lib/printer'
 import { transactionClient, tableClient } from '../../client'
-import { OrderStatus, PaymentStatus, OrderFrom } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderStatus, PaymentStatus, OrderFrom } from '../../gen/wargapos/transaction/v1/order_pb'
 import { toaster } from '../../components/ui/toaster'
 import { formatPrice, formatTime, formatDateTime, paymentMethodLabel, paymentMethodColor } from '../../lib/format'
 import { stripError } from '../../lib/errors'

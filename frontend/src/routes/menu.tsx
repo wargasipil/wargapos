@@ -7,7 +7,7 @@ import {
 import { X } from 'lucide-react'
 import { productClient, settingsClient, tableClient, transactionClient } from '../client'
 import type { Product } from '../gen/wargapos/product/v1/product_pb'
-import { OrderFrom, PaymentMethod } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderFrom, PaymentMethod } from '../gen/wargapos/transaction/v1/order_pb'
 import { formatPrice } from '../lib/format'
 import { stripError } from '../lib/errors'
 import { POSProductCard } from '../components/shared/POSProductCard'

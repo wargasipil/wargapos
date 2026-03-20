@@ -25,33 +25,38 @@ func (s *TransactionService) ListOrders(
 		pageSize = 1000
 	}
 
+	f := req.Msg.GetFilter()
+	if f == nil {
+		f = &transactionv1.ListOrdersFilter{}
+	}
+
 	db := s.db.WithContext(ctx).Model(&models.Order{})
-	if req.Msg.CashierId != 0 {
-		db = db.Where("cashier_id = ?", req.Msg.CashierId)
+	if f.CashierId != 0 {
+		db = db.Where("cashier_id = ?", f.CashierId)
 	}
-	if req.Msg.StatusFilter != transactionv1.OrderStatus_ORDER_STATUS_UNSPECIFIED {
-		db = db.Where("status = ?", int32(req.Msg.StatusFilter))
+	if f.StatusFilter != transactionv1.OrderStatus_ORDER_STATUS_UNSPECIFIED {
+		db = db.Where("status = ?", int32(f.StatusFilter))
 	}
-	if req.Msg.TableId != 0 {
-		db = db.Where("table_id = ?", req.Msg.TableId)
+	if f.TableId != 0 {
+		db = db.Where("table_id = ?", f.TableId)
 	}
-	if req.Msg.OrderFromFilter != transactionv1.OrderFrom_ORDER_FROM_UNSPECIFIED {
-		db = db.Where("order_from = ?", int32(req.Msg.OrderFromFilter))
+	if f.OrderFromFilter != transactionv1.OrderFrom_ORDER_FROM_UNSPECIFIED {
+		db = db.Where("order_from = ?", int32(f.OrderFromFilter))
 	}
-	if req.Msg.PaymentStatusFilter != transactionv1.PaymentStatus_PAYMENT_STATUS_UNSPECIFIED {
-		db = db.Where("payment_status = ?", int32(req.Msg.PaymentStatusFilter))
+	if f.PaymentStatusFilter != transactionv1.PaymentStatus_PAYMENT_STATUS_UNSPECIFIED {
+		db = db.Where("payment_status = ?", int32(f.PaymentStatusFilter))
 	}
-	if req.Msg.CreatedAtFrom != nil {
-		db = db.Where("created_at >= ?", req.Msg.CreatedAtFrom.AsTime())
+	if f.CreatedAtFrom != nil {
+		db = db.Where("created_at >= ?", f.CreatedAtFrom.AsTime())
 	}
-	if req.Msg.CreatedAtTo != nil {
-		db = db.Where("created_at <= ?", req.Msg.CreatedAtTo.AsTime())
+	if f.CreatedAtTo != nil {
+		db = db.Where("created_at <= ?", f.CreatedAtTo.AsTime())
 	}
-	if req.Msg.Search != "" {
-		db = db.Where("customer_name ILIKE ? OR CAST(id AS TEXT) = ?", "%"+req.Msg.Search+"%", req.Msg.Search)
+	if f.Search != "" {
+		db = db.Where("customer_name ILIKE ? OR CAST(id AS TEXT) = ?", "%"+f.Search+"%", f.Search)
 	}
-	if req.Msg.PaymentMethodFilter != transactionv1.PaymentMethod_PAYMENT_METHOD_UNSPECIFIED {
-		db = db.Where("payment_method = ?", int32(req.Msg.PaymentMethodFilter))
+	if f.PaymentMethodFilter != transactionv1.PaymentMethod_PAYMENT_METHOD_UNSPECIFIED {
+		db = db.Where("payment_method = ?", int32(f.PaymentMethodFilter))
 	}
 
 	var total int64
@@ -59,9 +64,22 @@ func (s *TransactionService) ListOrders(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
+	orderClause := "created_at DESC"
+	if s := req.Msg.GetSort(); s != nil {
+		col := "created_at"
+		if s.SortBy == transactionv1.LostOrdersSort_SORT_BY_ORDERID {
+			col = "id"
+		}
+		dir := "DESC"
+		if !s.Descending {
+			dir = "ASC"
+		}
+		orderClause = col + " " + dir
+	}
+
 	var orders []models.Order
 	if err := db.Preload("Items").
-		Order("created_at DESC").
+		Order(orderClause).
 		Offset(int((page-1)*pageSize)).
 		Limit(int(pageSize)).
 		Find(&orders).Error; err != nil {

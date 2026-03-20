@@ -1,6 +1,6 @@
-import type { Order } from '../gen/wargapos/transaction/v1/transaction_pb'
+import type { Order } from '../gen/wargapos/transaction/v1/order_pb'
 import { deviceClient } from '../client'
-import { PaymentStatus } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { PaymentStatus } from '../gen/wargapos/transaction/v1/order_pb'
 import { formatPrice, formatDateTime, paymentMethodLabel } from './format'
 
 // 58mm paper = 32 chars per line

@@ -18,8 +18,8 @@ import { ProductFilter } from '../../components/shared/ProductFilter'
 import { syncCartToServer } from '../../lib/syncCart'
 import { toaster } from '../../components/ui/toaster'
 import type { Product } from '../../gen/wargapos/product/v1/product_pb'
-import { PaymentMethod, OrderFrom } from '../../gen/wargapos/transaction/v1/transaction_pb'
-import type { Order } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { PaymentMethod, OrderFrom } from '../../gen/wargapos/transaction/v1/order_pb'
+import type { Order } from '../../gen/wargapos/transaction/v1/order_pb'
 
 type Step = 'browse' | 'receipt'
 

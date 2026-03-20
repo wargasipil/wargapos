@@ -1,6 +1,6 @@
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
 import { timestampDate } from '@bufbuild/protobuf/wkt'
-import { PaymentMethod } from '../gen/wargapos/transaction/v1/transaction_pb'
+import { PaymentMethod } from '../gen/wargapos/transaction/v1/order_pb'
 
 export function paymentMethodLabel(m: PaymentMethod): string {
   switch (m) {

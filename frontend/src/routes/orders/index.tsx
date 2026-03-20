@@ -11,7 +11,7 @@ import { TimestampSchema } from '@bufbuild/protobuf/wkt'
 import { transactionClient, tableClient, productClient } from '../../client'
 import { TableSelect } from '../../components/shared/TableSelect'
 import { OrderCard } from '../../components/shared/OrderCard'
-import { OrderFrom, OrderStatus, PaymentMethod, PaymentStatus } from '../../gen/wargapos/transaction/v1/transaction_pb'
+import { OrderFrom, OrderStatus, PaymentMethod, PaymentStatus } from '../../gen/wargapos/transaction/v1/order_pb'
 import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
 import { ordersToCSV, downloadCSV } from '../../lib/csv'
@@ -116,15 +116,17 @@ export function OrdersPage() {
     queryFn: () => transactionClient.listOrders({
       page,
       pageSize: 20,
-      statusFilter,
-      paymentStatusFilter,
-      paymentMethodFilter,
-      tableId: tableFilter,
-      cashierId: 0n,
-      orderFromFilter,
-      createdAtFrom: dateToTimestamp(dateFrom),
-      createdAtTo: dateToTimestamp(dateTo, true),
-      search,
+      filter: {
+        statusFilter,
+        paymentStatusFilter,
+        paymentMethodFilter,
+        tableId: tableFilter,
+        cashierId: 0n,
+        orderFromFilter,
+        createdAtFrom: dateToTimestamp(dateFrom),
+        createdAtTo: dateToTimestamp(dateTo, true),
+        search,
+      },
     }),
     staleTime: 0,
     gcTime: 0,
@@ -144,7 +146,7 @@ export function OrdersPage() {
 
   const { data: readyData } = useQuery({
     queryKey: ['orders-ready-count'],
-    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.PREPARED, pageSize: 1, page: 1 }),
+    queryFn: () => transactionClient.listOrders({ pageSize: 1, page: 1, filter: { statusFilter: OrderStatus.PREPARED } }),
     refetchInterval: 15_000,
   })
   const prevReadyCount = useRef(0)
@@ -159,19 +161,19 @@ export function OrdersPage() {
   // Count queries for tab badges
   const { data: countPending } = useQuery({
     queryKey: ['orders-count', 'pending'],
-    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.PENDING, pageSize: 1, page: 1 }),
+    queryFn: () => transactionClient.listOrders({ pageSize: 1, page: 1, filter: { statusFilter: OrderStatus.PENDING } }),
   })
   const { data: countPrepared } = useQuery({
     queryKey: ['orders-count', 'prepared'],
-    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.PREPARED, pageSize: 1, page: 1 }),
+    queryFn: () => transactionClient.listOrders({ pageSize: 1, page: 1, filter: { statusFilter: OrderStatus.PREPARED } }),
   })
   const { data: countDelivered } = useQuery({
     queryKey: ['orders-count', 'delivered'],
-    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.DELIVERED, pageSize: 1, page: 1 }),
+    queryFn: () => transactionClient.listOrders({ pageSize: 1, page: 1, filter: { statusFilter: OrderStatus.DELIVERED } }),
   })
   const { data: countCancelled } = useQuery({
     queryKey: ['orders-count', 'cancelled'],
-    queryFn: () => transactionClient.listOrders({ statusFilter: OrderStatus.CANCELLED, pageSize: 1, page: 1 }),
+    queryFn: () => transactionClient.listOrders({ pageSize: 1, page: 1, filter: { statusFilter: OrderStatus.CANCELLED } }),
   })
 
   // Auto-refresh on live events
@@ -255,15 +257,17 @@ export function OrdersPage() {
       const res = await transactionClient.listOrders({
         page: 1,
         pageSize: 1000,
-        statusFilter,
-        paymentStatusFilter,
-        paymentMethodFilter,
-        tableId: tableFilter,
-        cashierId: 0n,
-        orderFromFilter,
-        createdAtFrom: dateToTimestamp(dateFrom),
-        createdAtTo: dateToTimestamp(dateTo, true),
-        search,
+        filter: {
+          statusFilter,
+          paymentStatusFilter,
+          paymentMethodFilter,
+          tableId: tableFilter,
+          cashierId: 0n,
+          orderFromFilter,
+          createdAtFrom: dateToTimestamp(dateFrom),
+          createdAtTo: dateToTimestamp(dateTo, true),
+          search,
+        },
       })
       const csv = ordersToCSV(res.orders, tableNameById)
       downloadCSV(`orders-${new Date().toISOString().slice(0, 10)}.csv`, csv)

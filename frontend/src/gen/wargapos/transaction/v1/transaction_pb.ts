@@ -5,136 +5,17 @@
 import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { PushRequestSchema, PushResponseSchema, SubscribeRequestSchema, SubscribeResponseSchema } from "./notification_pb";
 import { file_wargapos_transaction_v1_notification } from "./notification_pb";
+import type { CancelOrderRequestSchema, CancelOrderResponseSchema, ListOrdersRequestSchema, ListOrdersResponseSchema, MarkOrderDeliveredRequestSchema, MarkOrderDeliveredResponseSchema, MarkOrderPaidRequestSchema, MarkOrderPaidResponseSchema, MarkOrderReadyRequestSchema, MarkOrderReadyResponseSchema, Order, OrderFrom, PaymentMethod } from "./order_pb";
+import { file_wargapos_transaction_v1_order } from "./order_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/transaction/v1/transaction.proto.
  */
 export const file_wargapos_transaction_v1_transaction: GenFile = /*@__PURE__*/
-  fileDesc("Cil3YXJnYXBvcy90cmFuc2FjdGlvbi92MS90cmFuc2FjdGlvbi5wcm90bxIXd2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEilAEKCU9yZGVySXRlbRIKCgJpZBgBIAEoAxISCgpwcm9kdWN0X2lkGAIgASgDEhQKDHByb2R1Y3RfbmFtZRgDIAEoCRIQCghxdWFudGl0eRgEIAEoBRIYChB1bml0X3ByaWNlX2NlbnRzGAUgASgDEhYKDnN1YnRvdGFsX2NlbnRzGAYgASgDEg0KBW5vdGVzGAcgASgJIswDCgVPcmRlchIKCgJpZBgBIAEoAxISCgpjYXNoaWVyX2lkGAIgASgDEjEKBWl0ZW1zGAMgAygLMiIud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuT3JkZXJJdGVtEhMKC3RvdGFsX2NlbnRzGAQgASgDEjQKBnN0YXR1cxgFIAEoDjIkLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk9yZGVyU3RhdHVzEi4KCmNyZWF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhAKCHRhYmxlX2lkGAcgASgDEhUKDWN1c3RvbWVyX25hbWUYCCABKAkSFAoMcGhvbmVfbnVtYmVyGAkgASgJEj4KDnBheW1lbnRfbWV0aG9kGAogASgOMiYud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuUGF5bWVudE1ldGhvZBI2CgpvcmRlcl9mcm9tGAsgASgOMiIud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuT3JkZXJGcm9tEj4KDnBheW1lbnRfc3RhdHVzGA0gASgOMiYud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuUGF5bWVudFN0YXR1cyKIAQoQQWRkVG9DYXJ0UmVxdWVzdBIbCgpzZXNzaW9uX2lkGAEgASgJQge6SARyAhABEhsKCnByb2R1Y3RfaWQYAiABKANCB7pIBCICIAASGQoIcXVhbnRpdHkYAyABKAVCB7pIBBoCIAASEAoIdGFibGVfaWQYBCABKAMSDQoFbm90ZXMYBSABKAkiNgoZQ3JlYXRlUGF5bWVudFRva2VuUmVxdWVzdBIZCghvcmRlcl9pZBgBIAEoA0IHukgEIgIgACJEChpDcmVhdGVQYXltZW50VG9rZW5SZXNwb25zZRISCgpzbmFwX3Rva2VuGAEgASgJEhIKCmNsaWVudF9rZXkYAiABKAkiQQoRQWRkVG9DYXJ0UmVzcG9uc2USLAoEY2FydBgBIAEoCzIeLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk9yZGVyIlEKFVJlbW92ZUZyb21DYXJ0UmVxdWVzdBIbCgpzZXNzaW9uX2lkGAEgASgJQge6SARyAhABEhsKCnByb2R1Y3RfaWQYAiABKANCB7pIBCICIAAiRgoWUmVtb3ZlRnJvbUNhcnRSZXNwb25zZRIsCgRjYXJ0GAEgASgLMh4ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuT3JkZXIiLQoOR2V0Q2FydFJlcXVlc3QSGwoKc2Vzc2lvbl9pZBgBIAEoCUIHukgEcgIQASI/Cg9HZXRDYXJ0UmVzcG9uc2USLAoEY2FydBgBIAEoCzIeLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk9yZGVyIvEBCg9DaGVja291dFJlcXVlc3QSGwoKc2Vzc2lvbl9pZBgBIAEoCUIHukgEcgIQARISCgpjYXNoaWVyX2lkGAIgASgDEkgKDnBheW1lbnRfbWV0aG9kGAMgASgOMiYud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuUGF5bWVudE1ldGhvZEIIukgFggECIAASFQoNY3VzdG9tZXJfbmFtZRgEIAEoCRIUCgxwaG9uZV9udW1iZXIYBSABKAkSNgoKb3JkZXJfZnJvbRgGIAEoDjIiLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk9yZGVyRnJvbSJBChBDaGVja291dFJlc3BvbnNlEi0KBW9yZGVyGAEgASgLMh4ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuT3JkZXIiLAoPR2V0T3JkZXJSZXF1ZXN0EhkKCG9yZGVyX2lkGAEgASgDQge6SAQiAiAAIkEKEEdldE9yZGVyUmVzcG9uc2USLQoFb3JkZXIYASABKAsyHi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlciLcAwoRTGlzdE9yZGVyc1JlcXVlc3QSDAoEcGFnZRgBIAEoBRIRCglwYWdlX3NpemUYAiABKAUSEgoKY2FzaGllcl9pZBgDIAEoAxI7Cg1zdGF0dXNfZmlsdGVyGAQgASgOMiQud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuT3JkZXJTdGF0dXMSEAoIdGFibGVfaWQYBSABKAMSPQoRb3JkZXJfZnJvbV9maWx0ZXIYBiABKA4yIi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlckZyb20SRQoVcGF5bWVudF9zdGF0dXNfZmlsdGVyGAcgASgOMiYud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuUGF5bWVudFN0YXR1cxIzCg9jcmVhdGVkX2F0X2Zyb20YCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjEKDWNyZWF0ZWRfYXRfdG8YCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg4KBnNlYXJjaBgKIAEoCRJFChVwYXltZW50X21ldGhvZF9maWx0ZXIYCyABKA4yJi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5QYXltZW50TWV0aG9kIlMKEkxpc3RPcmRlcnNSZXNwb25zZRIuCgZvcmRlcnMYASADKAsyHi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlchINCgV0b3RhbBgCIAEoBSJuChREYXNoYm9hcmRPcmRlckNvdW50cxINCgV0b3RhbBgBIAEoBRIPCgdwZW5kaW5nGAIgASgFEhAKCHByZXBhcmVkGAMgASgFEhEKCWRlbGl2ZXJlZBgEIAEoBRIRCgljYW5jZWxsZWQYBSABKAUiWQoTRGFzaGJvYXJkVG9wUHJvZHVjdBIUCgxwcm9kdWN0X25hbWUYASABKAkSFQoNcXVhbnRpdHlfc29sZBgCIAEoBRIVCg1yZXZlbnVlX2NlbnRzGAMgASgDIoEBChlEYXNoYm9hcmRQYXltZW50QnJlYWtkb3duEhIKCmNhc2hfY2VudHMYASABKAMSFgoObWlkdHJhbnNfY2VudHMYAiABKAMSGQoRbWFudWFsX3FyaXNfY2VudHMYAyABKAMSHQoVbWFudWFsX3RyYW5zZmVyX2NlbnRzGAQgASgDIlQKGEdldERhc2hib2FyZFN0YXRzUmVxdWVzdBI4CgZwZXJpb2QYASABKA4yKC53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5EYXNoYm9hcmRQZXJpb2QixwIKGUdldERhc2hib2FyZFN0YXRzUmVzcG9uc2USGwoTdG90YWxfcmV2ZW51ZV9jZW50cxgBIAEoAxJDCgxvcmRlcl9jb3VudHMYAiABKAsyLS53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5EYXNoYm9hcmRPcmRlckNvdW50cxJCCgx0b3BfcHJvZHVjdHMYAyADKAsyLC53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5EYXNoYm9hcmRUb3BQcm9kdWN0EjUKDXJlY2VudF9vcmRlcnMYBCADKAsyHi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlchJNChFwYXltZW50X2JyZWFrZG93bhgFIAEoCzIyLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkRhc2hib2FyZFBheW1lbnRCcmVha2Rvd24iMQoUTWFya09yZGVyUGFpZFJlcXVlc3QSGQoIb3JkZXJfaWQYASABKANCB7pIBCICIAAiRgoVTWFya09yZGVyUGFpZFJlc3BvbnNlEi0KBW9yZGVyGAEgASgLMh4ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuT3JkZXIiLwoSQ2FuY2VsT3JkZXJSZXF1ZXN0EhkKCG9yZGVyX2lkGAEgASgDQge6SAQiAiAAIkQKE0NhbmNlbE9yZGVyUmVzcG9uc2USLQoFb3JkZXIYASABKAsyHi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlciIyChVNYXJrT3JkZXJSZWFkeVJlcXVlc3QSGQoIb3JkZXJfaWQYASABKANCB7pIBCICIAAiRwoWTWFya09yZGVyUmVhZHlSZXNwb25zZRItCgVvcmRlchgBIAEoCzIeLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk9yZGVyIjYKGU1hcmtPcmRlckRlbGl2ZXJlZFJlcXVlc3QSGQoIb3JkZXJfaWQYASABKANCB7pIBCICIAAiSwoaTWFya09yZGVyRGVsaXZlcmVkUmVzcG9uc2USLQoFb3JkZXIYASABKAsyHi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlciqpAQoNUGF5bWVudE1ldGhvZBIeChpQQVlNRU5UX01FVEhPRF9VTlNQRUNJRklFRBAAEhcKE1BBWU1FTlRfTUVUSE9EX0NBU0gQARIbChdQQVlNRU5UX01FVEhPRF9NSURUUkFOUxACEh4KGlBBWU1FTlRfTUVUSE9EX01BTlVBTF9RUklTEAMSIgoeUEFZTUVOVF9NRVRIT0RfTUFOVUFMX1RSQU5TRkVSEAQqmAEKC09yZGVyU3RhdHVzEhwKGE9SREVSX1NUQVRVU19VTlNQRUNJRklFRBAAEhgKFE9SREVSX1NUQVRVU19QRU5ESU5HEAESGgoWT1JERVJfU1RBVFVTX0NBTkNFTExFRBADEhkKFU9SREVSX1NUQVRVU19QUkVQQVJFRBAEEhoKFk9SREVSX1NUQVRVU19ERUxJVkVSRUQQBSqAAQoNUGF5bWVudFN0YXR1cxIeChpQQVlNRU5UX1NUQVRVU19VTlNQRUNJRklFRBAAEhkKFVBBWU1FTlRfU1RBVFVTX1VOUEFJRBABEhcKE1BBWU1FTlRfU1RBVFVTX1BBSUQQAhIbChdQQVlNRU5UX1NUQVRVU19SRUZVTkRFRBADKlEKCU9yZGVyRnJvbRIaChZPUkRFUl9GUk9NX1VOU1BFQ0lGSUVEEAASFAoQT1JERVJfRlJPTV9HVUVTVBABEhIKDk9SREVSX0ZST01fUE9TEAIqkAEKD0Rhc2hib2FyZFBlcmlvZBIgChxEQVNIQk9BUkRfUEVSSU9EX1VOU1BFQ0lGSUVEEAASGgoWREFTSEJPQVJEX1BFUklPRF9UT0RBWRABEh4KGkRBU0hCT0FSRF9QRVJJT0RfVEhJU19XRUVLEAISHwobREFTSEJPQVJEX1BFUklPRF9USElTX01PTlRIEAMy9AsKElRyYW5zYWN0aW9uU2VydmljZRJiCglBZGRUb0NhcnQSKS53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5BZGRUb0NhcnRSZXF1ZXN0Gioud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuQWRkVG9DYXJ0UmVzcG9uc2UScQoOUmVtb3ZlRnJvbUNhcnQSLi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5SZW1vdmVGcm9tQ2FydFJlcXVlc3QaLy53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5SZW1vdmVGcm9tQ2FydFJlc3BvbnNlElwKB0dldENhcnQSJy53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5HZXRDYXJ0UmVxdWVzdBooLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkdldENhcnRSZXNwb25zZRJfCghDaGVja291dBIoLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkNoZWNrb3V0UmVxdWVzdBopLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkNoZWNrb3V0UmVzcG9uc2USXwoIR2V0T3JkZXISKC53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5HZXRPcmRlclJlcXVlc3QaKS53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5HZXRPcmRlclJlc3BvbnNlEmUKCkxpc3RPcmRlcnMSKi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5MaXN0T3JkZXJzUmVxdWVzdBorLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkxpc3RPcmRlcnNSZXNwb25zZRJ9ChJDcmVhdGVQYXltZW50VG9rZW4SMi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5DcmVhdGVQYXltZW50VG9rZW5SZXF1ZXN0GjMud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuQ3JlYXRlUGF5bWVudFRva2VuUmVzcG9uc2USbgoNTWFya09yZGVyUGFpZBItLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk1hcmtPcmRlclBhaWRSZXF1ZXN0Gi4ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuTWFya09yZGVyUGFpZFJlc3BvbnNlEmgKC0NhbmNlbE9yZGVyEisud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuQ2FuY2VsT3JkZXJSZXF1ZXN0Giwud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuQ2FuY2VsT3JkZXJSZXNwb25zZRJxCg5NYXJrT3JkZXJSZWFkeRIuLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk1hcmtPcmRlclJlYWR5UmVxdWVzdBovLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk1hcmtPcmRlclJlYWR5UmVzcG9uc2USfQoSTWFya09yZGVyRGVsaXZlcmVkEjIud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuTWFya09yZGVyRGVsaXZlcmVkUmVxdWVzdBozLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk1hcmtPcmRlckRlbGl2ZXJlZFJlc3BvbnNlEnoKEUdldERhc2hib2FyZFN0YXRzEjEud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuR2V0RGFzaGJvYXJkU3RhdHNSZXF1ZXN0GjIud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuR2V0RGFzaGJvYXJkU3RhdHNSZXNwb25zZRJkCglTdWJzY3JpYmUSKS53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5TdWJzY3JpYmVSZXF1ZXN0Gioud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuU3Vic2NyaWJlUmVzcG9uc2UwARJTCgRQdXNoEiQud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuUHVzaFJlcXVlc3QaJS53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5QdXNoUmVzcG9uc2VCPFo6d2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3MvdHJhbnNhY3Rpb24vdjE7dHJhbnNhY3Rpb252MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_transaction_v1_notification]);
-
-/**
- * @generated from message wargapos.transaction.v1.OrderItem
- */
-export type OrderItem = Message<"wargapos.transaction.v1.OrderItem"> & {
-  /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
-
-  /**
-   * @generated from field: int64 product_id = 2;
-   */
-  productId: bigint;
-
-  /**
-   * @generated from field: string product_name = 3;
-   */
-  productName: string;
-
-  /**
-   * @generated from field: int32 quantity = 4;
-   */
-  quantity: number;
-
-  /**
-   * @generated from field: int64 unit_price_cents = 5;
-   */
-  unitPriceCents: bigint;
-
-  /**
-   * @generated from field: int64 subtotal_cents = 6;
-   */
-  subtotalCents: bigint;
-
-  /**
-   * @generated from field: string notes = 7;
-   */
-  notes: string;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.OrderItem.
- * Use `create(OrderItemSchema)` to create a new message.
- */
-export const OrderItemSchema: GenMessage<OrderItem> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 0);
-
-/**
- * @generated from message wargapos.transaction.v1.Order
- */
-export type Order = Message<"wargapos.transaction.v1.Order"> & {
-  /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
-
-  /**
-   * @generated from field: int64 cashier_id = 2;
-   */
-  cashierId: bigint;
-
-  /**
-   * @generated from field: repeated wargapos.transaction.v1.OrderItem items = 3;
-   */
-  items: OrderItem[];
-
-  /**
-   * @generated from field: int64 total_cents = 4;
-   */
-  totalCents: bigint;
-
-  /**
-   * @generated from field: wargapos.transaction.v1.OrderStatus status = 5;
-   */
-  status: OrderStatus;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 6;
-   */
-  createdAt?: Timestamp;
-
-  /**
-   * @generated from field: int64 table_id = 7;
-   */
-  tableId: bigint;
-
-  /**
-   * @generated from field: string customer_name = 8;
-   */
-  customerName: string;
-
-  /**
-   * @generated from field: string phone_number = 9;
-   */
-  phoneNumber: string;
-
-  /**
-   * @generated from field: wargapos.transaction.v1.PaymentMethod payment_method = 10;
-   */
-  paymentMethod: PaymentMethod;
-
-  /**
-   * @generated from field: wargapos.transaction.v1.OrderFrom order_from = 11;
-   */
-  orderFrom: OrderFrom;
-
-  /**
-   * @generated from field: wargapos.transaction.v1.PaymentStatus payment_status = 13;
-   */
-  paymentStatus: PaymentStatus;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.Order.
- * Use `create(OrderSchema)` to create a new message.
- */
-export const OrderSchema: GenMessage<Order> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 1);
+  fileDesc("Cil3YXJnYXBvcy90cmFuc2FjdGlvbi92MS90cmFuc2FjdGlvbi5wcm90bxIXd2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEiiAEKEEFkZFRvQ2FydFJlcXVlc3QSGwoKc2Vzc2lvbl9pZBgBIAEoCUIHukgEcgIQARIbCgpwcm9kdWN0X2lkGAIgASgDQge6SAQiAiAAEhkKCHF1YW50aXR5GAMgASgFQge6SAQaAiAAEhAKCHRhYmxlX2lkGAQgASgDEg0KBW5vdGVzGAUgASgJIjYKGUNyZWF0ZVBheW1lbnRUb2tlblJlcXVlc3QSGQoIb3JkZXJfaWQYASABKANCB7pIBCICIAAiRAoaQ3JlYXRlUGF5bWVudFRva2VuUmVzcG9uc2USEgoKc25hcF90b2tlbhgBIAEoCRISCgpjbGllbnRfa2V5GAIgASgJIkEKEUFkZFRvQ2FydFJlc3BvbnNlEiwKBGNhcnQYASABKAsyHi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlciJRChVSZW1vdmVGcm9tQ2FydFJlcXVlc3QSGwoKc2Vzc2lvbl9pZBgBIAEoCUIHukgEcgIQARIbCgpwcm9kdWN0X2lkGAIgASgDQge6SAQiAiAAIkYKFlJlbW92ZUZyb21DYXJ0UmVzcG9uc2USLAoEY2FydBgBIAEoCzIeLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk9yZGVyIi0KDkdldENhcnRSZXF1ZXN0EhsKCnNlc3Npb25faWQYASABKAlCB7pIBHICEAEiPwoPR2V0Q2FydFJlc3BvbnNlEiwKBGNhcnQYASABKAsyHi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlciLxAQoPQ2hlY2tvdXRSZXF1ZXN0EhsKCnNlc3Npb25faWQYASABKAlCB7pIBHICEAESEgoKY2FzaGllcl9pZBgCIAEoAxJICg5wYXltZW50X21ldGhvZBgDIAEoDjImLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLlBheW1lbnRNZXRob2RCCLpIBYIBAiAAEhUKDWN1c3RvbWVyX25hbWUYBCABKAkSFAoMcGhvbmVfbnVtYmVyGAUgASgJEjYKCm9yZGVyX2Zyb20YBiABKA4yIi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5PcmRlckZyb20iQQoQQ2hlY2tvdXRSZXNwb25zZRItCgVvcmRlchgBIAEoCzIeLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk9yZGVyIiwKD0dldE9yZGVyUmVxdWVzdBIZCghvcmRlcl9pZBgBIAEoA0IHukgEIgIgACJBChBHZXRPcmRlclJlc3BvbnNlEi0KBW9yZGVyGAEgASgLMh4ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuT3JkZXIibgoURGFzaGJvYXJkT3JkZXJDb3VudHMSDQoFdG90YWwYASABKAUSDwoHcGVuZGluZxgCIAEoBRIQCghwcmVwYXJlZBgDIAEoBRIRCglkZWxpdmVyZWQYBCABKAUSEQoJY2FuY2VsbGVkGAUgASgFIlkKE0Rhc2hib2FyZFRvcFByb2R1Y3QSFAoMcHJvZHVjdF9uYW1lGAEgASgJEhUKDXF1YW50aXR5X3NvbGQYAiABKAUSFQoNcmV2ZW51ZV9jZW50cxgDIAEoAyKBAQoZRGFzaGJvYXJkUGF5bWVudEJyZWFrZG93bhISCgpjYXNoX2NlbnRzGAEgASgDEhYKDm1pZHRyYW5zX2NlbnRzGAIgASgDEhkKEW1hbnVhbF9xcmlzX2NlbnRzGAMgASgDEh0KFW1hbnVhbF90cmFuc2Zlcl9jZW50cxgEIAEoAyJUChhHZXREYXNoYm9hcmRTdGF0c1JlcXVlc3QSOAoGcGVyaW9kGAEgASgOMigud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuRGFzaGJvYXJkUGVyaW9kIscCChlHZXREYXNoYm9hcmRTdGF0c1Jlc3BvbnNlEhsKE3RvdGFsX3JldmVudWVfY2VudHMYASABKAMSQwoMb3JkZXJfY291bnRzGAIgASgLMi0ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuRGFzaGJvYXJkT3JkZXJDb3VudHMSQgoMdG9wX3Byb2R1Y3RzGAMgAygLMiwud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuRGFzaGJvYXJkVG9wUHJvZHVjdBI1Cg1yZWNlbnRfb3JkZXJzGAQgAygLMh4ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuT3JkZXISTQoRcGF5bWVudF9icmVha2Rvd24YBSABKAsyMi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5EYXNoYm9hcmRQYXltZW50QnJlYWtkb3duKpABCg9EYXNoYm9hcmRQZXJpb2QSIAocREFTSEJPQVJEX1BFUklPRF9VTlNQRUNJRklFRBAAEhoKFkRBU0hCT0FSRF9QRVJJT0RfVE9EQVkQARIeChpEQVNIQk9BUkRfUEVSSU9EX1RISVNfV0VFSxACEh8KG0RBU0hCT0FSRF9QRVJJT0RfVEhJU19NT05USBADMvQLChJUcmFuc2FjdGlvblNlcnZpY2USYgoJQWRkVG9DYXJ0Eikud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuQWRkVG9DYXJ0UmVxdWVzdBoqLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkFkZFRvQ2FydFJlc3BvbnNlEnEKDlJlbW92ZUZyb21DYXJ0Ei4ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuUmVtb3ZlRnJvbUNhcnRSZXF1ZXN0Gi8ud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuUmVtb3ZlRnJvbUNhcnRSZXNwb25zZRJcCgdHZXRDYXJ0Eicud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuR2V0Q2FydFJlcXVlc3QaKC53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5HZXRDYXJ0UmVzcG9uc2USXwoIQ2hlY2tvdXQSKC53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5DaGVja291dFJlcXVlc3QaKS53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5DaGVja291dFJlc3BvbnNlEl8KCEdldE9yZGVyEigud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuR2V0T3JkZXJSZXF1ZXN0Gikud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuR2V0T3JkZXJSZXNwb25zZRJlCgpMaXN0T3JkZXJzEioud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuTGlzdE9yZGVyc1JlcXVlc3QaKy53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5MaXN0T3JkZXJzUmVzcG9uc2USfQoSQ3JlYXRlUGF5bWVudFRva2VuEjIud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuQ3JlYXRlUGF5bWVudFRva2VuUmVxdWVzdBozLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkNyZWF0ZVBheW1lbnRUb2tlblJlc3BvbnNlEm4KDU1hcmtPcmRlclBhaWQSLS53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5NYXJrT3JkZXJQYWlkUmVxdWVzdBouLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk1hcmtPcmRlclBhaWRSZXNwb25zZRJoCgtDYW5jZWxPcmRlchIrLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkNhbmNlbE9yZGVyUmVxdWVzdBosLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkNhbmNlbE9yZGVyUmVzcG9uc2UScQoOTWFya09yZGVyUmVhZHkSLi53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5NYXJrT3JkZXJSZWFkeVJlcXVlc3QaLy53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5NYXJrT3JkZXJSZWFkeVJlc3BvbnNlEn0KEk1hcmtPcmRlckRlbGl2ZXJlZBIyLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLk1hcmtPcmRlckRlbGl2ZXJlZFJlcXVlc3QaMy53YXJnYXBvcy50cmFuc2FjdGlvbi52MS5NYXJrT3JkZXJEZWxpdmVyZWRSZXNwb25zZRJ6ChFHZXREYXNoYm9hcmRTdGF0cxIxLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkdldERhc2hib2FyZFN0YXRzUmVxdWVzdBoyLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLkdldERhc2hib2FyZFN0YXRzUmVzcG9uc2USZAoJU3Vic2NyaWJlEikud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuU3Vic2NyaWJlUmVxdWVzdBoqLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLlN1YnNjcmliZVJlc3BvbnNlMAESUwoEUHVzaBIkLndhcmdhcG9zLnRyYW5zYWN0aW9uLnYxLlB1c2hSZXF1ZXN0GiUud2FyZ2Fwb3MudHJhbnNhY3Rpb24udjEuUHVzaFJlc3BvbnNlQjxaOndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3RyYW5zYWN0aW9uL3YxO3RyYW5zYWN0aW9udjFiBnByb3RvMw", [file_buf_validate_validate, file_wargapos_transaction_v1_notification, file_wargapos_transaction_v1_order]);
 
 /**
  * @generated from message wargapos.transaction.v1.AddToCartRequest
@@ -171,7 +52,7 @@ export type AddToCartRequest = Message<"wargapos.transaction.v1.AddToCartRequest
  * Use `create(AddToCartRequestSchema)` to create a new message.
  */
 export const AddToCartRequestSchema: GenMessage<AddToCartRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 2);
+  messageDesc(file_wargapos_transaction_v1_transaction, 0);
 
 /**
  * @generated from message wargapos.transaction.v1.CreatePaymentTokenRequest
@@ -188,7 +69,7 @@ export type CreatePaymentTokenRequest = Message<"wargapos.transaction.v1.CreateP
  * Use `create(CreatePaymentTokenRequestSchema)` to create a new message.
  */
 export const CreatePaymentTokenRequestSchema: GenMessage<CreatePaymentTokenRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 3);
+  messageDesc(file_wargapos_transaction_v1_transaction, 1);
 
 /**
  * @generated from message wargapos.transaction.v1.CreatePaymentTokenResponse
@@ -210,7 +91,7 @@ export type CreatePaymentTokenResponse = Message<"wargapos.transaction.v1.Create
  * Use `create(CreatePaymentTokenResponseSchema)` to create a new message.
  */
 export const CreatePaymentTokenResponseSchema: GenMessage<CreatePaymentTokenResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 4);
+  messageDesc(file_wargapos_transaction_v1_transaction, 2);
 
 /**
  * @generated from message wargapos.transaction.v1.AddToCartResponse
@@ -227,7 +108,7 @@ export type AddToCartResponse = Message<"wargapos.transaction.v1.AddToCartRespon
  * Use `create(AddToCartResponseSchema)` to create a new message.
  */
 export const AddToCartResponseSchema: GenMessage<AddToCartResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 5);
+  messageDesc(file_wargapos_transaction_v1_transaction, 3);
 
 /**
  * @generated from message wargapos.transaction.v1.RemoveFromCartRequest
@@ -249,7 +130,7 @@ export type RemoveFromCartRequest = Message<"wargapos.transaction.v1.RemoveFromC
  * Use `create(RemoveFromCartRequestSchema)` to create a new message.
  */
 export const RemoveFromCartRequestSchema: GenMessage<RemoveFromCartRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 6);
+  messageDesc(file_wargapos_transaction_v1_transaction, 4);
 
 /**
  * @generated from message wargapos.transaction.v1.RemoveFromCartResponse
@@ -266,7 +147,7 @@ export type RemoveFromCartResponse = Message<"wargapos.transaction.v1.RemoveFrom
  * Use `create(RemoveFromCartResponseSchema)` to create a new message.
  */
 export const RemoveFromCartResponseSchema: GenMessage<RemoveFromCartResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 7);
+  messageDesc(file_wargapos_transaction_v1_transaction, 5);
 
 /**
  * @generated from message wargapos.transaction.v1.GetCartRequest
@@ -283,7 +164,7 @@ export type GetCartRequest = Message<"wargapos.transaction.v1.GetCartRequest"> &
  * Use `create(GetCartRequestSchema)` to create a new message.
  */
 export const GetCartRequestSchema: GenMessage<GetCartRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 8);
+  messageDesc(file_wargapos_transaction_v1_transaction, 6);
 
 /**
  * @generated from message wargapos.transaction.v1.GetCartResponse
@@ -300,7 +181,7 @@ export type GetCartResponse = Message<"wargapos.transaction.v1.GetCartResponse">
  * Use `create(GetCartResponseSchema)` to create a new message.
  */
 export const GetCartResponseSchema: GenMessage<GetCartResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 9);
+  messageDesc(file_wargapos_transaction_v1_transaction, 7);
 
 /**
  * @generated from message wargapos.transaction.v1.CheckoutRequest
@@ -342,7 +223,7 @@ export type CheckoutRequest = Message<"wargapos.transaction.v1.CheckoutRequest">
  * Use `create(CheckoutRequestSchema)` to create a new message.
  */
 export const CheckoutRequestSchema: GenMessage<CheckoutRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 10);
+  messageDesc(file_wargapos_transaction_v1_transaction, 8);
 
 /**
  * @generated from message wargapos.transaction.v1.CheckoutResponse
@@ -359,7 +240,7 @@ export type CheckoutResponse = Message<"wargapos.transaction.v1.CheckoutResponse
  * Use `create(CheckoutResponseSchema)` to create a new message.
  */
 export const CheckoutResponseSchema: GenMessage<CheckoutResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 11);
+  messageDesc(file_wargapos_transaction_v1_transaction, 9);
 
 /**
  * @generated from message wargapos.transaction.v1.GetOrderRequest
@@ -376,7 +257,7 @@ export type GetOrderRequest = Message<"wargapos.transaction.v1.GetOrderRequest">
  * Use `create(GetOrderRequestSchema)` to create a new message.
  */
 export const GetOrderRequestSchema: GenMessage<GetOrderRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 12);
+  messageDesc(file_wargapos_transaction_v1_transaction, 10);
 
 /**
  * @generated from message wargapos.transaction.v1.GetOrderResponse
@@ -393,96 +274,7 @@ export type GetOrderResponse = Message<"wargapos.transaction.v1.GetOrderResponse
  * Use `create(GetOrderResponseSchema)` to create a new message.
  */
 export const GetOrderResponseSchema: GenMessage<GetOrderResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 13);
-
-/**
- * @generated from message wargapos.transaction.v1.ListOrdersRequest
- */
-export type ListOrdersRequest = Message<"wargapos.transaction.v1.ListOrdersRequest"> & {
-  /**
-   * @generated from field: int32 page = 1;
-   */
-  page: number;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: int64 cashier_id = 3;
-   */
-  cashierId: bigint;
-
-  /**
-   * @generated from field: wargapos.transaction.v1.OrderStatus status_filter = 4;
-   */
-  statusFilter: OrderStatus;
-
-  /**
-   * @generated from field: int64 table_id = 5;
-   */
-  tableId: bigint;
-
-  /**
-   * @generated from field: wargapos.transaction.v1.OrderFrom order_from_filter = 6;
-   */
-  orderFromFilter: OrderFrom;
-
-  /**
-   * @generated from field: wargapos.transaction.v1.PaymentStatus payment_status_filter = 7;
-   */
-  paymentStatusFilter: PaymentStatus;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at_from = 8;
-   */
-  createdAtFrom?: Timestamp;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at_to = 9;
-   */
-  createdAtTo?: Timestamp;
-
-  /**
-   * @generated from field: string search = 10;
-   */
-  search: string;
-
-  /**
-   * @generated from field: wargapos.transaction.v1.PaymentMethod payment_method_filter = 11;
-   */
-  paymentMethodFilter: PaymentMethod;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.ListOrdersRequest.
- * Use `create(ListOrdersRequestSchema)` to create a new message.
- */
-export const ListOrdersRequestSchema: GenMessage<ListOrdersRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 14);
-
-/**
- * @generated from message wargapos.transaction.v1.ListOrdersResponse
- */
-export type ListOrdersResponse = Message<"wargapos.transaction.v1.ListOrdersResponse"> & {
-  /**
-   * @generated from field: repeated wargapos.transaction.v1.Order orders = 1;
-   */
-  orders: Order[];
-
-  /**
-   * @generated from field: int32 total = 2;
-   */
-  total: number;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.ListOrdersResponse.
- * Use `create(ListOrdersResponseSchema)` to create a new message.
- */
-export const ListOrdersResponseSchema: GenMessage<ListOrdersResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 15);
+  messageDesc(file_wargapos_transaction_v1_transaction, 11);
 
 /**
  * @generated from message wargapos.transaction.v1.DashboardOrderCounts
@@ -519,7 +311,7 @@ export type DashboardOrderCounts = Message<"wargapos.transaction.v1.DashboardOrd
  * Use `create(DashboardOrderCountsSchema)` to create a new message.
  */
 export const DashboardOrderCountsSchema: GenMessage<DashboardOrderCounts> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 16);
+  messageDesc(file_wargapos_transaction_v1_transaction, 12);
 
 /**
  * @generated from message wargapos.transaction.v1.DashboardTopProduct
@@ -546,7 +338,7 @@ export type DashboardTopProduct = Message<"wargapos.transaction.v1.DashboardTopP
  * Use `create(DashboardTopProductSchema)` to create a new message.
  */
 export const DashboardTopProductSchema: GenMessage<DashboardTopProduct> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 17);
+  messageDesc(file_wargapos_transaction_v1_transaction, 13);
 
 /**
  * @generated from message wargapos.transaction.v1.DashboardPaymentBreakdown
@@ -578,7 +370,7 @@ export type DashboardPaymentBreakdown = Message<"wargapos.transaction.v1.Dashboa
  * Use `create(DashboardPaymentBreakdownSchema)` to create a new message.
  */
 export const DashboardPaymentBreakdownSchema: GenMessage<DashboardPaymentBreakdown> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 18);
+  messageDesc(file_wargapos_transaction_v1_transaction, 14);
 
 /**
  * @generated from message wargapos.transaction.v1.GetDashboardStatsRequest
@@ -595,7 +387,7 @@ export type GetDashboardStatsRequest = Message<"wargapos.transaction.v1.GetDashb
  * Use `create(GetDashboardStatsRequestSchema)` to create a new message.
  */
 export const GetDashboardStatsRequestSchema: GenMessage<GetDashboardStatsRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 19);
+  messageDesc(file_wargapos_transaction_v1_transaction, 15);
 
 /**
  * @generated from message wargapos.transaction.v1.GetDashboardStatsResponse
@@ -632,282 +424,7 @@ export type GetDashboardStatsResponse = Message<"wargapos.transaction.v1.GetDash
  * Use `create(GetDashboardStatsResponseSchema)` to create a new message.
  */
 export const GetDashboardStatsResponseSchema: GenMessage<GetDashboardStatsResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 20);
-
-/**
- * @generated from message wargapos.transaction.v1.MarkOrderPaidRequest
- */
-export type MarkOrderPaidRequest = Message<"wargapos.transaction.v1.MarkOrderPaidRequest"> & {
-  /**
-   * @generated from field: int64 order_id = 1;
-   */
-  orderId: bigint;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.MarkOrderPaidRequest.
- * Use `create(MarkOrderPaidRequestSchema)` to create a new message.
- */
-export const MarkOrderPaidRequestSchema: GenMessage<MarkOrderPaidRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 21);
-
-/**
- * @generated from message wargapos.transaction.v1.MarkOrderPaidResponse
- */
-export type MarkOrderPaidResponse = Message<"wargapos.transaction.v1.MarkOrderPaidResponse"> & {
-  /**
-   * @generated from field: wargapos.transaction.v1.Order order = 1;
-   */
-  order?: Order;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.MarkOrderPaidResponse.
- * Use `create(MarkOrderPaidResponseSchema)` to create a new message.
- */
-export const MarkOrderPaidResponseSchema: GenMessage<MarkOrderPaidResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 22);
-
-/**
- * @generated from message wargapos.transaction.v1.CancelOrderRequest
- */
-export type CancelOrderRequest = Message<"wargapos.transaction.v1.CancelOrderRequest"> & {
-  /**
-   * @generated from field: int64 order_id = 1;
-   */
-  orderId: bigint;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.CancelOrderRequest.
- * Use `create(CancelOrderRequestSchema)` to create a new message.
- */
-export const CancelOrderRequestSchema: GenMessage<CancelOrderRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 23);
-
-/**
- * @generated from message wargapos.transaction.v1.CancelOrderResponse
- */
-export type CancelOrderResponse = Message<"wargapos.transaction.v1.CancelOrderResponse"> & {
-  /**
-   * @generated from field: wargapos.transaction.v1.Order order = 1;
-   */
-  order?: Order;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.CancelOrderResponse.
- * Use `create(CancelOrderResponseSchema)` to create a new message.
- */
-export const CancelOrderResponseSchema: GenMessage<CancelOrderResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 24);
-
-/**
- * @generated from message wargapos.transaction.v1.MarkOrderReadyRequest
- */
-export type MarkOrderReadyRequest = Message<"wargapos.transaction.v1.MarkOrderReadyRequest"> & {
-  /**
-   * @generated from field: int64 order_id = 1;
-   */
-  orderId: bigint;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.MarkOrderReadyRequest.
- * Use `create(MarkOrderReadyRequestSchema)` to create a new message.
- */
-export const MarkOrderReadyRequestSchema: GenMessage<MarkOrderReadyRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 25);
-
-/**
- * @generated from message wargapos.transaction.v1.MarkOrderReadyResponse
- */
-export type MarkOrderReadyResponse = Message<"wargapos.transaction.v1.MarkOrderReadyResponse"> & {
-  /**
-   * @generated from field: wargapos.transaction.v1.Order order = 1;
-   */
-  order?: Order;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.MarkOrderReadyResponse.
- * Use `create(MarkOrderReadyResponseSchema)` to create a new message.
- */
-export const MarkOrderReadyResponseSchema: GenMessage<MarkOrderReadyResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 26);
-
-/**
- * @generated from message wargapos.transaction.v1.MarkOrderDeliveredRequest
- */
-export type MarkOrderDeliveredRequest = Message<"wargapos.transaction.v1.MarkOrderDeliveredRequest"> & {
-  /**
-   * @generated from field: int64 order_id = 1;
-   */
-  orderId: bigint;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.MarkOrderDeliveredRequest.
- * Use `create(MarkOrderDeliveredRequestSchema)` to create a new message.
- */
-export const MarkOrderDeliveredRequestSchema: GenMessage<MarkOrderDeliveredRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 27);
-
-/**
- * @generated from message wargapos.transaction.v1.MarkOrderDeliveredResponse
- */
-export type MarkOrderDeliveredResponse = Message<"wargapos.transaction.v1.MarkOrderDeliveredResponse"> & {
-  /**
-   * @generated from field: wargapos.transaction.v1.Order order = 1;
-   */
-  order?: Order;
-};
-
-/**
- * Describes the message wargapos.transaction.v1.MarkOrderDeliveredResponse.
- * Use `create(MarkOrderDeliveredResponseSchema)` to create a new message.
- */
-export const MarkOrderDeliveredResponseSchema: GenMessage<MarkOrderDeliveredResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_transaction_v1_transaction, 28);
-
-/**
- * @generated from enum wargapos.transaction.v1.PaymentMethod
- */
-export enum PaymentMethod {
-  /**
-   * @generated from enum value: PAYMENT_METHOD_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: PAYMENT_METHOD_CASH = 1;
-   */
-  CASH = 1,
-
-  /**
-   * Paid via Midtrans Snap (card / QRIS / bank transfer via gateway)
-   *
-   * @generated from enum value: PAYMENT_METHOD_MIDTRANS = 2;
-   */
-  MIDTRANS = 2,
-
-  /**
-   * Customer scans staff QR code — staff confirms receipt manually
-   *
-   * @generated from enum value: PAYMENT_METHOD_MANUAL_QRIS = 3;
-   */
-  MANUAL_QRIS = 3,
-
-  /**
-   * Customer transfers to bank account — staff confirms receipt manually
-   *
-   * @generated from enum value: PAYMENT_METHOD_MANUAL_TRANSFER = 4;
-   */
-  MANUAL_TRANSFER = 4,
-}
-
-/**
- * Describes the enum wargapos.transaction.v1.PaymentMethod.
- */
-export const PaymentMethodSchema: GenEnum<PaymentMethod> = /*@__PURE__*/
-  enumDesc(file_wargapos_transaction_v1_transaction, 0);
-
-/**
- * @generated from enum wargapos.transaction.v1.OrderStatus
- */
-export enum OrderStatus {
-  /**
-   * @generated from enum value: ORDER_STATUS_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: ORDER_STATUS_PENDING = 1;
-   */
-  PENDING = 1,
-
-  /**
-   * 2 reserved (was PAID — now tracked in PaymentStatus)
-   *
-   * @generated from enum value: ORDER_STATUS_CANCELLED = 3;
-   */
-  CANCELLED = 3,
-
-  /**
-   * renamed from READY, same integer value
-   *
-   * @generated from enum value: ORDER_STATUS_PREPARED = 4;
-   */
-  PREPARED = 4,
-
-  /**
-   * @generated from enum value: ORDER_STATUS_DELIVERED = 5;
-   */
-  DELIVERED = 5,
-}
-
-/**
- * Describes the enum wargapos.transaction.v1.OrderStatus.
- */
-export const OrderStatusSchema: GenEnum<OrderStatus> = /*@__PURE__*/
-  enumDesc(file_wargapos_transaction_v1_transaction, 1);
-
-/**
- * @generated from enum wargapos.transaction.v1.PaymentStatus
- */
-export enum PaymentStatus {
-  /**
-   * @generated from enum value: PAYMENT_STATUS_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: PAYMENT_STATUS_UNPAID = 1;
-   */
-  UNPAID = 1,
-
-  /**
-   * @generated from enum value: PAYMENT_STATUS_PAID = 2;
-   */
-  PAID = 2,
-
-  /**
-   * @generated from enum value: PAYMENT_STATUS_REFUNDED = 3;
-   */
-  REFUNDED = 3,
-}
-
-/**
- * Describes the enum wargapos.transaction.v1.PaymentStatus.
- */
-export const PaymentStatusSchema: GenEnum<PaymentStatus> = /*@__PURE__*/
-  enumDesc(file_wargapos_transaction_v1_transaction, 2);
-
-/**
- * @generated from enum wargapos.transaction.v1.OrderFrom
- */
-export enum OrderFrom {
-  /**
-   * @generated from enum value: ORDER_FROM_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: ORDER_FROM_GUEST = 1;
-   */
-  GUEST = 1,
-
-  /**
-   * @generated from enum value: ORDER_FROM_POS = 2;
-   */
-  POS = 2,
-}
-
-/**
- * Describes the enum wargapos.transaction.v1.OrderFrom.
- */
-export const OrderFromSchema: GenEnum<OrderFrom> = /*@__PURE__*/
-  enumDesc(file_wargapos_transaction_v1_transaction, 3);
+  messageDesc(file_wargapos_transaction_v1_transaction, 16);
 
 /**
  * @generated from enum wargapos.transaction.v1.DashboardPeriod
@@ -938,7 +455,7 @@ export enum DashboardPeriod {
  * Describes the enum wargapos.transaction.v1.DashboardPeriod.
  */
 export const DashboardPeriodSchema: GenEnum<DashboardPeriod> = /*@__PURE__*/
-  enumDesc(file_wargapos_transaction_v1_transaction, 4);
+  enumDesc(file_wargapos_transaction_v1_transaction, 0);
 
 /**
  * @generated from service wargapos.transaction.v1.TransactionService

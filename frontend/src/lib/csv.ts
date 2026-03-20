@@ -1,6 +1,6 @@
 import type { Product } from '../gen/wargapos/product/v1/product_pb'
-import type { Order } from '../gen/wargapos/transaction/v1/transaction_pb'
-import { OrderStatus, PaymentStatus, OrderFrom } from '../gen/wargapos/transaction/v1/transaction_pb'
+import type { Order } from '../gen/wargapos/transaction/v1/order_pb'
+import { OrderStatus, PaymentStatus, OrderFrom } from '../gen/wargapos/transaction/v1/order_pb'
 import { formatDateTime, paymentMethodLabel } from './format'
 
 function escapeCell(v: string): string {
