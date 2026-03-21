@@ -26,10 +26,29 @@ func (s *TransactionService) MarkOrderPaid(
 		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("order is cancelled"))
 	}
 
-	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Update("payment_status", paymentPaid).Error; err != nil {
+	updates := map[string]any{"payment_status": paymentPaid}
+	if order.PaymentMethod != nil &&
+		*order.PaymentMethod == int32(transactionv1.PaymentMethod_PAYMENT_METHOD_CASH) {
+		tendered := req.Msg.CashTenderedCents
+		if tendered > 0 && tendered < order.TotalCents {
+			return nil, connect.NewError(connect.CodeInvalidArgument,
+				errors.New("cash tendered is less than the order total"))
+		}
+		if tendered > 0 {
+			updates["cash_tendered_cents"] = tendered
+			updates["change_cents"] = tendered - order.TotalCents
+		}
+	}
+	if err := s.db.WithContext(ctx).Model(&models.Order{}).Where("id = ?", order.ID).Updates(updates).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 	order.PaymentStatus = paymentPaid
+	if v, ok := updates["cash_tendered_cents"]; ok {
+		c := v.(int64)
+		ch := updates["change_cents"].(int64)
+		order.CashTenderedCents = &c
+		order.ChangeCents = &ch
+	}
 
 	_, err = s.Push(ctx, connect.NewRequest(&transactionv1.PushRequest{
 		Event: &transactionv1.Event{Event: &transactionv1.Event_UpdateOrder{

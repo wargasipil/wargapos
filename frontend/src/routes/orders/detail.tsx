@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { useParams, useNavigate, Link } from '@tanstack/react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
-  Badge, Box, Button, Flex, Heading, HStack, Spinner, Table, Text, VStack,
+  Badge, Box, Button, Field, Flex, Heading, HStack, Input, Separator, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
 import { ArrowLeft, CheckCircle, Phone, Printer, XCircle, ChefHat, Truck } from 'lucide-react'
 import { printReceipt } from '../../lib/printer'
 import { transactionClient, tableClient } from '../../client'
-import { OrderStatus, PaymentStatus, OrderFrom } from '../../gen/wargapos/transaction/v1/order_pb'
+import { OrderStatus, PaymentMethod, PaymentStatus, OrderFrom } from '../../gen/wargapos/transaction/v1/order_pb'
 import { toaster } from '../../components/ui/toaster'
 import { formatPrice, formatTime, formatDateTime, paymentMethodLabel, paymentMethodColor } from '../../lib/format'
 import { stripError } from '../../lib/errors'
@@ -53,6 +53,7 @@ export function OrderDetailPage() {
   }
 
   const [confirmAction, setConfirmAction] = useState<'prepared' | 'delivered' | 'paid' | 'cancel' | null>(null)
+  const [cashTendered, setCashTendered] = useState('')
 
   const markReadyMutation = useMutation({
     mutationFn: () => transactionClient.markOrderReady({ orderId: BigInt(id) }),
@@ -67,8 +68,15 @@ export function OrderDetailPage() {
   })
 
   const markPaidMutation = useMutation({
-    mutationFn: () => transactionClient.markOrderPaid({ orderId: BigInt(id) }),
-    onSuccess: () => { setConfirmAction(null); invalidate(); toaster.create({ title: 'Order marked as paid', type: 'success', duration: 3000 }) },
+    mutationFn: () => {
+      const isCash = data?.order?.paymentMethod === PaymentMethod.CASH
+      const tendered = BigInt(Math.floor(parseFloat(cashTendered.replace(/[^0-9]/g, '') || '0')))
+      return transactionClient.markOrderPaid({
+        orderId: BigInt(id),
+        cashTenderedCents: isCash ? tendered : 0n,
+      })
+    },
+    onSuccess: () => { setConfirmAction(null); setCashTendered(''); invalidate(); toaster.create({ title: 'Order marked as paid', type: 'success', duration: 3000 }) },
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
 
@@ -152,6 +160,18 @@ export function OrderDetailPage() {
               {paymentMethodLabel(order.paymentMethod)}
             </Badge>
           </Flex>
+          {order.paymentMethod === PaymentMethod.CASH && order.cashTenderedCents > 0n && (
+            <>
+              <Flex justify="space-between">
+                <Text fontSize="sm" color="gray.500">Tunai</Text>
+                <Text fontSize="sm">{formatPrice(order.cashTenderedCents)}</Text>
+              </Flex>
+              <Flex justify="space-between">
+                <Text fontSize="sm" color="gray.500">Kembalian</Text>
+                <Text fontSize="sm">{formatPrice(order.changeCents)}</Text>
+              </Flex>
+            </>
+          )}
           {order.customerName && (
             <Flex justify="space-between">
               <Text fontSize="sm" color="gray.500">Customer</Text>
@@ -243,11 +263,38 @@ export function OrderDetailPage() {
           confirmAction === 'paid'      ? 'Tandai Lunas?' :
                                           'Batalkan Order?'
         }
-        description={
-          confirmAction === 'cancel'
-            ? <>Order <strong>#{String(order.id)}</strong> akan dibatalkan.</>
-            : 'Konfirmasi perubahan status order ini.'
-        }
+        description={(() => {
+          if (confirmAction === 'paid' && order.paymentMethod === PaymentMethod.CASH) {
+            const tendered = BigInt(Math.floor(parseFloat(cashTendered.replace(/[^0-9]/g, '') || '0')))
+            const change = tendered >= order.totalCents ? tendered - order.totalCents : null
+            return (
+              <VStack align="stretch" gap={3}>
+                <Text fontSize="sm">Konfirmasi pembayaran tunai untuk order ini.</Text>
+                <Field.Root>
+                  <Field.Label fontSize="sm">Uang Diterima (Rp)</Field.Label>
+                  <Input
+                    type="number"
+                    size="sm"
+                    placeholder={`Min. ${formatPrice(order.totalCents)}`}
+                    value={cashTendered}
+                    onChange={(e) => setCashTendered(e.target.value)}
+                  />
+                  {change !== null && (
+                    <VStack align="stretch" gap={1} mt={2}>
+                      <Separator />
+                      <HStack justify="space-between">
+                        <Text fontSize="sm" color="gray.500">Kembalian</Text>
+                        <Text fontSize="sm" fontWeight="bold" color="green.600">{formatPrice(change)}</Text>
+                      </HStack>
+                    </VStack>
+                  )}
+                </Field.Root>
+              </VStack>
+            )
+          }
+          if (confirmAction === 'cancel') return <>Order <strong>#{String(order.id)}</strong> akan dibatalkan.</>
+          return 'Konfirmasi perubahan status order ini.'
+        })()}
         confirmLabel={
           confirmAction === 'prepared'  ? 'Tandai Siap' :
           confirmAction === 'delivered' ? 'Tandai Terkirim' :
@@ -266,7 +313,7 @@ export function OrderDetailPage() {
           if (confirmAction === 'paid')      markPaidMutation.mutate()
           if (confirmAction === 'cancel')    cancelMutation.mutate()
         }}
-        onCancel={() => setConfirmAction(null)}
+        onCancel={() => { setConfirmAction(null); setCashTendered('') }}
       />
     </Box>
   )

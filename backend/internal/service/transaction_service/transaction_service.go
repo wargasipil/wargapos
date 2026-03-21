@@ -117,19 +117,30 @@ func toProtoOrder(o *models.Order) *transactionv1.Order {
 		pm = transactionv1.PaymentMethod(*o.PaymentMethod)
 	}
 
+	var cashTenderedCents int64
+	if o.CashTenderedCents != nil {
+		cashTenderedCents = *o.CashTenderedCents
+	}
+	var changeCents int64
+	if o.ChangeCents != nil {
+		changeCents = *o.ChangeCents
+	}
+
 	return &transactionv1.Order{
-		Id:            o.ID,
-		CashierId:     cashierID,
-		Items:         items,
-		TotalCents:    o.TotalCents,
-		Status:        transactionv1.OrderStatus(o.Status),
-		CreatedAt:     timestamppb.New(o.CreatedAt),
-		TableId:       tableID,
-		CustomerName:  customerName,
-		PhoneNumber:   phoneNumber,
-		PaymentMethod: pm,
-		OrderFrom:     transactionv1.OrderFrom(o.OrderFrom),
-		PaymentStatus: transactionv1.PaymentStatus(o.PaymentStatus),
+		Id:                o.ID,
+		CashierId:         cashierID,
+		Items:             items,
+		TotalCents:        o.TotalCents,
+		Status:            transactionv1.OrderStatus(o.Status),
+		CreatedAt:         timestamppb.New(o.CreatedAt),
+		TableId:           tableID,
+		CustomerName:      customerName,
+		PhoneNumber:       phoneNumber,
+		PaymentMethod:     pm,
+		OrderFrom:         transactionv1.OrderFrom(o.OrderFrom),
+		PaymentStatus:     transactionv1.PaymentStatus(o.PaymentStatus),
+		CashTenderedCents: cashTenderedCents,
+		ChangeCents:       changeCents,
 	}
 }
 

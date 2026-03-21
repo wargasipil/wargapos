@@ -1,4 +1,4 @@
-import { Button, Dialog, Text } from '@chakra-ui/react'
+import { Button, Dialog } from '@chakra-ui/react'
 
 interface Props {
   open: boolean
@@ -19,7 +19,7 @@ export function ConfirmDialog({
       <Dialog.Positioner>
         <Dialog.Content maxW="360px">
           <Dialog.Header><Dialog.Title>{title}</Dialog.Title></Dialog.Header>
-          <Dialog.Body><Text>{description}</Text></Dialog.Body>
+          <Dialog.Body>{description}</Dialog.Body>
           <Dialog.Footer>
             <Button variant="ghost" onClick={onCancel}>Cancel</Button>
             <Button colorPalette="red" loading={loading} onClick={onConfirm}>{confirmLabel}</Button>

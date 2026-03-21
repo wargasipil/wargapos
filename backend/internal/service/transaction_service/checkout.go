@@ -62,6 +62,18 @@ func (s *TransactionService) Checkout(
 		if req.Msg.OrderFrom != transactionv1.OrderFrom_ORDER_FROM_UNSPECIFIED {
 			updates["order_from"] = int32(req.Msg.OrderFrom)
 		}
+		if req.Msg.PaymentMethod == transactionv1.PaymentMethod_PAYMENT_METHOD_CASH &&
+			req.Msg.OrderFrom == transactionv1.OrderFrom_ORDER_FROM_POS {
+			tendered := req.Msg.CashTenderedCents
+			if tendered > 0 && tendered < order.TotalCents {
+				return connect.NewError(connect.CodeInvalidArgument,
+					errors.New("cash tendered is less than the order total"))
+			}
+			if tendered > 0 {
+				updates["cash_tendered_cents"] = tendered
+				updates["change_cents"] = tendered - order.TotalCents
+			}
+		}
 		if err := tx.Model(&order).Updates(updates).Error; err != nil {
 			return err
 		}
@@ -95,6 +107,10 @@ func (s *TransactionService) Checkout(
 	if err != nil {
 		if errors.Is(err, ErrCartNotPending) || errors.Is(err, ErrCartEmpty) {
 			return nil, connect.NewError(connect.CodeFailedPrecondition, err)
+		}
+		var connectErr *connect.Error
+		if errors.As(err, &connectErr) {
+			return nil, connectErr
 		}
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

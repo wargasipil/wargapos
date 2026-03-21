@@ -1,6 +1,6 @@
 import type { Order } from '../gen/wargapos/transaction/v1/order_pb'
 import { deviceClient } from '../client'
-import { PaymentStatus } from '../gen/wargapos/transaction/v1/order_pb'
+import { PaymentMethod, PaymentStatus } from '../gen/wargapos/transaction/v1/order_pb'
 import { formatPrice, formatDateTime, paymentMethodLabel } from './format'
 
 // 58mm paper = 32 chars per line
@@ -91,9 +91,16 @@ function buildReceipt(order: Order, tableName: string, opts?: PrinterOpts): Uint
   }
 
   const total = formatPrice(order.totalCents)
+  const cashRows: Uint8Array[] = order.paymentMethod === PaymentMethod.CASH && order.cashTenderedCents > 0n
+    ? [
+        lf(rowLR('Tunai', formatPrice(order.cashTenderedCents))),
+        lf(rowLR('Kembalian', formatPrice(order.changeCents))),
+      ]
+    : []
   parts.push(
     sep(),
     CMD_BOLD_ON,  lf(rowLR('TOTAL', total)), CMD_BOLD_OFF,
+    ...cashRows,
     sep(),
     CMD_CENTER,   lf(center(footer.slice(0, COLS))),
     CMD_LF, CMD_LF, CMD_LF,

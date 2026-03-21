@@ -123,6 +123,16 @@ func (s *TransactionService) GetDashboardStats(
 		}
 	}
 
+	// 6. Total change given out (cash paid orders in period)
+	var totalChange int64
+	if err := db.Model(&models.Order{}).
+		Where("created_at >= ? AND payment_status = ? AND payment_method = ? AND change_cents IS NOT NULL",
+			start, paymentPaid, int32(transactionv1.PaymentMethod_PAYMENT_METHOD_CASH)).
+		Select("COALESCE(SUM(change_cents), 0)").Scan(&totalChange).Error; err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	breakdown.CashChangeTotalCents = totalChange
+
 	return connect.NewResponse(&transactionv1.GetDashboardStatsResponse{
 		TotalRevenueCents: revenue,
 		OrderCounts:       counts,

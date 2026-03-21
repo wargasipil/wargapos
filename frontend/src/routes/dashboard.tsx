@@ -132,6 +132,30 @@ export function DashboardPage() {
             </HStack>
           )}
 
+          {/* Kas Tunai reconciliation */}
+          {stats?.paymentBreakdown && stats.paymentBreakdown.cashCents > 0n && (
+            <Box bg="white" borderRadius="lg" p={4} boxShadow="sm">
+              <Text fontWeight="semibold" fontSize="sm" mb={3}>Kas Tunai</Text>
+              <VStack align="stretch" gap={2}>
+                <Flex justify="space-between">
+                  <Text fontSize="sm" color="gray.500">Pendapatan Tunai</Text>
+                  <Text fontSize="sm">{formatPrice(stats.paymentBreakdown.cashCents)}</Text>
+                </Flex>
+                <Flex justify="space-between">
+                  <Text fontSize="sm" color="gray.500">Total Kembalian</Text>
+                  <Text fontSize="sm" color="red.500">− {formatPrice(stats.paymentBreakdown.cashChangeTotalCents)}</Text>
+                </Flex>
+                <Separator />
+                <Flex justify="space-between">
+                  <Text fontWeight="semibold" fontSize="sm">Kas Bersih</Text>
+                  <Text fontWeight="bold" fontSize="sm" color="green.600">
+                    {formatPrice(stats.paymentBreakdown.cashCents - stats.paymentBreakdown.cashChangeTotalCents)}
+                  </Text>
+                </Flex>
+              </VStack>
+            </Box>
+          )}
+
           {/* Bottom row: top products + recent orders */}
           <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={4}>
             {/* Top products */}

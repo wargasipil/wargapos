@@ -54,6 +54,7 @@ message CheckoutRequest {
   string customer_name = 4;
   string phone_number = 5;
   OrderFrom order_from = 6;
+  int64 cash_tendered_cents = 7;
 }
 
 message CheckoutResponse {
@@ -93,6 +94,7 @@ message DashboardPaymentBreakdown {
   int64 midtrans_cents = 2;
   int64 manual_qris_cents = 3;
   int64 manual_transfer_cents = 4;
+  int64 cash_change_total_cents = 5;
 }
 
 message GetDashboardStatsRequest {

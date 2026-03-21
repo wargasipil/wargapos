@@ -475,15 +475,16 @@ func (x *GetCartResponse) GetCart() *Order {
 }
 
 type CheckoutRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	CashierId     int64                  `protobuf:"varint,2,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
-	PaymentMethod PaymentMethod          `protobuf:"varint,3,opt,name=payment_method,json=paymentMethod,proto3,enum=wargapos.transaction.v1.PaymentMethod" json:"payment_method,omitempty"`
-	CustomerName  string                 `protobuf:"bytes,4,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
-	PhoneNumber   string                 `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
-	OrderFrom     OrderFrom              `protobuf:"varint,6,opt,name=order_from,json=orderFrom,proto3,enum=wargapos.transaction.v1.OrderFrom" json:"order_from,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	SessionId         string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	CashierId         int64                  `protobuf:"varint,2,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
+	PaymentMethod     PaymentMethod          `protobuf:"varint,3,opt,name=payment_method,json=paymentMethod,proto3,enum=wargapos.transaction.v1.PaymentMethod" json:"payment_method,omitempty"`
+	CustomerName      string                 `protobuf:"bytes,4,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
+	PhoneNumber       string                 `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
+	OrderFrom         OrderFrom              `protobuf:"varint,6,opt,name=order_from,json=orderFrom,proto3,enum=wargapos.transaction.v1.OrderFrom" json:"order_from,omitempty"`
+	CashTenderedCents int64                  `protobuf:"varint,7,opt,name=cash_tendered_cents,json=cashTenderedCents,proto3" json:"cash_tendered_cents,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *CheckoutRequest) Reset() {
@@ -556,6 +557,13 @@ func (x *CheckoutRequest) GetOrderFrom() OrderFrom {
 		return x.OrderFrom
 	}
 	return OrderFrom_ORDER_FROM_UNSPECIFIED
+}
+
+func (x *CheckoutRequest) GetCashTenderedCents() int64 {
+	if x != nil {
+		return x.CashTenderedCents
+	}
+	return 0
 }
 
 type CheckoutResponse struct {
@@ -827,13 +835,14 @@ func (x *DashboardTopProduct) GetRevenueCents() int64 {
 }
 
 type DashboardPaymentBreakdown struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	CashCents           int64                  `protobuf:"varint,1,opt,name=cash_cents,json=cashCents,proto3" json:"cash_cents,omitempty"`
-	MidtransCents       int64                  `protobuf:"varint,2,opt,name=midtrans_cents,json=midtransCents,proto3" json:"midtrans_cents,omitempty"`
-	ManualQrisCents     int64                  `protobuf:"varint,3,opt,name=manual_qris_cents,json=manualQrisCents,proto3" json:"manual_qris_cents,omitempty"`
-	ManualTransferCents int64                  `protobuf:"varint,4,opt,name=manual_transfer_cents,json=manualTransferCents,proto3" json:"manual_transfer_cents,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	CashCents            int64                  `protobuf:"varint,1,opt,name=cash_cents,json=cashCents,proto3" json:"cash_cents,omitempty"`
+	MidtransCents        int64                  `protobuf:"varint,2,opt,name=midtrans_cents,json=midtransCents,proto3" json:"midtrans_cents,omitempty"`
+	ManualQrisCents      int64                  `protobuf:"varint,3,opt,name=manual_qris_cents,json=manualQrisCents,proto3" json:"manual_qris_cents,omitempty"`
+	ManualTransferCents  int64                  `protobuf:"varint,4,opt,name=manual_transfer_cents,json=manualTransferCents,proto3" json:"manual_transfer_cents,omitempty"`
+	CashChangeTotalCents int64                  `protobuf:"varint,5,opt,name=cash_change_total_cents,json=cashChangeTotalCents,proto3" json:"cash_change_total_cents,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *DashboardPaymentBreakdown) Reset() {
@@ -890,6 +899,13 @@ func (x *DashboardPaymentBreakdown) GetManualQrisCents() int64 {
 func (x *DashboardPaymentBreakdown) GetManualTransferCents() int64 {
 	if x != nil {
 		return x.ManualTransferCents
+	}
+	return 0
+}
+
+func (x *DashboardPaymentBreakdown) GetCashChangeTotalCents() int64 {
+	if x != nil {
+		return x.CashChangeTotalCents
 	}
 	return 0
 }
@@ -1047,7 +1063,7 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tsessionId\"E\n" +
 	"\x0fGetCartResponse\x122\n" +
-	"\x04cart\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x04cart\"\xbc\x02\n" +
+	"\x04cart\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x04cart\"\xec\x02\n" +
 	"\x0fCheckoutRequest\x12&\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tsessionId\x12\x1d\n" +
@@ -1057,7 +1073,8 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\rcustomer_name\x18\x04 \x01(\tR\fcustomerName\x12!\n" +
 	"\fphone_number\x18\x05 \x01(\tR\vphoneNumber\x12A\n" +
 	"\n" +
-	"order_from\x18\x06 \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\torderFrom\"H\n" +
+	"order_from\x18\x06 \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\torderFrom\x12.\n" +
+	"\x13cash_tendered_cents\x18\a \x01(\x03R\x11cashTenderedCents\"H\n" +
 	"\x10CheckoutResponse\x124\n" +
 	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"5\n" +
 	"\x0fGetOrderRequest\x12\"\n" +
@@ -1073,13 +1090,14 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\x13DashboardTopProduct\x12!\n" +
 	"\fproduct_name\x18\x01 \x01(\tR\vproductName\x12#\n" +
 	"\rquantity_sold\x18\x02 \x01(\x05R\fquantitySold\x12#\n" +
-	"\rrevenue_cents\x18\x03 \x01(\x03R\frevenueCents\"\xc1\x01\n" +
+	"\rrevenue_cents\x18\x03 \x01(\x03R\frevenueCents\"\xf8\x01\n" +
 	"\x19DashboardPaymentBreakdown\x12\x1d\n" +
 	"\n" +
 	"cash_cents\x18\x01 \x01(\x03R\tcashCents\x12%\n" +
 	"\x0emidtrans_cents\x18\x02 \x01(\x03R\rmidtransCents\x12*\n" +
 	"\x11manual_qris_cents\x18\x03 \x01(\x03R\x0fmanualQrisCents\x122\n" +
-	"\x15manual_transfer_cents\x18\x04 \x01(\x03R\x13manualTransferCents\"\\\n" +
+	"\x15manual_transfer_cents\x18\x04 \x01(\x03R\x13manualTransferCents\x125\n" +
+	"\x17cash_change_total_cents\x18\x05 \x01(\x03R\x14cashChangeTotalCents\"\\\n" +
 	"\x18GetDashboardStatsRequest\x12@\n" +
 	"\x06period\x18\x01 \x01(\x0e2(.wargapos.transaction.v1.DashboardPeriodR\x06period\"\x94\x03\n" +
 	"\x19GetDashboardStatsResponse\x12.\n" +

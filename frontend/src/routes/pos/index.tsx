@@ -39,6 +39,7 @@ export function PosPage() {
   const [categoryId, setCategoryId] = useState<bigint>(0n)
   const [search, setSearch] = useState('')
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.CASH)
+  const [cashTendered, setCashTendered] = useState('')
   const [manualPaymentConfirmOpen, setManualPaymentConfirmOpen] = useState(false)
   const [printerSettingsOpen, setPrinterSettingsOpen] = useState(false)
   const [printLoading, setPrintLoading] = useState(false)
@@ -68,6 +69,11 @@ export function PosPage() {
   const categories = catData?.categories ?? []
   const selectedTable = tables.find((t) => t.id === tableId)
   const tableLabel = selectedTable ? selectedTable.name : 'Walk-in'
+
+  const cashTenderedCents = BigInt(Math.floor(parseFloat(cashTendered.replace(/[^0-9]/g, '') || '0')))
+  const changeCents = paymentMethod === PaymentMethod.CASH && cashTenderedCents >= totalCents
+    ? cashTenderedCents - totalCents
+    : null
 
   const allProducts = (data?.products ?? []).filter((p) => p.isActive)
   const products = allProducts.filter((p) => {
@@ -101,6 +107,7 @@ export function PosPage() {
         orderFrom: OrderFrom.POS,
         customerName: customerName.trim(),
         phoneNumber: phoneNumber.trim(),
+        cashTenderedCents: paymentMethod === PaymentMethod.CASH ? cashTenderedCents : 0n,
       })
       clear()
       setTableId(0n)
@@ -110,6 +117,7 @@ export function PosPage() {
       setCustomerName('')
       setPhoneNumber('')
       setPaymentMethod(PaymentMethod.CASH)
+      setCashTendered('')
       setReceiptOrder(res.order ?? null)
       setStep('receipt')
     } catch (err) {
@@ -227,6 +235,18 @@ export function PosPage() {
               <Text fontWeight="bold" fontSize="md">Total</Text>
               <Text fontWeight="bold" fontSize="xl">{formatPrice(receiptTotal)}</Text>
             </HStack>
+            {order.paymentMethod === PaymentMethod.CASH && order.cashTenderedCents > 0n && (
+              <>
+                <HStack justify="space-between" mt={2}>
+                  <Text fontSize="sm" color="gray.500">Tunai</Text>
+                  <Text fontSize="sm">{formatPrice(order.cashTenderedCents)}</Text>
+                </HStack>
+                <HStack justify="space-between">
+                  <Text fontSize="sm" color="gray.500">Kembalian</Text>
+                  <Text fontSize="sm" fontWeight="medium">{formatPrice(order.changeCents)}</Text>
+                </HStack>
+              </>
+            )}
           </Box>
 
           {/* Actions — hidden on print */}
@@ -484,6 +504,40 @@ export function PosPage() {
                     ))}
                   </HStack>
                 </Field.Root>
+                {paymentMethod === PaymentMethod.CASH && (
+                  <Field.Root w="full">
+                    <Field.Label>Uang Diterima (Rp)</Field.Label>
+                    <Input
+                      type="number"
+                      placeholder={`Min. ${formatPrice(totalCents)}`}
+                      value={cashTendered}
+                      onChange={(e) => setCashTendered(e.target.value)}
+                    />
+                    <HStack flexWrap="wrap" gap={1} mt={1}>
+                      <Button size="xs" variant="outline"
+                        onClick={() => setCashTendered(String(Number(totalCents)))}>
+                        Pas
+                      </Button>
+                      {([1000n, 2000n, 5000n, 10000n, 20000n, 50000n, 100000n] as bigint[]).map((denom) => (
+                        <Button key={String(denom)} size="xs" variant="outline"
+                          onClick={() => setCashTendered(String(Number(cashTenderedCents + denom)))}>
+                          {formatPrice(denom)}
+                        </Button>
+                      ))}
+                    </HStack>
+                    {cashTendered !== '' && cashTenderedCents < totalCents && (
+                      <Field.ErrorText>Uang kurang dari total</Field.ErrorText>
+                    )}
+                  </Field.Root>
+                )}
+                {paymentMethod === PaymentMethod.CASH && changeCents !== null && (
+                  <Box w="full" bg="green.100" _dark={{ bg: 'green.900' }} rounded="md" p={3} textAlign="center">
+                    <Text fontSize="xs" color="green.600" _dark={{ color: 'green.300' }} letterSpacing="wide" textTransform="uppercase">Kembalian</Text>
+                    <Text fontSize="3xl" fontWeight="bold" color="green.700" _dark={{ color: 'green.200' }} lineHeight="1.1">
+                      {formatPrice(changeCents)}
+                    </Text>
+                  </Box>
+                )}
                 {checkoutError && (
                   <Alert.Root status="error" borderRadius="md" w="full">
                     <Alert.Indicator />
@@ -494,7 +548,12 @@ export function PosPage() {
             </Dialog.Body>
             <Dialog.Footer>
               <Button variant="outline" onClick={() => setCheckoutOpen(false)}>Cancel</Button>
-              <Button colorPalette="blue" loading={checkoutLoading} onClick={handleCheckout}>
+              <Button
+                colorPalette="blue"
+                loading={checkoutLoading}
+                disabled={paymentMethod === PaymentMethod.CASH && cashTendered !== '' && cashTenderedCents < totalCents}
+                onClick={handleCheckout}
+              >
                 Confirm Checkout
               </Button>
             </Dialog.Footer>

@@ -63,10 +63,13 @@ message Order {
   PaymentMethod payment_method = 10;
   OrderFrom order_from = 11;
   PaymentStatus payment_status = 13;
+  int64 cash_tendered_cents = 14;
+  int64 change_cents = 15;
 }
 
 message MarkOrderPaidRequest {
   int64 order_id = 1 [(buf.validate.field).int64.gt = 0];
+  int64 cash_tendered_cents = 2;
 }
 message MarkOrderPaidResponse {
   Order order = 1;

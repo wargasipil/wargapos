@@ -380,21 +380,23 @@ func (x *OrderItem) GetNotes() string {
 }
 
 type Order struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	CashierId     int64                  `protobuf:"varint,2,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
-	Items         []*OrderItem           `protobuf:"bytes,3,rep,name=items,proto3" json:"items,omitempty"`
-	TotalCents    int64                  `protobuf:"varint,4,opt,name=total_cents,json=totalCents,proto3" json:"total_cents,omitempty"`
-	Status        OrderStatus            `protobuf:"varint,5,opt,name=status,proto3,enum=wargapos.transaction.v1.OrderStatus" json:"status,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	TableId       int64                  `protobuf:"varint,7,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
-	CustomerName  string                 `protobuf:"bytes,8,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
-	PhoneNumber   string                 `protobuf:"bytes,9,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
-	PaymentMethod PaymentMethod          `protobuf:"varint,10,opt,name=payment_method,json=paymentMethod,proto3,enum=wargapos.transaction.v1.PaymentMethod" json:"payment_method,omitempty"`
-	OrderFrom     OrderFrom              `protobuf:"varint,11,opt,name=order_from,json=orderFrom,proto3,enum=wargapos.transaction.v1.OrderFrom" json:"order_from,omitempty"`
-	PaymentStatus PaymentStatus          `protobuf:"varint,13,opt,name=payment_status,json=paymentStatus,proto3,enum=wargapos.transaction.v1.PaymentStatus" json:"payment_status,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Id                int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	CashierId         int64                  `protobuf:"varint,2,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
+	Items             []*OrderItem           `protobuf:"bytes,3,rep,name=items,proto3" json:"items,omitempty"`
+	TotalCents        int64                  `protobuf:"varint,4,opt,name=total_cents,json=totalCents,proto3" json:"total_cents,omitempty"`
+	Status            OrderStatus            `protobuf:"varint,5,opt,name=status,proto3,enum=wargapos.transaction.v1.OrderStatus" json:"status,omitempty"`
+	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	TableId           int64                  `protobuf:"varint,7,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
+	CustomerName      string                 `protobuf:"bytes,8,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
+	PhoneNumber       string                 `protobuf:"bytes,9,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
+	PaymentMethod     PaymentMethod          `protobuf:"varint,10,opt,name=payment_method,json=paymentMethod,proto3,enum=wargapos.transaction.v1.PaymentMethod" json:"payment_method,omitempty"`
+	OrderFrom         OrderFrom              `protobuf:"varint,11,opt,name=order_from,json=orderFrom,proto3,enum=wargapos.transaction.v1.OrderFrom" json:"order_from,omitempty"`
+	PaymentStatus     PaymentStatus          `protobuf:"varint,13,opt,name=payment_status,json=paymentStatus,proto3,enum=wargapos.transaction.v1.PaymentStatus" json:"payment_status,omitempty"`
+	CashTenderedCents int64                  `protobuf:"varint,14,opt,name=cash_tendered_cents,json=cashTenderedCents,proto3" json:"cash_tendered_cents,omitempty"`
+	ChangeCents       int64                  `protobuf:"varint,15,opt,name=change_cents,json=changeCents,proto3" json:"change_cents,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *Order) Reset() {
@@ -511,11 +513,26 @@ func (x *Order) GetPaymentStatus() PaymentStatus {
 	return PaymentStatus_PAYMENT_STATUS_UNSPECIFIED
 }
 
+func (x *Order) GetCashTenderedCents() int64 {
+	if x != nil {
+		return x.CashTenderedCents
+	}
+	return 0
+}
+
+func (x *Order) GetChangeCents() int64 {
+	if x != nil {
+		return x.ChangeCents
+	}
+	return 0
+}
+
 type MarkOrderPaidRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	OrderId       int64                  `protobuf:"varint,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	OrderId           int64                  `protobuf:"varint,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	CashTenderedCents int64                  `protobuf:"varint,2,opt,name=cash_tendered_cents,json=cashTenderedCents,proto3" json:"cash_tendered_cents,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *MarkOrderPaidRequest) Reset() {
@@ -551,6 +568,13 @@ func (*MarkOrderPaidRequest) Descriptor() ([]byte, []int) {
 func (x *MarkOrderPaidRequest) GetOrderId() int64 {
 	if x != nil {
 		return x.OrderId
+	}
+	return 0
+}
+
+func (x *MarkOrderPaidRequest) GetCashTenderedCents() int64 {
+	if x != nil {
+		return x.CashTenderedCents
 	}
 	return 0
 }
@@ -1156,7 +1180,7 @@ const file_wargapos_transaction_v1_order_proto_rawDesc = "" +
 	"\bquantity\x18\x04 \x01(\x05R\bquantity\x12(\n" +
 	"\x10unit_price_cents\x18\x05 \x01(\x03R\x0eunitPriceCents\x12%\n" +
 	"\x0esubtotal_cents\x18\x06 \x01(\x03R\rsubtotalCents\x12\x14\n" +
-	"\x05notes\x18\a \x01(\tR\x05notes\"\xce\x04\n" +
+	"\x05notes\x18\a \x01(\tR\x05notes\"\xa1\x05\n" +
 	"\x05Order\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -1174,9 +1198,12 @@ const file_wargapos_transaction_v1_order_proto_rawDesc = "" +
 	" \x01(\x0e2&.wargapos.transaction.v1.PaymentMethodR\rpaymentMethod\x12A\n" +
 	"\n" +
 	"order_from\x18\v \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\torderFrom\x12M\n" +
-	"\x0epayment_status\x18\r \x01(\x0e2&.wargapos.transaction.v1.PaymentStatusR\rpaymentStatus\":\n" +
+	"\x0epayment_status\x18\r \x01(\x0e2&.wargapos.transaction.v1.PaymentStatusR\rpaymentStatus\x12.\n" +
+	"\x13cash_tendered_cents\x18\x0e \x01(\x03R\x11cashTenderedCents\x12!\n" +
+	"\fchange_cents\x18\x0f \x01(\x03R\vchangeCents\"j\n" +
 	"\x14MarkOrderPaidRequest\x12\"\n" +
-	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"M\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\x12.\n" +
+	"\x13cash_tendered_cents\x18\x02 \x01(\x03R\x11cashTenderedCents\"M\n" +
 	"\x15MarkOrderPaidResponse\x124\n" +
 	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"8\n" +
 	"\x12CancelOrderRequest\x12\"\n" +
