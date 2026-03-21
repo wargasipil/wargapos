@@ -1,96 +1,85 @@
 package runner
 
 import (
+	"log/slog"
 	"time"
 )
-
-type GraphFunc[T any] func(rctx *RunnerContext, before T) (T, error)
-
-func BuildNode() GraphFunc[int] {
-	return func(rctx *RunnerContext, before int) (int, error) {
-		return before + 1, nil
-	}
-}
 
 type State interface {
 	Deadline() time.Duration
 	PutNextDeadline()
+	Next() bool
+	TearDown() error
+	Process(rctx *RunnerContext) error
 }
 
-type Node struct {
-	label   string
-	id      uint64
-	handler func(rctx *RunnerContext) error
+type DeadlineState struct {
+	TDeadline    time.Duration
+	nextDeadline time.Time
 }
 
-type Graph struct {
-	sequences []Node // map[label]func
-	states    []State
-	seqMap    map[uint64]Node
+func (d *DeadlineState) Deadline() time.Duration {
+	if d.nextDeadline.IsZero() {
+		d.nextDeadline = time.Now().Add(d.TDeadline)
+		return d.TDeadline
+	}
+
+	return time.Since(d.nextDeadline)
 }
 
-func (g *Graph) Run(rctx *RunnerContext) error {
+func (d *DeadlineState) PutNextDeadline() {
+	d.nextDeadline = time.Now().Add(d.TDeadline)
+}
+
+func (d *DeadlineState) TearDown() error {
+	return nil
+}
+
+func RunScheduleState(rctx *RunnerContext, states ...State) error {
 	var err error
-	var tempDeadline, deadline DurationList
-	index := 0
-	loc := 0
+	var state State
 
 	for {
 		select {
 		case <-rctx.Done():
 			return nil
 		default:
-			if index >= len(g.sequences) {
-				index = 0
-				loc = 0
+			var tempDeadline DurationList
+			for _, state := range states {
+				tempDeadline = append(tempDeadline, state.Deadline())
 			}
 
-			if index != 0 {
-				deadline = g.getDeadline()
-				tempDeadline = deadline[:index]
-				_, loc = tempDeadline.Min()
+			_, index := tempDeadline.Late()
+			slog.Debug("getting deadline", "index", index, "deadline", tempDeadline)
+
+			state = states[index]
+
+			if state.Next() {
+				err = state.Process(rctx)
+				if err != nil {
+					return err
+				}
+				state.PutNextDeadline()
 			}
-
-			err = g.sequences[loc].handler(rctx)
-			if err != nil {
-				return err
-			}
-
-			g.states[loc].PutNextDeadline()
-			index++
-
 		}
 
+		time.Sleep(time.Millisecond * 200)
 	}
-}
-
-func (g *Graph) AddNode(label string, handler func(rctx *RunnerContext) error, state State) {
-	g.sequences = append(g.sequences, Node{label: label, handler: handler})
-	g.states = append(g.states, state)
 }
 
 type DurationList []time.Duration
 
-func (d DurationList) Min() (time.Duration, int) {
+func (d DurationList) Late() (time.Duration, int) {
 	if len(d) == 0 {
 		return 0, -1
 	}
 	min := d[0]
 	minIndex := 0
 	for i, duration := range d {
-		if duration < min {
+		if duration > min {
 			min = duration
 			minIndex = i
 		}
 	}
 	return min, minIndex
-}
-
-func (g *Graph) getDeadline() DurationList {
-	deadlines := make([]time.Duration, len(g.sequences))
-	for i, node := range g.sequences {
-		deadlines[i] = g.states[node.id].Deadline()
-	}
-
-	return deadlines
 }
