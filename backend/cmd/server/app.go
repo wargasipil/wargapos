@@ -16,6 +16,7 @@ type App *cli.Command
 func NewApp(
 	webrunner WebRunnerFunc,
 	transactionRunner transaction_service.Runner,
+	partitionRunner PartitionRunnerFunc,
 ) App {
 
 	command := &cli.Command{
@@ -34,6 +35,12 @@ func NewApp(
 			}
 
 			return nil
+		},
+		Commands: []*cli.Command{
+			{
+				Name:   "partition",
+				Action: cli.ActionFunc(partitionRunner),
+			},
 		},
 	}
 

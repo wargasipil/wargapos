@@ -33,7 +33,8 @@ func InitializeApp(cfg *config.Config) (App, error) {
 		settings_service.NewSettingsService,
 		stock_service.NewStockService,
 		device_service.NewDeviceService,
-
+		NewPartitionRunner,
+		NewPartitionRunnerFunc,
 		NewWebRunnerFunc,
 		NewApp,
 	)

@@ -37,6 +37,8 @@ func InitializeApp(cfg *config.Config) (App, error) {
 	notificationService := notification_service.NewNotificationService(gormDB)
 	webRunnerFunc := NewWebRunnerFunc(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, deviceService, notificationService)
 	runner := transaction_service.NewTransactionRunner()
-	app := NewApp(webRunnerFunc, runner)
+	partitionRunner := NewPartitionRunner(gormDB)
+	partitionRunnerFunc := NewPartitionRunnerFunc(partitionRunner)
+	app := NewApp(webRunnerFunc, runner, partitionRunnerFunc)
 	return app, nil
 }
