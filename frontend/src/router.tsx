@@ -1,4 +1,4 @@
-import { createRouter, createRoute, createRootRoute, redirect, Outlet } from '@tanstack/react-router'
+import { createRouter, createRoute, createRootRoute, redirect, Outlet, useRouterState } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { useAuthStore } from './store/auth'
 
@@ -19,6 +19,7 @@ import { UsersPage } from './routes/users/index'
 import { KitchenPage } from './routes/kitchen'
 import { PlaygroundPage } from './routes/playground'
 import { SetupPage } from './routes/setup'
+import { PrintPage } from './routes/print'
 
 async function checkSetupNeeded(): Promise<boolean> {
   try {
@@ -32,12 +33,15 @@ async function checkSetupNeeded(): Promise<boolean> {
 
 // Root route with devtools
 const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
+  component: () => {
+    const isPrint = useRouterState({ select: (s) => s.location.pathname === '/print' })
+    return (
+      <>
+        <Outlet />
+        {!isPrint && <TanStackRouterDevtools />}
+      </>
+    )
+  },
 })
 
 // Public routes
@@ -63,6 +67,12 @@ const menuRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/menu',
   component: MenuPage,
+})
+
+const printRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/print',
+  component: PrintPage,
 })
 
 // Protected layout — redirects to /login if no token
@@ -162,6 +172,7 @@ const routeTree = rootRoute.addChildren([
   loginRoute,
   setupRoute,
   menuRoute,
+  printRoute,
   playgroundRoute,
   layoutRoute.addChildren([
     dashboardRoute,

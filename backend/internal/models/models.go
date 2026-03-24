@@ -112,5 +112,11 @@ type AppSettings struct {
 	PrinterAddress2     string `gorm:"column:printer_address2;not null;default:''"`
 	PrinterContact      string `gorm:"column:printer_contact;not null;default:''"`
 	PrinterFooter       string `gorm:"column:printer_footer;not null;default:''"`
-	UpdatedAt           time.Time
+	PrinterMode          int32      `gorm:"column:printer_mode;not null;default:0"`
+	BackupEnabled        bool       `gorm:"column:backup_enabled;not null;default:false"`
+	BackupIntervalHours  int32      `gorm:"column:backup_interval_hours;not null;default:24"`
+	BackupRetentionCount int32      `gorm:"column:backup_retention_count;not null;default:7"`
+	BackupDir            string     `gorm:"column:backup_dir;not null;default:'./backups'"`
+	BackupLastAt         *time.Time `gorm:"column:backup_last_at"`
+	UpdatedAt            time.Time
 }

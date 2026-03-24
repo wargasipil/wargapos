@@ -19,8 +19,11 @@ RUN cd backend && go build -o /app/server ./cmd/server
 
 # Stage 3: Minimal runtime image
 FROM alpine:3.21
-# ca-certificates required for TLS connections (e.g. Supabase)
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates postgresql-client \
+    && mkdir -p /app/bin \
+    && ln -s /usr/bin/pg_dump /app/bin/pg_dump \
+    && ln -s /usr/bin/psql    /app/bin/psql
+WORKDIR /app
 COPY --from=backend /app/server /app/server
 EXPOSE 8080
 ENTRYPOINT ["/app/server"]

@@ -79,6 +79,13 @@ Log "Stopping temporary PostgreSQL..."
 & $pgctl stop -D $PgData -w -t 60
 if ($LASTEXITCODE -ne 0) { throw "pg_ctl stop failed" }
 
+# ── 6a. Add PostgreSQL bin to system PATH ─────────────────────────────────────
+Log "Adding PostgreSQL bin to system PATH..."
+$machinePath = [System.Environment]::GetEnvironmentVariable('Path', 'Machine')
+if ($machinePath -notlike "*$PgBin*") {
+    [System.Environment]::SetEnvironmentVariable('Path', "$PgBin;$machinePath", 'Machine')
+}
+
 # ── 6. Grant NetworkService access to the data directory ──────────────────────
 Log "Granting NetworkService access to PostgreSQL data directory..."
 $acl  = Get-Acl $PgData
@@ -91,6 +98,13 @@ $rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
 )
 $acl.SetAccessRule($rule)
 Set-Acl $PgData $acl
+
+# ── 6b. Copy pg_dump.exe and psql.exe to server\bin\ ─────────────────────────
+Log "Copying PostgreSQL client tools to server\bin..."
+$ServerBin = Join-Path $ServerDir 'bin'
+New-Item -ItemType Directory -Force -Path $ServerBin | Out-Null
+Copy-Item (Join-Path $PgBin 'pg_dump.exe') $ServerBin
+Copy-Item (Join-Path $PgBin 'psql.exe')    $ServerBin
 
 # ── 7. Register PostgreSQL as a Windows service ────────────────────────────────
 Log "Registering PostgreSQL Windows service..."
@@ -111,7 +125,8 @@ Log "Registering WargaPOS server service..."
 $ServerExe = Join-Path $ServerDir 'wargapos-server.exe'
 & $Nssm install WargaPOS-Server $ServerExe
 & $Nssm set WargaPOS-Server AppDirectory $ServerDir
-& $Nssm set WargaPOS-Server AppEnvironmentExtra "CONFIG_PATH=$ConfigOut"
+$machinePath = [System.Environment]::GetEnvironmentVariable('Path', 'Machine')
+& $Nssm set WargaPOS-Server AppEnvironmentExtra "CONFIG_PATH=$ConfigOut`nPATH=$machinePath"
 & $Nssm set WargaPOS-Server DependOnService WargaPOS-DB
 & $Nssm set WargaPOS-Server Start SERVICE_AUTO_START
 & $Nssm set WargaPOS-Server DisplayName "WargaPOS Server"

@@ -12,7 +12,8 @@ import { useAuthStore } from '../../store/auth'
 import { usePrinterStore } from '../../store/printer'
 import { formatPrice, formatTime, paymentMethodLabel } from '../../lib/format'
 import { stripError } from '../../lib/errors'
-import { printReceiptRemote, type PrinterOpts } from '../../lib/printer'
+import { printReceiptRemote, printReceiptBrowser, type PrinterOpts } from '../../lib/printer'
+import { PrintMode } from '../../gen/wargapos/settings/v1/settings_pb'
 import { POSProductCard } from '../../components/shared/POSProductCard'
 import { ProductFilter } from '../../components/shared/ProductFilter'
 import { syncCartToServer } from '../../lib/syncCart'
@@ -136,9 +137,9 @@ export function PosPage() {
     setStep('browse')
   }
 
+  const isBrowserMode = settingsData?.printer?.printMode === PrintMode.BROWSER
+
   async function handlePrint(order: Order, orderTableName: string) {
-    if (selectedPrinters.length === 0) return
-    setPrintLoading(true)
     const printerOpts: PrinterOpts = {
       title:       settingsData?.printer?.title,
       description: settingsData?.printer?.description,
@@ -147,6 +148,12 @@ export function PosPage() {
       contact:     settingsData?.printer?.contact,
       footer:      settingsData?.printer?.footer,
     }
+    if (isBrowserMode) {
+      printReceiptBrowser(order, orderTableName, printerOpts)
+      return
+    }
+    if (selectedPrinters.length === 0) return
+    setPrintLoading(true)
     try {
       for (const p of selectedPrinters) {
         await printReceiptRemote(order, orderTableName, p, printerOpts)
@@ -159,7 +166,7 @@ export function PosPage() {
   }
 
   // ── Printer warning banner ────────────────────────────────────────────────────
-  const printerWarning = selectedPrinters.length === 0 ? (
+  const printerWarning = !isBrowserMode && selectedPrinters.length === 0 ? (
     <Alert.Root status="warning" mb={3}>
       <Alert.Indicator />
       <Alert.Description fontSize="sm">
@@ -371,13 +378,15 @@ export function PosPage() {
               onChange={setTableId}
               placeholder="Walk-in"
             />
-            <Button size="sm" variant="ghost" onClick={() => setPrinterSettingsOpen(true)}>
-              <Printer size={16} />
-              {selectedPrinters.length > 0
-                ? <Badge colorPalette="green" size="sm">{selectedPrinters.length}</Badge>
-                : <Badge colorPalette="orange" size="sm">!</Badge>
-              }
-            </Button>
+            {!isBrowserMode && (
+              <Button size="sm" variant="ghost" onClick={() => setPrinterSettingsOpen(true)}>
+                <Printer size={16} />
+                {selectedPrinters.length > 0
+                  ? <Badge colorPalette="green" size="sm">{selectedPrinters.length}</Badge>
+                  : <Badge colorPalette="orange" size="sm">!</Badge>
+                }
+              </Button>
+            )}
           </HStack>
         </HStack>
 

@@ -3,16 +3,27 @@ package config
 import (
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
-	Server   ServerConfig   `yaml:"server"`
-	Database DatabaseConfig `yaml:"database"`
-	Auth     AuthConfig     `yaml:"auth"`
-	Midtrans MidtransConfig `yaml:"midtrans"`
+	Server   ServerConfig    `yaml:"server"`
+	Database DatabaseConfig  `yaml:"database"`
+	Auth     AuthConfig      `yaml:"auth"`
+	Midtrans MidtransConfig  `yaml:"midtrans"`
 	Printer  ConnectorConfig `yaml:"printer"`
+}
+
+func (cfg *Config) GetBase() string {
+	dir, _ := os.Getwd()
+
+	if strings.HasSuffix(dir, "backend") {
+		dir = filepath.Join(dir, "..")
+	}
+	return dir
 }
 
 type ConnectorConfig struct {

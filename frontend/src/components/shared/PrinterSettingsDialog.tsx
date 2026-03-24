@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Alert, Button, Checkbox, Dialog, Spinner, Text, VStack } from '@chakra-ui/react'
-import { deviceClient } from '../../client'
+import { deviceClient, settingsClient } from '../../client'
 import { usePrinterStore } from '../../store/printer'
+import { PrintMode } from '../../gen/wargapos/settings/v1/settings_pb'
 
 interface Props {
   open: boolean
@@ -19,10 +20,18 @@ export function PrinterSettingsDialog({ open, onClose }: Props) {
     selectedPrinters.map((p) => printerKey(p.deviceId, p.name))
   )
 
+  const { data: settingsData } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsClient.getSettings({}),
+    staleTime: 60_000,
+  })
+
+  const isBrowserMode = settingsData?.printer?.printMode === PrintMode.BROWSER
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['device-printers'],
     queryFn: () => deviceClient.listPrinters({}),
-    enabled: open,
+    enabled: open && !isBrowserMode,
     retry: false,
   })
 
@@ -51,6 +60,12 @@ export function PrinterSettingsDialog({ open, onClose }: Props) {
             <Dialog.Title>Printer Settings</Dialog.Title>
           </Dialog.Header>
           <Dialog.Body>
+            {isBrowserMode ? (
+              <Text color="gray.500" fontSize="sm">
+                Mode browser aktif — tidak perlu memilih printer.
+              </Text>
+            ) : (
+              <>
             {isLoading && <Spinner />}
             {isError && (
               <Alert.Root status="error">
@@ -82,6 +97,8 @@ export function PrinterSettingsDialog({ open, onClose }: Props) {
                   )
                 })}
               </VStack>
+            )}
+              </>
             )}
           </Dialog.Body>
           <Dialog.Footer>

@@ -144,6 +144,58 @@ export async function printReceipt(order: Order, tableName: string): Promise<voi
   }
 }
 
+export interface BrowserReceiptPayload {
+  orderId: string
+  dateStr: string
+  tableName: string
+  customerName?: string
+  phoneNumber?: string
+  paymentLabel: string
+  totalStr: string
+  cashTenderedStr?: string
+  changeStr?: string
+  showCash: boolean
+  items: {
+    productName: string
+    qty: number
+    unitPriceStr: string
+    subtotalStr: string
+    notes?: string
+  }[]
+  opts: PrinterOpts
+}
+
+export function printReceiptBrowser(order: Order, tableName: string, opts?: PrinterOpts): void {
+  const method = paymentMethodLabel(order.paymentMethod)
+  const paid = order.paymentStatus === PaymentStatus.PAID ? 'Paid' : 'Unpaid'
+  const showCash = order.paymentMethod === PaymentMethod.CASH && order.cashTenderedCents > 0n
+
+  const payload: BrowserReceiptPayload = {
+    orderId: String(order.id),
+    dateStr: formatDateTime(order.createdAt),
+    tableName,
+    customerName: order.customerName || undefined,
+    phoneNumber: order.phoneNumber || undefined,
+    paymentLabel: `${method} - ${paid}`,
+    totalStr: formatPrice(order.totalCents),
+    cashTenderedStr: showCash ? formatPrice(order.cashTenderedCents) : undefined,
+    changeStr: showCash ? formatPrice(order.changeCents) : undefined,
+    showCash,
+    items: order.items.map((item) => ({
+      productName: item.productName,
+      qty: item.quantity,
+      unitPriceStr: formatPrice(item.unitPriceCents),
+      subtotalStr: formatPrice(item.subtotalCents),
+      notes: item.notes || undefined,
+    })),
+    opts: opts ?? {},
+  }
+
+  const json = JSON.stringify(payload)
+  const b64 = btoa(unescape(encodeURIComponent(json)))
+  window.open(`/print?data=${b64}`, '_blank')
+}
+
 // printReceiptRemote sends ESC/POS bytes via the device service (main server routes to connector).
 export async function printReceiptRemote(
   order: Order,

@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package wargapos.backup.v1;
+
+// import "buf/validate/validate.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/backup/v1;backupv1";
+
+service BackupService {
+  rpc RunBackup(RunBackupRequest) returns (stream RunBackupResponse);
+  rpc ListBackup(ListBackupRequest) returns (ListBackupResponse);
+  rpc DeleteBackup(DeleteBackupRequest) returns (DeleteBackupResponse);
+  rpc RestoreBackup(RestoreBackupRequest) returns (stream RestoreBackupResponse);
+}
+
+message RunBackupRequest {}
+message RunBackupResponse {
+  oneof data {
+    string filepath = 1;
+    string msg = 2;
+  }
+}
+
+message ListBackupRequest {}
+message ListBackupResponse {
+  repeated string fnames = 1;
+}
+
+message DeleteBackupRequest {
+  string fname = 1;
+}
+
+message DeleteBackupResponse {}
+
+message RestoreBackupRequest {
+  string fname = 1;
+}
+message RestoreBackupResponse {
+  string msg = 1;
+}

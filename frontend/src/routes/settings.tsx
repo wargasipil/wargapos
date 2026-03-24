@@ -1,14 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Alert, Box, Button, Field, Flex, Heading, HStack, Input, NativeSelect,
-  Separator, Spinner, Text, VStack,
+  Separator, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
-import { KeyRound, CreditCard, User, MonitorSmartphone, Printer } from 'lucide-react'
-import { userClient, settingsClient, deviceClient } from '../client'
+import { KeyRound, CreditCard, User, MonitorSmartphone, Printer, HardDrive, Download, RotateCcw, Trash2 } from 'lucide-react'
+import { ConnectError } from '@connectrpc/connect'
+import { userClient, settingsClient, deviceClient, backupClient } from '../client'
 import { useAuthStore } from '../store/auth'
 import { toaster } from '../components/ui/toaster'
 import { stripError } from '../lib/errors'
+import { PrintMode } from '../gen/wargapos/settings/v1/settings_pb'
 
 // ── Nav definition ─────────────────────────────────────────────────────────────
 
@@ -22,8 +24,9 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { key: 'profile',  label: 'Profile',  Icon: User },
   { key: 'password', label: 'Password', Icon: KeyRound },
-  { key: 'payment',  label: 'Payment',  Icon: CreditCard, adminOnly: true },
-  { key: 'printer',  label: 'Printer',  Icon: Printer,    adminOnly: true },
+  { key: 'payment',  label: 'Payment',  Icon: CreditCard,       adminOnly: true },
+  { key: 'printer',  label: 'Printer',  Icon: Printer,          adminOnly: true },
+  { key: 'backup',   label: 'Backup',   Icon: HardDrive,        adminOnly: true },
   { key: 'devices',  label: 'Devices',  Icon: MonitorSmartphone },
 ]
 
@@ -79,6 +82,7 @@ export function SettingsPage() {
           {section === 'password' && <ChangePasswordSection token={token} />}
           {isAdmin && section === 'payment'  && <PaymentSection token={token} />}
           {isAdmin && section === 'printer'  && <PrinterSection token={token} />}
+          {isAdmin && section === 'backup'   && <BackupSection token={token} />}
           {section === 'devices'  && <DevicesSection />}
         </Box>
       </Flex>
@@ -387,6 +391,7 @@ function PrinterSection({ token }: { token: string | null }) {
   const [address2, setAddress2] = useState('')
   const [contact, setContact] = useState('')
   const [footer, setFooter] = useState('')
+  const [printMode, setPrintMode] = useState<PrintMode>(PrintMode.UNSPECIFIED)
   const [initialized, setInitialized] = useState(false)
 
   if (data && !initialized) {
@@ -396,6 +401,7 @@ function PrinterSection({ token }: { token: string | null }) {
     setAddress2(data.printer?.address2 ?? '')
     setContact(data.printer?.contact ?? '')
     setFooter(data.printer?.footer ?? '')
+    setPrintMode(data.printer?.printMode ?? PrintMode.UNSPECIFIED)
     setInitialized(true)
   }
 
@@ -405,7 +411,7 @@ function PrinterSection({ token }: { token: string | null }) {
         {
           midtrans: data?.midtrans,
           manualPayment: data?.manualPayment,
-          printer: { title, description, address, address2, contact, footer },
+          printer: { title, description, address, address2, contact, footer, printMode },
         },
         { headers: { Authorization: `Bearer ${token}` } },
       ),
@@ -417,12 +423,42 @@ function PrinterSection({ token }: { token: string | null }) {
 
   if (isLoading) return <Box pt={4}><Spinner size="sm" /></Box>
 
+  const isBrowser = printMode === PrintMode.BROWSER
+
   return (
     <Box pt={4}>
       <Text fontSize="xs" color="gray.500" mb={4}>
         Info usaha yang ditampilkan di header dan footer struk cetak.
       </Text>
       <VStack align="stretch" gap={3}>
+        <Field.Root>
+          <Field.Label>Mode Cetak</Field.Label>
+          <HStack gap={0}>
+            <Button
+              size="sm"
+              variant={!isBrowser ? 'solid' : 'outline'}
+              colorPalette="blue"
+              borderRightRadius={0}
+              onClick={() => setPrintMode(PrintMode.CONNECTOR)}
+            >
+              Connector
+            </Button>
+            <Button
+              size="sm"
+              variant={isBrowser ? 'solid' : 'outline'}
+              colorPalette="blue"
+              borderLeftRadius={0}
+              onClick={() => setPrintMode(PrintMode.BROWSER)}
+            >
+              Browser
+            </Button>
+          </HStack>
+          <Field.HelperText>
+            {isBrowser
+              ? 'Cetak via print dialog browser — tidak perlu connector.'
+              : 'Cetak ESC/POS via connector service (thermal printer).'}
+          </Field.HelperText>
+        </Field.Root>
         <Field.Root>
           <Field.Label>Nama Usaha</Field.Label>
           <Input size="sm" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="WargaPOS" />
@@ -459,6 +495,334 @@ function PrinterSection({ token }: { token: string | null }) {
           </Button>
         </Flex>
       </VStack>
+    </Box>
+  )
+}
+
+// ── Backup ─────────────────────────────────────────────────────────────────────
+
+function fmtRelative(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const mins  = Math.floor(diff / 60_000)
+  const hours = Math.floor(diff / 3_600_000)
+  const days  = Math.floor(diff / 86_400_000)
+  if (mins  < 1)  return 'just now'
+  if (mins  < 60) return `${mins} menit lalu`
+  if (hours < 24) return `${hours} jam lalu`
+  return `${days} hari lalu`
+}
+
+function BackupSection({ token }: { token: string | null }) {
+  const qc = useQueryClient()
+
+  // Settings (schedule config + lastBackupAt)
+  const { data: settingsData, isLoading: settingsLoading } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsClient.getSettings({}),
+    staleTime: 30_000,
+  })
+
+  // Backup file list
+  const { data: listData, isLoading: listLoading, refetch: refetchList } = useQuery({
+    queryKey: ['backup-list'],
+    queryFn: () => backupClient.listBackup({}),
+    staleTime: 15_000,
+  })
+
+  const [enabled, setEnabled]           = useState(false)
+  const [intervalHours, setIntervalHours] = useState(24)
+  const [retentionCount, setRetentionCount] = useState(7)
+  const [backupDir, setBackupDir]       = useState('./backups')
+  const [initialized, setInitialized]   = useState(false)
+
+  const [isBackingUp, setIsBackingUp] = useState(false)
+  const [backupLogs, setBackupLogs]   = useState<string[]>([])
+  const abortRef  = useRef<AbortController | null>(null)
+  const logEndRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => { logEndRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [backupLogs])
+  useEffect(() => () => { abortRef.current?.abort() }, [])
+
+  if (settingsData && !initialized) {
+    setEnabled(settingsData.backup?.enabled ?? false)
+    setIntervalHours(settingsData.backup?.intervalHours ?? 24)
+    setRetentionCount(settingsData.backup?.retentionCount ?? 7)
+    setBackupDir(settingsData.backup?.backupDir ?? './backups')
+    setInitialized(true)
+  }
+
+  const saveMutation = useMutation({
+    mutationFn: () =>
+      settingsClient.updateSettings(
+        {
+          midtrans: settingsData?.midtrans,
+          manualPayment: settingsData?.manualPayment,
+          printer: settingsData?.printer,
+          backup: { enabled, intervalHours, retentionCount, backupDir },
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      ),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['settings'] })
+      toaster.create({ title: 'Backup settings saved', type: 'success', duration: 3000 })
+    },
+    onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
+  })
+
+  const [restoring, setRestoring] = useState<string | null>(null)
+  const [deleting, setDeleting]   = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [uploading, setUploading] = useState(false)
+
+  async function handleRestoreByName(name: string) {
+    setRestoring(name)
+    try {
+      const stream = backupClient.restoreBackup({ fname: name })
+      for await (const _res of stream) { /* stream progress */ }
+      toaster.create({ title: 'Restore berhasil', type: 'success', duration: 3000 })
+    } catch (err) {
+      toaster.create({ title: err instanceof ConnectError ? err.message : 'Restore failed', type: 'error', duration: 4000 })
+    } finally {
+      setRestoring(null)
+    }
+  }
+
+  async function handleUploadRestore(file: File) {
+    setUploading(true)
+    try {
+      const form = new FormData()
+      form.append('file', file)
+      const res = await fetch('/backup/restore-upload', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: form,
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ error: 'Restore failed' }))
+        throw new Error(body.error ?? 'Restore failed')
+      }
+      toaster.create({ title: 'Restore berhasil', type: 'success', duration: 3000 })
+    } catch (err) {
+      toaster.create({ title: err instanceof Error ? err.message : 'Restore failed', type: 'error', duration: 4000 })
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  async function handleDelete(name: string) {
+    setDeleting(name)
+    try {
+      await backupClient.deleteBackup({ fname: name })
+      toaster.create({ title: 'Backup dihapus', type: 'success', duration: 3000 })
+      refetchList()
+    } catch (err) {
+      toaster.create({ title: err instanceof ConnectError ? err.message : 'Delete failed', type: 'error', duration: 4000 })
+    } finally {
+      setDeleting(null)
+    }
+  }
+
+  const lastBackupAt = settingsData?.backup?.lastBackupAt
+  const lastBackupDate = lastBackupAt
+    ? new Date(Number(lastBackupAt.seconds) * 1000)
+    : null
+
+  if (settingsLoading) return <Box pt={4}><Spinner size="sm" /></Box>
+
+  const files = listData?.fnames ?? []
+
+  return (
+    <Box pt={4}>
+      {/* Backup Now */}
+      <VStack align="stretch" gap={2} mb={5}>
+        <Text fontWeight="semibold" fontSize="sm">Backup Database</Text>
+        <Text fontSize="xs" color="gray.500">Backup dan restore database PostgreSQL.</Text>
+        <HStack>
+          <Button
+            size="sm"
+            colorPalette="blue"
+            loading={isBackingUp}
+            onClick={async () => {
+              const ac = new AbortController()
+              abortRef.current = ac
+              setIsBackingUp(true)
+              setBackupLogs([])
+              try {
+                const stream = backupClient.runBackup({}, { signal: ac.signal })
+                for await (const res of stream) {
+                  if (res.data.case === 'msg') {
+                    setBackupLogs(prev => [...prev, res.data.value ?? ''])
+                  } else if (res.data.case === 'filepath') {
+                    setBackupLogs(prev => [...prev, '✓ Saved — download from the list below'])
+                    refetchList()
+                    qc.invalidateQueries({ queryKey: ['settings'] })
+                  }
+                }
+              } catch (err) {
+                if (!ac.signal.aborted) {
+                  const msg = err instanceof ConnectError ? err.message : String(err)
+                  setBackupLogs(prev => [...prev, `Error: ${msg}`])
+                }
+              } finally {
+                setIsBackingUp(false)
+              }
+            }}
+          >
+            <HardDrive size={14} />
+            Backup Now
+          </Button>
+          {lastBackupDate && (
+            <Text fontSize="xs" color="gray.500">
+              Last backup: {fmtRelative(lastBackupDate.toISOString())}
+            </Text>
+          )}
+        </HStack>
+        {backupLogs.length > 0 && (
+          <Box fontSize="xs" color="gray.500" fontFamily="mono" mt={1}
+               maxH="80px" overflowY="auto" bg="gray.50" p={2} borderRadius="md">
+            {backupLogs.map((l, i) => <Text key={i}>{l}</Text>)}
+            <div ref={logEndRef} />
+          </Box>
+        )}
+      </VStack>
+
+      <Separator mb={5} />
+
+      {/* Schedule config */}
+      <Text fontWeight="semibold" fontSize="sm" mb={3}>Backup Terjadwal</Text>
+      <VStack align="stretch" gap={3}>
+        <HStack>
+          <input
+            type="checkbox"
+            id="backup-enabled"
+            checked={enabled}
+            onChange={(e) => setEnabled(e.target.checked)}
+          />
+          <label htmlFor="backup-enabled" style={{ fontSize: '14px', cursor: 'pointer' }}>
+            Aktifkan backup otomatis
+          </label>
+        </HStack>
+        <Field.Root>
+          <Field.Label>Interval</Field.Label>
+          <HStack gap={0}>
+            {[
+              { label: '6 Jam',    value: 6 },
+              { label: 'Harian',   value: 24 },
+              { label: 'Mingguan', value: 168 },
+            ].map((opt) => (
+              <Button
+                key={opt.value}
+                size="sm"
+                variant={intervalHours === opt.value ? 'solid' : 'outline'}
+                colorPalette="blue"
+                borderRadius={0}
+                _first={{ borderLeftRadius: 'md' }}
+                _last={{ borderRightRadius: 'md' }}
+                onClick={() => setIntervalHours(opt.value)}
+              >
+                {opt.label}
+              </Button>
+            ))}
+          </HStack>
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Simpan N backup terakhir</Field.Label>
+          <Input
+            size="sm"
+            type="number"
+            w="80px"
+            value={retentionCount}
+            onChange={(e) => setRetentionCount(Number(e.target.value))}
+            min={1}
+          />
+        </Field.Root>
+        <Field.Root>
+          <Field.Label>Direktori backup (server)</Field.Label>
+          <Input size="sm" value={backupDir} onChange={(e) => setBackupDir(e.target.value)} placeholder="./backups" />
+        </Field.Root>
+        <Flex justify="flex-end">
+          <Button size="sm" colorPalette="blue" loading={saveMutation.isPending} onClick={() => saveMutation.mutate()}>
+            Simpan
+          </Button>
+        </Flex>
+      </VStack>
+
+      <Separator my={5} />
+
+      {/* Saved backups */}
+      <Text fontWeight="semibold" fontSize="sm" mb={3}>Backup Tersimpan</Text>
+      {listLoading ? (
+        <Spinner size="sm" />
+      ) : files.length === 0 ? (
+        <Text fontSize="sm" color="gray.400">Belum ada backup tersimpan.</Text>
+      ) : (
+        <Box borderWidth="1px" borderRadius="md" overflow="hidden">
+          <Table.Root size="sm">
+            <Table.Body>
+              {files.map((fname) => (
+                <Table.Row key={fname}>
+                  <Table.Cell>
+                    <Text fontSize="xs" fontFamily="mono">{fname}</Text>
+                  </Table.Cell>
+                  <Table.Cell textAlign="right" w="1px" whiteSpace="nowrap">
+                    <HStack gap={1} justify="flex-end">
+                      <Button
+                        size="xs"
+                        variant="ghost"
+                        title="Download"
+                        onClick={() => window.open(`/backup/download-existing?file=${encodeURIComponent(fname)}&token=${encodeURIComponent(token ?? '')}`, '_blank')}
+                      >
+                        <Download size={13} />
+                      </Button>
+                      <Button
+                        size="xs"
+                        variant="ghost"
+                        colorPalette="blue"
+                        title="Restore"
+                        loading={restoring === fname}
+                        onClick={() => handleRestoreByName(fname)}
+                      >
+                        <RotateCcw size={13} />
+                      </Button>
+                      <Button
+                        size="xs"
+                        variant="ghost"
+                        colorPalette="red"
+                        title="Delete"
+                        loading={deleting === fname}
+                        onClick={() => handleDelete(fname)}
+                      >
+                        <Trash2 size={13} />
+                      </Button>
+                    </HStack>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </Box>
+      )}
+
+      <Separator my={5} />
+
+      {/* Upload restore */}
+      <Text fontWeight="semibold" fontSize="sm" mb={3}>Restore dari File</Text>
+      <Text fontSize="xs" color="gray.500" mb={3}>Upload file .sql atau .sql.gz untuk restore database.</Text>
+      <HStack>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".sql,.sql.gz,.gz"
+          style={{ fontSize: '13px' }}
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            if (file) handleUploadRestore(file)
+          }}
+        />
+        {uploading && <Spinner size="sm" />}
+      </HStack>
+
     </Box>
   )
 }

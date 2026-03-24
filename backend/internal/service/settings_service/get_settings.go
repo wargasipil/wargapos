@@ -2,8 +2,10 @@ package settings_service
 
 import (
 	"context"
+	"time"
 
 	"connectrpc.com/connect"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	settingsv1 "wargapos/backend/gen/wargapos/settings/v1"
 	"wargapos/backend/internal/models"
@@ -25,6 +27,7 @@ func (s *SettingsService) GetSettings(
 			MidtransConfigured: s.cfg.ServerKey != "",
 			ManualPayment:      &settingsv1.ManualPaymentSettings{},
 			Printer:            &settingsv1.PrinterSettings{},
+			Backup:             &settingsv1.BackupSettings{IntervalHours: 24, RetentionCount: 7, BackupDir: "./backups"},
 		}), nil
 	}
 
@@ -62,6 +65,21 @@ func (s *SettingsService) GetSettings(
 			Address2:    row.PrinterAddress2,
 			Contact:     row.PrinterContact,
 			Footer:      row.PrinterFooter,
+			PrintMode:   settingsv1.PrintMode(row.PrinterMode),
+		},
+		Backup: &settingsv1.BackupSettings{
+			Enabled:        row.BackupEnabled,
+			IntervalHours:  row.BackupIntervalHours,
+			RetentionCount: row.BackupRetentionCount,
+			BackupDir:      row.BackupDir,
+			LastBackupAt:   backupLastAt(row.BackupLastAt),
 		},
 	}), nil
+}
+
+func backupLastAt(t *time.Time) *timestamppb.Timestamp {
+	if t == nil {
+		return nil
+	}
+	return timestamppb.New(*t)
 }

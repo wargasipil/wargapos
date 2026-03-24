@@ -9,6 +9,7 @@ package settingsv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -20,6 +21,55 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+type PrintMode int32
+
+const (
+	PrintMode_PRINT_MODE_UNSPECIFIED PrintMode = 0 // behaves as CONNECTOR (backwards compatible)
+	PrintMode_PRINT_MODE_CONNECTOR   PrintMode = 1
+	PrintMode_PRINT_MODE_BROWSER     PrintMode = 2
+)
+
+// Enum value maps for PrintMode.
+var (
+	PrintMode_name = map[int32]string{
+		0: "PRINT_MODE_UNSPECIFIED",
+		1: "PRINT_MODE_CONNECTOR",
+		2: "PRINT_MODE_BROWSER",
+	}
+	PrintMode_value = map[string]int32{
+		"PRINT_MODE_UNSPECIFIED": 0,
+		"PRINT_MODE_CONNECTOR":   1,
+		"PRINT_MODE_BROWSER":     2,
+	}
+)
+
+func (x PrintMode) Enum() *PrintMode {
+	p := new(PrintMode)
+	*p = x
+	return p
+}
+
+func (x PrintMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PrintMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_wargapos_settings_v1_settings_proto_enumTypes[0].Descriptor()
+}
+
+func (PrintMode) Type() protoreflect.EnumType {
+	return &file_wargapos_settings_v1_settings_proto_enumTypes[0]
+}
+
+func (x PrintMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PrintMode.Descriptor instead.
+func (PrintMode) EnumDescriptor() ([]byte, []int) {
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{0}
+}
 
 type MidtransSettings struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -193,6 +243,7 @@ type PrinterSettings struct {
 	Address2      string                 `protobuf:"bytes,4,opt,name=address2,proto3" json:"address2,omitempty"`
 	Contact       string                 `protobuf:"bytes,5,opt,name=contact,proto3" json:"contact,omitempty"`
 	Footer        string                 `protobuf:"bytes,6,opt,name=footer,proto3" json:"footer,omitempty"`
+	PrintMode     PrintMode              `protobuf:"varint,7,opt,name=print_mode,json=printMode,proto3,enum=wargapos.settings.v1.PrintMode" json:"print_mode,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -269,12 +320,20 @@ func (x *PrinterSettings) GetFooter() string {
 	return ""
 }
 
+func (x *PrinterSettings) GetPrintMode() PrintMode {
+	if x != nil {
+		return x.PrintMode
+	}
+	return PrintMode_PRINT_MODE_UNSPECIFIED
+}
+
 type GetSettingsResponse struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Midtrans           *MidtransSettings      `protobuf:"bytes,1,opt,name=midtrans,proto3" json:"midtrans,omitempty"`
 	MidtransConfigured bool                   `protobuf:"varint,2,opt,name=midtrans_configured,json=midtransConfigured,proto3" json:"midtrans_configured,omitempty"` // true when server_key is non-empty
 	ManualPayment      *ManualPaymentSettings `protobuf:"bytes,3,opt,name=manual_payment,json=manualPayment,proto3" json:"manual_payment,omitempty"`
 	Printer            *PrinterSettings       `protobuf:"bytes,4,opt,name=printer,proto3" json:"printer,omitempty"`
+	Backup             *BackupSettings        `protobuf:"bytes,5,opt,name=backup,proto3" json:"backup,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -337,18 +396,102 @@ func (x *GetSettingsResponse) GetPrinter() *PrinterSettings {
 	return nil
 }
 
+func (x *GetSettingsResponse) GetBackup() *BackupSettings {
+	if x != nil {
+		return x.Backup
+	}
+	return nil
+}
+
+type BackupSettings struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Enabled        bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	IntervalHours  int32                  `protobuf:"varint,2,opt,name=interval_hours,json=intervalHours,proto3" json:"interval_hours,omitempty"`
+	RetentionCount int32                  `protobuf:"varint,3,opt,name=retention_count,json=retentionCount,proto3" json:"retention_count,omitempty"`
+	BackupDir      string                 `protobuf:"bytes,4,opt,name=backup_dir,json=backupDir,proto3" json:"backup_dir,omitempty"`
+	LastBackupAt   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_backup_at,json=lastBackupAt,proto3" json:"last_backup_at,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *BackupSettings) Reset() {
+	*x = BackupSettings{}
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BackupSettings) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BackupSettings) ProtoMessage() {}
+
+func (x *BackupSettings) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BackupSettings.ProtoReflect.Descriptor instead.
+func (*BackupSettings) Descriptor() ([]byte, []int) {
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *BackupSettings) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *BackupSettings) GetIntervalHours() int32 {
+	if x != nil {
+		return x.IntervalHours
+	}
+	return 0
+}
+
+func (x *BackupSettings) GetRetentionCount() int32 {
+	if x != nil {
+		return x.RetentionCount
+	}
+	return 0
+}
+
+func (x *BackupSettings) GetBackupDir() string {
+	if x != nil {
+		return x.BackupDir
+	}
+	return ""
+}
+
+func (x *BackupSettings) GetLastBackupAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastBackupAt
+	}
+	return nil
+}
+
 type UpdateSettingsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Midtrans      *MidtransSettings      `protobuf:"bytes,1,opt,name=midtrans,proto3" json:"midtrans,omitempty"`
 	ManualPayment *ManualPaymentSettings `protobuf:"bytes,2,opt,name=manual_payment,json=manualPayment,proto3" json:"manual_payment,omitempty"`
 	Printer       *PrinterSettings       `protobuf:"bytes,3,opt,name=printer,proto3" json:"printer,omitempty"`
+	Backup        *BackupSettings        `protobuf:"bytes,4,opt,name=backup,proto3" json:"backup,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateSettingsRequest) Reset() {
 	*x = UpdateSettingsRequest{}
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[5]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -360,7 +503,7 @@ func (x *UpdateSettingsRequest) String() string {
 func (*UpdateSettingsRequest) ProtoMessage() {}
 
 func (x *UpdateSettingsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[5]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -373,7 +516,7 @@ func (x *UpdateSettingsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSettingsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSettingsRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{5}
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateSettingsRequest) GetMidtrans() *MidtransSettings {
@@ -397,6 +540,13 @@ func (x *UpdateSettingsRequest) GetPrinter() *PrinterSettings {
 	return nil
 }
 
+func (x *UpdateSettingsRequest) GetBackup() *BackupSettings {
+	if x != nil {
+		return x.Backup
+	}
+	return nil
+}
+
 type UpdateSettingsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -405,7 +555,7 @@ type UpdateSettingsResponse struct {
 
 func (x *UpdateSettingsResponse) Reset() {
 	*x = UpdateSettingsResponse{}
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[6]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -417,7 +567,7 @@ func (x *UpdateSettingsResponse) String() string {
 func (*UpdateSettingsResponse) ProtoMessage() {}
 
 func (x *UpdateSettingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[6]
+	mi := &file_wargapos_settings_v1_settings_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -430,14 +580,14 @@ func (x *UpdateSettingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSettingsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateSettingsResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{6}
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{7}
 }
 
 var File_wargapos_settings_v1_settings_proto protoreflect.FileDescriptor
 
 const file_wargapos_settings_v1_settings_proto_rawDesc = "" +
 	"\n" +
-	"#wargapos/settings/v1/settings.proto\x12\x14wargapos.settings.v1\"r\n" +
+	"#wargapos/settings/v1/settings.proto\x12\x14wargapos.settings.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"r\n" +
 	"\x10MidtransSettings\x12\x1d\n" +
 	"\n" +
 	"server_key\x18\x01 \x01(\tR\tserverKey\x12\x1d\n" +
@@ -449,24 +599,39 @@ const file_wargapos_settings_v1_settings_proto_rawDesc = "" +
 	"\tbank_name\x18\x01 \x01(\tR\bbankName\x12.\n" +
 	"\x13bank_account_number\x18\x02 \x01(\tR\x11bankAccountNumber\x12*\n" +
 	"\x11bank_account_name\x18\x03 \x01(\tR\x0fbankAccountName\x12$\n" +
-	"\x0eqris_image_url\x18\x04 \x01(\tR\fqrisImageUrl\"\xb1\x01\n" +
+	"\x0eqris_image_url\x18\x04 \x01(\tR\fqrisImageUrl\"\xf1\x01\n" +
 	"\x0fPrinterSettings\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x18\n" +
 	"\aaddress\x18\x03 \x01(\tR\aaddress\x12\x1a\n" +
 	"\baddress2\x18\x04 \x01(\tR\baddress2\x12\x18\n" +
 	"\acontact\x18\x05 \x01(\tR\acontact\x12\x16\n" +
-	"\x06footer\x18\x06 \x01(\tR\x06footer\"\x9f\x02\n" +
+	"\x06footer\x18\x06 \x01(\tR\x06footer\x12>\n" +
+	"\n" +
+	"print_mode\x18\a \x01(\x0e2\x1f.wargapos.settings.v1.PrintModeR\tprintMode\"\xdd\x02\n" +
 	"\x13GetSettingsResponse\x12B\n" +
 	"\bmidtrans\x18\x01 \x01(\v2&.wargapos.settings.v1.MidtransSettingsR\bmidtrans\x12/\n" +
 	"\x13midtrans_configured\x18\x02 \x01(\bR\x12midtransConfigured\x12R\n" +
 	"\x0emanual_payment\x18\x03 \x01(\v2+.wargapos.settings.v1.ManualPaymentSettingsR\rmanualPayment\x12?\n" +
-	"\aprinter\x18\x04 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\"\xf0\x01\n" +
+	"\aprinter\x18\x04 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\x12<\n" +
+	"\x06backup\x18\x05 \x01(\v2$.wargapos.settings.v1.BackupSettingsR\x06backup\"\xdb\x01\n" +
+	"\x0eBackupSettings\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12%\n" +
+	"\x0einterval_hours\x18\x02 \x01(\x05R\rintervalHours\x12'\n" +
+	"\x0fretention_count\x18\x03 \x01(\x05R\x0eretentionCount\x12\x1d\n" +
+	"\n" +
+	"backup_dir\x18\x04 \x01(\tR\tbackupDir\x12@\n" +
+	"\x0elast_backup_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\flastBackupAt\"\xae\x02\n" +
 	"\x15UpdateSettingsRequest\x12B\n" +
 	"\bmidtrans\x18\x01 \x01(\v2&.wargapos.settings.v1.MidtransSettingsR\bmidtrans\x12R\n" +
 	"\x0emanual_payment\x18\x02 \x01(\v2+.wargapos.settings.v1.ManualPaymentSettingsR\rmanualPayment\x12?\n" +
-	"\aprinter\x18\x03 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\"\x18\n" +
-	"\x16UpdateSettingsResponse2\xe2\x01\n" +
+	"\aprinter\x18\x03 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\x12<\n" +
+	"\x06backup\x18\x04 \x01(\v2$.wargapos.settings.v1.BackupSettingsR\x06backup\"\x18\n" +
+	"\x16UpdateSettingsResponse*Y\n" +
+	"\tPrintMode\x12\x1a\n" +
+	"\x16PRINT_MODE_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14PRINT_MODE_CONNECTOR\x10\x01\x12\x16\n" +
+	"\x12PRINT_MODE_BROWSER\x10\x022\xe2\x01\n" +
 	"\x0fSettingsService\x12b\n" +
 	"\vGetSettings\x12(.wargapos.settings.v1.GetSettingsRequest\x1a).wargapos.settings.v1.GetSettingsResponse\x12k\n" +
 	"\x0eUpdateSettings\x12+.wargapos.settings.v1.UpdateSettingsRequest\x1a,.wargapos.settings.v1.UpdateSettingsResponseB6Z4wargapos/backend/gen/wargapos/settings/v1;settingsv1b\x06proto3"
@@ -483,32 +648,40 @@ func file_wargapos_settings_v1_settings_proto_rawDescGZIP() []byte {
 	return file_wargapos_settings_v1_settings_proto_rawDescData
 }
 
-var file_wargapos_settings_v1_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_wargapos_settings_v1_settings_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_wargapos_settings_v1_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_wargapos_settings_v1_settings_proto_goTypes = []any{
-	(*MidtransSettings)(nil),       // 0: wargapos.settings.v1.MidtransSettings
-	(*GetSettingsRequest)(nil),     // 1: wargapos.settings.v1.GetSettingsRequest
-	(*ManualPaymentSettings)(nil),  // 2: wargapos.settings.v1.ManualPaymentSettings
-	(*PrinterSettings)(nil),        // 3: wargapos.settings.v1.PrinterSettings
-	(*GetSettingsResponse)(nil),    // 4: wargapos.settings.v1.GetSettingsResponse
-	(*UpdateSettingsRequest)(nil),  // 5: wargapos.settings.v1.UpdateSettingsRequest
-	(*UpdateSettingsResponse)(nil), // 6: wargapos.settings.v1.UpdateSettingsResponse
+	(PrintMode)(0),                 // 0: wargapos.settings.v1.PrintMode
+	(*MidtransSettings)(nil),       // 1: wargapos.settings.v1.MidtransSettings
+	(*GetSettingsRequest)(nil),     // 2: wargapos.settings.v1.GetSettingsRequest
+	(*ManualPaymentSettings)(nil),  // 3: wargapos.settings.v1.ManualPaymentSettings
+	(*PrinterSettings)(nil),        // 4: wargapos.settings.v1.PrinterSettings
+	(*GetSettingsResponse)(nil),    // 5: wargapos.settings.v1.GetSettingsResponse
+	(*BackupSettings)(nil),         // 6: wargapos.settings.v1.BackupSettings
+	(*UpdateSettingsRequest)(nil),  // 7: wargapos.settings.v1.UpdateSettingsRequest
+	(*UpdateSettingsResponse)(nil), // 8: wargapos.settings.v1.UpdateSettingsResponse
+	(*timestamppb.Timestamp)(nil),  // 9: google.protobuf.Timestamp
 }
 var file_wargapos_settings_v1_settings_proto_depIdxs = []int32{
-	0, // 0: wargapos.settings.v1.GetSettingsResponse.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
-	2, // 1: wargapos.settings.v1.GetSettingsResponse.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
-	3, // 2: wargapos.settings.v1.GetSettingsResponse.printer:type_name -> wargapos.settings.v1.PrinterSettings
-	0, // 3: wargapos.settings.v1.UpdateSettingsRequest.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
-	2, // 4: wargapos.settings.v1.UpdateSettingsRequest.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
-	3, // 5: wargapos.settings.v1.UpdateSettingsRequest.printer:type_name -> wargapos.settings.v1.PrinterSettings
-	1, // 6: wargapos.settings.v1.SettingsService.GetSettings:input_type -> wargapos.settings.v1.GetSettingsRequest
-	5, // 7: wargapos.settings.v1.SettingsService.UpdateSettings:input_type -> wargapos.settings.v1.UpdateSettingsRequest
-	4, // 8: wargapos.settings.v1.SettingsService.GetSettings:output_type -> wargapos.settings.v1.GetSettingsResponse
-	6, // 9: wargapos.settings.v1.SettingsService.UpdateSettings:output_type -> wargapos.settings.v1.UpdateSettingsResponse
-	8, // [8:10] is the sub-list for method output_type
-	6, // [6:8] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	0,  // 0: wargapos.settings.v1.PrinterSettings.print_mode:type_name -> wargapos.settings.v1.PrintMode
+	1,  // 1: wargapos.settings.v1.GetSettingsResponse.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
+	3,  // 2: wargapos.settings.v1.GetSettingsResponse.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
+	4,  // 3: wargapos.settings.v1.GetSettingsResponse.printer:type_name -> wargapos.settings.v1.PrinterSettings
+	6,  // 4: wargapos.settings.v1.GetSettingsResponse.backup:type_name -> wargapos.settings.v1.BackupSettings
+	9,  // 5: wargapos.settings.v1.BackupSettings.last_backup_at:type_name -> google.protobuf.Timestamp
+	1,  // 6: wargapos.settings.v1.UpdateSettingsRequest.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
+	3,  // 7: wargapos.settings.v1.UpdateSettingsRequest.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
+	4,  // 8: wargapos.settings.v1.UpdateSettingsRequest.printer:type_name -> wargapos.settings.v1.PrinterSettings
+	6,  // 9: wargapos.settings.v1.UpdateSettingsRequest.backup:type_name -> wargapos.settings.v1.BackupSettings
+	2,  // 10: wargapos.settings.v1.SettingsService.GetSettings:input_type -> wargapos.settings.v1.GetSettingsRequest
+	7,  // 11: wargapos.settings.v1.SettingsService.UpdateSettings:input_type -> wargapos.settings.v1.UpdateSettingsRequest
+	5,  // 12: wargapos.settings.v1.SettingsService.GetSettings:output_type -> wargapos.settings.v1.GetSettingsResponse
+	8,  // 13: wargapos.settings.v1.SettingsService.UpdateSettings:output_type -> wargapos.settings.v1.UpdateSettingsResponse
+	12, // [12:14] is the sub-list for method output_type
+	10, // [10:12] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_settings_v1_settings_proto_init() }
@@ -521,13 +694,14 @@ func file_wargapos_settings_v1_settings_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_settings_v1_settings_proto_rawDesc), len(file_wargapos_settings_v1_settings_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   7,
+			NumEnums:      1,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_wargapos_settings_v1_settings_proto_goTypes,
 		DependencyIndexes: file_wargapos_settings_v1_settings_proto_depIdxs,
+		EnumInfos:         file_wargapos_settings_v1_settings_proto_enumTypes,
 		MessageInfos:      file_wargapos_settings_v1_settings_proto_msgTypes,
 	}.Build()
 	File_wargapos_settings_v1_settings_proto = out.File

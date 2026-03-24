@@ -2,15 +2,17 @@
 // @generated from file wargapos/settings/v1/settings.proto (package wargapos.settings.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
+import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
+import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/settings/v1/settings.proto.
  */
 export const file_wargapos_settings_v1_settings: GenFile = /*@__PURE__*/
-  fileDesc("CiN3YXJnYXBvcy9zZXR0aW5ncy92MS9zZXR0aW5ncy5wcm90bxIUd2FyZ2Fwb3Muc2V0dGluZ3MudjEiTwoQTWlkdHJhbnNTZXR0aW5ncxISCgpzZXJ2ZXJfa2V5GAEgASgJEhIKCmNsaWVudF9rZXkYAiABKAkSEwoLZW52aXJvbm1lbnQYAyABKAkiFAoSR2V0U2V0dGluZ3NSZXF1ZXN0InoKFU1hbnVhbFBheW1lbnRTZXR0aW5ncxIRCgliYW5rX25hbWUYASABKAkSGwoTYmFua19hY2NvdW50X251bWJlchgCIAEoCRIZChFiYW5rX2FjY291bnRfbmFtZRgDIAEoCRIWCg5xcmlzX2ltYWdlX3VybBgEIAEoCSJ5Cg9QcmludGVyU2V0dGluZ3MSDQoFdGl0bGUYASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSDwoHYWRkcmVzcxgDIAEoCRIQCghhZGRyZXNzMhgEIAEoCRIPCgdjb250YWN0GAUgASgJEg4KBmZvb3RlchgGIAEoCSLpAQoTR2V0U2V0dGluZ3NSZXNwb25zZRI4CghtaWR0cmFucxgBIAEoCzImLndhcmdhcG9zLnNldHRpbmdzLnYxLk1pZHRyYW5zU2V0dGluZ3MSGwoTbWlkdHJhbnNfY29uZmlndXJlZBgCIAEoCBJDCg5tYW51YWxfcGF5bWVudBgDIAEoCzIrLndhcmdhcG9zLnNldHRpbmdzLnYxLk1hbnVhbFBheW1lbnRTZXR0aW5ncxI2CgdwcmludGVyGAQgASgLMiUud2FyZ2Fwb3Muc2V0dGluZ3MudjEuUHJpbnRlclNldHRpbmdzIs4BChVVcGRhdGVTZXR0aW5nc1JlcXVlc3QSOAoIbWlkdHJhbnMYASABKAsyJi53YXJnYXBvcy5zZXR0aW5ncy52MS5NaWR0cmFuc1NldHRpbmdzEkMKDm1hbnVhbF9wYXltZW50GAIgASgLMisud2FyZ2Fwb3Muc2V0dGluZ3MudjEuTWFudWFsUGF5bWVudFNldHRpbmdzEjYKB3ByaW50ZXIYAyABKAsyJS53YXJnYXBvcy5zZXR0aW5ncy52MS5QcmludGVyU2V0dGluZ3MiGAoWVXBkYXRlU2V0dGluZ3NSZXNwb25zZTLiAQoPU2V0dGluZ3NTZXJ2aWNlEmIKC0dldFNldHRpbmdzEigud2FyZ2Fwb3Muc2V0dGluZ3MudjEuR2V0U2V0dGluZ3NSZXF1ZXN0Gikud2FyZ2Fwb3Muc2V0dGluZ3MudjEuR2V0U2V0dGluZ3NSZXNwb25zZRJrCg5VcGRhdGVTZXR0aW5ncxIrLndhcmdhcG9zLnNldHRpbmdzLnYxLlVwZGF0ZVNldHRpbmdzUmVxdWVzdBosLndhcmdhcG9zLnNldHRpbmdzLnYxLlVwZGF0ZVNldHRpbmdzUmVzcG9uc2VCNlo0d2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc2V0dGluZ3MvdjE7c2V0dGluZ3N2MWIGcHJvdG8z");
+  fileDesc("CiN3YXJnYXBvcy9zZXR0aW5ncy92MS9zZXR0aW5ncy5wcm90bxIUd2FyZ2Fwb3Muc2V0dGluZ3MudjEiTwoQTWlkdHJhbnNTZXR0aW5ncxISCgpzZXJ2ZXJfa2V5GAEgASgJEhIKCmNsaWVudF9rZXkYAiABKAkSEwoLZW52aXJvbm1lbnQYAyABKAkiFAoSR2V0U2V0dGluZ3NSZXF1ZXN0InoKFU1hbnVhbFBheW1lbnRTZXR0aW5ncxIRCgliYW5rX25hbWUYASABKAkSGwoTYmFua19hY2NvdW50X251bWJlchgCIAEoCRIZChFiYW5rX2FjY291bnRfbmFtZRgDIAEoCRIWCg5xcmlzX2ltYWdlX3VybBgEIAEoCSKuAQoPUHJpbnRlclNldHRpbmdzEg0KBXRpdGxlGAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEg8KB2FkZHJlc3MYAyABKAkSEAoIYWRkcmVzczIYBCABKAkSDwoHY29udGFjdBgFIAEoCRIOCgZmb290ZXIYBiABKAkSMwoKcHJpbnRfbW9kZRgHIAEoDjIfLndhcmdhcG9zLnNldHRpbmdzLnYxLlByaW50TW9kZSKfAgoTR2V0U2V0dGluZ3NSZXNwb25zZRI4CghtaWR0cmFucxgBIAEoCzImLndhcmdhcG9zLnNldHRpbmdzLnYxLk1pZHRyYW5zU2V0dGluZ3MSGwoTbWlkdHJhbnNfY29uZmlndXJlZBgCIAEoCBJDCg5tYW51YWxfcGF5bWVudBgDIAEoCzIrLndhcmdhcG9zLnNldHRpbmdzLnYxLk1hbnVhbFBheW1lbnRTZXR0aW5ncxI2CgdwcmludGVyGAQgASgLMiUud2FyZ2Fwb3Muc2V0dGluZ3MudjEuUHJpbnRlclNldHRpbmdzEjQKBmJhY2t1cBgFIAEoCzIkLndhcmdhcG9zLnNldHRpbmdzLnYxLkJhY2t1cFNldHRpbmdzIpoBCg5CYWNrdXBTZXR0aW5ncxIPCgdlbmFibGVkGAEgASgIEhYKDmludGVydmFsX2hvdXJzGAIgASgFEhcKD3JldGVudGlvbl9jb3VudBgDIAEoBRISCgpiYWNrdXBfZGlyGAQgASgJEjIKDmxhc3RfYmFja3VwX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCKEAgoVVXBkYXRlU2V0dGluZ3NSZXF1ZXN0EjgKCG1pZHRyYW5zGAEgASgLMiYud2FyZ2Fwb3Muc2V0dGluZ3MudjEuTWlkdHJhbnNTZXR0aW5ncxJDCg5tYW51YWxfcGF5bWVudBgCIAEoCzIrLndhcmdhcG9zLnNldHRpbmdzLnYxLk1hbnVhbFBheW1lbnRTZXR0aW5ncxI2CgdwcmludGVyGAMgASgLMiUud2FyZ2Fwb3Muc2V0dGluZ3MudjEuUHJpbnRlclNldHRpbmdzEjQKBmJhY2t1cBgEIAEoCzIkLndhcmdhcG9zLnNldHRpbmdzLnYxLkJhY2t1cFNldHRpbmdzIhgKFlVwZGF0ZVNldHRpbmdzUmVzcG9uc2UqWQoJUHJpbnRNb2RlEhoKFlBSSU5UX01PREVfVU5TUEVDSUZJRUQQABIYChRQUklOVF9NT0RFX0NPTk5FQ1RPUhABEhYKElBSSU5UX01PREVfQlJPV1NFUhACMuIBCg9TZXR0aW5nc1NlcnZpY2USYgoLR2V0U2V0dGluZ3MSKC53YXJnYXBvcy5zZXR0aW5ncy52MS5HZXRTZXR0aW5nc1JlcXVlc3QaKS53YXJnYXBvcy5zZXR0aW5ncy52MS5HZXRTZXR0aW5nc1Jlc3BvbnNlEmsKDlVwZGF0ZVNldHRpbmdzEisud2FyZ2Fwb3Muc2V0dGluZ3MudjEuVXBkYXRlU2V0dGluZ3NSZXF1ZXN0Giwud2FyZ2Fwb3Muc2V0dGluZ3MudjEuVXBkYXRlU2V0dGluZ3NSZXNwb25zZUI2WjR3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zZXR0aW5ncy92MTtzZXR0aW5nc3YxYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message wargapos.settings.v1.MidtransSettings
@@ -119,6 +121,11 @@ export type PrinterSettings = Message<"wargapos.settings.v1.PrinterSettings"> & 
    * @generated from field: string footer = 6;
    */
   footer: string;
+
+  /**
+   * @generated from field: wargapos.settings.v1.PrintMode print_mode = 7;
+   */
+  printMode: PrintMode;
 };
 
 /**
@@ -153,6 +160,11 @@ export type GetSettingsResponse = Message<"wargapos.settings.v1.GetSettingsRespo
    * @generated from field: wargapos.settings.v1.PrinterSettings printer = 4;
    */
   printer?: PrinterSettings;
+
+  /**
+   * @generated from field: wargapos.settings.v1.BackupSettings backup = 5;
+   */
+  backup?: BackupSettings;
 };
 
 /**
@@ -161,6 +173,43 @@ export type GetSettingsResponse = Message<"wargapos.settings.v1.GetSettingsRespo
  */
 export const GetSettingsResponseSchema: GenMessage<GetSettingsResponse> = /*@__PURE__*/
   messageDesc(file_wargapos_settings_v1_settings, 4);
+
+/**
+ * @generated from message wargapos.settings.v1.BackupSettings
+ */
+export type BackupSettings = Message<"wargapos.settings.v1.BackupSettings"> & {
+  /**
+   * @generated from field: bool enabled = 1;
+   */
+  enabled: boolean;
+
+  /**
+   * @generated from field: int32 interval_hours = 2;
+   */
+  intervalHours: number;
+
+  /**
+   * @generated from field: int32 retention_count = 3;
+   */
+  retentionCount: number;
+
+  /**
+   * @generated from field: string backup_dir = 4;
+   */
+  backupDir: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_backup_at = 5;
+   */
+  lastBackupAt?: Timestamp;
+};
+
+/**
+ * Describes the message wargapos.settings.v1.BackupSettings.
+ * Use `create(BackupSettingsSchema)` to create a new message.
+ */
+export const BackupSettingsSchema: GenMessage<BackupSettings> = /*@__PURE__*/
+  messageDesc(file_wargapos_settings_v1_settings, 5);
 
 /**
  * @generated from message wargapos.settings.v1.UpdateSettingsRequest
@@ -180,6 +229,11 @@ export type UpdateSettingsRequest = Message<"wargapos.settings.v1.UpdateSettings
    * @generated from field: wargapos.settings.v1.PrinterSettings printer = 3;
    */
   printer?: PrinterSettings;
+
+  /**
+   * @generated from field: wargapos.settings.v1.BackupSettings backup = 4;
+   */
+  backup?: BackupSettings;
 };
 
 /**
@@ -187,7 +241,7 @@ export type UpdateSettingsRequest = Message<"wargapos.settings.v1.UpdateSettings
  * Use `create(UpdateSettingsRequestSchema)` to create a new message.
  */
 export const UpdateSettingsRequestSchema: GenMessage<UpdateSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_settings_v1_settings, 5);
+  messageDesc(file_wargapos_settings_v1_settings, 6);
 
 /**
  * @generated from message wargapos.settings.v1.UpdateSettingsResponse
@@ -200,7 +254,35 @@ export type UpdateSettingsResponse = Message<"wargapos.settings.v1.UpdateSetting
  * Use `create(UpdateSettingsResponseSchema)` to create a new message.
  */
 export const UpdateSettingsResponseSchema: GenMessage<UpdateSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_settings_v1_settings, 6);
+  messageDesc(file_wargapos_settings_v1_settings, 7);
+
+/**
+ * @generated from enum wargapos.settings.v1.PrintMode
+ */
+export enum PrintMode {
+  /**
+   * behaves as CONNECTOR (backwards compatible)
+   *
+   * @generated from enum value: PRINT_MODE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: PRINT_MODE_CONNECTOR = 1;
+   */
+  CONNECTOR = 1,
+
+  /**
+   * @generated from enum value: PRINT_MODE_BROWSER = 2;
+   */
+  BROWSER = 2,
+}
+
+/**
+ * Describes the enum wargapos.settings.v1.PrintMode.
+ */
+export const PrintModeSchema: GenEnum<PrintMode> = /*@__PURE__*/
+  enumDesc(file_wargapos_settings_v1_settings, 0);
 
 /**
  * @generated from service wargapos.settings.v1.SettingsService

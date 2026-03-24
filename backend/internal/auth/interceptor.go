@@ -63,6 +63,10 @@ var routeRoles = map[string][]string{
 	"/wargapos.table.v1.TableService/DeleteTable":                   {"admin", "manager"},
 	"/wargapos.transaction.v1.TransactionService/UpdateTransaction": {"admin", "manager"},
 	// Admin only
+	"/wargapos.backup.v1.BackupService/RunBackup":                   {"admin"},
+	"/wargapos.backup.v1.BackupService/ListBackup":                  {"admin"},
+	"/wargapos.backup.v1.BackupService/DeleteBackup":                {"admin"},
+	"/wargapos.backup.v1.BackupService/RestoreBackup":               {"admin"},
 	"/wargapos.user.v1.UserService/CreateUser":                      {"admin"},
 	"/wargapos.user.v1.UserService/UpdateUser":                      {"admin"},
 	"/wargapos.user.v1.UserService/DeleteUser":                      {"admin"},
@@ -107,6 +111,25 @@ func (i *Interceptor) WrapStreamingClient(next connect.StreamingClientFunc) conn
 
 func (i *Interceptor) WrapStreamingHandler(next connect.StreamingHandlerFunc) connect.StreamingHandlerFunc {
 	return func(ctx context.Context, conn connect.StreamingHandlerConn) error {
+		procedure := conn.Spec().Procedure
+
+		if publicRoutes[procedure] {
+			if tok := conn.RequestHeader().Get("Authorization"); tok != "" {
+				if c, err := i.parse(tok); err == nil {
+					ctx = context.WithValue(ctx, claimsKey{}, c)
+				}
+			}
+			return next(ctx, conn)
+		}
+
+		claims, err := i.parse(conn.RequestHeader().Get("Authorization"))
+		if err != nil {
+			return connect.NewError(connect.CodeUnauthenticated, err)
+		}
+		if allowed, ok := routeRoles[procedure]; ok && !hasRole(claims.Role, allowed) {
+			return connect.NewError(connect.CodePermissionDenied, errors.New("insufficient permissions"))
+		}
+		ctx = context.WithValue(ctx, claimsKey{}, claims)
 		return next(ctx, conn)
 	}
 }

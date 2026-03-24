@@ -323,7 +323,7 @@ func NewPartitionRunner(
 		slog.Info("running partition manager")
 
 		partman := NewPartitionManager(db)
-		tables := []string{"orders"}
+		tables := []string{"orders_backup"}
 
 		ensure := func() error {
 			for _, table := range tables {

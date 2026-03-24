@@ -1,0 +1,17 @@
+server:
+  host: "0.0.0.0"
+  port: "8080"
+  upload_dir: "./uploads"
+
+database:
+  url: "host=localhost user=postgres password=secret dbname=wargapos port=5432 sslmode=disable"
+  # skip: true  # uncomment to skip DB connection on startup (dev only)
+
+auth:
+  jwt_secret: "change-me-in-production"
+  token_expire_hours: 24
+
+midtrans:
+  server_key: ""
+  client_key: ""
+  environment: "sandbox"   # "sandbox" | "production"

@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"wargapos/backend/gen/wargapos/auth/v1/authv1connect"
+	backupv1connect "wargapos/backend/gen/wargapos/backup/v1/backupv1connect"
 	devicev1connect "wargapos/backend/gen/wargapos/device/v1/devicev1connect"
 	notificationv1connect "wargapos/backend/gen/wargapos/notification/v1/notificationv1connect"
 	"wargapos/backend/gen/wargapos/product/v1/productv1connect"
@@ -18,6 +19,7 @@ import (
 	"wargapos/backend/internal/auth"
 	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/service/auth_service"
+	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
 	"wargapos/backend/internal/service/notification_service"
 	"wargapos/backend/internal/service/product_service"
@@ -52,6 +54,7 @@ func NewWebRunnerFunc(
 	stockSvc *stock_service.StockService,
 	deviceSvc *device_service.DeviceService,
 	notifSvc *notification_service.NotificationService,
+	backupSvc *backup_service.BackupService,
 ) WebRunnerFunc {
 
 	interceptor := connect.WithInterceptors(validate.NewInterceptor(), auth.NewInterceptor([]byte(authCfg.JWTSecret)))
@@ -66,6 +69,7 @@ func NewWebRunnerFunc(
 	mux.Handle(stockv1connect.NewStockServiceHandler(stockSvc, interceptor))
 	mux.Handle(devicev1connect.NewDeviceServiceHandler(deviceSvc, interceptor))
 	mux.Handle(notificationv1connect.NewNotificationServiceHandler(notifSvc, interceptor))
+	mux.Handle(backupv1connect.NewBackupServiceHandler(backupSvc, interceptor))
 
 	reflector := grpcreflect.NewStaticReflector(
 		authv1connect.AuthServiceName,
@@ -77,9 +81,13 @@ func NewWebRunnerFunc(
 		stockv1connect.StockServiceName,
 		devicev1connect.DeviceServiceName,
 		notificationv1connect.NotificationServiceName,
+		backupv1connect.BackupServiceName,
 	)
 	mux.Handle(grpcreflect.NewHandlerV1(reflector))
 	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
+
+	mux.HandleFunc("GET /backup/download-existing", backupSvc.ServeDownload)
+	mux.HandleFunc("POST /backup/restore-upload", backupSvc.ServeRestoreUpload)
 
 	mux.HandleFunc("POST /midtrans/webhook", midtransWebhookHandler(db, midtransCfg))
 

@@ -27,6 +27,7 @@ func (s *SettingsService) UpdateSettings(
 
 	mp := req.Msg.ManualPayment
 	pp := req.Msg.Printer
+	bp := req.Msg.Backup
 
 	updates := map[string]any{
 		"midtrans_server_key":  m.ServerKey,
@@ -47,6 +48,13 @@ func (s *SettingsService) UpdateSettings(
 		updates["printer_address2"]    = pp.Address2
 		updates["printer_contact"]     = pp.Contact
 		updates["printer_footer"]      = pp.Footer
+		updates["printer_mode"]        = int32(pp.PrintMode)
+	}
+	if bp != nil {
+		updates["backup_enabled"]         = bp.Enabled
+		updates["backup_interval_hours"]  = bp.IntervalHours
+		updates["backup_retention_count"] = bp.RetentionCount
+		updates["backup_dir"]             = bp.BackupDir
 	}
 	result := s.db.WithContext(ctx).Model(&models.AppSettings{}).Where("id = 1").Updates(updates)
 	if result.Error != nil {
@@ -72,6 +80,13 @@ func (s *SettingsService) UpdateSettings(
 			row.PrinterAddress2    = pp.Address2
 			row.PrinterContact     = pp.Contact
 			row.PrinterFooter      = pp.Footer
+			row.PrinterMode        = int32(pp.PrintMode)
+		}
+		if bp != nil {
+			row.BackupEnabled        = bp.Enabled
+			row.BackupIntervalHours  = bp.IntervalHours
+			row.BackupRetentionCount = bp.RetentionCount
+			row.BackupDir            = bp.BackupDir
 		}
 		if err := s.db.WithContext(ctx).Create(&row).Error; err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)

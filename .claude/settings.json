@@ -11,7 +11,11 @@
       "Bash(node -e \"const p = require\\(''@bufbuild/protobuf/package.json''\\); console.log\\(p.version, JSON.stringify\\(p.exports ? Object.keys\\(p.exports\\) : ''no exports''\\)\\)\")",
       "Bash(node -e \":*)",
       "Bash(find d:/research/wargapos/backend/internal/models -name *.go)",
-      "Bash(head -40 /d/research/wargapos/backend/internal/models/*.go)"
+      "Bash(head -40 /d/research/wargapos/backend/internal/models/*.go)",
+      "Bash(find /d/research/wargapos/frontend/src -type f \\\\\\(-name *.ts -o -name *.tsx \\\\\\))",
+      "Bash(find d:/research/wargapos/backend/internal/service/settings_service -type f -name *.go)",
+      "Bash(find d:/research/wargapos/backend/internal/service/backup_service -type f -name *.go)",
+      "Bash(xargs ls:*)"
     ]
   }
 }

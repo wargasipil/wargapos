@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useParams, useNavigate, Link } from '@tanstack/react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
-  Badge, Box, Button, Field, Flex, Heading, HStack, Input, Separator, Spinner, Table, Text, VStack,
+  Alert, Badge, Box, Button, Field, Flex, Heading, HStack, Input, Separator, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
 import { ArrowLeft, CheckCircle, Phone, Printer, XCircle, ChefHat, Truck } from 'lucide-react'
-import { printReceipt } from '../../lib/printer'
-import { transactionClient, tableClient } from '../../client'
+import { printReceiptRemote, printReceiptBrowser, type PrinterOpts } from '../../lib/printer'
+import { transactionClient, tableClient, settingsClient } from '../../client'
+import { PrintMode } from '../../gen/wargapos/settings/v1/settings_pb'
+import { usePrinterStore } from '../../store/printer'
 import { OrderStatus, PaymentMethod, PaymentStatus, OrderFrom } from '../../gen/wargapos/transaction/v1/order_pb'
 import { toaster } from '../../components/ui/toaster'
 import { formatPrice, formatTime, formatDateTime, paymentMethodLabel, paymentMethodColor } from '../../lib/format'
@@ -44,6 +46,12 @@ export function OrderDetailPage() {
   const { data: tablesData } = useQuery({
     queryKey: ['tables'],
     queryFn: () => tableClient.listTables({}),
+  })
+
+  const { data: settingsData } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsClient.getSettings({}),
+    staleTime: 60_000,
   })
 
   function invalidate() {
@@ -91,6 +99,7 @@ export function OrderDetailPage() {
     onError: (e: unknown) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
 
+  const { selectedPrinters } = usePrinterStore()
   const [printing, setPrinting] = useState(false)
 
   const order = data?.order
@@ -101,11 +110,29 @@ export function OrderDetailPage() {
     return tables.find((t) => t.id === tableId)?.name ?? `#${String(tableId)}`
   }
 
+  const isBrowserMode = settingsData?.printer?.printMode === PrintMode.BROWSER
+  const noPrinter = !isBrowserMode && selectedPrinters.length === 0
+
   async function handlePrint() {
     if (!order) return
+    const opts: PrinterOpts = {
+      title:       settingsData?.printer?.title,
+      description: settingsData?.printer?.description,
+      address:     settingsData?.printer?.address,
+      address2:    settingsData?.printer?.address2,
+      contact:     settingsData?.printer?.contact,
+      footer:      settingsData?.printer?.footer,
+    }
+    if (isBrowserMode) {
+      printReceiptBrowser(order, tableNameById(order.tableId), opts)
+      return
+    }
+    if (selectedPrinters.length === 0) return
     setPrinting(true)
     try {
-      await printReceipt(order, tableNameById(order.tableId))
+      for (const p of selectedPrinters) {
+        await printReceiptRemote(order, tableNameById(order.tableId), p, opts)
+      }
       toaster.create({ title: 'Struk berhasil dicetak', type: 'success', duration: 3000 })
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Gagal mencetak struk'
@@ -224,8 +251,14 @@ export function OrderDetailPage() {
       </Box>
 
       {/* Actions */}
+      {noPrinter && (
+        <Alert.Root status="warning" mb={3}>
+          <Alert.Indicator />
+          <Alert.Description fontSize="sm">No printer selected.</Alert.Description>
+        </Alert.Root>
+      )}
       <HStack gap={2} justify="flex-end">
-        <Button size="sm" variant="outline" loading={printing} onClick={handlePrint} mr="auto">
+        <Button size="sm" variant="outline" loading={printing} disabled={noPrinter} onClick={handlePrint} mr="auto">
           <Printer size={14} />
           Print
         </Button>

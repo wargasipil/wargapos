@@ -9,9 +9,9 @@ ALTER TABLE orders DROP COLUMN payment_method;
 ALTER TABLE orders ADD COLUMN payment_method SMALLINT;
 
 -- Indexes for common filter queries
-CREATE INDEX idx_orders_status     ON orders (status);
-CREATE INDEX idx_orders_order_from ON orders (order_from);
-CREATE INDEX idx_orders_created_at ON orders (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_orders_status     ON orders (status);
+CREATE INDEX IF NOT EXISTS idx_orders_order_from ON orders (order_from);
+CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders (created_at DESC);
 
 -- +goose Down
 

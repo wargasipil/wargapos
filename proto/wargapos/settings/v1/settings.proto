@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package wargapos.settings.v1;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "wargapos/backend/gen/wargapos/settings/v1;settingsv1";
 
 message MidtransSettings {
@@ -18,13 +20,20 @@ message ManualPaymentSettings {
   string qris_image_url      = 4;
 }
 
+enum PrintMode {
+  PRINT_MODE_UNSPECIFIED = 0; // behaves as CONNECTOR (backwards compatible)
+  PRINT_MODE_CONNECTOR   = 1;
+  PRINT_MODE_BROWSER     = 2;
+}
+
 message PrinterSettings {
-  string title       = 1;
-  string description = 2;
-  string address     = 3;
-  string address2    = 4;
-  string contact     = 5;
-  string footer      = 6;
+  string    title       = 1;
+  string    description = 2;
+  string    address     = 3;
+  string    address2    = 4;
+  string    contact     = 5;
+  string    footer      = 6;
+  PrintMode print_mode  = 7;
 }
 
 message GetSettingsResponse {
@@ -32,12 +41,22 @@ message GetSettingsResponse {
   bool                  midtrans_configured  = 2; // true when server_key is non-empty
   ManualPaymentSettings manual_payment       = 3;
   PrinterSettings       printer              = 4;
+  BackupSettings        backup               = 5;
+}
+
+message BackupSettings {
+  bool                      enabled          = 1;
+  int32                     interval_hours   = 2;
+  int32                     retention_count  = 3;
+  string                    backup_dir       = 4;
+  google.protobuf.Timestamp last_backup_at   = 5;
 }
 
 message UpdateSettingsRequest  {
   MidtransSettings      midtrans       = 1;
   ManualPaymentSettings manual_payment = 2;
   PrinterSettings       printer        = 3;
+  BackupSettings        backup         = 4;
 }
 message UpdateSettingsResponse {}
 
