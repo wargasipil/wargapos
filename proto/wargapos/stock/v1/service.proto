@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package wargapos.stock.v1;
+
+import "buf/validate/validate.proto";
+import "wargapos/stock/v1/rack.proto";
+import "wargapos/stock/v1/sku.proto";
+import "wargapos/stock/v1/stock.proto";
+import "wargapos/stock/v1/transaction.proto";
+import "wargapos/stock/v1/warehouse.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
+
+message StockMovement {
+  int64 id = 1;
+  int64 product_id = 2;
+  int32 delta = 3;
+  string reason = 4;
+  string note = 5;
+  int64 created_by = 6;
+  string created_at = 7;
+  string created_by_name = 8;
+}
+
+message AdjustStockRequest {
+  int64 product_id = 1 [(buf.validate.field).int64.gt = 0];
+  int32 delta = 2 [(buf.validate.field).int32 = {
+    not_in: [0]
+  }];
+  string reason = 3 [(buf.validate.field).string = {
+    in: [
+      "restock",
+      "adjustment"
+    ]
+  }]; // "restock" | "adjustment"
+  string note = 4;
+}
+
+message AdjustStockResponse {
+  int32 new_stock_qty = 1;
+}
+
+message ListStockMovementsRequest {
+  int64 product_id = 1 [(buf.validate.field).int64.gt = 0];
+  int32 page = 2;
+  int32 page_size = 3;
+  string date_from = 4; // inclusive, "2006-01-02" (empty = no filter)
+  string date_to = 5; // inclusive, "2006-01-02" (empty = no filter)
+}
+message ListStockMovementsResponse {
+  repeated StockMovement movements = 1;
+  int32 total = 2;
+}
+
+service StockService {
+  // bagian warehouse
+  rpc CreateWarehouse(CreateWarehouseRequest) returns (CreateWarehouseResponse);
+  rpc UpdateWarehouse(UpdateWarehouseRequest) returns (UpdateWarehouseResponse);
+  rpc DeleteWarehouse(DeleteWarehouseRequest) returns (DeleteWarehouseResponse);
+  rpc ListWarehouse(ListWarehouseRequest) returns (ListWarehouseResponse);
+
+  // bagian rack
+  rpc CreateRack(CreateRackRequest) returns (CreateRackResponse);
+  rpc UpdateRack(UpdateRackRequest) returns (UpdateRackResponse);
+  rpc DeleteRack(DeleteRackRequest) returns (DeleteRackResponse);
+  rpc ListRack(ListRackRequest) returns (ListRackResponse);
+
+  // bagian sku
+  rpc CreateSku(CreateSkuRequest) returns (CreateSkuResponse);
+  rpc UpdateSku(UpdateSkuRequest) returns (UpdateSkuResponse);
+  rpc DeleteSku(DeleteSkuRequest) returns (DeleteSkuResponse);
+  rpc ListSku(ListSkuRequest) returns (ListSkuResponse);
+  rpc ListSkuPlacement(ListSkuPlacementRequest) returns (ListSkuPlacementResponse);
+  rpc ListPriceSku(ListPriceSkuRequest) returns (ListPriceSkuResponse);
+  rpc ListStockSku(ListStockSkuRequest) returns (ListStockSkuResponse);
+
+  // bagian transaction
+  rpc CreateTransaction(CreateTransactionRequest) returns (CreateTransactionResponse);
+  rpc CancelTransaction(CancelTransactionRequest) returns (CancelTransactionResponse);
+
+  rpc AdjustStock(AdjustStockRequest) returns (AdjustStockResponse);
+  rpc ListStockMovements(ListStockMovementsRequest) returns (ListStockMovementsResponse);
+}

@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package wargapos.stock.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "wargapos/stock/v1/rack.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
+
+enum PricingType {
+  PRICING_TYPE_UNSPECIFIED = 0;
+  PRICING_TYPE_LIFO = 1;
+  PRICING_TYPE_FIFO = 2;
+  PRICING_TYPE_AVERAGE = 3;
+}
+
+message RackPlacement {
+  uint64 id = 1;
+  uint32 sku_id = 2;
+  Rack rack = 3;
+  int32 left_stock = 4;
+}
+
+message Sku {
+  uint32 id = 1;
+  string code = 2;
+  uint32 product_id = 3;
+  uint32 branch_id = 4;
+  uint32 warehouse_id = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  bool deleted = 8;
+  int64 average_price = 9;
+}
+
+message ListSkuPlacementRequest {
+  uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message ListSkuPlacementResponse {
+  repeated RackPlacement placements = 1;
+}
+
+message CreateSkuRequest {
+  string code = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }];
+  uint32 product_id = 2 [(buf.validate.field).uint32.gt = 0];
+  uint32 branch_id = 3 [(buf.validate.field).uint32.gt = 0];
+  uint32 warehouse_id = 4 [(buf.validate.field).uint32.gt = 0];
+}
+message CreateSkuResponse {
+  Sku sku = 1;
+}
+
+message UpdateSkuRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+  string code = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }];
+  uint32 warehouse_id = 3 [(buf.validate.field).uint32.gt = 0];
+}
+message UpdateSkuResponse {
+  Sku sku = 1;
+}
+
+message DeleteSkuRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message DeleteSkuResponse {}
+
+message ListSkuRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  uint32 product_id = 3; // filter by product (0 = all)
+  string search = 4; // filter by code
+}
+message ListSkuResponse {
+  repeated Sku skus = 1;
+  int32 total = 2;
+}

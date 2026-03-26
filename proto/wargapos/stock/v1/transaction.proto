@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package wargapos.stock.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
+
+enum TransactionType {
+  TRANSACTION_TYPE_UNSPECIFIED = 0;
+  TRANSACTION_TYPE_STOCK_IN = 1;
+  TRANSACTION_TYPE_STOCK_OUT = 2;
+  TRANSACTION_TYPE_ADJUSTMENT = 3;
+  TRANSACTION_TYPE_ORDER = 4;
+}
+
+message Transaction {
+  uint64 id = 1;
+  TransactionType transaction_type = 2;
+  google.protobuf.Timestamp created_at = 3;
+}
+
+message TransactionItem {
+  uint32 sku_id   = 1 [(buf.validate.field).uint32.gt = 0];
+  uint32 quantity = 2 [(buf.validate.field).uint32.gt = 0];
+  uint64 price    = 3; // required for STOCK_IN (sets PriceVersion)
+  uint32 rack_id  = 4; // optional rack placement
+}
+
+message CreateTransactionRequest {
+  TransactionType          transaction_type = 1 [(buf.validate.field).enum.defined_only = true];
+  repeated TransactionItem items            = 2 [(buf.validate.field).repeated.min_items = 1];
+  string                   note             = 3;
+}
+message CreateTransactionResponse {
+  Transaction transaction = 1;
+}
+
+message CancelTransactionRequest {
+  uint64 transaction_id = 1 [(buf.validate.field).uint64.gt = 0];
+  string reason         = 2;
+}
+message CancelTransactionResponse {}

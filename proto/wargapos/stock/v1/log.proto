@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package wargapos.stock.v1;
+
+// import "buf/validate/validate.proto";
+// import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";

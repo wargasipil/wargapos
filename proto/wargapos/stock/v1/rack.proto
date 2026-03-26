@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package wargapos.stock.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
+
+message Rack {
+  uint32 id = 1;
+  uint32 warehouse_id = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+  bool deleted = 5;
+
+  string name = 6;
+}
+
+message CreateRackRequest {
+  uint32 warehouse_id = 1 [(buf.validate.field).uint32.gt = 0];
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 300
+  }];
+}
+message CreateRackResponse {
+  Rack rack = 1;
+}
+
+message UpdateRackRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 300
+  }];
+}
+message UpdateRackResponse {
+  Rack rack = 1;
+}
+
+message DeleteRackRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message DeleteRackResponse {}
+
+message ListRackFilter {
+  uint32 warehouse_id = 3; // filter by warehouse (0 = all)
+  string search = 4;
+}
+
+message ListRackRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  ListRackFilter filter = 3 [(buf.validate.field).required = true];
+}
+message ListRackResponse {
+  repeated Rack racks = 1;
+  int32 total = 2;
+}

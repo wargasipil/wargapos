@@ -3,41 +3,54 @@ syntax = "proto3";
 package wargapos.stock.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
-message StockMovement {
-  int64  id               = 1;
-  int64  product_id       = 2;
-  int32  delta            = 3;
-  string reason           = 4;
-  string note             = 5;
-  int64  created_by       = 6;
-  string created_at       = 7;
-  string created_by_name  = 8;
+message PriceVersion {
+  uint64 id = 1;
+  uint32 sku_id = 2;
+  uint32 transaction_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+
+  uint64 price = 6;
+  uint32 stock_initiate = 7;
+  uint32 left_stock = 8;
 }
 
-message AdjustStockRequest {
-  int64  product_id = 1 [(buf.validate.field).int64.gt = 0];
-  int32  delta      = 2 [(buf.validate.field).int32 = {not_in: [0]}];
-  string reason     = 3 [(buf.validate.field).string = {in: ["restock", "adjustment"]}]; // "restock" | "adjustment"
-  string note       = 4;
-}
-message AdjustStockResponse { int32 new_stock_qty = 1; }
+message Stock {
+  uint64 id = 1;
+  uint32 sku_id = 2;
+  uint32 transaction_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
 
-message ListStockMovementsRequest {
-  int64  product_id = 1 [(buf.validate.field).int64.gt = 0];
-  int32  page       = 2;
-  int32  page_size  = 3;
-  string date_from  = 4; // inclusive, "2006-01-02" (empty = no filter)
-  string date_to    = 5; // inclusive, "2006-01-02" (empty = no filter)
-}
-message ListStockMovementsResponse {
-  repeated StockMovement movements = 1;
-  int32                  total     = 2;
+  uint32 stock_initiate = 6;
+  uint32 left_stock = 7;
 }
 
-service StockService {
-  rpc AdjustStock(AdjustStockRequest)               returns (AdjustStockResponse);
-  rpc ListStockMovements(ListStockMovementsRequest) returns (ListStockMovementsResponse);
+message StockLog {
+  uint64 id = 1;
+  uint32 sku_id = 2;
+  uint32 warehouse_id = 3;
+  uint32 transaction_id = 4;
+  uint32 change_by_id = 5;
+  uint64 price_version_id = 6;
+  uint64 stock_id = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+message ListPriceSkuRequest {
+  uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message ListPriceSkuResponse {
+  repeated PriceVersion prices = 1;
+}
+
+message ListStockSkuRequest {
+  uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message ListStockSkuResponse {
+  repeated Stock stocks = 1;
 }

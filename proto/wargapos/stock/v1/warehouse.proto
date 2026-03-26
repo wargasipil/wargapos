@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package wargapos.stock.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
+
+message Warehouse {
+  uint32 id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+  bool deleted = 5;
+}
+
+message CreateWarehouseRequest {
+  string name = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 300
+  }];
+}
+message CreateWarehouseResponse {
+  Warehouse warehouse = 1;
+}
+
+message UpdateWarehouseRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 300
+  }];
+}
+message UpdateWarehouseResponse {
+  Warehouse warehouse = 1;
+}
+
+message DeleteWarehouseRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message DeleteWarehouseResponse {}
+
+message ListWarehouseRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+}
+message ListWarehouseResponse {
+  repeated Warehouse warehouses = 1;
+  int32 total = 2;
+}
