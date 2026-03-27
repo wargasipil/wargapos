@@ -8,6 +8,11 @@ import "wargapos/stock/v1/rack.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
+enum SkuError {
+  SKU_ERROR_UNSPECIFIED = 0;
+  SKU_ERROR_NOTFOUND = 1;
+}
+
 enum PricingType {
   PRICING_TYPE_UNSPECIFIED = 0;
   PRICING_TYPE_LIFO = 1;
@@ -80,4 +85,16 @@ message ListSkuRequest {
 message ListSkuResponse {
   repeated Sku skus = 1;
   int32 total = 2;
+}
+
+message GetSkuRequest {
+  oneof identifier {
+    uint32 id = 1;
+    string code = 2;
+  }
+}
+
+message GetSkuResponse {
+  SkuError err_code = 1;
+  Sku sku = 2;
 }

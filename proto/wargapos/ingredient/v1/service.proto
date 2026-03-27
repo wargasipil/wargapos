@@ -1,0 +1,178 @@
+syntax = "proto3";
+
+package wargapos.ingredient.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/ingredient/v1;ingredientv1";
+
+service IngredientService {
+  // untuk material
+
+  rpc CreateMaterial(CreateMaterialRequest) returns (CreateMaterialResponse);
+  rpc UpdateMaterial(UpdateMaterialRequest) returns (UpdateMaterialResponse);
+  rpc ListMaterial(ListMaterialRequest) returns (ListMaterialResponse);
+  rpc DeleteMaterial(DeleteMaterialRequest) returns (DeleteMaterialResponse);
+  rpc UpdateMaterialStock(UpdateMaterialStockRequest) returns (UpdateMaterialStockResponse);
+
+  // untuk recipe
+  rpc CreateRecipe(CreateRecipeRequest) returns (CreateRecipeResponse);
+  rpc UpdateRecipe(UpdateRecipeRequest) returns (UpdateRecipeResponse);
+  rpc GetRecipe(GetRecipeRequest) returns (GetRecipeResponse);
+  rpc ListRecipe(ListRecipeRequest) returns (ListRecipeResponse);
+  rpc DeleteRecipe(DeleteRecipeRequest) returns (DeleteRecipeResponse);
+
+  // untuk log recipe out
+}
+
+enum QtyType {
+  QTY_TYPE_UNSPECIFIED = 0;
+  QTY_TYPE_PIECE = 1;
+  QTY_TYPE_GRAM = 2;
+}
+
+message Material {
+  uint32 id = 1;
+  uint32 branch_id = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+
+  string code = 5;
+  string name = 6;
+  QtyType qty_type = 7;
+  int64 qty = 8;
+}
+
+message UpdateMaterialStockRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+  uint32 warehouse_id = 2 [(buf.validate.field).uint32.gt = 0];
+
+  int64 qty = 4 [(buf.validate.field).int64.not_in = 0];
+  uint64 price = 5 [(buf.validate.field).uint64.gt = 0];
+  string note = 6 [(buf.validate.field).string.max_len = 500];
+}
+message UpdateMaterialStockResponse {}
+
+message CreateMaterialRequest {
+  string code = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }];
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 300
+  }];
+  QtyType qty_type = 3 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  uint32 branch_id = 5;
+}
+message CreateMaterialResponse {
+  Material material = 1;
+}
+
+message UpdateMaterialRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+  string code = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }];
+  string name = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 300
+  }];
+  QtyType qty_type = 4 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  int64 qty = 5;
+}
+message UpdateMaterialResponse {
+  Material material = 1;
+}
+
+message ListMaterialRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+}
+message ListMaterialResponse {
+  repeated Material materials = 1;
+  int32 total = 2;
+}
+
+message DeleteMaterialRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message DeleteMaterialResponse {}
+
+// RecipeItem is used in request payloads (material_id + qty per serving).
+message RecipeItemInput {
+  uint32 material_id = 1 [(buf.validate.field).uint32.gt = 0];
+  int64 qty = 2 [(buf.validate.field).int64.gt = 0];
+}
+
+// RecipeItem is returned in responses, with the full material embedded.
+message RecipeItem {
+  uint32 id = 1;
+  uint32 material_id = 2;
+  Material material = 3;
+  int64 qty = 4;
+}
+
+message Recipe {
+  uint32 id = 1;
+  uint32 product_id = 2;
+  string name = 3;
+  repeated RecipeItem items = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message CreateRecipeRequest {
+  uint32 product_id = 1 [(buf.validate.field).uint32.gt = 0];
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 300
+  }];
+  repeated RecipeItemInput items = 3 [(buf.validate.field).repeated.min_items = 1];
+}
+message CreateRecipeResponse {
+  Recipe recipe = 1;
+}
+
+message UpdateRecipeRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+  string name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 300
+  }];
+  repeated RecipeItemInput items = 3 [(buf.validate.field).repeated.min_items = 1];
+}
+message UpdateRecipeResponse {
+  Recipe recipe = 1;
+}
+
+message GetRecipeRequest {
+  uint32 product_id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message GetRecipeResponse {
+  Recipe recipe = 1;
+}
+
+message ListRecipeRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+}
+message ListRecipeResponse {
+  repeated Recipe recipes = 1;
+  int32 total = 2;
+}
+
+message DeleteRecipeRequest {
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message DeleteRecipeResponse {}

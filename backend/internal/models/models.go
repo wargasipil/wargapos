@@ -120,3 +120,40 @@ type AppSettings struct {
 	BackupLastAt         *time.Time `gorm:"column:backup_last_at"`
 	UpdatedAt            time.Time
 }
+
+type Warehouse struct {
+	ID        uint32    `gorm:"primaryKey;autoIncrement"`
+	Name      string    `gorm:"not null;size:300"`
+	Deleted   bool      `gorm:"not null;default:false"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+type Material struct {
+	ID        uint32    `gorm:"primaryKey;autoIncrement"`
+	BranchID  *uint32   `gorm:"column:branch_id"`
+	Code      string    `gorm:"uniqueIndex;not null;size:100"`
+	Name      string    `gorm:"not null;size:300"`
+	QtyType   int16     `gorm:"column:qty_type;not null;default:0"`
+	Qty       int64     `gorm:"not null;default:0"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+type Recipe struct {
+	ID        uint32       `gorm:"primaryKey;autoIncrement"`
+	ProductID uint32       `gorm:"column:product_id;not null"`
+	Name      string       `gorm:"not null;size:300"`
+	Items     []RecipeItem `gorm:"foreignKey:RecipeID"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+type RecipeItem struct {
+	ID         uint32    `gorm:"primaryKey;autoIncrement"`
+	RecipeID   uint32    `gorm:"column:recipe_id;not null"`
+	MaterialID uint32    `gorm:"column:material_id;not null"`
+	Qty        int64     `gorm:"not null"`
+	CreatedAt  time.Time
+	Material   *Material `gorm:"foreignKey:MaterialID"`
+}

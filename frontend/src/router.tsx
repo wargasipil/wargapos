@@ -20,6 +20,7 @@ import { KitchenPage } from './routes/kitchen'
 import { PlaygroundPage } from './routes/playground'
 import { SetupPage } from './routes/setup'
 import { PrintPage } from './routes/print'
+import { WarehousesPage } from './routes/stock/index'
 
 async function checkSetupNeeded(): Promise<boolean> {
   try {
@@ -162,6 +163,16 @@ const usersRoute = createRoute({
   },
 })
 
+const stockRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock',
+  component: WarehousesPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
 const playgroundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/playground',
@@ -187,6 +198,7 @@ const routeTree = rootRoute.addChildren([
     productDetailRoute,
     settingsRoute,
     usersRoute,
+    stockRoute,
   ]),
 ])
 

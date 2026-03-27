@@ -4,7 +4,7 @@ import {
   Badge, Button, Flex, HStack, Input, Table, Text,
 } from '@chakra-ui/react'
 import { stockClient } from '../../../client'
-import type { StockMovement } from '../../../gen/wargapos/stock/v1/stock_pb'
+import type { StockMovement } from '../../../gen/wargapos/stock/v1/service_pb'
 
 function fmtDate(raw: string): string {
   const d = new Date(raw.replace(' ', 'T') + 'Z')

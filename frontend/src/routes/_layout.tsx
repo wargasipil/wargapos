@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Outlet, Link, useNavigate } from '@tanstack/react-router'
 import { Box, Button, Flex, IconButton, Text, Tooltip, VStack, HStack } from '@chakra-ui/react'
-import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight, Warehouse } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
 import { Toaster } from '../components/ui/toaster'
 import { toaster } from '../components/ui/toaster'
@@ -39,8 +39,13 @@ function SidebarTooltip({ label, collapsed, children }: { label: string; collaps
 export function ProtectedLayout() {
   const { role, logout, token } = useAuthStore()
   const isAdmin = role === 'admin'
+  const isAdminOrManager = role === 'admin' || role === 'manager'
   const navItems = isAdmin ? [...baseNavItems, { label: 'Team', to: '/users', Icon: Users }] : baseNavItems
-  const sidebarItems = isAdmin ? [...baseSidebarItems, { label: 'Team', to: '/users', Icon: Users }] : baseSidebarItems
+  const sidebarItems = [
+    ...baseSidebarItems,
+    ...(isAdminOrManager ? [{ label: 'Stock', to: '/stock', Icon: Warehouse }] : []),
+    ...(isAdmin ? [{ label: 'Team', to: '/users', Icon: Users }] : []),
+  ]
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState(false)
   function handleLogout() {

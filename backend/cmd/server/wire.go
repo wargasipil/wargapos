@@ -8,6 +8,7 @@ import (
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
+	"wargapos/backend/internal/service/ingredient_service"
 	"wargapos/backend/internal/service/notification_service"
 	"wargapos/backend/internal/service/product_service"
 	"wargapos/backend/internal/service/settings_service"
@@ -24,6 +25,7 @@ func InitializeApp(cfg *config.Config) (App, error) {
 		db.NewDB,
 		config.ProvideAuthConfig,
 		config.ProvideMidtransConfig,
+		NewStockServiceClient,
 		auth_service.NewAuthService,
 		user_service.NewUserService,
 		product_service.NewProductService,
@@ -33,6 +35,7 @@ func InitializeApp(cfg *config.Config) (App, error) {
 		table_service.NewTableService,
 		settings_service.NewSettingsService,
 		stock_service.NewStockService,
+		ingredient_service.NewIngredientService,
 		device_service.NewDeviceService,
 		backup_service.NewBackupService,
 		NewPartitionRunner,

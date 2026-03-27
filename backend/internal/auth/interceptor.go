@@ -27,29 +27,29 @@ func ClaimsFromContext(ctx context.Context) *Claims {
 
 // publicRoutes bypass JWT validation entirely.
 var publicRoutes = map[string]bool{
-	"/wargapos.auth.v1.AuthService/Login":                           true,
-	"/wargapos.auth.v1.AuthService/ValidateToken":                   true,
-	"/wargapos.product.v1.ProductService/ListProducts":              true,
-	"/wargapos.product.v1.ProductService/GetProduct":                true,
-	"/wargapos.product.v1.ProductService/ListCategories":            true,
-	"/wargapos.transaction.v1.TransactionService/CreateTransaction": true,
-	"/wargapos.table.v1.TableService/GetTable":                      true,
-	"/wargapos.table.v1.TableService/ListTables":                    true,
-	"/wargapos.settings.v1.SettingsService/GetSettings":             true,
-	"/wargapos.device.v1.DeviceService/Connect":                                    true,
-	"/wargapos.device.v1.DeviceService/ListDevices":                               true,
-	"/wargapos.notification.v1.NotificationService/ListNotifications":             true,
-	"/wargapos.notification.v1.NotificationService/MarkAllRead":                   true,
+	"/wargapos.auth.v1.AuthService/Login":                             true,
+	"/wargapos.auth.v1.AuthService/ValidateToken":                     true,
+	"/wargapos.product.v1.ProductService/ListProducts":                true,
+	"/wargapos.product.v1.ProductService/GetProduct":                  true,
+	"/wargapos.product.v1.ProductService/ListCategories":              true,
+	"/wargapos.transaction.v1.TransactionService/CreateTransaction":   true,
+	"/wargapos.table.v1.TableService/GetTable":                        true,
+	"/wargapos.table.v1.TableService/ListTables":                      true,
+	"/wargapos.settings.v1.SettingsService/GetSettings":               true,
+	"/wargapos.device.v1.DeviceService/Connect":                       true,
+	"/wargapos.device.v1.DeviceService/ListDevices":                   true,
+	"/wargapos.notification.v1.NotificationService/ListNotifications": true,
+	"/wargapos.notification.v1.NotificationService/MarkAllRead":       true,
 }
 
 // routeRoles maps procedures to allowed roles.
 // Procedures not in this map require any valid JWT (any role is accepted).
 var routeRoles = map[string][]string{
 	// Any authenticated user
-	"/wargapos.user.v1.UserService/GetUser":                         {"admin", "manager", "cashier"},
-	"/wargapos.user.v1.UserService/ChangePassword":                  {"admin", "manager", "cashier"},
-	"/wargapos.transaction.v1.TransactionService/ListTransactions":  {"admin", "manager", "cashier"},
-	"/wargapos.stock.v1.StockService/ListStockMovements":            {"admin", "manager", "cashier"},
+	"/wargapos.user.v1.UserService/GetUser":                        {"admin", "manager", "cashier"},
+	"/wargapos.user.v1.UserService/ChangePassword":                 {"admin", "manager", "cashier"},
+	"/wargapos.transaction.v1.TransactionService/ListTransactions": {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/ListStockMovements":           {"admin", "manager", "cashier"},
 	// Manager or admin
 	"/wargapos.product.v1.ProductService/CreateProduct":             {"admin", "manager"},
 	"/wargapos.product.v1.ProductService/UpdateProduct":             {"admin", "manager"},
@@ -58,21 +58,37 @@ var routeRoles = map[string][]string{
 	"/wargapos.product.v1.ProductService/UpdateCategory":            {"admin", "manager"},
 	"/wargapos.product.v1.ProductService/DeleteCategory":            {"admin", "manager"},
 	"/wargapos.stock.v1.StockService/AdjustStock":                   {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/CreateMaterial":      {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/UpdateMaterial":      {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/DeleteMaterial":      {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/UpdateMaterialStock": {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/ListMaterial":        {"admin", "manager", "cashier"},
+	"/wargapos.ingredient.v1.IngredientService/CreateRecipe":        {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/UpdateRecipe":        {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/DeleteRecipe":        {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/GetRecipe":           {"admin", "manager", "cashier"},
+	"/wargapos.ingredient.v1.IngredientService/ListRecipe":          {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/CreateWarehouse":               {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/UpdateWarehouse":               {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/DeleteWarehouse":               {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/ListWarehouse":                 {"admin", "manager", "cashier"},
 	"/wargapos.table.v1.TableService/CreateTable":                   {"admin", "manager"},
 	"/wargapos.table.v1.TableService/UpdateTable":                   {"admin", "manager"},
 	"/wargapos.table.v1.TableService/DeleteTable":                   {"admin", "manager"},
 	"/wargapos.transaction.v1.TransactionService/UpdateTransaction": {"admin", "manager"},
 	// Admin only
-	"/wargapos.backup.v1.BackupService/RunBackup":                   {"admin"},
-	"/wargapos.backup.v1.BackupService/ListBackup":                  {"admin"},
-	"/wargapos.backup.v1.BackupService/DeleteBackup":                {"admin"},
-	"/wargapos.backup.v1.BackupService/RestoreBackup":               {"admin"},
-	"/wargapos.user.v1.UserService/CreateUser":                      {"admin"},
-	"/wargapos.user.v1.UserService/UpdateUser":                      {"admin"},
-	"/wargapos.user.v1.UserService/DeleteUser":                      {"admin"},
-	"/wargapos.user.v1.UserService/ListUsers":                       {"admin"},
-	"/wargapos.settings.v1.SettingsService/UpdateSettings":          {"admin"},
+	"/wargapos.backup.v1.BackupService/RunBackup":          {"admin"},
+	"/wargapos.backup.v1.BackupService/ListBackup":         {"admin"},
+	"/wargapos.backup.v1.BackupService/DeleteBackup":       {"admin"},
+	"/wargapos.backup.v1.BackupService/RestoreBackup":      {"admin"},
+	"/wargapos.user.v1.UserService/CreateUser":             {"admin"},
+	"/wargapos.user.v1.UserService/UpdateUser":             {"admin"},
+	"/wargapos.user.v1.UserService/DeleteUser":             {"admin"},
+	"/wargapos.user.v1.UserService/ListUsers":              {"admin"},
+	"/wargapos.settings.v1.SettingsService/UpdateSettings": {"admin"},
 }
+
+const authContextKey = "auth_token"
 
 // Interceptor enforces JWT authentication and role-based access control.
 type Interceptor struct{ secret []byte }
@@ -82,6 +98,19 @@ func NewInterceptor(secret []byte) *Interceptor { return &Interceptor{secret: se
 
 func (i *Interceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 	return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
+		if req.Spec().IsClient {
+			token, ok := ctx.Value(authContextKey).(string)
+			if ok {
+				if token != "" {
+					req.Header().Set("Authorization", token)
+				}
+			}
+
+		} else {
+			token := req.Header().Get("Authorization")
+			ctx = context.WithValue(ctx, authContextKey, token)
+		}
+
 		procedure := req.Spec().Procedure
 
 		if publicRoutes[procedure] {

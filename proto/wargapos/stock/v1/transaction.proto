@@ -22,16 +22,16 @@ message Transaction {
 }
 
 message TransactionItem {
-  uint32 sku_id   = 1 [(buf.validate.field).uint32.gt = 0];
-  uint32 quantity = 2 [(buf.validate.field).uint32.gt = 0];
-  uint64 price    = 3; // required for STOCK_IN (sets PriceVersion)
-  uint32 rack_id  = 4; // optional rack placement
+  uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
+  int64 quantity = 2 [(buf.validate.field).int64.not_in = 0];
+  uint64 price = 3; // required for STOCK_IN (sets PriceVersion)
+  uint32 rack_id = 4; // optional rack placement
 }
 
 message CreateTransactionRequest {
-  TransactionType          transaction_type = 1 [(buf.validate.field).enum.defined_only = true];
-  repeated TransactionItem items            = 2 [(buf.validate.field).repeated.min_items = 1];
-  string                   note             = 3;
+  TransactionType transaction_type = 1 [(buf.validate.field).enum.defined_only = true];
+  repeated TransactionItem items = 2 [(buf.validate.field).repeated.min_items = 1];
+  string note = 3;
 }
 message CreateTransactionResponse {
   Transaction transaction = 1;
@@ -39,6 +39,6 @@ message CreateTransactionResponse {
 
 message CancelTransactionRequest {
   uint64 transaction_id = 1 [(buf.validate.field).uint64.gt = 0];
-  string reason         = 2;
+  string reason = 2;
 }
 message CancelTransactionResponse {}

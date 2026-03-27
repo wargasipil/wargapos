@@ -12,6 +12,7 @@ import (
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
+	"wargapos/backend/internal/service/ingredient_service"
 	"wargapos/backend/internal/service/notification_service"
 	"wargapos/backend/internal/service/product_service"
 	"wargapos/backend/internal/service/settings_service"
@@ -34,10 +35,12 @@ func InitializeApp(cfg *config.Config) (App, error) {
 	tableService := table_service.NewTableService(gormDB)
 	settingsService := settings_service.NewSettingsService(gormDB, midtransConfig)
 	stockService := stock_service.NewStockService(gormDB)
+	stockServiceClient := NewStockServiceClient(cfg)
+	ingredientService := ingredient_service.NewIngredientService(gormDB, stockServiceClient)
 	deviceService := device_service.NewDeviceService()
 	notificationService := notification_service.NewNotificationService(gormDB)
 	backupService := backup_service.NewBackupService(gormDB, cfg, authConfig)
-	webRunnerFunc := NewWebRunnerFunc(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, deviceService, notificationService, backupService)
+	webRunnerFunc := NewWebRunnerFunc(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, ingredientService, deviceService, notificationService, backupService)
 	runner := transaction_service.NewTransactionRunner()
 	partitionRunner := NewPartitionRunner(gormDB)
 	partitionRunnerFunc := NewPartitionRunnerFunc(partitionRunner)

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package wargapos.event.v1;
+
+// import "buf/validate/validate.proto";
+// import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/event/v1;eventv1";
+
+service EventService {
+  rpc Send(SendRequest) returns (SendResponse);
+  rpc Pull(PullRequest) returns (stream PullResponse);
+}
+
+message SendRequest {}
+message SendResponse {}
+
+message PullResponse {}
+message PullRequest {}

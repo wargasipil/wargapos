@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -44,9 +45,14 @@ type AuthConfig struct {
 }
 
 type ServerConfig struct {
+	Protocol  string `yaml:"protocol"`
 	Host      string `yaml:"host"`
 	Port      string `yaml:"port"`
 	UploadDir string `yaml:"upload_dir"`
+}
+
+func (scfg *ServerConfig) GetBase() string {
+	return fmt.Sprintf("%s://%s:%s", scfg.Protocol, scfg.Host, scfg.Port)
 }
 
 type DatabaseConfig struct {

@@ -67,6 +67,7 @@ service StockService {
 
   // bagian sku
   rpc CreateSku(CreateSkuRequest) returns (CreateSkuResponse);
+  rpc GetSku(GetSkuRequest) returns (GetSkuResponse);
   rpc UpdateSku(UpdateSkuRequest) returns (UpdateSkuResponse);
   rpc DeleteSku(DeleteSkuRequest) returns (DeleteSkuResponse);
   rpc ListSku(ListSkuRequest) returns (ListSkuResponse);

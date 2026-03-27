@@ -2,203 +2,235 @@
 // @generated from file wargapos/stock/v1/stock.proto (package wargapos.stock.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
+import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
+import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/stock/v1/stock.proto.
  */
 export const file_wargapos_stock_v1_stock: GenFile = /*@__PURE__*/
-  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEinQEKDVN0b2NrTW92ZW1lbnQSCgoCaWQYASABKAMSEgoKcHJvZHVjdF9pZBgCIAEoAxINCgVkZWx0YRgDIAEoBRIOCgZyZWFzb24YBCABKAkSDAoEbm90ZRgFIAEoCRISCgpjcmVhdGVkX2J5GAYgASgDEhIKCmNyZWF0ZWRfYXQYByABKAkSFwoPY3JlYXRlZF9ieV9uYW1lGAggASgJIoMBChJBZGp1c3RTdG9ja1JlcXVlc3QSGwoKcHJvZHVjdF9pZBgBIAEoA0IHukgEIgIgABIWCgVkZWx0YRgCIAEoBUIHukgEGgI4ABIqCgZyZWFzb24YAyABKAlCGrpIF3IVUgdyZXN0b2NrUgphZGp1c3RtZW50EgwKBG5vdGUYBCABKAkiLAoTQWRqdXN0U3RvY2tSZXNwb25zZRIVCg1uZXdfc3RvY2tfcXR5GAEgASgFIn0KGUxpc3RTdG9ja01vdmVtZW50c1JlcXVlc3QSGwoKcHJvZHVjdF9pZBgBIAEoA0IHukgEIgIgABIMCgRwYWdlGAIgASgFEhEKCXBhZ2Vfc2l6ZRgDIAEoBRIRCglkYXRlX2Zyb20YBCABKAkSDwoHZGF0ZV90bxgFIAEoCSJgChpMaXN0U3RvY2tNb3ZlbWVudHNSZXNwb25zZRIzCgltb3ZlbWVudHMYASADKAsyIC53YXJnYXBvcy5zdG9jay52MS5TdG9ja01vdmVtZW50Eg0KBXRvdGFsGAIgASgFMt8BCgxTdG9ja1NlcnZpY2USXAoLQWRqdXN0U3RvY2sSJS53YXJnYXBvcy5zdG9jay52MS5BZGp1c3RTdG9ja1JlcXVlc3QaJi53YXJnYXBvcy5zdG9jay52MS5BZGp1c3RTdG9ja1Jlc3BvbnNlEnEKEkxpc3RTdG9ja01vdmVtZW50cxIsLndhcmdhcG9zLnN0b2NrLnYxLkxpc3RTdG9ja01vdmVtZW50c1JlcXVlc3QaLS53YXJnYXBvcy5zdG9jay52MS5MaXN0U3RvY2tNb3ZlbWVudHNSZXNwb25zZUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi3QEKDFByaWNlVmVyc2lvbhIKCgJpZBgBIAEoBBIOCgZza3VfaWQYAiABKA0SFgoOdHJhbnNhY3Rpb25faWQYAyABKA0SLgoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDQoFcHJpY2UYBiABKAQSFgoOc3RvY2tfaW5pdGlhdGUYByABKA0SEgoKbGVmdF9zdG9jaxgIIAEoDSLHAQoFU3RvY2sSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAMgASgNEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDnN0b2NrX2luaXRpYXRlGAYgASgNEhIKCmxlZnRfc3RvY2sYByABKA0ixgEKCFN0b2NrTG9nEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIUCgx3YXJlaG91c2VfaWQYAyABKA0SFgoOdHJhbnNhY3Rpb25faWQYBCABKA0SFAoMY2hhbmdlX2J5X2lkGAUgASgNEhgKEHByaWNlX3ZlcnNpb25faWQYBiABKAQSEAoIc3RvY2tfaWQYByABKAQSLgoKY3JlYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiLgoTTGlzdFByaWNlU2t1UmVxdWVzdBIXCgZza3VfaWQYASABKA1CB7pIBCoCIAAiRwoUTGlzdFByaWNlU2t1UmVzcG9uc2USLwoGcHJpY2VzGAEgAygLMh8ud2FyZ2Fwb3Muc3RvY2sudjEuUHJpY2VWZXJzaW9uIi4KE0xpc3RTdG9ja1NrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAIkAKFExpc3RTdG9ja1NrdVJlc3BvbnNlEigKBnN0b2NrcxgBIAMoCzIYLndhcmdhcG9zLnN0b2NrLnYxLlN0b2NrQjBaLndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3N0b2NrL3YxO3N0b2NrdjFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
- * @generated from message wargapos.stock.v1.StockMovement
+ * @generated from message wargapos.stock.v1.PriceVersion
  */
-export type StockMovement = Message<"wargapos.stock.v1.StockMovement"> & {
+export type PriceVersion = Message<"wargapos.stock.v1.PriceVersion"> & {
   /**
-   * @generated from field: int64 id = 1;
+   * @generated from field: uint64 id = 1;
    */
   id: bigint;
 
   /**
-   * @generated from field: int64 product_id = 2;
+   * @generated from field: uint32 sku_id = 2;
    */
-  productId: bigint;
+  skuId: number;
 
   /**
-   * @generated from field: int32 delta = 3;
+   * @generated from field: uint32 transaction_id = 3;
    */
-  delta: number;
+  transactionId: number;
 
   /**
-   * @generated from field: string reason = 4;
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
    */
-  reason: string;
+  createdAt?: Timestamp;
 
   /**
-   * @generated from field: string note = 5;
+   * @generated from field: google.protobuf.Timestamp updated_at = 5;
    */
-  note: string;
+  updatedAt?: Timestamp;
 
   /**
-   * @generated from field: int64 created_by = 6;
+   * @generated from field: uint64 price = 6;
    */
-  createdBy: bigint;
+  price: bigint;
 
   /**
-   * @generated from field: string created_at = 7;
+   * @generated from field: uint32 stock_initiate = 7;
    */
-  createdAt: string;
+  stockInitiate: number;
 
   /**
-   * @generated from field: string created_by_name = 8;
+   * @generated from field: uint32 left_stock = 8;
    */
-  createdByName: string;
+  leftStock: number;
 };
 
 /**
- * Describes the message wargapos.stock.v1.StockMovement.
- * Use `create(StockMovementSchema)` to create a new message.
+ * Describes the message wargapos.stock.v1.PriceVersion.
+ * Use `create(PriceVersionSchema)` to create a new message.
  */
-export const StockMovementSchema: GenMessage<StockMovement> = /*@__PURE__*/
+export const PriceVersionSchema: GenMessage<PriceVersion> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 0);
 
 /**
- * @generated from message wargapos.stock.v1.AdjustStockRequest
+ * @generated from message wargapos.stock.v1.Stock
  */
-export type AdjustStockRequest = Message<"wargapos.stock.v1.AdjustStockRequest"> & {
+export type Stock = Message<"wargapos.stock.v1.Stock"> & {
   /**
-   * @generated from field: int64 product_id = 1;
+   * @generated from field: uint64 id = 1;
    */
-  productId: bigint;
+  id: bigint;
 
   /**
-   * @generated from field: int32 delta = 2;
+   * @generated from field: uint32 sku_id = 2;
    */
-  delta: number;
+  skuId: number;
 
   /**
-   * "restock" | "adjustment"
-   *
-   * @generated from field: string reason = 3;
+   * @generated from field: uint32 transaction_id = 3;
    */
-  reason: string;
+  transactionId: number;
 
   /**
-   * @generated from field: string note = 4;
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
    */
-  note: string;
+  createdAt?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp updated_at = 5;
+   */
+  updatedAt?: Timestamp;
+
+  /**
+   * @generated from field: uint32 stock_initiate = 6;
+   */
+  stockInitiate: number;
+
+  /**
+   * @generated from field: uint32 left_stock = 7;
+   */
+  leftStock: number;
 };
 
 /**
- * Describes the message wargapos.stock.v1.AdjustStockRequest.
- * Use `create(AdjustStockRequestSchema)` to create a new message.
+ * Describes the message wargapos.stock.v1.Stock.
+ * Use `create(StockSchema)` to create a new message.
  */
-export const AdjustStockRequestSchema: GenMessage<AdjustStockRequest> = /*@__PURE__*/
+export const StockSchema: GenMessage<Stock> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 1);
 
 /**
- * @generated from message wargapos.stock.v1.AdjustStockResponse
+ * @generated from message wargapos.stock.v1.StockLog
  */
-export type AdjustStockResponse = Message<"wargapos.stock.v1.AdjustStockResponse"> & {
+export type StockLog = Message<"wargapos.stock.v1.StockLog"> & {
   /**
-   * @generated from field: int32 new_stock_qty = 1;
+   * @generated from field: uint64 id = 1;
    */
-  newStockQty: number;
+  id: bigint;
+
+  /**
+   * @generated from field: uint32 sku_id = 2;
+   */
+  skuId: number;
+
+  /**
+   * @generated from field: uint32 warehouse_id = 3;
+   */
+  warehouseId: number;
+
+  /**
+   * @generated from field: uint32 transaction_id = 4;
+   */
+  transactionId: number;
+
+  /**
+   * @generated from field: uint32 change_by_id = 5;
+   */
+  changeById: number;
+
+  /**
+   * @generated from field: uint64 price_version_id = 6;
+   */
+  priceVersionId: bigint;
+
+  /**
+   * @generated from field: uint64 stock_id = 7;
+   */
+  stockId: bigint;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 8;
+   */
+  createdAt?: Timestamp;
 };
 
 /**
- * Describes the message wargapos.stock.v1.AdjustStockResponse.
- * Use `create(AdjustStockResponseSchema)` to create a new message.
+ * Describes the message wargapos.stock.v1.StockLog.
+ * Use `create(StockLogSchema)` to create a new message.
  */
-export const AdjustStockResponseSchema: GenMessage<AdjustStockResponse> = /*@__PURE__*/
+export const StockLogSchema: GenMessage<StockLog> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 2);
 
 /**
- * @generated from message wargapos.stock.v1.ListStockMovementsRequest
+ * @generated from message wargapos.stock.v1.ListPriceSkuRequest
  */
-export type ListStockMovementsRequest = Message<"wargapos.stock.v1.ListStockMovementsRequest"> & {
+export type ListPriceSkuRequest = Message<"wargapos.stock.v1.ListPriceSkuRequest"> & {
   /**
-   * @generated from field: int64 product_id = 1;
+   * @generated from field: uint32 sku_id = 1;
    */
-  productId: bigint;
-
-  /**
-   * @generated from field: int32 page = 2;
-   */
-  page: number;
-
-  /**
-   * @generated from field: int32 page_size = 3;
-   */
-  pageSize: number;
-
-  /**
-   * inclusive, "2006-01-02" (empty = no filter)
-   *
-   * @generated from field: string date_from = 4;
-   */
-  dateFrom: string;
-
-  /**
-   * inclusive, "2006-01-02" (empty = no filter)
-   *
-   * @generated from field: string date_to = 5;
-   */
-  dateTo: string;
+  skuId: number;
 };
 
 /**
- * Describes the message wargapos.stock.v1.ListStockMovementsRequest.
- * Use `create(ListStockMovementsRequestSchema)` to create a new message.
+ * Describes the message wargapos.stock.v1.ListPriceSkuRequest.
+ * Use `create(ListPriceSkuRequestSchema)` to create a new message.
  */
-export const ListStockMovementsRequestSchema: GenMessage<ListStockMovementsRequest> = /*@__PURE__*/
+export const ListPriceSkuRequestSchema: GenMessage<ListPriceSkuRequest> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 3);
 
 /**
- * @generated from message wargapos.stock.v1.ListStockMovementsResponse
+ * @generated from message wargapos.stock.v1.ListPriceSkuResponse
  */
-export type ListStockMovementsResponse = Message<"wargapos.stock.v1.ListStockMovementsResponse"> & {
+export type ListPriceSkuResponse = Message<"wargapos.stock.v1.ListPriceSkuResponse"> & {
   /**
-   * @generated from field: repeated wargapos.stock.v1.StockMovement movements = 1;
+   * @generated from field: repeated wargapos.stock.v1.PriceVersion prices = 1;
    */
-  movements: StockMovement[];
-
-  /**
-   * @generated from field: int32 total = 2;
-   */
-  total: number;
+  prices: PriceVersion[];
 };
 
 /**
- * Describes the message wargapos.stock.v1.ListStockMovementsResponse.
- * Use `create(ListStockMovementsResponseSchema)` to create a new message.
+ * Describes the message wargapos.stock.v1.ListPriceSkuResponse.
+ * Use `create(ListPriceSkuResponseSchema)` to create a new message.
  */
-export const ListStockMovementsResponseSchema: GenMessage<ListStockMovementsResponse> = /*@__PURE__*/
+export const ListPriceSkuResponseSchema: GenMessage<ListPriceSkuResponse> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 4);
 
 /**
- * @generated from service wargapos.stock.v1.StockService
+ * @generated from message wargapos.stock.v1.ListStockSkuRequest
  */
-export const StockService: GenService<{
+export type ListStockSkuRequest = Message<"wargapos.stock.v1.ListStockSkuRequest"> & {
   /**
-   * @generated from rpc wargapos.stock.v1.StockService.AdjustStock
+   * @generated from field: uint32 sku_id = 1;
    */
-  adjustStock: {
-    methodKind: "unary";
-    input: typeof AdjustStockRequestSchema;
-    output: typeof AdjustStockResponseSchema;
-  },
+  skuId: number;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.ListStockSkuRequest.
+ * Use `create(ListStockSkuRequestSchema)` to create a new message.
+ */
+export const ListStockSkuRequestSchema: GenMessage<ListStockSkuRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_stock, 5);
+
+/**
+ * @generated from message wargapos.stock.v1.ListStockSkuResponse
+ */
+export type ListStockSkuResponse = Message<"wargapos.stock.v1.ListStockSkuResponse"> & {
   /**
-   * @generated from rpc wargapos.stock.v1.StockService.ListStockMovements
+   * @generated from field: repeated wargapos.stock.v1.Stock stocks = 1;
    */
-  listStockMovements: {
-    methodKind: "unary";
-    input: typeof ListStockMovementsRequestSchema;
-    output: typeof ListStockMovementsResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_wargapos_stock_v1_stock, 0);
+  stocks: Stock[];
+};
+
+/**
+ * Describes the message wargapos.stock.v1.ListStockSkuResponse.
+ * Use `create(ListStockSkuResponseSchema)` to create a new message.
+ */
+export const ListStockSkuResponseSchema: GenMessage<ListStockSkuResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_stock, 6);
 
