@@ -118,7 +118,7 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 					stockLog = stock_model.StockLog{
 						SkuID:          pay.SkuId,
 						TransactionID:  pay.TransactionId,
-						Change:         stock.LeftStock,
+						Change:         -stock.StockInitiate,
 						PriceVersionID: priceVersion.ID,
 						StockID:        stock.ID,
 						ActorID:        pay.UserId,
@@ -129,6 +129,21 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 					err = tx.
 						Create(&stockLog).
 						Error
+					if err != nil {
+						return ctx, err
+					}
+
+					return next(ctx)
+				}
+			},
+			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
+				return func(ctx context.Context) (context.Context, error) { // decrement sku stock_qty
+					err = tx.
+						Model(&models.Sku{}).
+						Where("id = ?", sku.ID).
+						Update("stock_qty", gorm.Expr("stock_qty - ?", stock.StockInitiate)).
+						Error
+
 					if err != nil {
 						return ctx, err
 					}

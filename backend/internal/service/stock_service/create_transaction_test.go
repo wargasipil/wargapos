@@ -55,6 +55,7 @@ func TestCreateTransaction(t *testing.T) {
 					var sku models.Sku
 					db.First(&sku, createSku.Msg.Sku.Id)
 					assert.NotNil(t, sku.LastStockIn, "last_stock_in should be set after stock in")
+					assert.Equal(t, int64(9), sku.StockQty, "sku stock_qty should match quantity added")
 
 					txId := res.Msg.Transaction.Id
 					skuId := createSku.Msg.Sku.Id

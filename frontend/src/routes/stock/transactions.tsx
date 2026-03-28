@@ -6,13 +6,13 @@ import {
 } from '@chakra-ui/react'
 import { createListCollection, Select } from '@chakra-ui/react'
 import { ArrowLeftRight, ChevronLeft, ChevronRight, Plus, Trash2 } from 'lucide-react'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { stockClient } from '../../client'
 import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
+import { formatDateTime } from '../../lib/format'
 import { useAuthStore } from '../../store/auth'
 import { TransactionType } from '../../gen/wargapos/stock/v1/transaction_pb'
-import type { Transaction } from '../../gen/wargapos/stock/v1/transaction_pb'
-import type { Timestamp } from '@bufbuild/protobuf/wkt'
 import { SkuSelect } from '../../components/shared/SkuSelect'
 
 const PAGE_SIZE = 20
@@ -53,28 +53,30 @@ const createTypeOptions = createListCollection({
   ],
 })
 
-function formatDate(ts?: Timestamp) {
-  if (!ts) return '—'
-  return new Date(Number(ts.seconds) * 1000).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })
-}
-
-function formatIDR(cents: bigint) {
-  return (Number(cents) / 100).toLocaleString('id-ID')
-}
-
 export function TransactionsPage() {
   const { role } = useAuthStore()
   const isAdminOrManager = role === 'admin' || role === 'manager'
   const qc = useQueryClient()
+  const navigate = useNavigate()
 
-  // List state
-  const [page, setPage]             = useState(1)
-  const [filterType, setFilterType] = useState('0')
-  const [showCancelled, setShowCancelled] = useState(false)
+  // List state from URL search params
+  const search = useSearch({ strict: false }) as { page?: number; type?: string; cancelled?: boolean }
+  const page         = Number(search.page ?? 1)
+  const filterType   = String(search.type ?? '0')
+  const showCancelled = Boolean(search.cancelled ?? false)
 
-  // Detail state
-  const [selected, setSelected]   = useState<Transaction | null>(null)
-  const [detailOpen, setDetailOpen] = useState(false)
+  function goToPage(newPage: number) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    navigate({ to: '/stock/transactions', search: { page: newPage, type: filterType, cancelled: showCancelled } as any, replace: true })
+  }
+  function changeType(newType: string) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    navigate({ to: '/stock/transactions', search: { page: 1, type: newType, cancelled: showCancelled } as any, replace: true })
+  }
+  function toggleCancelled() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    navigate({ to: '/stock/transactions', search: { page: 1, type: filterType, cancelled: !showCancelled } as any, replace: true })
+  }
 
   // Create state
   const [createOpen, setCreateOpen] = useState(false)
@@ -106,30 +108,6 @@ export function TransactionsPage() {
         transactionType: Number(filterType) as TransactionType,
         cancelled: showCancelled,
       }),
-  })
-
-  const { data: detailData, isLoading: detailLoading } = useQuery({
-    queryKey: ['transaction-detail', selected?.id],
-    queryFn: () => stockClient.detailTransaction({ id: selected!.id }),
-    enabled: !!selected,
-  })
-
-  const { data: skusData } = useQuery({
-    queryKey: ['skus-select'],
-    queryFn: () => stockClient.listSku({ page: 1, pageSize: 200, productId: 0, search: '' }),
-  })
-  const skuMap = new Map((skusData?.skus ?? []).map((s) => [s.id, s.code]))
-
-  // Mutations
-  const cancelMutation = useMutation({
-    mutationFn: (id: bigint) => stockClient.cancelTransaction({ transactionId: id, reason: '' }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['transactions'] })
-      qc.invalidateQueries({ queryKey: ['transaction-detail', selected?.id] })
-      toaster.create({ title: 'Transaction cancelled', type: 'success', duration: 3000 })
-      setDetailOpen(false)
-    },
-    onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
 
   const createMutation = useMutation({
@@ -164,12 +142,6 @@ export function TransactionsPage() {
   const transactions = data?.transactions ?? []
   const total        = data?.total ?? 0
   const totalPages   = Math.max(1, Math.ceil(total / PAGE_SIZE))
-  const detail       = detailData?.transaction
-
-  function openDetail(tx: Transaction) {
-    setSelected(tx)
-    setDetailOpen(true)
-  }
 
   return (
     <Box p={{ base: 3, md: 6 }}>
@@ -184,7 +156,7 @@ export function TransactionsPage() {
           <Select.Root
             collection={typeOptions}
             value={[filterType]}
-            onValueChange={({ value }) => { setFilterType(value[0]); setPage(1) }}
+            onValueChange={({ value }) => changeType(value[0])}
             size="sm"
             minW="140px"
           >
@@ -205,7 +177,7 @@ export function TransactionsPage() {
             size="sm"
             variant={showCancelled ? 'solid' : 'outline'}
             colorPalette={showCancelled ? 'red' : 'gray'}
-            onClick={() => { setShowCancelled((v) => !v); setPage(1) }}
+            onClick={toggleCancelled}
           >
             Cancelled
           </Button>
@@ -233,7 +205,13 @@ export function TransactionsPage() {
           </Table.Header>
           <Table.Body>
             {transactions.map((tx) => (
-              <Table.Row key={String(tx.id)} cursor="pointer" _hover={{ bg: 'gray.50' }} onClick={() => openDetail(tx)}>
+              <Table.Row
+                key={String(tx.id)}
+                cursor="pointer"
+                _hover={{ bg: 'gray.50' }}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onClick={() => navigate({ to: '/stock/transactions/$id', params: { id: String(tx.id) } } as any)}
+              >
                 <Table.Cell fontFamily="mono" fontSize="xs">#{String(tx.id)}</Table.Cell>
                 <Table.Cell>
                   <Badge colorPalette={TYPE_COLORS[tx.transactionType] ?? 'gray'} size="sm">
@@ -246,7 +224,9 @@ export function TransactionsPage() {
                 <Table.Cell fontSize="xs" color="gray.600" maxW="200px" overflow="hidden" style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                   {tx.note || '—'}
                 </Table.Cell>
-                <Table.Cell fontSize="xs" color="gray.500">{formatDate(tx.createdAt)}</Table.Cell>
+                <Table.Cell fontSize="xs" color="gray.500">
+                  {formatDateTime(tx.createdAt as import('@bufbuild/protobuf/wkt').Timestamp | undefined)}
+                </Table.Cell>
               </Table.Row>
             ))}
             {transactions.length === 0 && (
@@ -263,11 +243,11 @@ export function TransactionsPage() {
       {/* Pagination */}
       {!isLoading && total > 0 && (
         <HStack justify="center" mt={4} gap={3}>
-          <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+          <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
             <ChevronLeft size={16} />
           </Button>
           <Text fontSize="sm" color="gray.600">{page} / {totalPages}</Text>
-          <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+          <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => goToPage(page + 1)}>
             <ChevronRight size={16} />
           </Button>
         </HStack>
@@ -415,101 +395,6 @@ export function TransactionsPage() {
                 >
                   Create
                 </Button>
-              </Dialog.Footer>
-            </Dialog.Content>
-          </Dialog.Positioner>
-        </Portal>
-      </Dialog.Root>
-
-      {/* ── Detail Dialog ─────────────────────────────────────── */}
-      <Dialog.Root open={detailOpen} onOpenChange={({ open }) => setDetailOpen(open)} size="lg">
-        <Portal>
-          <Dialog.Backdrop />
-          <Dialog.Positioner>
-            <Dialog.Content>
-              <Dialog.Header>
-                <Dialog.Title>
-                  {selected && (
-                    <HStack gap={2}>
-                      <Text>Transaction #{String(selected.id)}</Text>
-                      <Badge colorPalette={TYPE_COLORS[selected.transactionType] ?? 'gray'} size="sm">
-                        {TYPE_LABELS[selected.transactionType] ?? 'Unknown'}
-                      </Badge>
-                      {selected.cancelled && <Badge colorPalette="red" variant="outline" size="sm">Cancelled</Badge>}
-                    </HStack>
-                  )}
-                </Dialog.Title>
-              </Dialog.Header>
-              <Dialog.Body>
-                {detailLoading ? (
-                  <Flex justify="center" py={8}><Spinner /></Flex>
-                ) : detail ? (
-                  <VStack align="stretch" gap={4}>
-                    <HStack gap={6} wrap="wrap">
-                      <Box>
-                        <Text fontSize="xs" color="gray.500" mb={0.5}>Date</Text>
-                        <Text fontSize="sm">{formatDate(detail.createdAt)}</Text>
-                      </Box>
-                      {detail.note && (
-                        <Box>
-                          <Text fontSize="xs" color="gray.500" mb={0.5}>Note</Text>
-                          <Text fontSize="sm">{detail.note}</Text>
-                        </Box>
-                      )}
-                    </HStack>
-
-                    <Box overflowX="auto">
-                      <Box as="table" w="full" fontSize="sm">
-                        <Box as="thead">
-                          <Box as="tr" borderBottom="2px solid" borderColor="gray.200">
-                            <Box as="th" textAlign="left" py={2} pr={4} color="gray.600" fontWeight="medium">SKU</Box>
-                            <Box as="th" textAlign="right" py={2} pr={4} color="gray.600" fontWeight="medium">Qty</Box>
-                            <Box as="th" textAlign="right" py={2} pr={4} color="gray.600" fontWeight="medium">Price (IDR)</Box>
-                            <Box as="th" textAlign="right" py={2} color="gray.600" fontWeight="medium">Rack</Box>
-                          </Box>
-                        </Box>
-                        <Box as="tbody">
-                          {detail.items.map((item, i) => (
-                            <Box as="tr" key={i} borderBottom="1px solid" borderColor="gray.100">
-                              <Box as="td" py={2} pr={4}>
-                                <Text fontFamily="mono" fontSize="xs">{skuMap.get(item.skuId) ?? `#${item.skuId}`}</Text>
-                              </Box>
-                              <Box as="td" py={2} pr={4} textAlign="right">
-                                {Number(item.quantity).toLocaleString('id-ID')}
-                              </Box>
-                              <Box as="td" py={2} pr={4} textAlign="right">
-                                {formatIDR(BigInt(Math.round(item.total)))}
-                              </Box>
-                              <Box as="td" py={2} textAlign="right" color="gray.500">
-                                {item.rackId || '—'}
-                              </Box>
-                            </Box>
-                          ))}
-                          {detail.items.length === 0 && (
-                            <Box as="tr">
-                              <Box as="td" py={4} textAlign="center" color="gray.400" {...{ colSpan: 4 }}>No items</Box>
-                            </Box>
-                          )}
-                        </Box>
-                      </Box>
-                    </Box>
-                  </VStack>
-                ) : null}
-              </Dialog.Body>
-              <Dialog.Footer>
-                {isAdminOrManager && detail && !detail.cancelled && (
-                  <Button
-                    colorPalette="red" variant="outline" size="sm"
-                    loading={cancelMutation.isPending}
-                    onClick={() => cancelMutation.mutate(detail.id)}
-                    mr="auto"
-                  >
-                    Cancel Transaction
-                  </Button>
-                )}
-                <Dialog.ActionTrigger asChild>
-                  <Button variant="outline" size="sm">Close</Button>
-                </Dialog.ActionTrigger>
               </Dialog.Footer>
             </Dialog.Content>
           </Dialog.Positioner>

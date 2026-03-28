@@ -116,11 +116,14 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 				}
 			},
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
-				return func(ctx context.Context) (context.Context, error) { // update sku last in
+				return func(ctx context.Context) (context.Context, error) { // update sku last in + stock_qty
 					err = tx.
 						Model(&models.Sku{}).
 						Where("id = ?", sku.ID).
-						Update("last_stock_in", pay.CreatedAt).
+						Updates(map[string]any{
+							"last_stock_in": pay.CreatedAt,
+							"stock_qty":     gorm.Expr("stock_qty + ?", pay.Qty),
+						}).
 						Error
 
 					if err != nil {

@@ -29,7 +29,7 @@ func (s *StockService) CancelTransaction(
 
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var txRecord models.StockTransaction
-		caller := runner.NewChainParam[context.Context](
+		caller := runner.NewChainParam(
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 				return func(data context.Context) (context.Context, error) { // get and locking transaction
 					err = tx.Clauses(clause.Locking{Strength: "UPDATE"}).

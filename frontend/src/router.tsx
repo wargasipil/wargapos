@@ -24,6 +24,7 @@ import { WarehousesPage } from './routes/stock/index'
 import { SkusPage } from './routes/stock/skus/index'
 import { SkuDetail } from './routes/stock/skus/Detail'
 import { TransactionsPage } from './routes/stock/transactions'
+import { TransactionDetailPage } from './routes/stock/transactions/Detail'
 import { IngredientsPage } from './routes/ingredients/index'
 
 async function checkSetupNeeded(): Promise<boolean> {
@@ -203,6 +204,12 @@ const skuDetailRoute = createRoute({
   component: SkuDetail,
 })
 
+const transactionDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock/transactions/$id',
+  component: TransactionDetailPage,
+})
+
 const ingredientsRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/ingredients',
@@ -238,6 +245,7 @@ const routeTree = rootRoute.addChildren([
     skuRoute,
     skuDetailRoute,
     transactionRoute,
+    transactionDetailRoute,
     ingredientsRoute,
   ]),
 ])
