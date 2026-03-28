@@ -12,10 +12,10 @@ import (
 	"wargapos/backend/internal/models"
 )
 
-func (s *IngredientService) UpdateMaterialStock(
+func (s *IngredientService) AddMaterialStock(
 	ctx context.Context,
-	req *connect.Request[ingredientv1.UpdateMaterialStockRequest],
-) (*connect.Response[ingredientv1.UpdateMaterialStockResponse], error) {
+	req *connect.Request[ingredientv1.AddMaterialStockRequest],
+) (*connect.Response[ingredientv1.AddMaterialStockResponse], error) {
 	var err error
 	pay := req.Msg
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -49,13 +49,18 @@ func (s *IngredientService) UpdateMaterialStock(
 			return err
 		}
 
+		var branchId uint32
+		if material.BranchID != nil {
+			branchId = *material.BranchID
+		}
+
 		// creating sku jika not found
 		if getSku.Msg.ErrCode == stockv1.SkuError_SKU_ERROR_NOTFOUND {
 			createdSku, err := s.stockSrv.CreateSku(ctx, &connect.Request[stockv1.CreateSkuRequest]{
 				Msg: &stockv1.CreateSkuRequest{
 					Code:        material.Code,
 					ProductId:   material.ID,
-					BranchId:    *material.BranchID,
+					BranchId:    branchId,
 					WarehouseId: pay.WarehouseId,
 				},
 			})
@@ -86,7 +91,7 @@ func (s *IngredientService) UpdateMaterialStock(
 					{
 						SkuId:    sku.Id,
 						Quantity: pay.Qty,
-						Price:    pay.Price,
+						Total:    float64(pay.Price),
 					},
 				},
 			},
@@ -110,5 +115,5 @@ func (s *IngredientService) UpdateMaterialStock(
 		return nil
 	})
 
-	return connect.NewResponse(&ingredientv1.UpdateMaterialStockResponse{}), err
+	return connect.NewResponse(&ingredientv1.AddMaterialStockResponse{}), err
 }

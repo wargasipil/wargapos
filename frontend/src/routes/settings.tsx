@@ -4,13 +4,13 @@ import {
   Alert, Box, Button, Field, Flex, Heading, HStack, Input, NativeSelect,
   Separator, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
-import { KeyRound, CreditCard, User, MonitorSmartphone, Printer, HardDrive, Download, RotateCcw, Trash2 } from 'lucide-react'
+import { KeyRound, CreditCard, User, MonitorSmartphone, Printer, HardDrive, Download, RotateCcw, Trash2, Building2 } from 'lucide-react'
 import { ConnectError } from '@connectrpc/connect'
 import { userClient, settingsClient, deviceClient, backupClient } from '../client'
 import { useAuthStore } from '../store/auth'
 import { toaster } from '../components/ui/toaster'
 import { stripError } from '../lib/errors'
-import { PrintMode } from '../gen/wargapos/settings/v1/settings_pb'
+import { PrintMode, BusinessType } from '../gen/wargapos/settings/v1/settings_pb'
 
 // ── Nav definition ─────────────────────────────────────────────────────────────
 
@@ -27,6 +27,7 @@ const NAV_ITEMS: NavItem[] = [
   { key: 'payment',  label: 'Payment',  Icon: CreditCard,       adminOnly: true },
   { key: 'printer',  label: 'Printer',  Icon: Printer,          adminOnly: true },
   { key: 'backup',   label: 'Backup',   Icon: HardDrive,        adminOnly: true },
+  { key: 'business', label: 'Business', Icon: Building2,        adminOnly: true },
   { key: 'devices',  label: 'Devices',  Icon: MonitorSmartphone },
 ]
 
@@ -83,6 +84,7 @@ export function SettingsPage() {
           {isAdmin && section === 'payment'  && <PaymentSection token={token} />}
           {isAdmin && section === 'printer'  && <PrinterSection token={token} />}
           {isAdmin && section === 'backup'   && <BackupSection token={token} />}
+          {isAdmin && section === 'business' && <BusinessSection token={token} />}
           {section === 'devices'  && <DevicesSection />}
         </Box>
       </Flex>
@@ -100,24 +102,26 @@ function ProfileSection({ userId, role }: { userId: string | null; role: string 
 
   const { data, isLoading } = useQuery({
     queryKey: ['user', userId],
-    queryFn: () => userClient.getUser({ id: BigInt(userId!) }),
+    queryFn: () => userClient.getUser({ ids: [Number(userId!)] }),
     enabled: !!userId,
   })
 
+  const user = data?.users[Number(userId!)]
+
   if (data && !initialized) {
-    setFullName(data.user?.fullName ?? '')
-    setEmail(data.user?.email ?? '')
+    setFullName(user?.fullName ?? '')
+    setEmail(user?.email ?? '')
     setInitialized(true)
   }
 
   const mutation = useMutation({
     mutationFn: () =>
       userClient.updateUser({
-        id: BigInt(userId!),
+        id: Number(userId!),
         fullName,
         email,
-        role: data?.user?.role,
-        isActive: data?.user?.isActive ?? true,
+        role: user?.role,
+        isActive: user?.isActive ?? true,
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['user', userId] })
@@ -823,6 +827,78 @@ function BackupSection({ token }: { token: string | null }) {
         {uploading && <Spinner size="sm" />}
       </HStack>
 
+    </Box>
+  )
+}
+
+// ── Business ───────────────────────────────────────────────────────────────────
+
+function BusinessSection({ token }: { token: string | null }) {
+  const qc = useQueryClient()
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsClient.getSettings({}),
+  })
+
+  const [bizType, setBizType] = useState<BusinessType>(BusinessType.UNSPECIFIED)
+  const [initialized, setInitialized] = useState(false)
+
+  if (data && !initialized) {
+    setBizType(data.businessType ?? BusinessType.UNSPECIFIED)
+    setInitialized(true)
+  }
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      settingsClient.updateSettings(
+        {
+          midtrans: data?.midtrans,
+          manualPayment: data?.manualPayment,
+          printer: data?.printer,
+          backup: data?.backup,
+          businessType: bizType,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      ),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['settings'] })
+      toaster.create({ title: 'Business settings saved', type: 'success', duration: 3000 })
+    },
+    onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
+  })
+
+  if (isLoading) return <Box pt={4}><Spinner size="sm" /></Box>
+
+  return (
+    <Box pt={4}>
+      <VStack align="stretch" gap={4}>
+        <Field.Root>
+          <Field.Label>Business Type</Field.Label>
+          <NativeSelect.Root size="sm" maxW="220px">
+            <NativeSelect.Field
+              value={String(bizType)}
+              onChange={(e) => setBizType(Number(e.target.value) as BusinessType)}
+            >
+              <option value={String(BusinessType.UNSPECIFIED)}>— Not set —</option>
+              <option value={String(BusinessType.CAFE)}>Cafe</option>
+              <option value={String(BusinessType.MARKETPLACE)}>Marketplace</option>
+            </NativeSelect.Field>
+            <NativeSelect.Indicator />
+          </NativeSelect.Root>
+        </Field.Root>
+
+        <Box>
+          <Button
+            size="sm"
+            colorPalette="blue"
+            loading={mutation.isPending}
+            onClick={() => mutation.mutate()}
+          >
+            Save
+          </Button>
+        </Box>
+      </VStack>
     </Box>
   )
 }

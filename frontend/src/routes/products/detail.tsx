@@ -9,6 +9,7 @@ import { productClient } from '../../client'
 import { formatPrice } from '../../lib/format'
 import { AdjustStockDialog } from './_components/AdjustStockDialog'
 import { StockHistoryTab } from './_components/StockHistoryTab'
+import { RecipeTab } from './_components/RecipeTab'
 
 function marginPct(priceCents: bigint, cogsCents: bigint): string | null {
   if (cogsCents === 0n || priceCents === 0n) return null
@@ -73,6 +74,7 @@ export function ProductDetailPage() {
         <Tabs.List mb={4}>
           <Tabs.Trigger value="details">Details</Tabs.Trigger>
           <Tabs.Trigger value="history">Stock History</Tabs.Trigger>
+          <Tabs.Trigger value="recipe">Recipe</Tabs.Trigger>
         </Tabs.List>
 
         <Tabs.Content value="details">
@@ -103,6 +105,10 @@ export function ProductDetailPage() {
 
         <Tabs.Content value="history">
           <StockHistoryTab productId={id} />
+        </Tabs.Content>
+
+        <Tabs.Content value="recipe">
+          <RecipeTab productId={id} />
         </Tabs.Content>
       </Tabs.Root>
 

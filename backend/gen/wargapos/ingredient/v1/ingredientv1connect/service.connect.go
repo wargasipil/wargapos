@@ -45,9 +45,9 @@ const (
 	// IngredientServiceDeleteMaterialProcedure is the fully-qualified name of the IngredientService's
 	// DeleteMaterial RPC.
 	IngredientServiceDeleteMaterialProcedure = "/wargapos.ingredient.v1.IngredientService/DeleteMaterial"
-	// IngredientServiceUpdateMaterialStockProcedure is the fully-qualified name of the
-	// IngredientService's UpdateMaterialStock RPC.
-	IngredientServiceUpdateMaterialStockProcedure = "/wargapos.ingredient.v1.IngredientService/UpdateMaterialStock"
+	// IngredientServiceAddMaterialStockProcedure is the fully-qualified name of the IngredientService's
+	// AddMaterialStock RPC.
+	IngredientServiceAddMaterialStockProcedure = "/wargapos.ingredient.v1.IngredientService/AddMaterialStock"
 	// IngredientServiceCreateRecipeProcedure is the fully-qualified name of the IngredientService's
 	// CreateRecipe RPC.
 	IngredientServiceCreateRecipeProcedure = "/wargapos.ingredient.v1.IngredientService/CreateRecipe"
@@ -71,7 +71,7 @@ type IngredientServiceClient interface {
 	UpdateMaterial(context.Context, *connect.Request[v1.UpdateMaterialRequest]) (*connect.Response[v1.UpdateMaterialResponse], error)
 	ListMaterial(context.Context, *connect.Request[v1.ListMaterialRequest]) (*connect.Response[v1.ListMaterialResponse], error)
 	DeleteMaterial(context.Context, *connect.Request[v1.DeleteMaterialRequest]) (*connect.Response[v1.DeleteMaterialResponse], error)
-	UpdateMaterialStock(context.Context, *connect.Request[v1.UpdateMaterialStockRequest]) (*connect.Response[v1.UpdateMaterialStockResponse], error)
+	AddMaterialStock(context.Context, *connect.Request[v1.AddMaterialStockRequest]) (*connect.Response[v1.AddMaterialStockResponse], error)
 	// untuk recipe
 	CreateRecipe(context.Context, *connect.Request[v1.CreateRecipeRequest]) (*connect.Response[v1.CreateRecipeResponse], error)
 	UpdateRecipe(context.Context, *connect.Request[v1.UpdateRecipeRequest]) (*connect.Response[v1.UpdateRecipeResponse], error)
@@ -115,10 +115,10 @@ func NewIngredientServiceClient(httpClient connect.HTTPClient, baseURL string, o
 			connect.WithSchema(ingredientServiceMethods.ByName("DeleteMaterial")),
 			connect.WithClientOptions(opts...),
 		),
-		updateMaterialStock: connect.NewClient[v1.UpdateMaterialStockRequest, v1.UpdateMaterialStockResponse](
+		addMaterialStock: connect.NewClient[v1.AddMaterialStockRequest, v1.AddMaterialStockResponse](
 			httpClient,
-			baseURL+IngredientServiceUpdateMaterialStockProcedure,
-			connect.WithSchema(ingredientServiceMethods.ByName("UpdateMaterialStock")),
+			baseURL+IngredientServiceAddMaterialStockProcedure,
+			connect.WithSchema(ingredientServiceMethods.ByName("AddMaterialStock")),
 			connect.WithClientOptions(opts...),
 		),
 		createRecipe: connect.NewClient[v1.CreateRecipeRequest, v1.CreateRecipeResponse](
@@ -156,16 +156,16 @@ func NewIngredientServiceClient(httpClient connect.HTTPClient, baseURL string, o
 
 // ingredientServiceClient implements IngredientServiceClient.
 type ingredientServiceClient struct {
-	createMaterial      *connect.Client[v1.CreateMaterialRequest, v1.CreateMaterialResponse]
-	updateMaterial      *connect.Client[v1.UpdateMaterialRequest, v1.UpdateMaterialResponse]
-	listMaterial        *connect.Client[v1.ListMaterialRequest, v1.ListMaterialResponse]
-	deleteMaterial      *connect.Client[v1.DeleteMaterialRequest, v1.DeleteMaterialResponse]
-	updateMaterialStock *connect.Client[v1.UpdateMaterialStockRequest, v1.UpdateMaterialStockResponse]
-	createRecipe        *connect.Client[v1.CreateRecipeRequest, v1.CreateRecipeResponse]
-	updateRecipe        *connect.Client[v1.UpdateRecipeRequest, v1.UpdateRecipeResponse]
-	getRecipe           *connect.Client[v1.GetRecipeRequest, v1.GetRecipeResponse]
-	listRecipe          *connect.Client[v1.ListRecipeRequest, v1.ListRecipeResponse]
-	deleteRecipe        *connect.Client[v1.DeleteRecipeRequest, v1.DeleteRecipeResponse]
+	createMaterial   *connect.Client[v1.CreateMaterialRequest, v1.CreateMaterialResponse]
+	updateMaterial   *connect.Client[v1.UpdateMaterialRequest, v1.UpdateMaterialResponse]
+	listMaterial     *connect.Client[v1.ListMaterialRequest, v1.ListMaterialResponse]
+	deleteMaterial   *connect.Client[v1.DeleteMaterialRequest, v1.DeleteMaterialResponse]
+	addMaterialStock *connect.Client[v1.AddMaterialStockRequest, v1.AddMaterialStockResponse]
+	createRecipe     *connect.Client[v1.CreateRecipeRequest, v1.CreateRecipeResponse]
+	updateRecipe     *connect.Client[v1.UpdateRecipeRequest, v1.UpdateRecipeResponse]
+	getRecipe        *connect.Client[v1.GetRecipeRequest, v1.GetRecipeResponse]
+	listRecipe       *connect.Client[v1.ListRecipeRequest, v1.ListRecipeResponse]
+	deleteRecipe     *connect.Client[v1.DeleteRecipeRequest, v1.DeleteRecipeResponse]
 }
 
 // CreateMaterial calls wargapos.ingredient.v1.IngredientService.CreateMaterial.
@@ -188,9 +188,9 @@ func (c *ingredientServiceClient) DeleteMaterial(ctx context.Context, req *conne
 	return c.deleteMaterial.CallUnary(ctx, req)
 }
 
-// UpdateMaterialStock calls wargapos.ingredient.v1.IngredientService.UpdateMaterialStock.
-func (c *ingredientServiceClient) UpdateMaterialStock(ctx context.Context, req *connect.Request[v1.UpdateMaterialStockRequest]) (*connect.Response[v1.UpdateMaterialStockResponse], error) {
-	return c.updateMaterialStock.CallUnary(ctx, req)
+// AddMaterialStock calls wargapos.ingredient.v1.IngredientService.AddMaterialStock.
+func (c *ingredientServiceClient) AddMaterialStock(ctx context.Context, req *connect.Request[v1.AddMaterialStockRequest]) (*connect.Response[v1.AddMaterialStockResponse], error) {
+	return c.addMaterialStock.CallUnary(ctx, req)
 }
 
 // CreateRecipe calls wargapos.ingredient.v1.IngredientService.CreateRecipe.
@@ -225,7 +225,7 @@ type IngredientServiceHandler interface {
 	UpdateMaterial(context.Context, *connect.Request[v1.UpdateMaterialRequest]) (*connect.Response[v1.UpdateMaterialResponse], error)
 	ListMaterial(context.Context, *connect.Request[v1.ListMaterialRequest]) (*connect.Response[v1.ListMaterialResponse], error)
 	DeleteMaterial(context.Context, *connect.Request[v1.DeleteMaterialRequest]) (*connect.Response[v1.DeleteMaterialResponse], error)
-	UpdateMaterialStock(context.Context, *connect.Request[v1.UpdateMaterialStockRequest]) (*connect.Response[v1.UpdateMaterialStockResponse], error)
+	AddMaterialStock(context.Context, *connect.Request[v1.AddMaterialStockRequest]) (*connect.Response[v1.AddMaterialStockResponse], error)
 	// untuk recipe
 	CreateRecipe(context.Context, *connect.Request[v1.CreateRecipeRequest]) (*connect.Response[v1.CreateRecipeResponse], error)
 	UpdateRecipe(context.Context, *connect.Request[v1.UpdateRecipeRequest]) (*connect.Response[v1.UpdateRecipeResponse], error)
@@ -265,10 +265,10 @@ func NewIngredientServiceHandler(svc IngredientServiceHandler, opts ...connect.H
 		connect.WithSchema(ingredientServiceMethods.ByName("DeleteMaterial")),
 		connect.WithHandlerOptions(opts...),
 	)
-	ingredientServiceUpdateMaterialStockHandler := connect.NewUnaryHandler(
-		IngredientServiceUpdateMaterialStockProcedure,
-		svc.UpdateMaterialStock,
-		connect.WithSchema(ingredientServiceMethods.ByName("UpdateMaterialStock")),
+	ingredientServiceAddMaterialStockHandler := connect.NewUnaryHandler(
+		IngredientServiceAddMaterialStockProcedure,
+		svc.AddMaterialStock,
+		connect.WithSchema(ingredientServiceMethods.ByName("AddMaterialStock")),
 		connect.WithHandlerOptions(opts...),
 	)
 	ingredientServiceCreateRecipeHandler := connect.NewUnaryHandler(
@@ -311,8 +311,8 @@ func NewIngredientServiceHandler(svc IngredientServiceHandler, opts ...connect.H
 			ingredientServiceListMaterialHandler.ServeHTTP(w, r)
 		case IngredientServiceDeleteMaterialProcedure:
 			ingredientServiceDeleteMaterialHandler.ServeHTTP(w, r)
-		case IngredientServiceUpdateMaterialStockProcedure:
-			ingredientServiceUpdateMaterialStockHandler.ServeHTTP(w, r)
+		case IngredientServiceAddMaterialStockProcedure:
+			ingredientServiceAddMaterialStockHandler.ServeHTTP(w, r)
 		case IngredientServiceCreateRecipeProcedure:
 			ingredientServiceCreateRecipeHandler.ServeHTTP(w, r)
 		case IngredientServiceUpdateRecipeProcedure:
@@ -348,8 +348,8 @@ func (UnimplementedIngredientServiceHandler) DeleteMaterial(context.Context, *co
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.ingredient.v1.IngredientService.DeleteMaterial is not implemented"))
 }
 
-func (UnimplementedIngredientServiceHandler) UpdateMaterialStock(context.Context, *connect.Request[v1.UpdateMaterialStockRequest]) (*connect.Response[v1.UpdateMaterialStockResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.ingredient.v1.IngredientService.UpdateMaterialStock is not implemented"))
+func (UnimplementedIngredientServiceHandler) AddMaterialStock(context.Context, *connect.Request[v1.AddMaterialStockRequest]) (*connect.Response[v1.AddMaterialStockResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.ingredient.v1.IngredientService.AddMaterialStock is not implemented"))
 }
 
 func (UnimplementedIngredientServiceHandler) CreateRecipe(context.Context, *connect.Request[v1.CreateRecipeRequest]) (*connect.Response[v1.CreateRecipeResponse], error) {

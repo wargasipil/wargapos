@@ -54,7 +54,7 @@ func (s *StockService) AdjustStock(
 		newStock = p.StockQty
 
 		// Record the movement.
-		var createdBy *int64
+		var createdBy *uint32
 		if claims != nil {
 			uid := claims.UserID
 			createdBy = &uid

@@ -33,6 +33,7 @@ func (s *SettingsService) UpdateSettings(
 		"midtrans_server_key":  m.ServerKey,
 		"midtrans_client_key":  m.ClientKey,
 		"midtrans_environment": env,
+		"business_type":        int32(req.Msg.BusinessType),
 		"updated_at":           time.Now(),
 	}
 	if mp != nil {
@@ -66,6 +67,7 @@ func (s *SettingsService) UpdateSettings(
 			MidtransServerKey:   m.ServerKey,
 			MidtransClientKey:   m.ClientKey,
 			MidtransEnvironment: env,
+			BusinessType:        int32(req.Msg.BusinessType),
 		}
 		if mp != nil {
 			row.BankName          = mp.BankName

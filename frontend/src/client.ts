@@ -10,6 +10,7 @@ import { SettingsService }    from './gen/wargapos/settings/v1/settings_pb'
 import { StockService }      from './gen/wargapos/stock/v1/service_pb'
 import { DeviceService }        from './gen/wargapos/device/v1/device_pb'
 import { NotificationService } from './gen/wargapos/notification/v1/notification_pb'
+import { IngredientService } from './gen/wargapos/ingredient/v1/service_pb'
 import { useAuthStore } from './store/auth'
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL ?? ''
@@ -72,7 +73,8 @@ export const settingsClient    = createClient(SettingsService, transport)
 export const stockClient       = createClient(StockService, transport)
 export const deviceClient        = createClient(DeviceService, transport)
 export const notificationClient = createClient(NotificationService, transport)
-export const backupClient       = createClient(BackupService, transport)
+export const backupClient        = createClient(BackupService, transport)
+export const ingredientClient   = createClient(IngredientService, transport)
 
 export async function uploadFile(file: File, token: string): Promise<string> {
   const form = new FormData()

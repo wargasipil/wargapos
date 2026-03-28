@@ -477,7 +477,7 @@ func (x *GetCartResponse) GetCart() *Order {
 type CheckoutRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	SessionId         string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	CashierId         int64                  `protobuf:"varint,2,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
+	CashierId         uint32                 `protobuf:"varint,2,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
 	PaymentMethod     PaymentMethod          `protobuf:"varint,3,opt,name=payment_method,json=paymentMethod,proto3,enum=wargapos.transaction.v1.PaymentMethod" json:"payment_method,omitempty"`
 	CustomerName      string                 `protobuf:"bytes,4,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
 	PhoneNumber       string                 `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
@@ -524,7 +524,7 @@ func (x *CheckoutRequest) GetSessionId() string {
 	return ""
 }
 
-func (x *CheckoutRequest) GetCashierId() int64 {
+func (x *CheckoutRequest) GetCashierId() uint32 {
 	if x != nil {
 		return x.CashierId
 	}
@@ -1068,7 +1068,7 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tsessionId\x12\x1d\n" +
 	"\n" +
-	"cashier_id\x18\x02 \x01(\x03R\tcashierId\x12W\n" +
+	"cashier_id\x18\x02 \x01(\rR\tcashierId\x12W\n" +
 	"\x0epayment_method\x18\x03 \x01(\x0e2&.wargapos.transaction.v1.PaymentMethodB\b\xbaH\x05\x82\x01\x02 \x00R\rpaymentMethod\x12#\n" +
 	"\rcustomer_name\x18\x04 \x01(\tR\fcustomerName\x12!\n" +
 	"\fphone_number\x18\x05 \x01(\tR\vphoneNumber\x12A\n" +

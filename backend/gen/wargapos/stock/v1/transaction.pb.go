@@ -83,6 +83,10 @@ type Transaction struct {
 	Id              uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	TransactionType TransactionType        `protobuf:"varint,2,opt,name=transaction_type,json=transactionType,proto3,enum=wargapos.stock.v1.TransactionType" json:"transaction_type,omitempty"`
 	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Note            string                 `protobuf:"bytes,4,opt,name=note,proto3" json:"note,omitempty"`
+	Cancelled       bool                   `protobuf:"varint,5,opt,name=cancelled,proto3" json:"cancelled,omitempty"`
+	Items           []*TransactionItem     `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"` // populated in DetailTransaction only
+	Total           float64                `protobuf:"fixed64,7,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -138,11 +142,39 @@ func (x *Transaction) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Transaction) GetNote() string {
+	if x != nil {
+		return x.Note
+	}
+	return ""
+}
+
+func (x *Transaction) GetCancelled() bool {
+	if x != nil {
+		return x.Cancelled
+	}
+	return false
+}
+
+func (x *Transaction) GetItems() []*TransactionItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *Transaction) GetTotal() float64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
 type TransactionItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SkuId         uint32                 `protobuf:"varint,1,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
-	Quantity      int64                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	Price         uint64                 `protobuf:"varint,3,opt,name=price,proto3" json:"price,omitempty"`                 // required for STOCK_IN (sets PriceVersion)
+	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Total         float64                `protobuf:"fixed64,3,opt,name=total,proto3" json:"total,omitempty"`                // required for STOCK_IN (sets PriceVersion)
 	RackId        uint32                 `protobuf:"varint,4,opt,name=rack_id,json=rackId,proto3" json:"rack_id,omitempty"` // optional rack placement
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -185,16 +217,16 @@ func (x *TransactionItem) GetSkuId() uint32 {
 	return 0
 }
 
-func (x *TransactionItem) GetQuantity() int64 {
+func (x *TransactionItem) GetQuantity() int32 {
 	if x != nil {
 		return x.Quantity
 	}
 	return 0
 }
 
-func (x *TransactionItem) GetPrice() uint64 {
+func (x *TransactionItem) GetTotal() float64 {
 	if x != nil {
-		return x.Price
+		return x.Total
 	}
 	return 0
 }
@@ -398,20 +430,232 @@ func (*CancelTransactionResponse) Descriptor() ([]byte, []int) {
 	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{5}
 }
 
+type ListTransactionRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Page            int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize        int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	TransactionType TransactionType        `protobuf:"varint,3,opt,name=transaction_type,json=transactionType,proto3,enum=wargapos.stock.v1.TransactionType" json:"transaction_type,omitempty"` // 0 = all
+	Cancelled       bool                   `protobuf:"varint,4,opt,name=cancelled,proto3" json:"cancelled,omitempty"`                                                                           // filter cancelled only (ignored when false)
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ListTransactionRequest) Reset() {
+	*x = ListTransactionRequest{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTransactionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTransactionRequest) ProtoMessage() {}
+
+func (x *ListTransactionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTransactionRequest.ProtoReflect.Descriptor instead.
+func (*ListTransactionRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListTransactionRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListTransactionRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListTransactionRequest) GetTransactionType() TransactionType {
+	if x != nil {
+		return x.TransactionType
+	}
+	return TransactionType_TRANSACTION_TYPE_UNSPECIFIED
+}
+
+func (x *ListTransactionRequest) GetCancelled() bool {
+	if x != nil {
+		return x.Cancelled
+	}
+	return false
+}
+
+type ListTransactionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Transactions  []*Transaction         `protobuf:"bytes,1,rep,name=transactions,proto3" json:"transactions,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListTransactionResponse) Reset() {
+	*x = ListTransactionResponse{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTransactionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTransactionResponse) ProtoMessage() {}
+
+func (x *ListTransactionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTransactionResponse.ProtoReflect.Descriptor instead.
+func (*ListTransactionResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ListTransactionResponse) GetTransactions() []*Transaction {
+	if x != nil {
+		return x.Transactions
+	}
+	return nil
+}
+
+func (x *ListTransactionResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+type DetailTransactionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DetailTransactionRequest) Reset() {
+	*x = DetailTransactionRequest{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DetailTransactionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DetailTransactionRequest) ProtoMessage() {}
+
+func (x *DetailTransactionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DetailTransactionRequest.ProtoReflect.Descriptor instead.
+func (*DetailTransactionRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DetailTransactionRequest) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type DetailTransactionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Transaction   *Transaction           `protobuf:"bytes,1,opt,name=transaction,proto3" json:"transaction,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DetailTransactionResponse) Reset() {
+	*x = DetailTransactionResponse{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DetailTransactionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DetailTransactionResponse) ProtoMessage() {}
+
+func (x *DetailTransactionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DetailTransactionResponse.ProtoReflect.Descriptor instead.
+func (*DetailTransactionResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *DetailTransactionResponse) GetTransaction() *Transaction {
+	if x != nil {
+		return x.Transaction
+	}
+	return nil
+}
+
 var File_wargapos_stock_v1_transaction_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\n" +
-	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa7\x01\n" +
+	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa9\x02\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12M\n" +
 	"\x10transaction_type\x18\x02 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x129\n" +
 	"\n" +
-	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x85\x01\n" +
+	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x12\n" +
+	"\x04note\x18\x04 \x01(\tR\x04note\x12\x1c\n" +
+	"\tcancelled\x18\x05 \x01(\bR\tcancelled\x128\n" +
+	"\x05items\x18\x06 \x03(\v2\".wargapos.stock.v1.TransactionItemR\x05items\x12\x14\n" +
+	"\x05total\x18\a \x01(\x01R\x05total\"\x85\x01\n" +
 	"\x0fTransactionItem\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12#\n" +
-	"\bquantity\x18\x02 \x01(\x03B\a\xbaH\x04\"\x028\x00R\bquantity\x12\x14\n" +
-	"\x05price\x18\x03 \x01(\x04R\x05price\x12\x17\n" +
+	"\bquantity\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\bquantity\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x01R\x05total\x12\x17\n" +
 	"\arack_id\x18\x04 \x01(\rR\x06rackId\"\xcb\x01\n" +
 	"\x18CreateTransactionRequest\x12W\n" +
 	"\x10transaction_type\x18\x01 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x0ftransactionType\x12B\n" +
@@ -422,7 +666,19 @@ const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\x18CancelTransactionRequest\x12.\n" +
 	"\x0etransaction_id\x18\x01 \x01(\x04B\a\xbaH\x042\x02 \x00R\rtransactionId\x12\x16\n" +
 	"\x06reason\x18\x02 \x01(\tR\x06reason\"\x1b\n" +
-	"\x19CancelTransactionResponse*\xaf\x01\n" +
+	"\x19CancelTransactionResponse\"\xb6\x01\n" +
+	"\x16ListTransactionRequest\x12\x12\n" +
+	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12M\n" +
+	"\x10transaction_type\x18\x03 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x12\x1c\n" +
+	"\tcancelled\x18\x04 \x01(\bR\tcancelled\"s\n" +
+	"\x17ListTransactionResponse\x12B\n" +
+	"\ftransactions\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.TransactionR\ftransactions\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"3\n" +
+	"\x18DetailTransactionRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\x04B\a\xbaH\x042\x02 \x00R\x02id\"]\n" +
+	"\x19DetailTransactionResponse\x12@\n" +
+	"\vtransaction\x18\x01 \x01(\v2\x1e.wargapos.stock.v1.TransactionR\vtransaction*\xaf\x01\n" +
 	"\x0fTransactionType\x12 \n" +
 	"\x1cTRANSACTION_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19TRANSACTION_TYPE_STOCK_IN\x10\x01\x12\x1e\n" +
@@ -443,7 +699,7 @@ func file_wargapos_stock_v1_transaction_proto_rawDescGZIP() []byte {
 }
 
 var file_wargapos_stock_v1_transaction_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_wargapos_stock_v1_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_wargapos_stock_v1_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_wargapos_stock_v1_transaction_proto_goTypes = []any{
 	(TransactionType)(0),              // 0: wargapos.stock.v1.TransactionType
 	(*Transaction)(nil),               // 1: wargapos.stock.v1.Transaction
@@ -452,19 +708,27 @@ var file_wargapos_stock_v1_transaction_proto_goTypes = []any{
 	(*CreateTransactionResponse)(nil), // 4: wargapos.stock.v1.CreateTransactionResponse
 	(*CancelTransactionRequest)(nil),  // 5: wargapos.stock.v1.CancelTransactionRequest
 	(*CancelTransactionResponse)(nil), // 6: wargapos.stock.v1.CancelTransactionResponse
-	(*timestamppb.Timestamp)(nil),     // 7: google.protobuf.Timestamp
+	(*ListTransactionRequest)(nil),    // 7: wargapos.stock.v1.ListTransactionRequest
+	(*ListTransactionResponse)(nil),   // 8: wargapos.stock.v1.ListTransactionResponse
+	(*DetailTransactionRequest)(nil),  // 9: wargapos.stock.v1.DetailTransactionRequest
+	(*DetailTransactionResponse)(nil), // 10: wargapos.stock.v1.DetailTransactionResponse
+	(*timestamppb.Timestamp)(nil),     // 11: google.protobuf.Timestamp
 }
 var file_wargapos_stock_v1_transaction_proto_depIdxs = []int32{
-	0, // 0: wargapos.stock.v1.Transaction.transaction_type:type_name -> wargapos.stock.v1.TransactionType
-	7, // 1: wargapos.stock.v1.Transaction.created_at:type_name -> google.protobuf.Timestamp
-	0, // 2: wargapos.stock.v1.CreateTransactionRequest.transaction_type:type_name -> wargapos.stock.v1.TransactionType
-	2, // 3: wargapos.stock.v1.CreateTransactionRequest.items:type_name -> wargapos.stock.v1.TransactionItem
-	1, // 4: wargapos.stock.v1.CreateTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0,  // 0: wargapos.stock.v1.Transaction.transaction_type:type_name -> wargapos.stock.v1.TransactionType
+	11, // 1: wargapos.stock.v1.Transaction.created_at:type_name -> google.protobuf.Timestamp
+	2,  // 2: wargapos.stock.v1.Transaction.items:type_name -> wargapos.stock.v1.TransactionItem
+	0,  // 3: wargapos.stock.v1.CreateTransactionRequest.transaction_type:type_name -> wargapos.stock.v1.TransactionType
+	2,  // 4: wargapos.stock.v1.CreateTransactionRequest.items:type_name -> wargapos.stock.v1.TransactionItem
+	1,  // 5: wargapos.stock.v1.CreateTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
+	0,  // 6: wargapos.stock.v1.ListTransactionRequest.transaction_type:type_name -> wargapos.stock.v1.TransactionType
+	1,  // 7: wargapos.stock.v1.ListTransactionResponse.transactions:type_name -> wargapos.stock.v1.Transaction
+	1,  // 8: wargapos.stock.v1.DetailTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_transaction_proto_init() }
@@ -478,7 +742,7 @@ func file_wargapos_stock_v1_transaction_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_transaction_proto_rawDesc), len(file_wargapos_stock_v1_transaction_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   6,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

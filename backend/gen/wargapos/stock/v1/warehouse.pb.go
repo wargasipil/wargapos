@@ -475,6 +475,94 @@ func (x *ListWarehouseResponse) GetTotal() int32 {
 	return 0
 }
 
+type GetWarehouseRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ids           []uint32               `protobuf:"varint,1,rep,packed,name=ids,proto3" json:"ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWarehouseRequest) Reset() {
+	*x = GetWarehouseRequest{}
+	mi := &file_wargapos_stock_v1_warehouse_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWarehouseRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWarehouseRequest) ProtoMessage() {}
+
+func (x *GetWarehouseRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_warehouse_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWarehouseRequest.ProtoReflect.Descriptor instead.
+func (*GetWarehouseRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_warehouse_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetWarehouseRequest) GetIds() []uint32 {
+	if x != nil {
+		return x.Ids
+	}
+	return nil
+}
+
+type GetWarehouseResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Warehouses    map[uint32]*Warehouse  `protobuf:"bytes,1,rep,name=warehouses,proto3" json:"warehouses,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetWarehouseResponse) Reset() {
+	*x = GetWarehouseResponse{}
+	mi := &file_wargapos_stock_v1_warehouse_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetWarehouseResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWarehouseResponse) ProtoMessage() {}
+
+func (x *GetWarehouseResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_warehouse_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWarehouseResponse.ProtoReflect.Descriptor instead.
+func (*GetWarehouseResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_warehouse_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetWarehouseResponse) GetWarehouses() map[uint32]*Warehouse {
+	if x != nil {
+		return x.Warehouses
+	}
+	return nil
+}
+
 var File_wargapos_stock_v1_warehouse_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_warehouse_proto_rawDesc = "" +
@@ -510,7 +598,16 @@ const file_wargapos_stock_v1_warehouse_proto_rawDesc = "" +
 	"\n" +
 	"warehouses\x18\x01 \x03(\v2\x1c.wargapos.stock.v1.WarehouseR\n" +
 	"warehouses\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05totalB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
+	"\x05total\x18\x02 \x01(\x05R\x05total\"1\n" +
+	"\x13GetWarehouseRequest\x12\x1a\n" +
+	"\x03ids\x18\x01 \x03(\rB\b\xbaH\x05\x92\x01\x02\b\x01R\x03ids\"\xcc\x01\n" +
+	"\x14GetWarehouseResponse\x12W\n" +
+	"\n" +
+	"warehouses\x18\x01 \x03(\v27.wargapos.stock.v1.GetWarehouseResponse.WarehousesEntryR\n" +
+	"warehouses\x1a[\n" +
+	"\x0fWarehousesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\rR\x03key\x122\n" +
+	"\x05value\x18\x02 \x01(\v2\x1c.wargapos.stock.v1.WarehouseR\x05value:\x028\x01B0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
 
 var (
 	file_wargapos_stock_v1_warehouse_proto_rawDescOnce sync.Once
@@ -524,7 +621,7 @@ func file_wargapos_stock_v1_warehouse_proto_rawDescGZIP() []byte {
 	return file_wargapos_stock_v1_warehouse_proto_rawDescData
 }
 
-var file_wargapos_stock_v1_warehouse_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_wargapos_stock_v1_warehouse_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_wargapos_stock_v1_warehouse_proto_goTypes = []any{
 	(*Warehouse)(nil),               // 0: wargapos.stock.v1.Warehouse
 	(*CreateWarehouseRequest)(nil),  // 1: wargapos.stock.v1.CreateWarehouseRequest
@@ -535,19 +632,24 @@ var file_wargapos_stock_v1_warehouse_proto_goTypes = []any{
 	(*DeleteWarehouseResponse)(nil), // 6: wargapos.stock.v1.DeleteWarehouseResponse
 	(*ListWarehouseRequest)(nil),    // 7: wargapos.stock.v1.ListWarehouseRequest
 	(*ListWarehouseResponse)(nil),   // 8: wargapos.stock.v1.ListWarehouseResponse
-	(*timestamppb.Timestamp)(nil),   // 9: google.protobuf.Timestamp
+	(*GetWarehouseRequest)(nil),     // 9: wargapos.stock.v1.GetWarehouseRequest
+	(*GetWarehouseResponse)(nil),    // 10: wargapos.stock.v1.GetWarehouseResponse
+	nil,                             // 11: wargapos.stock.v1.GetWarehouseResponse.WarehousesEntry
+	(*timestamppb.Timestamp)(nil),   // 12: google.protobuf.Timestamp
 }
 var file_wargapos_stock_v1_warehouse_proto_depIdxs = []int32{
-	9, // 0: wargapos.stock.v1.Warehouse.created_at:type_name -> google.protobuf.Timestamp
-	9, // 1: wargapos.stock.v1.Warehouse.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 2: wargapos.stock.v1.CreateWarehouseResponse.warehouse:type_name -> wargapos.stock.v1.Warehouse
-	0, // 3: wargapos.stock.v1.UpdateWarehouseResponse.warehouse:type_name -> wargapos.stock.v1.Warehouse
-	0, // 4: wargapos.stock.v1.ListWarehouseResponse.warehouses:type_name -> wargapos.stock.v1.Warehouse
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	12, // 0: wargapos.stock.v1.Warehouse.created_at:type_name -> google.protobuf.Timestamp
+	12, // 1: wargapos.stock.v1.Warehouse.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 2: wargapos.stock.v1.CreateWarehouseResponse.warehouse:type_name -> wargapos.stock.v1.Warehouse
+	0,  // 3: wargapos.stock.v1.UpdateWarehouseResponse.warehouse:type_name -> wargapos.stock.v1.Warehouse
+	0,  // 4: wargapos.stock.v1.ListWarehouseResponse.warehouses:type_name -> wargapos.stock.v1.Warehouse
+	11, // 5: wargapos.stock.v1.GetWarehouseResponse.warehouses:type_name -> wargapos.stock.v1.GetWarehouseResponse.WarehousesEntry
+	0,  // 6: wargapos.stock.v1.GetWarehouseResponse.WarehousesEntry.value:type_name -> wargapos.stock.v1.Warehouse
+	7,  // [7:7] is the sub-list for method output_type
+	7,  // [7:7] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_warehouse_proto_init() }
@@ -561,7 +663,7 @@ func file_wargapos_stock_v1_warehouse_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_warehouse_proto_rawDesc), len(file_wargapos_stock_v1_warehouse_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

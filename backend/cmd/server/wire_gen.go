@@ -8,7 +8,7 @@ package main
 
 import (
 	"wargapos/backend/internal/config"
-	"wargapos/backend/internal/db"
+	"wargapos/backend/internal/database"
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
@@ -25,24 +25,25 @@ import (
 // Injectors from wire.go:
 
 func InitializeApp(cfg *config.Config) (App, error) {
-	gormDB := db.NewDB(cfg)
+	db := database.NewDB(cfg)
 	midtransConfig := config.ProvideMidtransConfig(cfg)
 	authConfig := config.ProvideAuthConfig(cfg)
-	authService := auth_service.NewAuthService(gormDB, authConfig)
-	userService := user_service.NewUserService(gormDB)
-	productService := product_service.NewProductService(gormDB)
-	transactionService := transaction_service.NewTransactionService(gormDB, midtransConfig)
-	tableService := table_service.NewTableService(gormDB)
-	settingsService := settings_service.NewSettingsService(gormDB, midtransConfig)
-	stockService := stock_service.NewStockService(gormDB)
-	stockServiceClient := NewStockServiceClient(cfg)
-	ingredientService := ingredient_service.NewIngredientService(gormDB, stockServiceClient)
+	authService := auth_service.NewAuthService(db, authConfig)
+	userService := user_service.NewUserService(db)
+	productService := product_service.NewProductService(db)
+	transactionService := transaction_service.NewTransactionService(db, midtransConfig)
+	tableService := table_service.NewTableService(db)
+	settingsService := settings_service.NewSettingsService(db, midtransConfig)
+	stockService := stock_service.NewStockService(db)
+	defaultServiceClientOption := NewDefaultServiceClientOption()
+	stockServiceClient := NewStockServiceClient(cfg, defaultServiceClientOption)
+	ingredientService := ingredient_service.NewIngredientService(db, stockServiceClient)
 	deviceService := device_service.NewDeviceService()
-	notificationService := notification_service.NewNotificationService(gormDB)
-	backupService := backup_service.NewBackupService(gormDB, cfg, authConfig)
-	webRunnerFunc := NewWebRunnerFunc(gormDB, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, ingredientService, deviceService, notificationService, backupService)
+	notificationService := notification_service.NewNotificationService(db)
+	backupService := backup_service.NewBackupService(db, cfg, authConfig)
+	webRunnerFunc := NewWebRunnerFunc(db, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, ingredientService, deviceService, notificationService, backupService)
 	runner := transaction_service.NewTransactionRunner()
-	partitionRunner := NewPartitionRunner(gormDB)
+	partitionRunner := NewPartitionRunner(db)
 	partitionRunnerFunc := NewPartitionRunnerFunc(partitionRunner)
 	app := NewApp(webRunnerFunc, runner, partitionRunnerFunc)
 	return app, nil

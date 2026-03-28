@@ -2,8 +2,8 @@
 // @generated from file wargapos/stock/v1/stock.proto (package wargapos.stock.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
+import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
+import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/stock.proto.
  */
 export const file_wargapos_stock_v1_stock: GenFile = /*@__PURE__*/
-  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi3QEKDFByaWNlVmVyc2lvbhIKCgJpZBgBIAEoBBIOCgZza3VfaWQYAiABKA0SFgoOdHJhbnNhY3Rpb25faWQYAyABKA0SLgoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDQoFcHJpY2UYBiABKAQSFgoOc3RvY2tfaW5pdGlhdGUYByABKA0SEgoKbGVmdF9zdG9jaxgIIAEoDSLHAQoFU3RvY2sSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAMgASgNEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDnN0b2NrX2luaXRpYXRlGAYgASgNEhIKCmxlZnRfc3RvY2sYByABKA0ixgEKCFN0b2NrTG9nEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIUCgx3YXJlaG91c2VfaWQYAyABKA0SFgoOdHJhbnNhY3Rpb25faWQYBCABKA0SFAoMY2hhbmdlX2J5X2lkGAUgASgNEhgKEHByaWNlX3ZlcnNpb25faWQYBiABKAQSEAoIc3RvY2tfaWQYByABKAQSLgoKY3JlYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiLgoTTGlzdFByaWNlU2t1UmVxdWVzdBIXCgZza3VfaWQYASABKA1CB7pIBCoCIAAiRwoUTGlzdFByaWNlU2t1UmVzcG9uc2USLwoGcHJpY2VzGAEgAygLMh8ud2FyZ2Fwb3Muc3RvY2sudjEuUHJpY2VWZXJzaW9uIi4KE0xpc3RTdG9ja1NrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAIkAKFExpc3RTdG9ja1NrdVJlc3BvbnNlEigKBnN0b2NrcxgBIAMoCzIYLndhcmdhcG9zLnN0b2NrLnYxLlN0b2NrQjBaLndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3N0b2NrL3YxO3N0b2NrdjFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi3QEKDFByaWNlVmVyc2lvbhIKCgJpZBgBIAEoBBIOCgZza3VfaWQYAiABKA0SFgoOdHJhbnNhY3Rpb25faWQYAyABKAQSLgoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDQoFcHJpY2UYBiABKAESFgoOc3RvY2tfaW5pdGlhdGUYByABKAUSEgoKbGVmdF9zdG9jaxgIIAEoBSLHAQoFU3RvY2sSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAMgASgEEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDnN0b2NrX2luaXRpYXRlGAYgASgFEhIKCmxlZnRfc3RvY2sYByABKAUi6gEKCFN0b2NrTG9nEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgEIAEoBBIQCghhY3Rvcl9pZBgFIAEoDRIYChBwcmljZV92ZXJzaW9uX2lkGAYgASgEEhAKCHN0b2NrX2lkGAcgASgEEi4KCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiwKCGxvZ190eXBlGAkgASgOMhoud2FyZ2Fwb3Muc3RvY2sudjEuTG9nVHlwZRIOCgZjaGFuZ2UYCiABKAUiLgoTTGlzdFByaWNlU2t1UmVxdWVzdBIXCgZza3VfaWQYASABKA1CB7pIBCoCIAAiRwoUTGlzdFByaWNlU2t1UmVzcG9uc2USLwoGcHJpY2VzGAEgAygLMh8ud2FyZ2Fwb3Muc3RvY2sudjEuUHJpY2VWZXJzaW9uIi4KE0xpc3RTdG9ja1NrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAIkAKFExpc3RTdG9ja1NrdVJlc3BvbnNlEigKBnN0b2NrcxgBIAMoCzIYLndhcmdhcG9zLnN0b2NrLnYxLlN0b2NrKpoBCgdMb2dUeXBlEhgKFExPR19UWVBFX1VOU1BFQ0lGSUVEEAASGQoVTE9HX1RZUEVfU1RPQ0tfQ0FOQ0VMEAESFQoRTE9HX1RZUEVfU1RPQ0tfSU4QAhIWChJMT0dfVFlQRV9TVE9DS19PVVQQAxIXChNMT0dfVFlQRV9BREpVU1RNRU5UEAQSEgoOTE9HX1RZUEVfT1JERVIQBUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message wargapos.stock.v1.PriceVersion
@@ -30,9 +30,9 @@ export type PriceVersion = Message<"wargapos.stock.v1.PriceVersion"> & {
   skuId: number;
 
   /**
-   * @generated from field: uint32 transaction_id = 3;
+   * @generated from field: uint64 transaction_id = 3;
    */
-  transactionId: number;
+  transactionId: bigint;
 
   /**
    * @generated from field: google.protobuf.Timestamp created_at = 4;
@@ -45,17 +45,17 @@ export type PriceVersion = Message<"wargapos.stock.v1.PriceVersion"> & {
   updatedAt?: Timestamp;
 
   /**
-   * @generated from field: uint64 price = 6;
+   * @generated from field: double price = 6;
    */
-  price: bigint;
+  price: number;
 
   /**
-   * @generated from field: uint32 stock_initiate = 7;
+   * @generated from field: int32 stock_initiate = 7;
    */
   stockInitiate: number;
 
   /**
-   * @generated from field: uint32 left_stock = 8;
+   * @generated from field: int32 left_stock = 8;
    */
   leftStock: number;
 };
@@ -82,9 +82,9 @@ export type Stock = Message<"wargapos.stock.v1.Stock"> & {
   skuId: number;
 
   /**
-   * @generated from field: uint32 transaction_id = 3;
+   * @generated from field: uint64 transaction_id = 3;
    */
-  transactionId: number;
+  transactionId: bigint;
 
   /**
    * @generated from field: google.protobuf.Timestamp created_at = 4;
@@ -97,12 +97,12 @@ export type Stock = Message<"wargapos.stock.v1.Stock"> & {
   updatedAt?: Timestamp;
 
   /**
-   * @generated from field: uint32 stock_initiate = 6;
+   * @generated from field: int32 stock_initiate = 6;
    */
   stockInitiate: number;
 
   /**
-   * @generated from field: uint32 left_stock = 7;
+   * @generated from field: int32 left_stock = 7;
    */
   leftStock: number;
 };
@@ -129,19 +129,14 @@ export type StockLog = Message<"wargapos.stock.v1.StockLog"> & {
   skuId: number;
 
   /**
-   * @generated from field: uint32 warehouse_id = 3;
+   * @generated from field: uint64 transaction_id = 4;
    */
-  warehouseId: number;
+  transactionId: bigint;
 
   /**
-   * @generated from field: uint32 transaction_id = 4;
+   * @generated from field: uint32 actor_id = 5;
    */
-  transactionId: number;
-
-  /**
-   * @generated from field: uint32 change_by_id = 5;
-   */
-  changeById: number;
+  actorId: number;
 
   /**
    * @generated from field: uint64 price_version_id = 6;
@@ -157,6 +152,16 @@ export type StockLog = Message<"wargapos.stock.v1.StockLog"> & {
    * @generated from field: google.protobuf.Timestamp created_at = 8;
    */
   createdAt?: Timestamp;
+
+  /**
+   * @generated from field: wargapos.stock.v1.LogType log_type = 9;
+   */
+  logType: LogType;
+
+  /**
+   * @generated from field: int32 change = 10;
+   */
+  change: number;
 };
 
 /**
@@ -233,4 +238,45 @@ export type ListStockSkuResponse = Message<"wargapos.stock.v1.ListStockSkuRespon
  */
 export const ListStockSkuResponseSchema: GenMessage<ListStockSkuResponse> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 6);
+
+/**
+ * @generated from enum wargapos.stock.v1.LogType
+ */
+export enum LogType {
+  /**
+   * @generated from enum value: LOG_TYPE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: LOG_TYPE_STOCK_CANCEL = 1;
+   */
+  STOCK_CANCEL = 1,
+
+  /**
+   * @generated from enum value: LOG_TYPE_STOCK_IN = 2;
+   */
+  STOCK_IN = 2,
+
+  /**
+   * @generated from enum value: LOG_TYPE_STOCK_OUT = 3;
+   */
+  STOCK_OUT = 3,
+
+  /**
+   * @generated from enum value: LOG_TYPE_ADJUSTMENT = 4;
+   */
+  ADJUSTMENT = 4,
+
+  /**
+   * @generated from enum value: LOG_TYPE_ORDER = 5;
+   */
+  ORDER = 5,
+}
+
+/**
+ * Describes the enum wargapos.stock.v1.LogType.
+ */
+export const LogTypeSchema: GenEnum<LogType> = /*@__PURE__*/
+  enumDesc(file_wargapos_stock_v1_stock, 0);
 

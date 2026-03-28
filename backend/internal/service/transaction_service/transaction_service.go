@@ -92,7 +92,7 @@ func toProtoOrder(o *models.Order) *transactionv1.Order {
 		}
 	}
 
-	var cashierID int64
+	var cashierID uint32
 	if o.CashierID != nil {
 		cashierID = *o.CashierID
 	}

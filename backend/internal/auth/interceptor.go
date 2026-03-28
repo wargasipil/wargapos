@@ -11,7 +11,7 @@ import (
 
 // Claims is the canonical JWT claims struct shared across all services.
 type Claims struct {
-	UserID int64  `json:"user_id"`
+	UserID uint32 `json:"user_id"`
 	Role   string `json:"role"`
 	jwt.RegisteredClaims
 }
@@ -61,7 +61,7 @@ var routeRoles = map[string][]string{
 	"/wargapos.ingredient.v1.IngredientService/CreateMaterial":      {"admin", "manager"},
 	"/wargapos.ingredient.v1.IngredientService/UpdateMaterial":      {"admin", "manager"},
 	"/wargapos.ingredient.v1.IngredientService/DeleteMaterial":      {"admin", "manager"},
-	"/wargapos.ingredient.v1.IngredientService/UpdateMaterialStock": {"admin", "manager"},
+	"/wargapos.ingredient.v1.IngredientService/AddMaterialStock": {"admin", "manager"},
 	"/wargapos.ingredient.v1.IngredientService/ListMaterial":        {"admin", "manager", "cashier"},
 	"/wargapos.ingredient.v1.IngredientService/CreateRecipe":        {"admin", "manager"},
 	"/wargapos.ingredient.v1.IngredientService/UpdateRecipe":        {"admin", "manager"},
@@ -72,6 +72,24 @@ var routeRoles = map[string][]string{
 	"/wargapos.stock.v1.StockService/UpdateWarehouse":               {"admin", "manager"},
 	"/wargapos.stock.v1.StockService/DeleteWarehouse":               {"admin", "manager"},
 	"/wargapos.stock.v1.StockService/ListWarehouse":                 {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/GetWarehouse":                  {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/CreateRack":                   {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/UpdateRack":                   {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/DeleteRack":                   {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/ListRack":                     {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/CreateSku":                   {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/GetSku":                      {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/UpdateSku":                   {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/DeleteSku":                   {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/ListSku":                     {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/CreateTransaction":           {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/CancelTransaction":           {"admin", "manager"},
+	"/wargapos.stock.v1.StockService/ListTransaction":             {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/DetailTransaction":           {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/ListSkuPlacement":            {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/ListPriceSku":                {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/ListStockSku":                {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/ListStockLogSku":             {"admin", "manager", "cashier"},
 	"/wargapos.table.v1.TableService/CreateTable":                   {"admin", "manager"},
 	"/wargapos.table.v1.TableService/UpdateTable":                   {"admin", "manager"},
 	"/wargapos.table.v1.TableService/DeleteTable":                   {"admin", "manager"},
@@ -98,18 +116,6 @@ func NewInterceptor(secret []byte) *Interceptor { return &Interceptor{secret: se
 
 func (i *Interceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 	return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
-		if req.Spec().IsClient {
-			token, ok := ctx.Value(authContextKey).(string)
-			if ok {
-				if token != "" {
-					req.Header().Set("Authorization", token)
-				}
-			}
-
-		} else {
-			token := req.Header().Get("Authorization")
-			ctx = context.WithValue(ctx, authContextKey, token)
-		}
 
 		procedure := req.Spec().Procedure
 

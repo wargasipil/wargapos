@@ -7,9 +7,11 @@
 package stockv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -20,19 +22,156 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ListStockLogSkuRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SkuId         uint32                 `protobuf:"varint,1,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
+	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`
+	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListStockLogSkuRequest) Reset() {
+	*x = ListStockLogSkuRequest{}
+	mi := &file_wargapos_stock_v1_log_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListStockLogSkuRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListStockLogSkuRequest) ProtoMessage() {}
+
+func (x *ListStockLogSkuRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_log_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListStockLogSkuRequest.ProtoReflect.Descriptor instead.
+func (*ListStockLogSkuRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_log_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ListStockLogSkuRequest) GetSkuId() uint32 {
+	if x != nil {
+		return x.SkuId
+	}
+	return 0
+}
+
+func (x *ListStockLogSkuRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListStockLogSkuRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+type ListStockLogSkuResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Logs          []*StockLog            `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListStockLogSkuResponse) Reset() {
+	*x = ListStockLogSkuResponse{}
+	mi := &file_wargapos_stock_v1_log_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListStockLogSkuResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListStockLogSkuResponse) ProtoMessage() {}
+
+func (x *ListStockLogSkuResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_log_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListStockLogSkuResponse.ProtoReflect.Descriptor instead.
+func (*ListStockLogSkuResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_log_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ListStockLogSkuResponse) GetLogs() []*StockLog {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
+func (x *ListStockLogSkuResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
 var File_wargapos_stock_v1_log_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_log_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/stock/v1/log.proto\x12\x11wargapos.stock.v1B0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
+	"\x1bwargapos/stock/v1/log.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1dwargapos/stock/v1/stock.proto\"i\n" +
+	"\x16ListStockLogSkuRequest\x12\x1e\n" +
+	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12\x12\n" +
+	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\"`\n" +
+	"\x17ListStockLogSkuResponse\x12/\n" +
+	"\x04logs\x18\x01 \x03(\v2\x1b.wargapos.stock.v1.StockLogR\x04logs\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05totalB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
 
-var file_wargapos_stock_v1_log_proto_goTypes = []any{}
+var (
+	file_wargapos_stock_v1_log_proto_rawDescOnce sync.Once
+	file_wargapos_stock_v1_log_proto_rawDescData []byte
+)
+
+func file_wargapos_stock_v1_log_proto_rawDescGZIP() []byte {
+	file_wargapos_stock_v1_log_proto_rawDescOnce.Do(func() {
+		file_wargapos_stock_v1_log_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_log_proto_rawDesc), len(file_wargapos_stock_v1_log_proto_rawDesc)))
+	})
+	return file_wargapos_stock_v1_log_proto_rawDescData
+}
+
+var file_wargapos_stock_v1_log_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_wargapos_stock_v1_log_proto_goTypes = []any{
+	(*ListStockLogSkuRequest)(nil),  // 0: wargapos.stock.v1.ListStockLogSkuRequest
+	(*ListStockLogSkuResponse)(nil), // 1: wargapos.stock.v1.ListStockLogSkuResponse
+	(*StockLog)(nil),                // 2: wargapos.stock.v1.StockLog
+}
 var file_wargapos_stock_v1_log_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: wargapos.stock.v1.ListStockLogSkuResponse.logs:type_name -> wargapos.stock.v1.StockLog
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_log_proto_init() }
@@ -40,18 +179,20 @@ func file_wargapos_stock_v1_log_proto_init() {
 	if File_wargapos_stock_v1_log_proto != nil {
 		return
 	}
+	file_wargapos_stock_v1_stock_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_log_proto_rawDesc), len(file_wargapos_stock_v1_log_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   0,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_wargapos_stock_v1_log_proto_goTypes,
 		DependencyIndexes: file_wargapos_stock_v1_log_proto_depIdxs,
+		MessageInfos:      file_wargapos_stock_v1_log_proto_msgTypes,
 	}.Build()
 	File_wargapos_stock_v1_log_proto = out.File
 	file_wargapos_stock_v1_log_proto_goTypes = nil

@@ -11,16 +11,16 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/user/v1/user.proto.
  */
 export const file_wargapos_user_v1_user: GenFile = /*@__PURE__*/
-  fileDesc("Cht3YXJnYXBvcy91c2VyL3YxL3VzZXIucHJvdG8SEHdhcmdhcG9zLnVzZXIudjEikgEKBFVzZXISCgoCaWQYASABKAMSEAoIdXNlcm5hbWUYAiABKAkSEQoJZnVsbF9uYW1lGAMgASgJEg0KBWVtYWlsGAQgASgJEiQKBHJvbGUYBSABKA4yFi53YXJnYXBvcy51c2VyLnYxLlJvbGUSEQoJaXNfYWN0aXZlGAYgASgIEhEKCWltYWdlX3VybBgHIAEoCSKvAQoRQ3JlYXRlVXNlclJlcXVlc3QSGwoIdXNlcm5hbWUYASABKAlCCbpIBnIEEAMYMhIaCglmdWxsX25hbWUYAiABKAlCB7pIBHICEAESFgoFZW1haWwYAyABKAlCB7pIBHICYAESGQoIcGFzc3dvcmQYBCABKAlCB7pIBHICEAYSLgoEcm9sZRgFIAEoDjIWLndhcmdhcG9zLnVzZXIudjEuUm9sZUIIukgFggECIAAiOgoSQ3JlYXRlVXNlclJlc3BvbnNlEiQKBHVzZXIYASABKAsyFi53YXJnYXBvcy51c2VyLnYxLlVzZXIiJQoOR2V0VXNlclJlcXVlc3QSEwoCaWQYASABKANCB7pIBCICIAAiNwoPR2V0VXNlclJlc3BvbnNlEiQKBHVzZXIYASABKAsyFi53YXJnYXBvcy51c2VyLnYxLlVzZXIigwEKEVVwZGF0ZVVzZXJSZXF1ZXN0EhMKAmlkGAEgASgDQge6SAQiAiAAEhEKCWZ1bGxfbmFtZRgCIAEoCRINCgVlbWFpbBgDIAEoCRIkCgRyb2xlGAQgASgOMhYud2FyZ2Fwb3MudXNlci52MS5Sb2xlEhEKCWlzX2FjdGl2ZRgFIAEoCCI6ChJVcGRhdGVVc2VyUmVzcG9uc2USJAoEdXNlchgBIAEoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlciIoChFEZWxldGVVc2VyUmVxdWVzdBITCgJpZBgBIAEoA0IHukgEIgIgACIUChJEZWxldGVVc2VyUmVzcG9uc2UiMwoQTGlzdFVzZXJzUmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBSJJChFMaXN0VXNlcnNSZXNwb25zZRIlCgV1c2VycxgBIAMoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlchINCgV0b3RhbBgCIAEoBSJZChVDaGFuZ2VQYXNzd29yZFJlcXVlc3QSIQoQY3VycmVudF9wYXNzd29yZBgBIAEoCUIHukgEcgIQARIdCgxuZXdfcGFzc3dvcmQYAiABKAlCB7pIBHICEAYiGAoWQ2hhbmdlUGFzc3dvcmRSZXNwb25zZSpQCgRSb2xlEhQKEFJPTEVfVU5TUEVDSUZJRUQQABIOCgpST0xFX0FETUlOEAESEAoMUk9MRV9DQVNISUVSEAISEAoMUk9MRV9NQU5BR0VSEAMyowQKC1VzZXJTZXJ2aWNlElcKCkNyZWF0ZVVzZXISIy53YXJnYXBvcy51c2VyLnYxLkNyZWF0ZVVzZXJSZXF1ZXN0GiQud2FyZ2Fwb3MudXNlci52MS5DcmVhdGVVc2VyUmVzcG9uc2USTgoHR2V0VXNlchIgLndhcmdhcG9zLnVzZXIudjEuR2V0VXNlclJlcXVlc3QaIS53YXJnYXBvcy51c2VyLnYxLkdldFVzZXJSZXNwb25zZRJXCgpVcGRhdGVVc2VyEiMud2FyZ2Fwb3MudXNlci52MS5VcGRhdGVVc2VyUmVxdWVzdBokLndhcmdhcG9zLnVzZXIudjEuVXBkYXRlVXNlclJlc3BvbnNlElcKCkRlbGV0ZVVzZXISIy53YXJnYXBvcy51c2VyLnYxLkRlbGV0ZVVzZXJSZXF1ZXN0GiQud2FyZ2Fwb3MudXNlci52MS5EZWxldGVVc2VyUmVzcG9uc2USVAoJTGlzdFVzZXJzEiIud2FyZ2Fwb3MudXNlci52MS5MaXN0VXNlcnNSZXF1ZXN0GiMud2FyZ2Fwb3MudXNlci52MS5MaXN0VXNlcnNSZXNwb25zZRJjCg5DaGFuZ2VQYXNzd29yZBInLndhcmdhcG9zLnVzZXIudjEuQ2hhbmdlUGFzc3dvcmRSZXF1ZXN0Gigud2FyZ2Fwb3MudXNlci52MS5DaGFuZ2VQYXNzd29yZFJlc3BvbnNlQi5aLHdhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3VzZXIvdjE7dXNlcnYxYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("Cht3YXJnYXBvcy91c2VyL3YxL3VzZXIucHJvdG8SEHdhcmdhcG9zLnVzZXIudjEikgEKBFVzZXISCgoCaWQYASABKA0SEAoIdXNlcm5hbWUYAiABKAkSEQoJZnVsbF9uYW1lGAMgASgJEg0KBWVtYWlsGAQgASgJEiQKBHJvbGUYBSABKA4yFi53YXJnYXBvcy51c2VyLnYxLlJvbGUSEQoJaXNfYWN0aXZlGAYgASgIEhEKCWltYWdlX3VybBgHIAEoCSKvAQoRQ3JlYXRlVXNlclJlcXVlc3QSGwoIdXNlcm5hbWUYASABKAlCCbpIBnIEEAMYMhIaCglmdWxsX25hbWUYAiABKAlCB7pIBHICEAESFgoFZW1haWwYAyABKAlCB7pIBHICYAESGQoIcGFzc3dvcmQYBCABKAlCB7pIBHICEAYSLgoEcm9sZRgFIAEoDjIWLndhcmdhcG9zLnVzZXIudjEuUm9sZUIIukgFggECIAAiOgoSQ3JlYXRlVXNlclJlc3BvbnNlEiQKBHVzZXIYASABKAsyFi53YXJnYXBvcy51c2VyLnYxLlVzZXIiJwoOR2V0VXNlclJlcXVlc3QSFQoDaWRzGAEgAygNQgi6SAWSAQIIASKUAQoPR2V0VXNlclJlc3BvbnNlEjsKBXVzZXJzGAEgAygLMiwud2FyZ2Fwb3MudXNlci52MS5HZXRVc2VyUmVzcG9uc2UuVXNlcnNFbnRyeRpECgpVc2Vyc0VudHJ5EgsKA2tleRgBIAEoDRIlCgV2YWx1ZRgCIAEoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlcjoCOAEigwEKEVVwZGF0ZVVzZXJSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAEhEKCWZ1bGxfbmFtZRgCIAEoCRINCgVlbWFpbBgDIAEoCRIkCgRyb2xlGAQgASgOMhYud2FyZ2Fwb3MudXNlci52MS5Sb2xlEhEKCWlzX2FjdGl2ZRgFIAEoCCI6ChJVcGRhdGVVc2VyUmVzcG9uc2USJAoEdXNlchgBIAEoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlciIoChFEZWxldGVVc2VyUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgACIUChJEZWxldGVVc2VyUmVzcG9uc2UiMwoQTGlzdFVzZXJzUmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBSJJChFMaXN0VXNlcnNSZXNwb25zZRIlCgV1c2VycxgBIAMoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlchINCgV0b3RhbBgCIAEoBSJZChVDaGFuZ2VQYXNzd29yZFJlcXVlc3QSIQoQY3VycmVudF9wYXNzd29yZBgBIAEoCUIHukgEcgIQARIdCgxuZXdfcGFzc3dvcmQYAiABKAlCB7pIBHICEAYiGAoWQ2hhbmdlUGFzc3dvcmRSZXNwb25zZSpQCgRSb2xlEhQKEFJPTEVfVU5TUEVDSUZJRUQQABIOCgpST0xFX0FETUlOEAESEAoMUk9MRV9DQVNISUVSEAISEAoMUk9MRV9NQU5BR0VSEAMyowQKC1VzZXJTZXJ2aWNlElcKCkNyZWF0ZVVzZXISIy53YXJnYXBvcy51c2VyLnYxLkNyZWF0ZVVzZXJSZXF1ZXN0GiQud2FyZ2Fwb3MudXNlci52MS5DcmVhdGVVc2VyUmVzcG9uc2USTgoHR2V0VXNlchIgLndhcmdhcG9zLnVzZXIudjEuR2V0VXNlclJlcXVlc3QaIS53YXJnYXBvcy51c2VyLnYxLkdldFVzZXJSZXNwb25zZRJXCgpVcGRhdGVVc2VyEiMud2FyZ2Fwb3MudXNlci52MS5VcGRhdGVVc2VyUmVxdWVzdBokLndhcmdhcG9zLnVzZXIudjEuVXBkYXRlVXNlclJlc3BvbnNlElcKCkRlbGV0ZVVzZXISIy53YXJnYXBvcy51c2VyLnYxLkRlbGV0ZVVzZXJSZXF1ZXN0GiQud2FyZ2Fwb3MudXNlci52MS5EZWxldGVVc2VyUmVzcG9uc2USVAoJTGlzdFVzZXJzEiIud2FyZ2Fwb3MudXNlci52MS5MaXN0VXNlcnNSZXF1ZXN0GiMud2FyZ2Fwb3MudXNlci52MS5MaXN0VXNlcnNSZXNwb25zZRJjCg5DaGFuZ2VQYXNzd29yZBInLndhcmdhcG9zLnVzZXIudjEuQ2hhbmdlUGFzc3dvcmRSZXF1ZXN0Gigud2FyZ2Fwb3MudXNlci52MS5DaGFuZ2VQYXNzd29yZFJlc3BvbnNlQi5aLHdhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3VzZXIvdjE7dXNlcnYxYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message wargapos.user.v1.User
  */
 export type User = Message<"wargapos.user.v1.User"> & {
   /**
-   * @generated from field: int64 id = 1;
+   * @generated from field: uint32 id = 1;
    */
-  id: bigint;
+  id: number;
 
   /**
    * @generated from field: string username = 2;
@@ -119,9 +119,9 @@ export const CreateUserResponseSchema: GenMessage<CreateUserResponse> = /*@__PUR
  */
 export type GetUserRequest = Message<"wargapos.user.v1.GetUserRequest"> & {
   /**
-   * @generated from field: int64 id = 1;
+   * @generated from field: repeated uint32 ids = 1;
    */
-  id: bigint;
+  ids: number[];
 };
 
 /**
@@ -136,9 +136,9 @@ export const GetUserRequestSchema: GenMessage<GetUserRequest> = /*@__PURE__*/
  */
 export type GetUserResponse = Message<"wargapos.user.v1.GetUserResponse"> & {
   /**
-   * @generated from field: wargapos.user.v1.User user = 1;
+   * @generated from field: map<uint32, wargapos.user.v1.User> users = 1;
    */
-  user?: User;
+  users: { [key: number]: User };
 };
 
 /**
@@ -153,9 +153,9 @@ export const GetUserResponseSchema: GenMessage<GetUserResponse> = /*@__PURE__*/
  */
 export type UpdateUserRequest = Message<"wargapos.user.v1.UpdateUserRequest"> & {
   /**
-   * @generated from field: int64 id = 1;
+   * @generated from field: uint32 id = 1;
    */
-  id: bigint;
+  id: number;
 
   /**
    * @generated from field: string full_name = 2;
@@ -207,9 +207,9 @@ export const UpdateUserResponseSchema: GenMessage<UpdateUserResponse> = /*@__PUR
  */
 export type DeleteUserRequest = Message<"wargapos.user.v1.DeleteUserRequest"> & {
   /**
-   * @generated from field: int64 id = 1;
+   * @generated from field: uint32 id = 1;
    */
-  id: bigint;
+  id: number;
 };
 
 /**

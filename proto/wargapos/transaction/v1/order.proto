@@ -52,7 +52,7 @@ message OrderItem {
 
 message Order {
   int64 id = 1;
-  int64 cashier_id = 2;
+  uint32 cashier_id = 2;
   repeated OrderItem items = 3;
   int64 total_cents = 4;
   OrderStatus status = 5;
@@ -97,7 +97,7 @@ message MarkOrderDeliveredResponse {
 }
 
 message ListOrdersFilter {
-  int64 cashier_id = 3;
+  uint32 cashier_id = 3;
   OrderStatus status_filter = 4;
   int64 table_id = 5;
   OrderFrom order_from_filter = 6;

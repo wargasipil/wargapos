@@ -81,7 +81,7 @@ type Material struct {
 	Code          string                 `protobuf:"bytes,5,opt,name=code,proto3" json:"code,omitempty"`
 	Name          string                 `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
 	QtyType       QtyType                `protobuf:"varint,7,opt,name=qty_type,json=qtyType,proto3,enum=wargapos.ingredient.v1.QtyType" json:"qty_type,omitempty"`
-	Qty           int64                  `protobuf:"varint,8,opt,name=qty,proto3" json:"qty,omitempty"`
+	Qty           int32                  `protobuf:"varint,8,opt,name=qty,proto3" json:"qty,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -165,38 +165,38 @@ func (x *Material) GetQtyType() QtyType {
 	return QtyType_QTY_TYPE_UNSPECIFIED
 }
 
-func (x *Material) GetQty() int64 {
+func (x *Material) GetQty() int32 {
 	if x != nil {
 		return x.Qty
 	}
 	return 0
 }
 
-type UpdateMaterialStockRequest struct {
+type AddMaterialStockRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	WarehouseId   uint32                 `protobuf:"varint,2,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	Qty           int64                  `protobuf:"varint,4,opt,name=qty,proto3" json:"qty,omitempty"`
+	Qty           int32                  `protobuf:"varint,4,opt,name=qty,proto3" json:"qty,omitempty"`
 	Price         uint64                 `protobuf:"varint,5,opt,name=price,proto3" json:"price,omitempty"`
 	Note          string                 `protobuf:"bytes,6,opt,name=note,proto3" json:"note,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateMaterialStockRequest) Reset() {
-	*x = UpdateMaterialStockRequest{}
+func (x *AddMaterialStockRequest) Reset() {
+	*x = AddMaterialStockRequest{}
 	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateMaterialStockRequest) String() string {
+func (x *AddMaterialStockRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateMaterialStockRequest) ProtoMessage() {}
+func (*AddMaterialStockRequest) ProtoMessage() {}
 
-func (x *UpdateMaterialStockRequest) ProtoReflect() protoreflect.Message {
+func (x *AddMaterialStockRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -208,66 +208,66 @@ func (x *UpdateMaterialStockRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateMaterialStockRequest.ProtoReflect.Descriptor instead.
-func (*UpdateMaterialStockRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use AddMaterialStockRequest.ProtoReflect.Descriptor instead.
+func (*AddMaterialStockRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *UpdateMaterialStockRequest) GetId() uint32 {
+func (x *AddMaterialStockRequest) GetId() uint32 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *UpdateMaterialStockRequest) GetWarehouseId() uint32 {
+func (x *AddMaterialStockRequest) GetWarehouseId() uint32 {
 	if x != nil {
 		return x.WarehouseId
 	}
 	return 0
 }
 
-func (x *UpdateMaterialStockRequest) GetQty() int64 {
+func (x *AddMaterialStockRequest) GetQty() int32 {
 	if x != nil {
 		return x.Qty
 	}
 	return 0
 }
 
-func (x *UpdateMaterialStockRequest) GetPrice() uint64 {
+func (x *AddMaterialStockRequest) GetPrice() uint64 {
 	if x != nil {
 		return x.Price
 	}
 	return 0
 }
 
-func (x *UpdateMaterialStockRequest) GetNote() string {
+func (x *AddMaterialStockRequest) GetNote() string {
 	if x != nil {
 		return x.Note
 	}
 	return ""
 }
 
-type UpdateMaterialStockResponse struct {
+type AddMaterialStockResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateMaterialStockResponse) Reset() {
-	*x = UpdateMaterialStockResponse{}
+func (x *AddMaterialStockResponse) Reset() {
+	*x = AddMaterialStockResponse{}
 	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateMaterialStockResponse) String() string {
+func (x *AddMaterialStockResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateMaterialStockResponse) ProtoMessage() {}
+func (*AddMaterialStockResponse) ProtoMessage() {}
 
-func (x *UpdateMaterialStockResponse) ProtoReflect() protoreflect.Message {
+func (x *AddMaterialStockResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -279,8 +279,8 @@ func (x *UpdateMaterialStockResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateMaterialStockResponse.ProtoReflect.Descriptor instead.
-func (*UpdateMaterialStockResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use AddMaterialStockResponse.ProtoReflect.Descriptor instead.
+func (*AddMaterialStockResponse) Descriptor() ([]byte, []int) {
 	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{2}
 }
 
@@ -289,7 +289,6 @@ type CreateMaterialRequest struct {
 	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	QtyType       QtyType                `protobuf:"varint,3,opt,name=qty_type,json=qtyType,proto3,enum=wargapos.ingredient.v1.QtyType" json:"qty_type,omitempty"`
-	Qty           int64                  `protobuf:"varint,4,opt,name=qty,proto3" json:"qty,omitempty"`
 	BranchId      uint32                 `protobuf:"varint,5,opt,name=branch_id,json=branchId,proto3" json:"branch_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -344,13 +343,6 @@ func (x *CreateMaterialRequest) GetQtyType() QtyType {
 		return x.QtyType
 	}
 	return QtyType_QTY_TYPE_UNSPECIFIED
-}
-
-func (x *CreateMaterialRequest) GetQty() int64 {
-	if x != nil {
-		return x.Qty
-	}
-	return 0
 }
 
 func (x *CreateMaterialRequest) GetBranchId() uint32 {
@@ -410,7 +402,7 @@ type UpdateMaterialRequest struct {
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	QtyType       QtyType                `protobuf:"varint,4,opt,name=qty_type,json=qtyType,proto3,enum=wargapos.ingredient.v1.QtyType" json:"qty_type,omitempty"`
-	Qty           int64                  `protobuf:"varint,5,opt,name=qty,proto3" json:"qty,omitempty"`
+	Qty           int32                  `protobuf:"varint,5,opt,name=qty,proto3" json:"qty,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -473,7 +465,7 @@ func (x *UpdateMaterialRequest) GetQtyType() QtyType {
 	return QtyType_QTY_TYPE_UNSPECIFIED
 }
 
-func (x *UpdateMaterialRequest) GetQty() int64 {
+func (x *UpdateMaterialRequest) GetQty() int32 {
 	if x != nil {
 		return x.Qty
 	}
@@ -720,7 +712,7 @@ func (*DeleteMaterialResponse) Descriptor() ([]byte, []int) {
 type RecipeItemInput struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MaterialId    uint32                 `protobuf:"varint,1,opt,name=material_id,json=materialId,proto3" json:"material_id,omitempty"`
-	Qty           int64                  `protobuf:"varint,2,opt,name=qty,proto3" json:"qty,omitempty"`
+	Qty           int32                  `protobuf:"varint,2,opt,name=qty,proto3" json:"qty,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -762,7 +754,7 @@ func (x *RecipeItemInput) GetMaterialId() uint32 {
 	return 0
 }
 
-func (x *RecipeItemInput) GetQty() int64 {
+func (x *RecipeItemInput) GetQty() int32 {
 	if x != nil {
 		return x.Qty
 	}
@@ -775,7 +767,7 @@ type RecipeItem struct {
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	MaterialId    uint32                 `protobuf:"varint,2,opt,name=material_id,json=materialId,proto3" json:"material_id,omitempty"`
 	Material      *Material              `protobuf:"bytes,3,opt,name=material,proto3" json:"material,omitempty"`
-	Qty           int64                  `protobuf:"varint,4,opt,name=qty,proto3" json:"qty,omitempty"`
+	Qty           int32                  `protobuf:"varint,4,opt,name=qty,proto3" json:"qty,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -831,7 +823,7 @@ func (x *RecipeItem) GetMaterial() *Material {
 	return nil
 }
 
-func (x *RecipeItem) GetQty() int64 {
+func (x *RecipeItem) GetQty() int32 {
 	if x != nil {
 		return x.Qty
 	}
@@ -1425,21 +1417,20 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\x04code\x18\x05 \x01(\tR\x04code\x12\x12\n" +
 	"\x04name\x18\x06 \x01(\tR\x04name\x12:\n" +
 	"\bqty_type\x18\a \x01(\x0e2\x1f.wargapos.ingredient.v1.QtyTypeR\aqtyType\x12\x10\n" +
-	"\x03qty\x18\b \x01(\x03R\x03qty\"\xb9\x01\n" +
-	"\x1aUpdateMaterialStockRequest\x12\x17\n" +
+	"\x03qty\x18\b \x01(\x05R\x03qty\"\xb6\x01\n" +
+	"\x17AddMaterialStockRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12*\n" +
 	"\fwarehouse_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\x12\x19\n" +
-	"\x03qty\x18\x04 \x01(\x03B\a\xbaH\x04\"\x028\x00R\x03qty\x12\x1d\n" +
+	"\x03qty\x18\x04 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\x03qty\x12\x1d\n" +
 	"\x05price\x18\x05 \x01(\x04B\a\xbaH\x042\x02 \x00R\x05price\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x04note\"\x1d\n" +
-	"\x1bUpdateMaterialStockResponse\"\xcd\x01\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x04note\"\x1a\n" +
+	"\x18AddMaterialStockResponse\"\xbb\x01\n" +
 	"\x15CreateMaterialRequest\x12\x1d\n" +
 	"\x04code\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18dR\x04code\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12F\n" +
 	"\bqty_type\x18\x03 \x01(\x0e2\x1f.wargapos.ingredient.v1.QtyTypeB\n" +
-	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\aqtyType\x12\x10\n" +
-	"\x03qty\x18\x04 \x01(\x03R\x03qty\x12\x1b\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\aqtyType\x12\x1b\n" +
 	"\tbranch_id\x18\x05 \x01(\rR\bbranchId\"V\n" +
 	"\x16CreateMaterialResponse\x12<\n" +
 	"\bmaterial\x18\x01 \x01(\v2 .wargapos.ingredient.v1.MaterialR\bmaterial\"\xc9\x01\n" +
@@ -1450,7 +1441,7 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12F\n" +
 	"\bqty_type\x18\x04 \x01(\x0e2\x1f.wargapos.ingredient.v1.QtyTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\aqtyType\x12\x10\n" +
-	"\x03qty\x18\x05 \x01(\x03R\x03qty\"V\n" +
+	"\x03qty\x18\x05 \x01(\x05R\x03qty\"V\n" +
 	"\x16UpdateMaterialResponse\x12<\n" +
 	"\bmaterial\x18\x01 \x01(\v2 .wargapos.ingredient.v1.MaterialR\bmaterial\"^\n" +
 	"\x13ListMaterialRequest\x12\x12\n" +
@@ -1466,14 +1457,14 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\x0fRecipeItemInput\x12(\n" +
 	"\vmaterial_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\n" +
 	"materialId\x12\x19\n" +
-	"\x03qty\x18\x02 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x03qty\"\x8d\x01\n" +
+	"\x03qty\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\x03qty\"\x8d\x01\n" +
 	"\n" +
 	"RecipeItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1f\n" +
 	"\vmaterial_id\x18\x02 \x01(\rR\n" +
 	"materialId\x12<\n" +
 	"\bmaterial\x18\x03 \x01(\v2 .wargapos.ingredient.v1.MaterialR\bmaterial\x12\x10\n" +
-	"\x03qty\x18\x04 \x01(\x03R\x03qty\"\xfb\x01\n" +
+	"\x03qty\x18\x04 \x01(\x05R\x03qty\"\xfb\x01\n" +
 	"\x06Recipe\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1d\n" +
 	"\n" +
@@ -1517,13 +1508,13 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\aQtyType\x12\x18\n" +
 	"\x14QTY_TYPE_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eQTY_TYPE_PIECE\x10\x01\x12\x11\n" +
-	"\rQTY_TYPE_GRAM\x10\x022\xd9\b\n" +
+	"\rQTY_TYPE_GRAM\x10\x022\xd0\b\n" +
 	"\x11IngredientService\x12o\n" +
 	"\x0eCreateMaterial\x12-.wargapos.ingredient.v1.CreateMaterialRequest\x1a..wargapos.ingredient.v1.CreateMaterialResponse\x12o\n" +
 	"\x0eUpdateMaterial\x12-.wargapos.ingredient.v1.UpdateMaterialRequest\x1a..wargapos.ingredient.v1.UpdateMaterialResponse\x12i\n" +
 	"\fListMaterial\x12+.wargapos.ingredient.v1.ListMaterialRequest\x1a,.wargapos.ingredient.v1.ListMaterialResponse\x12o\n" +
-	"\x0eDeleteMaterial\x12-.wargapos.ingredient.v1.DeleteMaterialRequest\x1a..wargapos.ingredient.v1.DeleteMaterialResponse\x12~\n" +
-	"\x13UpdateMaterialStock\x122.wargapos.ingredient.v1.UpdateMaterialStockRequest\x1a3.wargapos.ingredient.v1.UpdateMaterialStockResponse\x12i\n" +
+	"\x0eDeleteMaterial\x12-.wargapos.ingredient.v1.DeleteMaterialRequest\x1a..wargapos.ingredient.v1.DeleteMaterialResponse\x12u\n" +
+	"\x10AddMaterialStock\x12/.wargapos.ingredient.v1.AddMaterialStockRequest\x1a0.wargapos.ingredient.v1.AddMaterialStockResponse\x12i\n" +
 	"\fCreateRecipe\x12+.wargapos.ingredient.v1.CreateRecipeRequest\x1a,.wargapos.ingredient.v1.CreateRecipeResponse\x12i\n" +
 	"\fUpdateRecipe\x12+.wargapos.ingredient.v1.UpdateRecipeRequest\x1a,.wargapos.ingredient.v1.UpdateRecipeResponse\x12`\n" +
 	"\tGetRecipe\x12(.wargapos.ingredient.v1.GetRecipeRequest\x1a).wargapos.ingredient.v1.GetRecipeResponse\x12c\n" +
@@ -1546,32 +1537,32 @@ func file_wargapos_ingredient_v1_service_proto_rawDescGZIP() []byte {
 var file_wargapos_ingredient_v1_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wargapos_ingredient_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_wargapos_ingredient_v1_service_proto_goTypes = []any{
-	(QtyType)(0),                        // 0: wargapos.ingredient.v1.QtyType
-	(*Material)(nil),                    // 1: wargapos.ingredient.v1.Material
-	(*UpdateMaterialStockRequest)(nil),  // 2: wargapos.ingredient.v1.UpdateMaterialStockRequest
-	(*UpdateMaterialStockResponse)(nil), // 3: wargapos.ingredient.v1.UpdateMaterialStockResponse
-	(*CreateMaterialRequest)(nil),       // 4: wargapos.ingredient.v1.CreateMaterialRequest
-	(*CreateMaterialResponse)(nil),      // 5: wargapos.ingredient.v1.CreateMaterialResponse
-	(*UpdateMaterialRequest)(nil),       // 6: wargapos.ingredient.v1.UpdateMaterialRequest
-	(*UpdateMaterialResponse)(nil),      // 7: wargapos.ingredient.v1.UpdateMaterialResponse
-	(*ListMaterialRequest)(nil),         // 8: wargapos.ingredient.v1.ListMaterialRequest
-	(*ListMaterialResponse)(nil),        // 9: wargapos.ingredient.v1.ListMaterialResponse
-	(*DeleteMaterialRequest)(nil),       // 10: wargapos.ingredient.v1.DeleteMaterialRequest
-	(*DeleteMaterialResponse)(nil),      // 11: wargapos.ingredient.v1.DeleteMaterialResponse
-	(*RecipeItemInput)(nil),             // 12: wargapos.ingredient.v1.RecipeItemInput
-	(*RecipeItem)(nil),                  // 13: wargapos.ingredient.v1.RecipeItem
-	(*Recipe)(nil),                      // 14: wargapos.ingredient.v1.Recipe
-	(*CreateRecipeRequest)(nil),         // 15: wargapos.ingredient.v1.CreateRecipeRequest
-	(*CreateRecipeResponse)(nil),        // 16: wargapos.ingredient.v1.CreateRecipeResponse
-	(*UpdateRecipeRequest)(nil),         // 17: wargapos.ingredient.v1.UpdateRecipeRequest
-	(*UpdateRecipeResponse)(nil),        // 18: wargapos.ingredient.v1.UpdateRecipeResponse
-	(*GetRecipeRequest)(nil),            // 19: wargapos.ingredient.v1.GetRecipeRequest
-	(*GetRecipeResponse)(nil),           // 20: wargapos.ingredient.v1.GetRecipeResponse
-	(*ListRecipeRequest)(nil),           // 21: wargapos.ingredient.v1.ListRecipeRequest
-	(*ListRecipeResponse)(nil),          // 22: wargapos.ingredient.v1.ListRecipeResponse
-	(*DeleteRecipeRequest)(nil),         // 23: wargapos.ingredient.v1.DeleteRecipeRequest
-	(*DeleteRecipeResponse)(nil),        // 24: wargapos.ingredient.v1.DeleteRecipeResponse
-	(*timestamppb.Timestamp)(nil),       // 25: google.protobuf.Timestamp
+	(QtyType)(0),                     // 0: wargapos.ingredient.v1.QtyType
+	(*Material)(nil),                 // 1: wargapos.ingredient.v1.Material
+	(*AddMaterialStockRequest)(nil),  // 2: wargapos.ingredient.v1.AddMaterialStockRequest
+	(*AddMaterialStockResponse)(nil), // 3: wargapos.ingredient.v1.AddMaterialStockResponse
+	(*CreateMaterialRequest)(nil),    // 4: wargapos.ingredient.v1.CreateMaterialRequest
+	(*CreateMaterialResponse)(nil),   // 5: wargapos.ingredient.v1.CreateMaterialResponse
+	(*UpdateMaterialRequest)(nil),    // 6: wargapos.ingredient.v1.UpdateMaterialRequest
+	(*UpdateMaterialResponse)(nil),   // 7: wargapos.ingredient.v1.UpdateMaterialResponse
+	(*ListMaterialRequest)(nil),      // 8: wargapos.ingredient.v1.ListMaterialRequest
+	(*ListMaterialResponse)(nil),     // 9: wargapos.ingredient.v1.ListMaterialResponse
+	(*DeleteMaterialRequest)(nil),    // 10: wargapos.ingredient.v1.DeleteMaterialRequest
+	(*DeleteMaterialResponse)(nil),   // 11: wargapos.ingredient.v1.DeleteMaterialResponse
+	(*RecipeItemInput)(nil),          // 12: wargapos.ingredient.v1.RecipeItemInput
+	(*RecipeItem)(nil),               // 13: wargapos.ingredient.v1.RecipeItem
+	(*Recipe)(nil),                   // 14: wargapos.ingredient.v1.Recipe
+	(*CreateRecipeRequest)(nil),      // 15: wargapos.ingredient.v1.CreateRecipeRequest
+	(*CreateRecipeResponse)(nil),     // 16: wargapos.ingredient.v1.CreateRecipeResponse
+	(*UpdateRecipeRequest)(nil),      // 17: wargapos.ingredient.v1.UpdateRecipeRequest
+	(*UpdateRecipeResponse)(nil),     // 18: wargapos.ingredient.v1.UpdateRecipeResponse
+	(*GetRecipeRequest)(nil),         // 19: wargapos.ingredient.v1.GetRecipeRequest
+	(*GetRecipeResponse)(nil),        // 20: wargapos.ingredient.v1.GetRecipeResponse
+	(*ListRecipeRequest)(nil),        // 21: wargapos.ingredient.v1.ListRecipeRequest
+	(*ListRecipeResponse)(nil),       // 22: wargapos.ingredient.v1.ListRecipeResponse
+	(*DeleteRecipeRequest)(nil),      // 23: wargapos.ingredient.v1.DeleteRecipeRequest
+	(*DeleteRecipeResponse)(nil),     // 24: wargapos.ingredient.v1.DeleteRecipeResponse
+	(*timestamppb.Timestamp)(nil),    // 25: google.protobuf.Timestamp
 }
 var file_wargapos_ingredient_v1_service_proto_depIdxs = []int32{
 	25, // 0: wargapos.ingredient.v1.Material.created_at:type_name -> google.protobuf.Timestamp
@@ -1596,7 +1587,7 @@ var file_wargapos_ingredient_v1_service_proto_depIdxs = []int32{
 	6,  // 19: wargapos.ingredient.v1.IngredientService.UpdateMaterial:input_type -> wargapos.ingredient.v1.UpdateMaterialRequest
 	8,  // 20: wargapos.ingredient.v1.IngredientService.ListMaterial:input_type -> wargapos.ingredient.v1.ListMaterialRequest
 	10, // 21: wargapos.ingredient.v1.IngredientService.DeleteMaterial:input_type -> wargapos.ingredient.v1.DeleteMaterialRequest
-	2,  // 22: wargapos.ingredient.v1.IngredientService.UpdateMaterialStock:input_type -> wargapos.ingredient.v1.UpdateMaterialStockRequest
+	2,  // 22: wargapos.ingredient.v1.IngredientService.AddMaterialStock:input_type -> wargapos.ingredient.v1.AddMaterialStockRequest
 	15, // 23: wargapos.ingredient.v1.IngredientService.CreateRecipe:input_type -> wargapos.ingredient.v1.CreateRecipeRequest
 	17, // 24: wargapos.ingredient.v1.IngredientService.UpdateRecipe:input_type -> wargapos.ingredient.v1.UpdateRecipeRequest
 	19, // 25: wargapos.ingredient.v1.IngredientService.GetRecipe:input_type -> wargapos.ingredient.v1.GetRecipeRequest
@@ -1606,7 +1597,7 @@ var file_wargapos_ingredient_v1_service_proto_depIdxs = []int32{
 	7,  // 29: wargapos.ingredient.v1.IngredientService.UpdateMaterial:output_type -> wargapos.ingredient.v1.UpdateMaterialResponse
 	9,  // 30: wargapos.ingredient.v1.IngredientService.ListMaterial:output_type -> wargapos.ingredient.v1.ListMaterialResponse
 	11, // 31: wargapos.ingredient.v1.IngredientService.DeleteMaterial:output_type -> wargapos.ingredient.v1.DeleteMaterialResponse
-	3,  // 32: wargapos.ingredient.v1.IngredientService.UpdateMaterialStock:output_type -> wargapos.ingredient.v1.UpdateMaterialStockResponse
+	3,  // 32: wargapos.ingredient.v1.IngredientService.AddMaterialStock:output_type -> wargapos.ingredient.v1.AddMaterialStockResponse
 	16, // 33: wargapos.ingredient.v1.IngredientService.CreateRecipe:output_type -> wargapos.ingredient.v1.CreateRecipeResponse
 	18, // 34: wargapos.ingredient.v1.IngredientService.UpdateRecipe:output_type -> wargapos.ingredient.v1.UpdateRecipeResponse
 	20, // 35: wargapos.ingredient.v1.IngredientService.GetRecipe:output_type -> wargapos.ingredient.v1.GetRecipeResponse

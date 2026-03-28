@@ -103,7 +103,7 @@ export function PosPage() {
       await syncCartToServer(sessionId, tableId, items.map((i) => ({ productId: i.productId, qty: i.qty, notes: i.notes })))
       const res = await transactionClient.checkout({
         sessionId,
-        cashierId: userId ? BigInt(userId) : 0n,
+        cashierId: userId ? Number(userId) : 0,
         paymentMethod,
         orderFrom: OrderFrom.POS,
         customerName: customerName.trim(),

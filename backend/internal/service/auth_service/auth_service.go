@@ -17,7 +17,7 @@ import (
 var ErrInvalidCredentials = errors.New("invalid credentials")
 
 type jwtClaims struct {
-	UserID int64  `json:"user_id"`
+	UserID uint32 `json:"user_id"`
 	Role   string `json:"role"`
 	jwt.RegisteredClaims
 }
@@ -44,12 +44,12 @@ func NewAuthService(db *gorm.DB, authCfg config.AuthConfig) *AuthService {
 
 var _ authv1connect.AuthServiceHandler = (*AuthService)(nil)
 
-func (s *AuthService) signToken(userID int64, role string, exp time.Time) (string, error) {
+func (s *AuthService) signToken(userID uint32, role string, exp time.Time) (string, error) {
 	claims := jwtClaims{
 		UserID: userID,
 		Role:   role,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Subject:   strconv.FormatInt(userID, 10),
+			Subject:   strconv.FormatUint(uint64(userID), 10),
 			ExpiresAt: jwt.NewNumericDate(exp),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},

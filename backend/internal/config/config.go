@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -117,6 +118,23 @@ func Load() *Config {
 		log.Fatalf("config: failed to parse config: %v", err)
 	}
 	applyEnv(&cfg)
+	return &cfg
+}
+
+func LoadForUnitTest() *Config {
+	_, thisFile, _, _ := runtime.Caller(0)
+	path := filepath.Join(filepath.Dir(thisFile), "../../config_test.yaml")
+	data, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		log.Fatalf("config: %s not found", path)
+	}
+	if err != nil {
+		log.Fatalf("config: failed to read %s: %v", path, err)
+	}
+	cfg := defaults
+	if err := yaml.Unmarshal(data, &cfg); err != nil {
+		log.Fatalf("config: failed to parse %s: %v", path, err)
+	}
 	return &cfg
 }
 

@@ -9,10 +9,10 @@ import (
 	"wargapos/backend/gen/wargapos/auth/v1/authv1connect"
 	backupv1connect "wargapos/backend/gen/wargapos/backup/v1/backupv1connect"
 	devicev1connect "wargapos/backend/gen/wargapos/device/v1/devicev1connect"
+	ingredientv1connect "wargapos/backend/gen/wargapos/ingredient/v1/ingredientv1connect"
 	notificationv1connect "wargapos/backend/gen/wargapos/notification/v1/notificationv1connect"
 	"wargapos/backend/gen/wargapos/product/v1/productv1connect"
 	settingsv1connect "wargapos/backend/gen/wargapos/settings/v1/settingsv1connect"
-	ingredientv1connect "wargapos/backend/gen/wargapos/ingredient/v1/ingredientv1connect"
 	stockv1connect "wargapos/backend/gen/wargapos/stock/v1/stockv1connect"
 	"wargapos/backend/gen/wargapos/table/v1/tablev1connect"
 	"wargapos/backend/gen/wargapos/transaction/v1/transactionv1connect"
@@ -22,10 +22,10 @@ import (
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
+	"wargapos/backend/internal/service/ingredient_service"
 	"wargapos/backend/internal/service/notification_service"
 	"wargapos/backend/internal/service/product_service"
 	"wargapos/backend/internal/service/settings_service"
-	"wargapos/backend/internal/service/ingredient_service"
 	"wargapos/backend/internal/service/stock_service"
 	"wargapos/backend/internal/service/table_service"
 	"wargapos/backend/internal/service/transaction_service"
@@ -60,7 +60,11 @@ func NewWebRunnerFunc(
 	backupSvc *backup_service.BackupService,
 ) WebRunnerFunc {
 
-	interceptor := connect.WithInterceptors(validate.NewInterceptor(), auth.NewInterceptor([]byte(authCfg.JWTSecret)))
+	interceptor := connect.WithInterceptors(
+		auth.NewAuthTokenInterceptor(),
+		validate.NewInterceptor(),
+		auth.NewInterceptor([]byte(authCfg.JWTSecret)),
+	)
 
 	mux := http.NewServeMux()
 	mux.Handle(authv1connect.NewAuthServiceHandler(authSvc, interceptor))

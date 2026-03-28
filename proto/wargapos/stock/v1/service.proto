@@ -3,6 +3,7 @@ syntax = "proto3";
 package wargapos.stock.v1;
 
 import "buf/validate/validate.proto";
+import "wargapos/stock/v1/log.proto";
 import "wargapos/stock/v1/rack.proto";
 import "wargapos/stock/v1/sku.proto";
 import "wargapos/stock/v1/stock.proto";
@@ -58,6 +59,7 @@ service StockService {
   rpc UpdateWarehouse(UpdateWarehouseRequest) returns (UpdateWarehouseResponse);
   rpc DeleteWarehouse(DeleteWarehouseRequest) returns (DeleteWarehouseResponse);
   rpc ListWarehouse(ListWarehouseRequest) returns (ListWarehouseResponse);
+  rpc GetWarehouse(GetWarehouseRequest) returns (GetWarehouseResponse);
 
   // bagian rack
   rpc CreateRack(CreateRackRequest) returns (CreateRackResponse);
@@ -74,9 +76,12 @@ service StockService {
   rpc ListSkuPlacement(ListSkuPlacementRequest) returns (ListSkuPlacementResponse);
   rpc ListPriceSku(ListPriceSkuRequest) returns (ListPriceSkuResponse);
   rpc ListStockSku(ListStockSkuRequest) returns (ListStockSkuResponse);
+  rpc ListStockLogSku(ListStockLogSkuRequest) returns (ListStockLogSkuResponse);
 
   // bagian transaction
   rpc CreateTransaction(CreateTransactionRequest) returns (CreateTransactionResponse);
+  rpc ListTransaction(ListTransactionRequest) returns (ListTransactionResponse);
+  rpc DetailTransaction(DetailTransactionRequest) returns (DetailTransactionResponse);
   rpc CancelTransaction(CancelTransactionRequest) returns (CancelTransactionResponse);
 
   rpc AdjustStock(AdjustStockRequest) returns (AdjustStockResponse);

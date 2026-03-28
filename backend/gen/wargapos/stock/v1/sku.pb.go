@@ -75,7 +75,9 @@ const (
 	PricingType_PRICING_TYPE_UNSPECIFIED PricingType = 0
 	PricingType_PRICING_TYPE_LIFO        PricingType = 1
 	PricingType_PRICING_TYPE_FIFO        PricingType = 2
-	PricingType_PRICING_TYPE_AVERAGE     PricingType = 3
+	PricingType_PRICING_TYPE_MAX_PRICE   PricingType = 4
+	PricingType_PRICING_TYPE_MIN_PRICE   PricingType = 5
+	PricingType_PRICING_TYPE_FIX_PRICE   PricingType = 6
 )
 
 // Enum value maps for PricingType.
@@ -84,13 +86,17 @@ var (
 		0: "PRICING_TYPE_UNSPECIFIED",
 		1: "PRICING_TYPE_LIFO",
 		2: "PRICING_TYPE_FIFO",
-		3: "PRICING_TYPE_AVERAGE",
+		4: "PRICING_TYPE_MAX_PRICE",
+		5: "PRICING_TYPE_MIN_PRICE",
+		6: "PRICING_TYPE_FIX_PRICE",
 	}
 	PricingType_value = map[string]int32{
 		"PRICING_TYPE_UNSPECIFIED": 0,
 		"PRICING_TYPE_LIFO":        1,
 		"PRICING_TYPE_FIFO":        2,
-		"PRICING_TYPE_AVERAGE":     3,
+		"PRICING_TYPE_MAX_PRICE":   4,
+		"PRICING_TYPE_MIN_PRICE":   5,
+		"PRICING_TYPE_FIX_PRICE":   6,
 	}
 )
 
@@ -190,18 +196,22 @@ func (x *RackPlacement) GetLeftStock() int32 {
 }
 
 type Sku struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
-	ProductId     uint32                 `protobuf:"varint,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
-	BranchId      uint32                 `protobuf:"varint,4,opt,name=branch_id,json=branchId,proto3" json:"branch_id,omitempty"`
-	WarehouseId   uint32                 `protobuf:"varint,5,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Deleted       bool                   `protobuf:"varint,8,opt,name=deleted,proto3" json:"deleted,omitempty"`
-	AveragePrice  int64                  `protobuf:"varint,9,opt,name=average_price,json=averagePrice,proto3" json:"average_price,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Code           string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	ProductId      uint32                 `protobuf:"varint,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	BranchId       uint32                 `protobuf:"varint,4,opt,name=branch_id,json=branchId,proto3" json:"branch_id,omitempty"`
+	WarehouseId    uint32                 `protobuf:"varint,5,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	PricingType    PricingType            `protobuf:"varint,6,opt,name=pricing_type,json=pricingType,proto3,enum=wargapos.stock.v1.PricingType" json:"pricing_type,omitempty"`
+	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Deleted        bool                   `protobuf:"varint,9,opt,name=deleted,proto3" json:"deleted,omitempty"`
+	LeftStock      int32                  `protobuf:"varint,10,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
+	LastStockIn    *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=last_stock_in,json=lastStockIn,proto3" json:"last_stock_in,omitempty"`
+	LastAdjustment *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=last_adjustment,json=lastAdjustment,proto3" json:"last_adjustment,omitempty"`
+	LastStockOut   *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=last_stock_out,json=lastStockOut,proto3" json:"last_stock_out,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Sku) Reset() {
@@ -269,6 +279,13 @@ func (x *Sku) GetWarehouseId() uint32 {
 	return 0
 }
 
+func (x *Sku) GetPricingType() PricingType {
+	if x != nil {
+		return x.PricingType
+	}
+	return PricingType_PRICING_TYPE_UNSPECIFIED
+}
+
 func (x *Sku) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
@@ -290,11 +307,32 @@ func (x *Sku) GetDeleted() bool {
 	return false
 }
 
-func (x *Sku) GetAveragePrice() int64 {
+func (x *Sku) GetLeftStock() int32 {
 	if x != nil {
-		return x.AveragePrice
+		return x.LeftStock
 	}
 	return 0
+}
+
+func (x *Sku) GetLastStockIn() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastStockIn
+	}
+	return nil
+}
+
+func (x *Sku) GetLastAdjustment() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastAdjustment
+	}
+	return nil
+}
+
+func (x *Sku) GetLastStockOut() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastStockOut
+	}
+	return nil
 }
 
 type ListSkuPlacementRequest struct {
@@ -501,7 +539,6 @@ type UpdateSkuRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
-	WarehouseId   uint32                 `protobuf:"varint,3,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -548,13 +585,6 @@ func (x *UpdateSkuRequest) GetCode() string {
 		return x.Code
 	}
 	return ""
-}
-
-func (x *UpdateSkuRequest) GetWarehouseId() uint32 {
-	if x != nil {
-		return x.WarehouseId
-	}
-	return 0
 }
 
 type UpdateSkuResponse struct {
@@ -945,40 +975,45 @@ const file_wargapos_stock_v1_sku_proto_rawDesc = "" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12+\n" +
 	"\x04rack\x18\x03 \x01(\v2\x17.wargapos.stock.v1.RackR\x04rack\x12\x1d\n" +
 	"\n" +
-	"left_stock\x18\x04 \x01(\x05R\tleftStock\"\xbd\x02\n" +
+	"left_stock\x18\x04 \x01(\x05R\tleftStock\"\xc1\x04\n" +
 	"\x03Sku\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x03 \x01(\rR\tproductId\x12\x1b\n" +
 	"\tbranch_id\x18\x04 \x01(\rR\bbranchId\x12!\n" +
-	"\fwarehouse_id\x18\x05 \x01(\rR\vwarehouseId\x129\n" +
+	"\fwarehouse_id\x18\x05 \x01(\rR\vwarehouseId\x12A\n" +
+	"\fpricing_type\x18\x06 \x01(\x0e2\x1e.wargapos.stock.v1.PricingTypeR\vpricingType\x129\n" +
 	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x18\n" +
-	"\adeleted\x18\b \x01(\bR\adeleted\x12#\n" +
-	"\raverage_price\x18\t \x01(\x03R\faveragePrice\"9\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x18\n" +
+	"\adeleted\x18\t \x01(\bR\adeleted\x12\x1d\n" +
+	"\n" +
+	"left_stock\x18\n" +
+	" \x01(\x05R\tleftStock\x12>\n" +
+	"\rlast_stock_in\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\vlastStockIn\x12C\n" +
+	"\x0flast_adjustment\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\x0elastAdjustment\x12@\n" +
+	"\x0elast_stock_out\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\flastStockOut\"9\n" +
 	"\x17ListSkuPlacementRequest\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"\\\n" +
 	"\x18ListSkuPlacementResponse\x12@\n" +
 	"\n" +
 	"placements\x18\x01 \x03(\v2 .wargapos.stock.v1.RackPlacementR\n" +
-	"placements\"\xac\x01\n" +
+	"placements\"\xa3\x01\n" +
 	"\x10CreateSkuRequest\x12\x1e\n" +
 	"\x04code\x18\x01 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x04code\x12&\n" +
 	"\n" +
-	"product_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\tproductId\x12$\n" +
-	"\tbranch_id\x18\x03 \x01(\rB\a\xbaH\x04*\x02 \x00R\bbranchId\x12*\n" +
+	"product_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\tproductId\x12\x1b\n" +
+	"\tbranch_id\x18\x03 \x01(\rR\bbranchId\x12*\n" +
 	"\fwarehouse_id\x18\x04 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\"=\n" +
 	"\x11CreateSkuResponse\x12(\n" +
-	"\x03sku\x18\x01 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku\"w\n" +
+	"\x03sku\x18\x01 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku\"K\n" +
 	"\x10UpdateSkuRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12\x1e\n" +
 	"\x04code\x18\x02 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x04code\x12*\n" +
-	"\fwarehouse_id\x18\x03 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\"=\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x04code\"=\n" +
 	"\x11UpdateSkuResponse\x12(\n" +
 	"\x03sku\x18\x01 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku\"+\n" +
 	"\x10DeleteSkuRequest\x12\x17\n" +
@@ -1003,12 +1038,14 @@ const file_wargapos_stock_v1_sku_proto_rawDesc = "" +
 	"\x03sku\x18\x02 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku*=\n" +
 	"\bSkuError\x12\x19\n" +
 	"\x15SKU_ERROR_UNSPECIFIED\x10\x00\x12\x16\n" +
-	"\x12SKU_ERROR_NOTFOUND\x10\x01*s\n" +
+	"\x12SKU_ERROR_NOTFOUND\x10\x01*\xad\x01\n" +
 	"\vPricingType\x12\x1c\n" +
 	"\x18PRICING_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11PRICING_TYPE_LIFO\x10\x01\x12\x15\n" +
-	"\x11PRICING_TYPE_FIFO\x10\x02\x12\x18\n" +
-	"\x14PRICING_TYPE_AVERAGE\x10\x03B0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
+	"\x11PRICING_TYPE_FIFO\x10\x02\x12\x1a\n" +
+	"\x16PRICING_TYPE_MAX_PRICE\x10\x04\x12\x1a\n" +
+	"\x16PRICING_TYPE_MIN_PRICE\x10\x05\x12\x1a\n" +
+	"\x16PRICING_TYPE_FIX_PRICE\x10\x06B0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
 
 var (
 	file_wargapos_stock_v1_sku_proto_rawDescOnce sync.Once
@@ -1046,19 +1083,23 @@ var file_wargapos_stock_v1_sku_proto_goTypes = []any{
 }
 var file_wargapos_stock_v1_sku_proto_depIdxs = []int32{
 	16, // 0: wargapos.stock.v1.RackPlacement.rack:type_name -> wargapos.stock.v1.Rack
-	17, // 1: wargapos.stock.v1.Sku.created_at:type_name -> google.protobuf.Timestamp
-	17, // 2: wargapos.stock.v1.Sku.updated_at:type_name -> google.protobuf.Timestamp
-	2,  // 3: wargapos.stock.v1.ListSkuPlacementResponse.placements:type_name -> wargapos.stock.v1.RackPlacement
-	3,  // 4: wargapos.stock.v1.CreateSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
-	3,  // 5: wargapos.stock.v1.UpdateSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
-	3,  // 6: wargapos.stock.v1.ListSkuResponse.skus:type_name -> wargapos.stock.v1.Sku
-	0,  // 7: wargapos.stock.v1.GetSkuResponse.err_code:type_name -> wargapos.stock.v1.SkuError
-	3,  // 8: wargapos.stock.v1.GetSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	1,  // 1: wargapos.stock.v1.Sku.pricing_type:type_name -> wargapos.stock.v1.PricingType
+	17, // 2: wargapos.stock.v1.Sku.created_at:type_name -> google.protobuf.Timestamp
+	17, // 3: wargapos.stock.v1.Sku.updated_at:type_name -> google.protobuf.Timestamp
+	17, // 4: wargapos.stock.v1.Sku.last_stock_in:type_name -> google.protobuf.Timestamp
+	17, // 5: wargapos.stock.v1.Sku.last_adjustment:type_name -> google.protobuf.Timestamp
+	17, // 6: wargapos.stock.v1.Sku.last_stock_out:type_name -> google.protobuf.Timestamp
+	2,  // 7: wargapos.stock.v1.ListSkuPlacementResponse.placements:type_name -> wargapos.stock.v1.RackPlacement
+	3,  // 8: wargapos.stock.v1.CreateSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
+	3,  // 9: wargapos.stock.v1.UpdateSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
+	3,  // 10: wargapos.stock.v1.ListSkuResponse.skus:type_name -> wargapos.stock.v1.Sku
+	0,  // 11: wargapos.stock.v1.GetSkuResponse.err_code:type_name -> wargapos.stock.v1.SkuError
+	3,  // 12: wargapos.stock.v1.GetSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_sku_proto_init() }

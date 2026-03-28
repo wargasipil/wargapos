@@ -8,11 +8,15 @@ import (
 	"connectrpc.com/connect"
 )
 
-func NewStockServiceClient(cfg *config.Config) stockv1connect.StockServiceClient {
+func NewStockServiceClient(
+	cfg *config.Config,
+	defaultOpts DefaultServiceClientOption,
+) stockv1connect.StockServiceClient {
 
 	return stockv1connect.NewStockServiceClient(
 		http.DefaultClient,
 		cfg.Server.GetBase(),
 		connect.WithGRPC(),
+		defaultOpts,
 	)
 }

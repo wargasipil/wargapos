@@ -23,16 +23,74 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type LogType int32
+
+const (
+	LogType_LOG_TYPE_UNSPECIFIED  LogType = 0
+	LogType_LOG_TYPE_STOCK_CANCEL LogType = 1
+	LogType_LOG_TYPE_STOCK_IN     LogType = 2
+	LogType_LOG_TYPE_STOCK_OUT    LogType = 3
+	LogType_LOG_TYPE_ADJUSTMENT   LogType = 4
+	LogType_LOG_TYPE_ORDER        LogType = 5
+)
+
+// Enum value maps for LogType.
+var (
+	LogType_name = map[int32]string{
+		0: "LOG_TYPE_UNSPECIFIED",
+		1: "LOG_TYPE_STOCK_CANCEL",
+		2: "LOG_TYPE_STOCK_IN",
+		3: "LOG_TYPE_STOCK_OUT",
+		4: "LOG_TYPE_ADJUSTMENT",
+		5: "LOG_TYPE_ORDER",
+	}
+	LogType_value = map[string]int32{
+		"LOG_TYPE_UNSPECIFIED":  0,
+		"LOG_TYPE_STOCK_CANCEL": 1,
+		"LOG_TYPE_STOCK_IN":     2,
+		"LOG_TYPE_STOCK_OUT":    3,
+		"LOG_TYPE_ADJUSTMENT":   4,
+		"LOG_TYPE_ORDER":        5,
+	}
+)
+
+func (x LogType) Enum() *LogType {
+	p := new(LogType)
+	*p = x
+	return p
+}
+
+func (x LogType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (LogType) Descriptor() protoreflect.EnumDescriptor {
+	return file_wargapos_stock_v1_stock_proto_enumTypes[0].Descriptor()
+}
+
+func (LogType) Type() protoreflect.EnumType {
+	return &file_wargapos_stock_v1_stock_proto_enumTypes[0]
+}
+
+func (x LogType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use LogType.Descriptor instead.
+func (LogType) EnumDescriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_stock_proto_rawDescGZIP(), []int{0}
+}
+
 type PriceVersion struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
-	TransactionId uint32                 `protobuf:"varint,3,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	TransactionId uint64                 `protobuf:"varint,3,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Price         uint64                 `protobuf:"varint,6,opt,name=price,proto3" json:"price,omitempty"`
-	StockInitiate uint32                 `protobuf:"varint,7,opt,name=stock_initiate,json=stockInitiate,proto3" json:"stock_initiate,omitempty"`
-	LeftStock     uint32                 `protobuf:"varint,8,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
+	Price         float64                `protobuf:"fixed64,6,opt,name=price,proto3" json:"price,omitempty"`
+	StockInitiate int32                  `protobuf:"varint,7,opt,name=stock_initiate,json=stockInitiate,proto3" json:"stock_initiate,omitempty"`
+	LeftStock     int32                  `protobuf:"varint,8,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -81,7 +139,7 @@ func (x *PriceVersion) GetSkuId() uint32 {
 	return 0
 }
 
-func (x *PriceVersion) GetTransactionId() uint32 {
+func (x *PriceVersion) GetTransactionId() uint64 {
 	if x != nil {
 		return x.TransactionId
 	}
@@ -102,21 +160,21 @@ func (x *PriceVersion) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *PriceVersion) GetPrice() uint64 {
+func (x *PriceVersion) GetPrice() float64 {
 	if x != nil {
 		return x.Price
 	}
 	return 0
 }
 
-func (x *PriceVersion) GetStockInitiate() uint32 {
+func (x *PriceVersion) GetStockInitiate() int32 {
 	if x != nil {
 		return x.StockInitiate
 	}
 	return 0
 }
 
-func (x *PriceVersion) GetLeftStock() uint32 {
+func (x *PriceVersion) GetLeftStock() int32 {
 	if x != nil {
 		return x.LeftStock
 	}
@@ -127,11 +185,11 @@ type Stock struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
-	TransactionId uint32                 `protobuf:"varint,3,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	TransactionId uint64                 `protobuf:"varint,3,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	StockInitiate uint32                 `protobuf:"varint,6,opt,name=stock_initiate,json=stockInitiate,proto3" json:"stock_initiate,omitempty"`
-	LeftStock     uint32                 `protobuf:"varint,7,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
+	StockInitiate int32                  `protobuf:"varint,6,opt,name=stock_initiate,json=stockInitiate,proto3" json:"stock_initiate,omitempty"`
+	LeftStock     int32                  `protobuf:"varint,7,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -180,7 +238,7 @@ func (x *Stock) GetSkuId() uint32 {
 	return 0
 }
 
-func (x *Stock) GetTransactionId() uint32 {
+func (x *Stock) GetTransactionId() uint64 {
 	if x != nil {
 		return x.TransactionId
 	}
@@ -201,14 +259,14 @@ func (x *Stock) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *Stock) GetStockInitiate() uint32 {
+func (x *Stock) GetStockInitiate() int32 {
 	if x != nil {
 		return x.StockInitiate
 	}
 	return 0
 }
 
-func (x *Stock) GetLeftStock() uint32 {
+func (x *Stock) GetLeftStock() int32 {
 	if x != nil {
 		return x.LeftStock
 	}
@@ -219,12 +277,13 @@ type StockLog struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Id             uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	SkuId          uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
-	WarehouseId    uint32                 `protobuf:"varint,3,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	TransactionId  uint32                 `protobuf:"varint,4,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
-	ChangeById     uint32                 `protobuf:"varint,5,opt,name=change_by_id,json=changeById,proto3" json:"change_by_id,omitempty"`
+	TransactionId  uint64                 `protobuf:"varint,4,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	ActorId        uint32                 `protobuf:"varint,5,opt,name=actor_id,json=actorId,proto3" json:"actor_id,omitempty"`
 	PriceVersionId uint64                 `protobuf:"varint,6,opt,name=price_version_id,json=priceVersionId,proto3" json:"price_version_id,omitempty"`
 	StockId        uint64                 `protobuf:"varint,7,opt,name=stock_id,json=stockId,proto3" json:"stock_id,omitempty"`
 	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	LogType        LogType                `protobuf:"varint,9,opt,name=log_type,json=logType,proto3,enum=wargapos.stock.v1.LogType" json:"log_type,omitempty"`
+	Change         int32                  `protobuf:"varint,10,opt,name=change,proto3" json:"change,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -273,23 +332,16 @@ func (x *StockLog) GetSkuId() uint32 {
 	return 0
 }
 
-func (x *StockLog) GetWarehouseId() uint32 {
-	if x != nil {
-		return x.WarehouseId
-	}
-	return 0
-}
-
-func (x *StockLog) GetTransactionId() uint32 {
+func (x *StockLog) GetTransactionId() uint64 {
 	if x != nil {
 		return x.TransactionId
 	}
 	return 0
 }
 
-func (x *StockLog) GetChangeById() uint32 {
+func (x *StockLog) GetActorId() uint32 {
 	if x != nil {
-		return x.ChangeById
+		return x.ActorId
 	}
 	return 0
 }
@@ -313,6 +365,20 @@ func (x *StockLog) GetCreatedAt() *timestamppb.Timestamp {
 		return x.CreatedAt
 	}
 	return nil
+}
+
+func (x *StockLog) GetLogType() LogType {
+	if x != nil {
+		return x.LogType
+	}
+	return LogType_LOG_TYPE_UNSPECIFIED
+}
+
+func (x *StockLog) GetChange() int32 {
+	if x != nil {
+		return x.Change
+	}
+	return 0
 }
 
 type ListPriceSkuRequest struct {
@@ -499,37 +565,38 @@ const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"\fPriceVersion\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12%\n" +
-	"\x0etransaction_id\x18\x03 \x01(\rR\rtransactionId\x129\n" +
+	"\x0etransaction_id\x18\x03 \x01(\x04R\rtransactionId\x129\n" +
 	"\n" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x14\n" +
-	"\x05price\x18\x06 \x01(\x04R\x05price\x12%\n" +
-	"\x0estock_initiate\x18\a \x01(\rR\rstockInitiate\x12\x1d\n" +
+	"\x05price\x18\x06 \x01(\x01R\x05price\x12%\n" +
+	"\x0estock_initiate\x18\a \x01(\x05R\rstockInitiate\x12\x1d\n" +
 	"\n" +
-	"left_stock\x18\b \x01(\rR\tleftStock\"\x91\x02\n" +
+	"left_stock\x18\b \x01(\x05R\tleftStock\"\x91\x02\n" +
 	"\x05Stock\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12%\n" +
-	"\x0etransaction_id\x18\x03 \x01(\rR\rtransactionId\x129\n" +
+	"\x0etransaction_id\x18\x03 \x01(\x04R\rtransactionId\x129\n" +
 	"\n" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12%\n" +
-	"\x0estock_initiate\x18\x06 \x01(\rR\rstockInitiate\x12\x1d\n" +
+	"\x0estock_initiate\x18\x06 \x01(\x05R\rstockInitiate\x12\x1d\n" +
 	"\n" +
-	"left_stock\x18\a \x01(\rR\tleftStock\"\x9d\x02\n" +
+	"left_stock\x18\a \x01(\x05R\tleftStock\"\xc2\x02\n" +
 	"\bStockLog\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
-	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12!\n" +
-	"\fwarehouse_id\x18\x03 \x01(\rR\vwarehouseId\x12%\n" +
-	"\x0etransaction_id\x18\x04 \x01(\rR\rtransactionId\x12 \n" +
-	"\fchange_by_id\x18\x05 \x01(\rR\n" +
-	"changeById\x12(\n" +
+	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12%\n" +
+	"\x0etransaction_id\x18\x04 \x01(\x04R\rtransactionId\x12\x19\n" +
+	"\bactor_id\x18\x05 \x01(\rR\aactorId\x12(\n" +
 	"\x10price_version_id\x18\x06 \x01(\x04R\x0epriceVersionId\x12\x19\n" +
 	"\bstock_id\x18\a \x01(\x04R\astockId\x129\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"5\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x125\n" +
+	"\blog_type\x18\t \x01(\x0e2\x1a.wargapos.stock.v1.LogTypeR\alogType\x12\x16\n" +
+	"\x06change\x18\n" +
+	" \x01(\x05R\x06change\"5\n" +
 	"\x13ListPriceSkuRequest\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"O\n" +
 	"\x14ListPriceSkuResponse\x127\n" +
@@ -537,7 +604,14 @@ const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"\x13ListStockSkuRequest\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"H\n" +
 	"\x14ListStockSkuResponse\x120\n" +
-	"\x06stocks\x18\x01 \x03(\v2\x18.wargapos.stock.v1.StockR\x06stocksB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
+	"\x06stocks\x18\x01 \x03(\v2\x18.wargapos.stock.v1.StockR\x06stocks*\x9a\x01\n" +
+	"\aLogType\x12\x18\n" +
+	"\x14LOG_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15LOG_TYPE_STOCK_CANCEL\x10\x01\x12\x15\n" +
+	"\x11LOG_TYPE_STOCK_IN\x10\x02\x12\x16\n" +
+	"\x12LOG_TYPE_STOCK_OUT\x10\x03\x12\x17\n" +
+	"\x13LOG_TYPE_ADJUSTMENT\x10\x04\x12\x12\n" +
+	"\x0eLOG_TYPE_ORDER\x10\x05B0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
 
 var (
 	file_wargapos_stock_v1_stock_proto_rawDescOnce sync.Once
@@ -551,30 +625,33 @@ func file_wargapos_stock_v1_stock_proto_rawDescGZIP() []byte {
 	return file_wargapos_stock_v1_stock_proto_rawDescData
 }
 
+var file_wargapos_stock_v1_stock_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wargapos_stock_v1_stock_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_wargapos_stock_v1_stock_proto_goTypes = []any{
-	(*PriceVersion)(nil),          // 0: wargapos.stock.v1.PriceVersion
-	(*Stock)(nil),                 // 1: wargapos.stock.v1.Stock
-	(*StockLog)(nil),              // 2: wargapos.stock.v1.StockLog
-	(*ListPriceSkuRequest)(nil),   // 3: wargapos.stock.v1.ListPriceSkuRequest
-	(*ListPriceSkuResponse)(nil),  // 4: wargapos.stock.v1.ListPriceSkuResponse
-	(*ListStockSkuRequest)(nil),   // 5: wargapos.stock.v1.ListStockSkuRequest
-	(*ListStockSkuResponse)(nil),  // 6: wargapos.stock.v1.ListStockSkuResponse
-	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
+	(LogType)(0),                  // 0: wargapos.stock.v1.LogType
+	(*PriceVersion)(nil),          // 1: wargapos.stock.v1.PriceVersion
+	(*Stock)(nil),                 // 2: wargapos.stock.v1.Stock
+	(*StockLog)(nil),              // 3: wargapos.stock.v1.StockLog
+	(*ListPriceSkuRequest)(nil),   // 4: wargapos.stock.v1.ListPriceSkuRequest
+	(*ListPriceSkuResponse)(nil),  // 5: wargapos.stock.v1.ListPriceSkuResponse
+	(*ListStockSkuRequest)(nil),   // 6: wargapos.stock.v1.ListStockSkuRequest
+	(*ListStockSkuResponse)(nil),  // 7: wargapos.stock.v1.ListStockSkuResponse
+	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
 }
 var file_wargapos_stock_v1_stock_proto_depIdxs = []int32{
-	7, // 0: wargapos.stock.v1.PriceVersion.created_at:type_name -> google.protobuf.Timestamp
-	7, // 1: wargapos.stock.v1.PriceVersion.updated_at:type_name -> google.protobuf.Timestamp
-	7, // 2: wargapos.stock.v1.Stock.created_at:type_name -> google.protobuf.Timestamp
-	7, // 3: wargapos.stock.v1.Stock.updated_at:type_name -> google.protobuf.Timestamp
-	7, // 4: wargapos.stock.v1.StockLog.created_at:type_name -> google.protobuf.Timestamp
-	0, // 5: wargapos.stock.v1.ListPriceSkuResponse.prices:type_name -> wargapos.stock.v1.PriceVersion
-	1, // 6: wargapos.stock.v1.ListStockSkuResponse.stocks:type_name -> wargapos.stock.v1.Stock
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	8, // 0: wargapos.stock.v1.PriceVersion.created_at:type_name -> google.protobuf.Timestamp
+	8, // 1: wargapos.stock.v1.PriceVersion.updated_at:type_name -> google.protobuf.Timestamp
+	8, // 2: wargapos.stock.v1.Stock.created_at:type_name -> google.protobuf.Timestamp
+	8, // 3: wargapos.stock.v1.Stock.updated_at:type_name -> google.protobuf.Timestamp
+	8, // 4: wargapos.stock.v1.StockLog.created_at:type_name -> google.protobuf.Timestamp
+	0, // 5: wargapos.stock.v1.StockLog.log_type:type_name -> wargapos.stock.v1.LogType
+	1, // 6: wargapos.stock.v1.ListPriceSkuResponse.prices:type_name -> wargapos.stock.v1.PriceVersion
+	2, // 7: wargapos.stock.v1.ListStockSkuResponse.stocks:type_name -> wargapos.stock.v1.Stock
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_stock_proto_init() }
@@ -587,13 +664,14 @@ func file_wargapos_stock_v1_stock_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_stock_proto_rawDesc), len(file_wargapos_stock_v1_stock_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_wargapos_stock_v1_stock_proto_goTypes,
 		DependencyIndexes: file_wargapos_stock_v1_stock_proto_depIdxs,
+		EnumInfos:         file_wargapos_stock_v1_stock_proto_enumTypes,
 		MessageInfos:      file_wargapos_stock_v1_stock_proto_msgTypes,
 	}.Build()
 	File_wargapos_stock_v1_stock_proto = out.File

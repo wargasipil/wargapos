@@ -21,6 +21,10 @@ import { PlaygroundPage } from './routes/playground'
 import { SetupPage } from './routes/setup'
 import { PrintPage } from './routes/print'
 import { WarehousesPage } from './routes/stock/index'
+import { SkusPage } from './routes/stock/skus/index'
+import { SkuDetail } from './routes/stock/skus/Detail'
+import { TransactionsPage } from './routes/stock/transactions'
+import { IngredientsPage } from './routes/ingredients/index'
 
 async function checkSetupNeeded(): Promise<boolean> {
   try {
@@ -173,6 +177,38 @@ const stockRoute = createRoute({
   },
 })
 
+const skuRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock/skus',
+  component: SkusPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const transactionRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock/transactions',
+  component: TransactionsPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager' && role !== 'cashier') throw redirect({ to: '/' })
+  },
+})
+
+const skuDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock/skus/$id',
+  component: SkuDetail,
+})
+
+const ingredientsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/ingredients',
+  component: IngredientsPage,
+})
+
 const playgroundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/playground',
@@ -199,6 +235,10 @@ const routeTree = rootRoute.addChildren([
     settingsRoute,
     usersRoute,
     stockRoute,
+    skuRoute,
+    skuDetailRoute,
+    transactionRoute,
+    ingredientsRoute,
   ]),
 ])
 

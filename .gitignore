@@ -1,6 +1,6 @@
 # ── Secrets & local config ──────────────────────────────────────
 backend/config.yaml
-
+backend/config_test.yaml
 # ── Build outputs ────────────────────────────────────────────────
 backend/bin/
 thirdparties/bin/

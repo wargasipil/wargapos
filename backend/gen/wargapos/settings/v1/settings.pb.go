@@ -22,6 +22,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type BusinessType int32
+
+const (
+	BusinessType_BUSINESS_TYPE_UNSPECIFIED BusinessType = 0
+	BusinessType_BUSINESS_TYPE_CAFE        BusinessType = 1
+	BusinessType_BUSINESS_TYPE_MARKETPLACE BusinessType = 2
+)
+
+// Enum value maps for BusinessType.
+var (
+	BusinessType_name = map[int32]string{
+		0: "BUSINESS_TYPE_UNSPECIFIED",
+		1: "BUSINESS_TYPE_CAFE",
+		2: "BUSINESS_TYPE_MARKETPLACE",
+	}
+	BusinessType_value = map[string]int32{
+		"BUSINESS_TYPE_UNSPECIFIED": 0,
+		"BUSINESS_TYPE_CAFE":        1,
+		"BUSINESS_TYPE_MARKETPLACE": 2,
+	}
+)
+
+func (x BusinessType) Enum() *BusinessType {
+	p := new(BusinessType)
+	*p = x
+	return p
+}
+
+func (x BusinessType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (BusinessType) Descriptor() protoreflect.EnumDescriptor {
+	return file_wargapos_settings_v1_settings_proto_enumTypes[0].Descriptor()
+}
+
+func (BusinessType) Type() protoreflect.EnumType {
+	return &file_wargapos_settings_v1_settings_proto_enumTypes[0]
+}
+
+func (x BusinessType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use BusinessType.Descriptor instead.
+func (BusinessType) EnumDescriptor() ([]byte, []int) {
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{0}
+}
+
 type PrintMode int32
 
 const (
@@ -55,11 +104,11 @@ func (x PrintMode) String() string {
 }
 
 func (PrintMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_wargapos_settings_v1_settings_proto_enumTypes[0].Descriptor()
+	return file_wargapos_settings_v1_settings_proto_enumTypes[1].Descriptor()
 }
 
 func (PrintMode) Type() protoreflect.EnumType {
-	return &file_wargapos_settings_v1_settings_proto_enumTypes[0]
+	return &file_wargapos_settings_v1_settings_proto_enumTypes[1]
 }
 
 func (x PrintMode) Number() protoreflect.EnumNumber {
@@ -68,7 +117,7 @@ func (x PrintMode) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PrintMode.Descriptor instead.
 func (PrintMode) EnumDescriptor() ([]byte, []int) {
-	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{0}
+	return file_wargapos_settings_v1_settings_proto_rawDescGZIP(), []int{1}
 }
 
 type MidtransSettings struct {
@@ -334,6 +383,7 @@ type GetSettingsResponse struct {
 	ManualPayment      *ManualPaymentSettings `protobuf:"bytes,3,opt,name=manual_payment,json=manualPayment,proto3" json:"manual_payment,omitempty"`
 	Printer            *PrinterSettings       `protobuf:"bytes,4,opt,name=printer,proto3" json:"printer,omitempty"`
 	Backup             *BackupSettings        `protobuf:"bytes,5,opt,name=backup,proto3" json:"backup,omitempty"`
+	BusinessType       BusinessType           `protobuf:"varint,6,opt,name=business_type,json=businessType,proto3,enum=wargapos.settings.v1.BusinessType" json:"business_type,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -401,6 +451,13 @@ func (x *GetSettingsResponse) GetBackup() *BackupSettings {
 		return x.Backup
 	}
 	return nil
+}
+
+func (x *GetSettingsResponse) GetBusinessType() BusinessType {
+	if x != nil {
+		return x.BusinessType
+	}
+	return BusinessType_BUSINESS_TYPE_UNSPECIFIED
 }
 
 type BackupSettings struct {
@@ -485,6 +542,7 @@ type UpdateSettingsRequest struct {
 	ManualPayment *ManualPaymentSettings `protobuf:"bytes,2,opt,name=manual_payment,json=manualPayment,proto3" json:"manual_payment,omitempty"`
 	Printer       *PrinterSettings       `protobuf:"bytes,3,opt,name=printer,proto3" json:"printer,omitempty"`
 	Backup        *BackupSettings        `protobuf:"bytes,4,opt,name=backup,proto3" json:"backup,omitempty"`
+	BusinessType  BusinessType           `protobuf:"varint,7,opt,name=business_type,json=businessType,proto3,enum=wargapos.settings.v1.BusinessType" json:"business_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -545,6 +603,13 @@ func (x *UpdateSettingsRequest) GetBackup() *BackupSettings {
 		return x.Backup
 	}
 	return nil
+}
+
+func (x *UpdateSettingsRequest) GetBusinessType() BusinessType {
+	if x != nil {
+		return x.BusinessType
+	}
+	return BusinessType_BUSINESS_TYPE_UNSPECIFIED
 }
 
 type UpdateSettingsResponse struct {
@@ -608,26 +673,32 @@ const file_wargapos_settings_v1_settings_proto_rawDesc = "" +
 	"\acontact\x18\x05 \x01(\tR\acontact\x12\x16\n" +
 	"\x06footer\x18\x06 \x01(\tR\x06footer\x12>\n" +
 	"\n" +
-	"print_mode\x18\a \x01(\x0e2\x1f.wargapos.settings.v1.PrintModeR\tprintMode\"\xdd\x02\n" +
+	"print_mode\x18\a \x01(\x0e2\x1f.wargapos.settings.v1.PrintModeR\tprintMode\"\xa6\x03\n" +
 	"\x13GetSettingsResponse\x12B\n" +
 	"\bmidtrans\x18\x01 \x01(\v2&.wargapos.settings.v1.MidtransSettingsR\bmidtrans\x12/\n" +
 	"\x13midtrans_configured\x18\x02 \x01(\bR\x12midtransConfigured\x12R\n" +
 	"\x0emanual_payment\x18\x03 \x01(\v2+.wargapos.settings.v1.ManualPaymentSettingsR\rmanualPayment\x12?\n" +
 	"\aprinter\x18\x04 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\x12<\n" +
-	"\x06backup\x18\x05 \x01(\v2$.wargapos.settings.v1.BackupSettingsR\x06backup\"\xdb\x01\n" +
+	"\x06backup\x18\x05 \x01(\v2$.wargapos.settings.v1.BackupSettingsR\x06backup\x12G\n" +
+	"\rbusiness_type\x18\x06 \x01(\x0e2\".wargapos.settings.v1.BusinessTypeR\fbusinessType\"\xdb\x01\n" +
 	"\x0eBackupSettings\x12\x18\n" +
 	"\aenabled\x18\x01 \x01(\bR\aenabled\x12%\n" +
 	"\x0einterval_hours\x18\x02 \x01(\x05R\rintervalHours\x12'\n" +
 	"\x0fretention_count\x18\x03 \x01(\x05R\x0eretentionCount\x12\x1d\n" +
 	"\n" +
 	"backup_dir\x18\x04 \x01(\tR\tbackupDir\x12@\n" +
-	"\x0elast_backup_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\flastBackupAt\"\xae\x02\n" +
+	"\x0elast_backup_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\flastBackupAt\"\xf7\x02\n" +
 	"\x15UpdateSettingsRequest\x12B\n" +
 	"\bmidtrans\x18\x01 \x01(\v2&.wargapos.settings.v1.MidtransSettingsR\bmidtrans\x12R\n" +
 	"\x0emanual_payment\x18\x02 \x01(\v2+.wargapos.settings.v1.ManualPaymentSettingsR\rmanualPayment\x12?\n" +
 	"\aprinter\x18\x03 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\x12<\n" +
-	"\x06backup\x18\x04 \x01(\v2$.wargapos.settings.v1.BackupSettingsR\x06backup\"\x18\n" +
-	"\x16UpdateSettingsResponse*Y\n" +
+	"\x06backup\x18\x04 \x01(\v2$.wargapos.settings.v1.BackupSettingsR\x06backup\x12G\n" +
+	"\rbusiness_type\x18\a \x01(\x0e2\".wargapos.settings.v1.BusinessTypeR\fbusinessType\"\x18\n" +
+	"\x16UpdateSettingsResponse*d\n" +
+	"\fBusinessType\x12\x1d\n" +
+	"\x19BUSINESS_TYPE_UNSPECIFIED\x10\x00\x12\x16\n" +
+	"\x12BUSINESS_TYPE_CAFE\x10\x01\x12\x1d\n" +
+	"\x19BUSINESS_TYPE_MARKETPLACE\x10\x02*Y\n" +
 	"\tPrintMode\x12\x1a\n" +
 	"\x16PRINT_MODE_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14PRINT_MODE_CONNECTOR\x10\x01\x12\x16\n" +
@@ -648,40 +719,43 @@ func file_wargapos_settings_v1_settings_proto_rawDescGZIP() []byte {
 	return file_wargapos_settings_v1_settings_proto_rawDescData
 }
 
-var file_wargapos_settings_v1_settings_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_wargapos_settings_v1_settings_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_wargapos_settings_v1_settings_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_wargapos_settings_v1_settings_proto_goTypes = []any{
-	(PrintMode)(0),                 // 0: wargapos.settings.v1.PrintMode
-	(*MidtransSettings)(nil),       // 1: wargapos.settings.v1.MidtransSettings
-	(*GetSettingsRequest)(nil),     // 2: wargapos.settings.v1.GetSettingsRequest
-	(*ManualPaymentSettings)(nil),  // 3: wargapos.settings.v1.ManualPaymentSettings
-	(*PrinterSettings)(nil),        // 4: wargapos.settings.v1.PrinterSettings
-	(*GetSettingsResponse)(nil),    // 5: wargapos.settings.v1.GetSettingsResponse
-	(*BackupSettings)(nil),         // 6: wargapos.settings.v1.BackupSettings
-	(*UpdateSettingsRequest)(nil),  // 7: wargapos.settings.v1.UpdateSettingsRequest
-	(*UpdateSettingsResponse)(nil), // 8: wargapos.settings.v1.UpdateSettingsResponse
-	(*timestamppb.Timestamp)(nil),  // 9: google.protobuf.Timestamp
+	(BusinessType)(0),              // 0: wargapos.settings.v1.BusinessType
+	(PrintMode)(0),                 // 1: wargapos.settings.v1.PrintMode
+	(*MidtransSettings)(nil),       // 2: wargapos.settings.v1.MidtransSettings
+	(*GetSettingsRequest)(nil),     // 3: wargapos.settings.v1.GetSettingsRequest
+	(*ManualPaymentSettings)(nil),  // 4: wargapos.settings.v1.ManualPaymentSettings
+	(*PrinterSettings)(nil),        // 5: wargapos.settings.v1.PrinterSettings
+	(*GetSettingsResponse)(nil),    // 6: wargapos.settings.v1.GetSettingsResponse
+	(*BackupSettings)(nil),         // 7: wargapos.settings.v1.BackupSettings
+	(*UpdateSettingsRequest)(nil),  // 8: wargapos.settings.v1.UpdateSettingsRequest
+	(*UpdateSettingsResponse)(nil), // 9: wargapos.settings.v1.UpdateSettingsResponse
+	(*timestamppb.Timestamp)(nil),  // 10: google.protobuf.Timestamp
 }
 var file_wargapos_settings_v1_settings_proto_depIdxs = []int32{
-	0,  // 0: wargapos.settings.v1.PrinterSettings.print_mode:type_name -> wargapos.settings.v1.PrintMode
-	1,  // 1: wargapos.settings.v1.GetSettingsResponse.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
-	3,  // 2: wargapos.settings.v1.GetSettingsResponse.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
-	4,  // 3: wargapos.settings.v1.GetSettingsResponse.printer:type_name -> wargapos.settings.v1.PrinterSettings
-	6,  // 4: wargapos.settings.v1.GetSettingsResponse.backup:type_name -> wargapos.settings.v1.BackupSettings
-	9,  // 5: wargapos.settings.v1.BackupSettings.last_backup_at:type_name -> google.protobuf.Timestamp
-	1,  // 6: wargapos.settings.v1.UpdateSettingsRequest.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
-	3,  // 7: wargapos.settings.v1.UpdateSettingsRequest.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
-	4,  // 8: wargapos.settings.v1.UpdateSettingsRequest.printer:type_name -> wargapos.settings.v1.PrinterSettings
-	6,  // 9: wargapos.settings.v1.UpdateSettingsRequest.backup:type_name -> wargapos.settings.v1.BackupSettings
-	2,  // 10: wargapos.settings.v1.SettingsService.GetSettings:input_type -> wargapos.settings.v1.GetSettingsRequest
-	7,  // 11: wargapos.settings.v1.SettingsService.UpdateSettings:input_type -> wargapos.settings.v1.UpdateSettingsRequest
-	5,  // 12: wargapos.settings.v1.SettingsService.GetSettings:output_type -> wargapos.settings.v1.GetSettingsResponse
-	8,  // 13: wargapos.settings.v1.SettingsService.UpdateSettings:output_type -> wargapos.settings.v1.UpdateSettingsResponse
-	12, // [12:14] is the sub-list for method output_type
-	10, // [10:12] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	1,  // 0: wargapos.settings.v1.PrinterSettings.print_mode:type_name -> wargapos.settings.v1.PrintMode
+	2,  // 1: wargapos.settings.v1.GetSettingsResponse.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
+	4,  // 2: wargapos.settings.v1.GetSettingsResponse.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
+	5,  // 3: wargapos.settings.v1.GetSettingsResponse.printer:type_name -> wargapos.settings.v1.PrinterSettings
+	7,  // 4: wargapos.settings.v1.GetSettingsResponse.backup:type_name -> wargapos.settings.v1.BackupSettings
+	0,  // 5: wargapos.settings.v1.GetSettingsResponse.business_type:type_name -> wargapos.settings.v1.BusinessType
+	10, // 6: wargapos.settings.v1.BackupSettings.last_backup_at:type_name -> google.protobuf.Timestamp
+	2,  // 7: wargapos.settings.v1.UpdateSettingsRequest.midtrans:type_name -> wargapos.settings.v1.MidtransSettings
+	4,  // 8: wargapos.settings.v1.UpdateSettingsRequest.manual_payment:type_name -> wargapos.settings.v1.ManualPaymentSettings
+	5,  // 9: wargapos.settings.v1.UpdateSettingsRequest.printer:type_name -> wargapos.settings.v1.PrinterSettings
+	7,  // 10: wargapos.settings.v1.UpdateSettingsRequest.backup:type_name -> wargapos.settings.v1.BackupSettings
+	0,  // 11: wargapos.settings.v1.UpdateSettingsRequest.business_type:type_name -> wargapos.settings.v1.BusinessType
+	3,  // 12: wargapos.settings.v1.SettingsService.GetSettings:input_type -> wargapos.settings.v1.GetSettingsRequest
+	8,  // 13: wargapos.settings.v1.SettingsService.UpdateSettings:input_type -> wargapos.settings.v1.UpdateSettingsRequest
+	6,  // 14: wargapos.settings.v1.SettingsService.GetSettings:output_type -> wargapos.settings.v1.GetSettingsResponse
+	9,  // 15: wargapos.settings.v1.SettingsService.UpdateSettings:output_type -> wargapos.settings.v1.UpdateSettingsResponse
+	14, // [14:16] is the sub-list for method output_type
+	12, // [12:14] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_settings_v1_settings_proto_init() }
@@ -694,7 +768,7 @@ func file_wargapos_settings_v1_settings_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_settings_v1_settings_proto_rawDesc), len(file_wargapos_settings_v1_settings_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,

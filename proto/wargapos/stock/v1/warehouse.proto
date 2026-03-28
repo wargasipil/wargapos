@@ -50,3 +50,10 @@ message ListWarehouseResponse {
   repeated Warehouse warehouses = 1;
   int32 total = 2;
 }
+
+message GetWarehouseRequest {
+  repeated uint32 ids = 1 [(buf.validate.field).repeated.min_items = 1];
+}
+message GetWarehouseResponse {
+  map<uint32, Warehouse> warehouses = 1;
+}

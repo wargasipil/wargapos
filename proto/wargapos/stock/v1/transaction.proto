@@ -19,12 +19,16 @@ message Transaction {
   uint64 id = 1;
   TransactionType transaction_type = 2;
   google.protobuf.Timestamp created_at = 3;
+  string note = 4;
+  bool cancelled = 5;
+  repeated TransactionItem items = 6; // populated in DetailTransaction only
+  double total = 7;
 }
 
 message TransactionItem {
   uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
-  int64 quantity = 2 [(buf.validate.field).int64.not_in = 0];
-  uint64 price = 3; // required for STOCK_IN (sets PriceVersion)
+  int32 quantity = 2 [(buf.validate.field).int32.not_in = 0];
+  double total = 3; // required for STOCK_IN (sets PriceVersion)
   uint32 rack_id = 4; // optional rack placement
 }
 
@@ -42,3 +46,21 @@ message CancelTransactionRequest {
   string reason = 2;
 }
 message CancelTransactionResponse {}
+
+message ListTransactionRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  TransactionType transaction_type = 3; // 0 = all
+  bool cancelled = 4; // filter cancelled only (ignored when false)
+}
+message ListTransactionResponse {
+  repeated Transaction transactions = 1;
+  int32 total = 2;
+}
+
+message DetailTransactionRequest {
+  uint64 id = 1 [(buf.validate.field).uint64.gt = 0];
+}
+message DetailTransactionResponse {
+  Transaction transaction = 1;
+}

@@ -120,7 +120,7 @@ export function MenuPage() {
       await syncCartToServer(sessionId, tableId, cart.map((i) => ({ productId: i.productId, qty: i.qty, notes: i.notes })))
       await transactionClient.checkout({
         sessionId,
-        cashierId: userId ? BigInt(userId) : 0n,
+        cashierId: userId ? Number(userId) : 0,
         paymentMethod: PaymentMethod.CASH,
         orderFrom: OrderFrom.GUEST,
         customerName,

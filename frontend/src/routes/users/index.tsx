@@ -41,7 +41,7 @@ interface AddForm {
 }
 
 interface EditState {
-  id: bigint
+  id: number
   fullName: string
   email: string
   role: string
@@ -68,7 +68,7 @@ export function UsersPage() {
 
   const [addOpen, setAddOpen] = useState(false)
   const [editState, setEditState] = useState<EditState | null>(null)
-  const [deletingId, setDeletingId] = useState<bigint | null>(null)
+  const [deletingId, setDeletingId] = useState<number | null>(null)
   const [addForm, setAddForm] = useState<AddForm>(emptyAdd)
 
   const { data, isLoading } = useQuery({
@@ -110,7 +110,7 @@ export function UsersPage() {
   })
 
   const deleteMutation = useMutation({
-    mutationFn: (id: bigint) => userClient.deleteUser({ id }, { headers }),
+    mutationFn: (id: number) => userClient.deleteUser({ id }, { headers }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['users'] })
       setDeletingId(null)

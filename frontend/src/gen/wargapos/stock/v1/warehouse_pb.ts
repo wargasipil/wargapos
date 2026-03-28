@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/warehouse.proto.
  */
 export const file_wargapos_stock_v1_warehouse: GenFile = /*@__PURE__*/
-  fileDesc("CiF3YXJnYXBvcy9zdG9jay92MS93YXJlaG91c2UucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxIpYBCglXYXJlaG91c2USCgoCaWQYASABKA0SDAoEbmFtZRgCIAEoCRIuCgpjcmVhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIPCgdkZWxldGVkGAUgASgIIjIKFkNyZWF0ZVdhcmVob3VzZVJlcXVlc3QSGAoEbmFtZRgBIAEoCUIKukgHcgUQARisAiJKChdDcmVhdGVXYXJlaG91c2VSZXNwb25zZRIvCgl3YXJlaG91c2UYASABKAsyHC53YXJnYXBvcy5zdG9jay52MS5XYXJlaG91c2UiRwoWVXBkYXRlV2FyZWhvdXNlUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIYCgRuYW1lGAIgASgJQgq6SAdyBRABGKwCIkoKF1VwZGF0ZVdhcmVob3VzZVJlc3BvbnNlEi8KCXdhcmVob3VzZRgBIAEoCzIcLndhcmdhcG9zLnN0b2NrLnYxLldhcmVob3VzZSItChZEZWxldGVXYXJlaG91c2VSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAIhkKF0RlbGV0ZVdhcmVob3VzZVJlc3BvbnNlIkcKFExpc3RXYXJlaG91c2VSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCSJYChVMaXN0V2FyZWhvdXNlUmVzcG9uc2USMAoKd2FyZWhvdXNlcxgBIAMoCzIcLndhcmdhcG9zLnN0b2NrLnYxLldhcmVob3VzZRINCgV0b3RhbBgCIAEoBUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("CiF3YXJnYXBvcy9zdG9jay92MS93YXJlaG91c2UucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxIpYBCglXYXJlaG91c2USCgoCaWQYASABKA0SDAoEbmFtZRgCIAEoCRIuCgpjcmVhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIPCgdkZWxldGVkGAUgASgIIjIKFkNyZWF0ZVdhcmVob3VzZVJlcXVlc3QSGAoEbmFtZRgBIAEoCUIKukgHcgUQARisAiJKChdDcmVhdGVXYXJlaG91c2VSZXNwb25zZRIvCgl3YXJlaG91c2UYASABKAsyHC53YXJnYXBvcy5zdG9jay52MS5XYXJlaG91c2UiRwoWVXBkYXRlV2FyZWhvdXNlUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIYCgRuYW1lGAIgASgJQgq6SAdyBRABGKwCIkoKF1VwZGF0ZVdhcmVob3VzZVJlc3BvbnNlEi8KCXdhcmVob3VzZRgBIAEoCzIcLndhcmdhcG9zLnN0b2NrLnYxLldhcmVob3VzZSItChZEZWxldGVXYXJlaG91c2VSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAIhkKF0RlbGV0ZVdhcmVob3VzZVJlc3BvbnNlIkcKFExpc3RXYXJlaG91c2VSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCSJYChVMaXN0V2FyZWhvdXNlUmVzcG9uc2USMAoKd2FyZWhvdXNlcxgBIAMoCzIcLndhcmdhcG9zLnN0b2NrLnYxLldhcmVob3VzZRINCgV0b3RhbBgCIAEoBSIsChNHZXRXYXJlaG91c2VSZXF1ZXN0EhUKA2lkcxgBIAMoDUIIukgFkgECCAEitAEKFEdldFdhcmVob3VzZVJlc3BvbnNlEksKCndhcmVob3VzZXMYASADKAsyNy53YXJnYXBvcy5zdG9jay52MS5HZXRXYXJlaG91c2VSZXNwb25zZS5XYXJlaG91c2VzRW50cnkaTwoPV2FyZWhvdXNlc0VudHJ5EgsKA2tleRgBIAEoDRIrCgV2YWx1ZRgCIAEoCzIcLndhcmdhcG9zLnN0b2NrLnYxLldhcmVob3VzZToCOAFCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message wargapos.stock.v1.Warehouse
@@ -203,4 +203,38 @@ export type ListWarehouseResponse = Message<"wargapos.stock.v1.ListWarehouseResp
  */
 export const ListWarehouseResponseSchema: GenMessage<ListWarehouseResponse> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_warehouse, 8);
+
+/**
+ * @generated from message wargapos.stock.v1.GetWarehouseRequest
+ */
+export type GetWarehouseRequest = Message<"wargapos.stock.v1.GetWarehouseRequest"> & {
+  /**
+   * @generated from field: repeated uint32 ids = 1;
+   */
+  ids: number[];
+};
+
+/**
+ * Describes the message wargapos.stock.v1.GetWarehouseRequest.
+ * Use `create(GetWarehouseRequestSchema)` to create a new message.
+ */
+export const GetWarehouseRequestSchema: GenMessage<GetWarehouseRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_warehouse, 9);
+
+/**
+ * @generated from message wargapos.stock.v1.GetWarehouseResponse
+ */
+export type GetWarehouseResponse = Message<"wargapos.stock.v1.GetWarehouseResponse"> & {
+  /**
+   * @generated from field: map<uint32, wargapos.stock.v1.Warehouse> warehouses = 1;
+   */
+  warehouses: { [key: number]: Warehouse };
+};
+
+/**
+ * Describes the message wargapos.stock.v1.GetWarehouseResponse.
+ * Use `create(GetWarehouseResponseSchema)` to create a new message.
+ */
+export const GetWarehouseResponseSchema: GenMessage<GetWarehouseResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_warehouse, 10);
 

@@ -28,6 +28,7 @@ func (s *SettingsService) GetSettings(
 			ManualPayment:      &settingsv1.ManualPaymentSettings{},
 			Printer:            &settingsv1.PrinterSettings{},
 			Backup:             &settingsv1.BackupSettings{IntervalHours: 24, RetentionCount: 7, BackupDir: "./backups"},
+			BusinessType:       settingsv1.BusinessType_BUSINESS_TYPE_UNSPECIFIED,
 		}), nil
 	}
 
@@ -74,6 +75,7 @@ func (s *SettingsService) GetSettings(
 			BackupDir:      row.BackupDir,
 			LastBackupAt:   backupLastAt(row.BackupLastAt),
 		},
+		BusinessType: settingsv1.BusinessType(row.BusinessType),
 	}), nil
 }
 

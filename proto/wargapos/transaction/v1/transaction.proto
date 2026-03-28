@@ -47,7 +47,7 @@ message GetCartResponse {
 
 message CheckoutRequest {
   string session_id = 1 [(buf.validate.field).string.min_len = 1];
-  int64 cashier_id = 2;
+  uint32 cashier_id = 2;
   PaymentMethod payment_method = 3 [(buf.validate.field).enum = {
     not_in: [0]
   }];

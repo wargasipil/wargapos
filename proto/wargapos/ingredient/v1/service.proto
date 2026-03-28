@@ -14,7 +14,7 @@ service IngredientService {
   rpc UpdateMaterial(UpdateMaterialRequest) returns (UpdateMaterialResponse);
   rpc ListMaterial(ListMaterialRequest) returns (ListMaterialResponse);
   rpc DeleteMaterial(DeleteMaterialRequest) returns (DeleteMaterialResponse);
-  rpc UpdateMaterialStock(UpdateMaterialStockRequest) returns (UpdateMaterialStockResponse);
+  rpc AddMaterialStock(AddMaterialStockRequest) returns (AddMaterialStockResponse);
 
   // untuk recipe
   rpc CreateRecipe(CreateRecipeRequest) returns (CreateRecipeResponse);
@@ -41,18 +41,18 @@ message Material {
   string code = 5;
   string name = 6;
   QtyType qty_type = 7;
-  int64 qty = 8;
+  int32 qty = 8;
 }
 
-message UpdateMaterialStockRequest {
+message AddMaterialStockRequest {
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
   uint32 warehouse_id = 2 [(buf.validate.field).uint32.gt = 0];
 
-  int64 qty = 4 [(buf.validate.field).int64.not_in = 0];
+  int32 qty = 4 [(buf.validate.field).int32.not_in = 0];
   uint64 price = 5 [(buf.validate.field).uint64.gt = 0];
   string note = 6 [(buf.validate.field).string.max_len = 500];
 }
-message UpdateMaterialStockResponse {}
+message AddMaterialStockResponse {}
 
 message CreateMaterialRequest {
   string code = 1 [(buf.validate.field).string = {
@@ -87,7 +87,7 @@ message UpdateMaterialRequest {
     defined_only: true
     not_in: [0]
   }];
-  int64 qty = 5;
+  int32 qty = 5;
 }
 message UpdateMaterialResponse {
   Material material = 1;
@@ -111,7 +111,7 @@ message DeleteMaterialResponse {}
 // RecipeItem is used in request payloads (material_id + qty per serving).
 message RecipeItemInput {
   uint32 material_id = 1 [(buf.validate.field).uint32.gt = 0];
-  int64 qty = 2 [(buf.validate.field).int64.gt = 0];
+  int32 qty = 2 [(buf.validate.field).int32.gt = 0];
 }
 
 // RecipeItem is returned in responses, with the full material embedded.
@@ -119,7 +119,7 @@ message RecipeItem {
   uint32 id = 1;
   uint32 material_id = 2;
   Material material = 3;
-  int64 qty = 4;
+  int32 qty = 4;
 }
 
 message Recipe {

@@ -1,0 +1,7 @@
+-- +goose Up
+ALTER TABLE materials ALTER COLUMN qty TYPE INT;
+ALTER TABLE recipe_items ALTER COLUMN qty TYPE INT;
+
+-- +goose Down
+ALTER TABLE materials ALTER COLUMN qty TYPE BIGINT;
+ALTER TABLE recipe_items ALTER COLUMN qty TYPE BIGINT;

@@ -45,6 +45,9 @@ const (
 	// StockServiceListWarehouseProcedure is the fully-qualified name of the StockService's
 	// ListWarehouse RPC.
 	StockServiceListWarehouseProcedure = "/wargapos.stock.v1.StockService/ListWarehouse"
+	// StockServiceGetWarehouseProcedure is the fully-qualified name of the StockService's GetWarehouse
+	// RPC.
+	StockServiceGetWarehouseProcedure = "/wargapos.stock.v1.StockService/GetWarehouse"
 	// StockServiceCreateRackProcedure is the fully-qualified name of the StockService's CreateRack RPC.
 	StockServiceCreateRackProcedure = "/wargapos.stock.v1.StockService/CreateRack"
 	// StockServiceUpdateRackProcedure is the fully-qualified name of the StockService's UpdateRack RPC.
@@ -72,9 +75,18 @@ const (
 	// StockServiceListStockSkuProcedure is the fully-qualified name of the StockService's ListStockSku
 	// RPC.
 	StockServiceListStockSkuProcedure = "/wargapos.stock.v1.StockService/ListStockSku"
+	// StockServiceListStockLogSkuProcedure is the fully-qualified name of the StockService's
+	// ListStockLogSku RPC.
+	StockServiceListStockLogSkuProcedure = "/wargapos.stock.v1.StockService/ListStockLogSku"
 	// StockServiceCreateTransactionProcedure is the fully-qualified name of the StockService's
 	// CreateTransaction RPC.
 	StockServiceCreateTransactionProcedure = "/wargapos.stock.v1.StockService/CreateTransaction"
+	// StockServiceListTransactionProcedure is the fully-qualified name of the StockService's
+	// ListTransaction RPC.
+	StockServiceListTransactionProcedure = "/wargapos.stock.v1.StockService/ListTransaction"
+	// StockServiceDetailTransactionProcedure is the fully-qualified name of the StockService's
+	// DetailTransaction RPC.
+	StockServiceDetailTransactionProcedure = "/wargapos.stock.v1.StockService/DetailTransaction"
 	// StockServiceCancelTransactionProcedure is the fully-qualified name of the StockService's
 	// CancelTransaction RPC.
 	StockServiceCancelTransactionProcedure = "/wargapos.stock.v1.StockService/CancelTransaction"
@@ -93,6 +105,7 @@ type StockServiceClient interface {
 	UpdateWarehouse(context.Context, *connect.Request[v1.UpdateWarehouseRequest]) (*connect.Response[v1.UpdateWarehouseResponse], error)
 	DeleteWarehouse(context.Context, *connect.Request[v1.DeleteWarehouseRequest]) (*connect.Response[v1.DeleteWarehouseResponse], error)
 	ListWarehouse(context.Context, *connect.Request[v1.ListWarehouseRequest]) (*connect.Response[v1.ListWarehouseResponse], error)
+	GetWarehouse(context.Context, *connect.Request[v1.GetWarehouseRequest]) (*connect.Response[v1.GetWarehouseResponse], error)
 	// bagian rack
 	CreateRack(context.Context, *connect.Request[v1.CreateRackRequest]) (*connect.Response[v1.CreateRackResponse], error)
 	UpdateRack(context.Context, *connect.Request[v1.UpdateRackRequest]) (*connect.Response[v1.UpdateRackResponse], error)
@@ -107,8 +120,11 @@ type StockServiceClient interface {
 	ListSkuPlacement(context.Context, *connect.Request[v1.ListSkuPlacementRequest]) (*connect.Response[v1.ListSkuPlacementResponse], error)
 	ListPriceSku(context.Context, *connect.Request[v1.ListPriceSkuRequest]) (*connect.Response[v1.ListPriceSkuResponse], error)
 	ListStockSku(context.Context, *connect.Request[v1.ListStockSkuRequest]) (*connect.Response[v1.ListStockSkuResponse], error)
+	ListStockLogSku(context.Context, *connect.Request[v1.ListStockLogSkuRequest]) (*connect.Response[v1.ListStockLogSkuResponse], error)
 	// bagian transaction
 	CreateTransaction(context.Context, *connect.Request[v1.CreateTransactionRequest]) (*connect.Response[v1.CreateTransactionResponse], error)
+	ListTransaction(context.Context, *connect.Request[v1.ListTransactionRequest]) (*connect.Response[v1.ListTransactionResponse], error)
+	DetailTransaction(context.Context, *connect.Request[v1.DetailTransactionRequest]) (*connect.Response[v1.DetailTransactionResponse], error)
 	CancelTransaction(context.Context, *connect.Request[v1.CancelTransactionRequest]) (*connect.Response[v1.CancelTransactionResponse], error)
 	AdjustStock(context.Context, *connect.Request[v1.AdjustStockRequest]) (*connect.Response[v1.AdjustStockResponse], error)
 	ListStockMovements(context.Context, *connect.Request[v1.ListStockMovementsRequest]) (*connect.Response[v1.ListStockMovementsResponse], error)
@@ -147,6 +163,12 @@ func NewStockServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			httpClient,
 			baseURL+StockServiceListWarehouseProcedure,
 			connect.WithSchema(stockServiceMethods.ByName("ListWarehouse")),
+			connect.WithClientOptions(opts...),
+		),
+		getWarehouse: connect.NewClient[v1.GetWarehouseRequest, v1.GetWarehouseResponse](
+			httpClient,
+			baseURL+StockServiceGetWarehouseProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("GetWarehouse")),
 			connect.WithClientOptions(opts...),
 		),
 		createRack: connect.NewClient[v1.CreateRackRequest, v1.CreateRackResponse](
@@ -221,10 +243,28 @@ func NewStockServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(stockServiceMethods.ByName("ListStockSku")),
 			connect.WithClientOptions(opts...),
 		),
+		listStockLogSku: connect.NewClient[v1.ListStockLogSkuRequest, v1.ListStockLogSkuResponse](
+			httpClient,
+			baseURL+StockServiceListStockLogSkuProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("ListStockLogSku")),
+			connect.WithClientOptions(opts...),
+		),
 		createTransaction: connect.NewClient[v1.CreateTransactionRequest, v1.CreateTransactionResponse](
 			httpClient,
 			baseURL+StockServiceCreateTransactionProcedure,
 			connect.WithSchema(stockServiceMethods.ByName("CreateTransaction")),
+			connect.WithClientOptions(opts...),
+		),
+		listTransaction: connect.NewClient[v1.ListTransactionRequest, v1.ListTransactionResponse](
+			httpClient,
+			baseURL+StockServiceListTransactionProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("ListTransaction")),
+			connect.WithClientOptions(opts...),
+		),
+		detailTransaction: connect.NewClient[v1.DetailTransactionRequest, v1.DetailTransactionResponse](
+			httpClient,
+			baseURL+StockServiceDetailTransactionProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("DetailTransaction")),
 			connect.WithClientOptions(opts...),
 		),
 		cancelTransaction: connect.NewClient[v1.CancelTransactionRequest, v1.CancelTransactionResponse](
@@ -254,6 +294,7 @@ type stockServiceClient struct {
 	updateWarehouse    *connect.Client[v1.UpdateWarehouseRequest, v1.UpdateWarehouseResponse]
 	deleteWarehouse    *connect.Client[v1.DeleteWarehouseRequest, v1.DeleteWarehouseResponse]
 	listWarehouse      *connect.Client[v1.ListWarehouseRequest, v1.ListWarehouseResponse]
+	getWarehouse       *connect.Client[v1.GetWarehouseRequest, v1.GetWarehouseResponse]
 	createRack         *connect.Client[v1.CreateRackRequest, v1.CreateRackResponse]
 	updateRack         *connect.Client[v1.UpdateRackRequest, v1.UpdateRackResponse]
 	deleteRack         *connect.Client[v1.DeleteRackRequest, v1.DeleteRackResponse]
@@ -266,7 +307,10 @@ type stockServiceClient struct {
 	listSkuPlacement   *connect.Client[v1.ListSkuPlacementRequest, v1.ListSkuPlacementResponse]
 	listPriceSku       *connect.Client[v1.ListPriceSkuRequest, v1.ListPriceSkuResponse]
 	listStockSku       *connect.Client[v1.ListStockSkuRequest, v1.ListStockSkuResponse]
+	listStockLogSku    *connect.Client[v1.ListStockLogSkuRequest, v1.ListStockLogSkuResponse]
 	createTransaction  *connect.Client[v1.CreateTransactionRequest, v1.CreateTransactionResponse]
+	listTransaction    *connect.Client[v1.ListTransactionRequest, v1.ListTransactionResponse]
+	detailTransaction  *connect.Client[v1.DetailTransactionRequest, v1.DetailTransactionResponse]
 	cancelTransaction  *connect.Client[v1.CancelTransactionRequest, v1.CancelTransactionResponse]
 	adjustStock        *connect.Client[v1.AdjustStockRequest, v1.AdjustStockResponse]
 	listStockMovements *connect.Client[v1.ListStockMovementsRequest, v1.ListStockMovementsResponse]
@@ -290,6 +334,11 @@ func (c *stockServiceClient) DeleteWarehouse(ctx context.Context, req *connect.R
 // ListWarehouse calls wargapos.stock.v1.StockService.ListWarehouse.
 func (c *stockServiceClient) ListWarehouse(ctx context.Context, req *connect.Request[v1.ListWarehouseRequest]) (*connect.Response[v1.ListWarehouseResponse], error) {
 	return c.listWarehouse.CallUnary(ctx, req)
+}
+
+// GetWarehouse calls wargapos.stock.v1.StockService.GetWarehouse.
+func (c *stockServiceClient) GetWarehouse(ctx context.Context, req *connect.Request[v1.GetWarehouseRequest]) (*connect.Response[v1.GetWarehouseResponse], error) {
+	return c.getWarehouse.CallUnary(ctx, req)
 }
 
 // CreateRack calls wargapos.stock.v1.StockService.CreateRack.
@@ -352,9 +401,24 @@ func (c *stockServiceClient) ListStockSku(ctx context.Context, req *connect.Requ
 	return c.listStockSku.CallUnary(ctx, req)
 }
 
+// ListStockLogSku calls wargapos.stock.v1.StockService.ListStockLogSku.
+func (c *stockServiceClient) ListStockLogSku(ctx context.Context, req *connect.Request[v1.ListStockLogSkuRequest]) (*connect.Response[v1.ListStockLogSkuResponse], error) {
+	return c.listStockLogSku.CallUnary(ctx, req)
+}
+
 // CreateTransaction calls wargapos.stock.v1.StockService.CreateTransaction.
 func (c *stockServiceClient) CreateTransaction(ctx context.Context, req *connect.Request[v1.CreateTransactionRequest]) (*connect.Response[v1.CreateTransactionResponse], error) {
 	return c.createTransaction.CallUnary(ctx, req)
+}
+
+// ListTransaction calls wargapos.stock.v1.StockService.ListTransaction.
+func (c *stockServiceClient) ListTransaction(ctx context.Context, req *connect.Request[v1.ListTransactionRequest]) (*connect.Response[v1.ListTransactionResponse], error) {
+	return c.listTransaction.CallUnary(ctx, req)
+}
+
+// DetailTransaction calls wargapos.stock.v1.StockService.DetailTransaction.
+func (c *stockServiceClient) DetailTransaction(ctx context.Context, req *connect.Request[v1.DetailTransactionRequest]) (*connect.Response[v1.DetailTransactionResponse], error) {
+	return c.detailTransaction.CallUnary(ctx, req)
 }
 
 // CancelTransaction calls wargapos.stock.v1.StockService.CancelTransaction.
@@ -379,6 +443,7 @@ type StockServiceHandler interface {
 	UpdateWarehouse(context.Context, *connect.Request[v1.UpdateWarehouseRequest]) (*connect.Response[v1.UpdateWarehouseResponse], error)
 	DeleteWarehouse(context.Context, *connect.Request[v1.DeleteWarehouseRequest]) (*connect.Response[v1.DeleteWarehouseResponse], error)
 	ListWarehouse(context.Context, *connect.Request[v1.ListWarehouseRequest]) (*connect.Response[v1.ListWarehouseResponse], error)
+	GetWarehouse(context.Context, *connect.Request[v1.GetWarehouseRequest]) (*connect.Response[v1.GetWarehouseResponse], error)
 	// bagian rack
 	CreateRack(context.Context, *connect.Request[v1.CreateRackRequest]) (*connect.Response[v1.CreateRackResponse], error)
 	UpdateRack(context.Context, *connect.Request[v1.UpdateRackRequest]) (*connect.Response[v1.UpdateRackResponse], error)
@@ -393,8 +458,11 @@ type StockServiceHandler interface {
 	ListSkuPlacement(context.Context, *connect.Request[v1.ListSkuPlacementRequest]) (*connect.Response[v1.ListSkuPlacementResponse], error)
 	ListPriceSku(context.Context, *connect.Request[v1.ListPriceSkuRequest]) (*connect.Response[v1.ListPriceSkuResponse], error)
 	ListStockSku(context.Context, *connect.Request[v1.ListStockSkuRequest]) (*connect.Response[v1.ListStockSkuResponse], error)
+	ListStockLogSku(context.Context, *connect.Request[v1.ListStockLogSkuRequest]) (*connect.Response[v1.ListStockLogSkuResponse], error)
 	// bagian transaction
 	CreateTransaction(context.Context, *connect.Request[v1.CreateTransactionRequest]) (*connect.Response[v1.CreateTransactionResponse], error)
+	ListTransaction(context.Context, *connect.Request[v1.ListTransactionRequest]) (*connect.Response[v1.ListTransactionResponse], error)
+	DetailTransaction(context.Context, *connect.Request[v1.DetailTransactionRequest]) (*connect.Response[v1.DetailTransactionResponse], error)
 	CancelTransaction(context.Context, *connect.Request[v1.CancelTransactionRequest]) (*connect.Response[v1.CancelTransactionResponse], error)
 	AdjustStock(context.Context, *connect.Request[v1.AdjustStockRequest]) (*connect.Response[v1.AdjustStockResponse], error)
 	ListStockMovements(context.Context, *connect.Request[v1.ListStockMovementsRequest]) (*connect.Response[v1.ListStockMovementsResponse], error)
@@ -429,6 +497,12 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 		StockServiceListWarehouseProcedure,
 		svc.ListWarehouse,
 		connect.WithSchema(stockServiceMethods.ByName("ListWarehouse")),
+		connect.WithHandlerOptions(opts...),
+	)
+	stockServiceGetWarehouseHandler := connect.NewUnaryHandler(
+		StockServiceGetWarehouseProcedure,
+		svc.GetWarehouse,
+		connect.WithSchema(stockServiceMethods.ByName("GetWarehouse")),
 		connect.WithHandlerOptions(opts...),
 	)
 	stockServiceCreateRackHandler := connect.NewUnaryHandler(
@@ -503,10 +577,28 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(stockServiceMethods.ByName("ListStockSku")),
 		connect.WithHandlerOptions(opts...),
 	)
+	stockServiceListStockLogSkuHandler := connect.NewUnaryHandler(
+		StockServiceListStockLogSkuProcedure,
+		svc.ListStockLogSku,
+		connect.WithSchema(stockServiceMethods.ByName("ListStockLogSku")),
+		connect.WithHandlerOptions(opts...),
+	)
 	stockServiceCreateTransactionHandler := connect.NewUnaryHandler(
 		StockServiceCreateTransactionProcedure,
 		svc.CreateTransaction,
 		connect.WithSchema(stockServiceMethods.ByName("CreateTransaction")),
+		connect.WithHandlerOptions(opts...),
+	)
+	stockServiceListTransactionHandler := connect.NewUnaryHandler(
+		StockServiceListTransactionProcedure,
+		svc.ListTransaction,
+		connect.WithSchema(stockServiceMethods.ByName("ListTransaction")),
+		connect.WithHandlerOptions(opts...),
+	)
+	stockServiceDetailTransactionHandler := connect.NewUnaryHandler(
+		StockServiceDetailTransactionProcedure,
+		svc.DetailTransaction,
+		connect.WithSchema(stockServiceMethods.ByName("DetailTransaction")),
 		connect.WithHandlerOptions(opts...),
 	)
 	stockServiceCancelTransactionHandler := connect.NewUnaryHandler(
@@ -537,6 +629,8 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 			stockServiceDeleteWarehouseHandler.ServeHTTP(w, r)
 		case StockServiceListWarehouseProcedure:
 			stockServiceListWarehouseHandler.ServeHTTP(w, r)
+		case StockServiceGetWarehouseProcedure:
+			stockServiceGetWarehouseHandler.ServeHTTP(w, r)
 		case StockServiceCreateRackProcedure:
 			stockServiceCreateRackHandler.ServeHTTP(w, r)
 		case StockServiceUpdateRackProcedure:
@@ -561,8 +655,14 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 			stockServiceListPriceSkuHandler.ServeHTTP(w, r)
 		case StockServiceListStockSkuProcedure:
 			stockServiceListStockSkuHandler.ServeHTTP(w, r)
+		case StockServiceListStockLogSkuProcedure:
+			stockServiceListStockLogSkuHandler.ServeHTTP(w, r)
 		case StockServiceCreateTransactionProcedure:
 			stockServiceCreateTransactionHandler.ServeHTTP(w, r)
+		case StockServiceListTransactionProcedure:
+			stockServiceListTransactionHandler.ServeHTTP(w, r)
+		case StockServiceDetailTransactionProcedure:
+			stockServiceDetailTransactionHandler.ServeHTTP(w, r)
 		case StockServiceCancelTransactionProcedure:
 			stockServiceCancelTransactionHandler.ServeHTTP(w, r)
 		case StockServiceAdjustStockProcedure:
@@ -592,6 +692,10 @@ func (UnimplementedStockServiceHandler) DeleteWarehouse(context.Context, *connec
 
 func (UnimplementedStockServiceHandler) ListWarehouse(context.Context, *connect.Request[v1.ListWarehouseRequest]) (*connect.Response[v1.ListWarehouseResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListWarehouse is not implemented"))
+}
+
+func (UnimplementedStockServiceHandler) GetWarehouse(context.Context, *connect.Request[v1.GetWarehouseRequest]) (*connect.Response[v1.GetWarehouseResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.GetWarehouse is not implemented"))
 }
 
 func (UnimplementedStockServiceHandler) CreateRack(context.Context, *connect.Request[v1.CreateRackRequest]) (*connect.Response[v1.CreateRackResponse], error) {
@@ -642,8 +746,20 @@ func (UnimplementedStockServiceHandler) ListStockSku(context.Context, *connect.R
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListStockSku is not implemented"))
 }
 
+func (UnimplementedStockServiceHandler) ListStockLogSku(context.Context, *connect.Request[v1.ListStockLogSkuRequest]) (*connect.Response[v1.ListStockLogSkuResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListStockLogSku is not implemented"))
+}
+
 func (UnimplementedStockServiceHandler) CreateTransaction(context.Context, *connect.Request[v1.CreateTransactionRequest]) (*connect.Response[v1.CreateTransactionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.CreateTransaction is not implemented"))
+}
+
+func (UnimplementedStockServiceHandler) ListTransaction(context.Context, *connect.Request[v1.ListTransactionRequest]) (*connect.Response[v1.ListTransactionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListTransaction is not implemented"))
+}
+
+func (UnimplementedStockServiceHandler) DetailTransaction(context.Context, *connect.Request[v1.DetailTransactionRequest]) (*connect.Response[v1.DetailTransactionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.DetailTransaction is not implemented"))
 }
 
 func (UnimplementedStockServiceHandler) CancelTransaction(context.Context, *connect.Request[v1.CancelTransactionRequest]) (*connect.Response[v1.CancelTransactionResponse], error) {

@@ -4,7 +4,7 @@ package main
 
 import (
 	"wargapos/backend/internal/config"
-	"wargapos/backend/internal/db"
+	"wargapos/backend/internal/database"
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
@@ -22,9 +22,10 @@ import (
 
 func InitializeApp(cfg *config.Config) (App, error) {
 	wire.Build(
-		db.NewDB,
+		database.NewDB,
 		config.ProvideAuthConfig,
 		config.ProvideMidtransConfig,
+		NewDefaultServiceClientOption,
 		NewStockServiceClient,
 		auth_service.NewAuthService,
 		user_service.NewUserService,

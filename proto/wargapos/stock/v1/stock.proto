@@ -7,38 +7,47 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
+enum LogType {
+  LOG_TYPE_UNSPECIFIED = 0;
+  LOG_TYPE_STOCK_CANCEL = 1;
+  LOG_TYPE_STOCK_IN = 2;
+  LOG_TYPE_STOCK_OUT = 3;
+  LOG_TYPE_ADJUSTMENT = 4;
+  LOG_TYPE_ORDER = 5;
+}
+
 message PriceVersion {
   uint64 id = 1;
   uint32 sku_id = 2;
-  uint32 transaction_id = 3;
+  uint64 transaction_id = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
 
-  uint64 price = 6;
-  uint32 stock_initiate = 7;
-  uint32 left_stock = 8;
+  double price = 6;
+  int32 stock_initiate = 7;
+  int32 left_stock = 8;
 }
 
 message Stock {
   uint64 id = 1;
   uint32 sku_id = 2;
-  uint32 transaction_id = 3;
+  uint64 transaction_id = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
-
-  uint32 stock_initiate = 6;
-  uint32 left_stock = 7;
+  int32 stock_initiate = 6;
+  int32 left_stock = 7;
 }
 
 message StockLog {
   uint64 id = 1;
   uint32 sku_id = 2;
-  uint32 warehouse_id = 3;
-  uint32 transaction_id = 4;
-  uint32 change_by_id = 5;
+  uint64 transaction_id = 4;
+  uint32 actor_id = 5;
   uint64 price_version_id = 6;
   uint64 stock_id = 7;
   google.protobuf.Timestamp created_at = 8;
+  LogType log_type = 9;
+  int32 change = 10;
 }
 
 message ListPriceSkuRequest {

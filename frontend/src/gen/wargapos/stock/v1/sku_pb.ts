@@ -15,7 +15,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/sku.proto.
  */
 export const file_wargapos_stock_v1_sku: GenFile = /*@__PURE__*/
-  fileDesc("Cht3YXJnYXBvcy9zdG9jay92MS9za3UucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxImYKDVJhY2tQbGFjZW1lbnQSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEiUKBHJhY2sYAyABKAsyFy53YXJnYXBvcy5zdG9jay52MS5SYWNrEhIKCmxlZnRfc3RvY2sYBCABKAUi5AEKA1NrdRIKCgJpZBgBIAEoDRIMCgRjb2RlGAIgASgJEhIKCnByb2R1Y3RfaWQYAyABKA0SEQoJYnJhbmNoX2lkGAQgASgNEhQKDHdhcmVob3VzZV9pZBgFIAEoDRIuCgpjcmVhdGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIPCgdkZWxldGVkGAggASgIEhUKDWF2ZXJhZ2VfcHJpY2UYCSABKAMiMgoXTGlzdFNrdVBsYWNlbWVudFJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAIlAKGExpc3RTa3VQbGFjZW1lbnRSZXNwb25zZRI0CgpwbGFjZW1lbnRzGAEgAygLMiAud2FyZ2Fwb3Muc3RvY2sudjEuUmFja1BsYWNlbWVudCKEAQoQQ3JlYXRlU2t1UmVxdWVzdBIYCgRjb2RlGAEgASgJQgq6SAdyBRABGP8BEhsKCnByb2R1Y3RfaWQYAiABKA1CB7pIBCoCIAASGgoJYnJhbmNoX2lkGAMgASgNQge6SAQqAiAAEh0KDHdhcmVob3VzZV9pZBgEIAEoDUIHukgEKgIgACI4ChFDcmVhdGVTa3VSZXNwb25zZRIjCgNza3UYASABKAsyFi53YXJnYXBvcy5zdG9jay52MS5Ta3UiYAoQVXBkYXRlU2t1UmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIYCgRjb2RlGAIgASgJQgq6SAdyBRABGP8BEh0KDHdhcmVob3VzZV9pZBgDIAEoDUIHukgEKgIgACI4ChFVcGRhdGVTa3VSZXNwb25zZRIjCgNza3UYASABKAsyFi53YXJnYXBvcy5zdG9jay52MS5Ta3UiJwoQRGVsZXRlU2t1UmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgACITChFEZWxldGVTa3VSZXNwb25zZSJVCg5MaXN0U2t1UmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwcm9kdWN0X2lkGAMgASgNEg4KBnNlYXJjaBgEIAEoCSJGCg9MaXN0U2t1UmVzcG9uc2USJAoEc2t1cxgBIAMoCzIWLndhcmdhcG9zLnN0b2NrLnYxLlNrdRINCgV0b3RhbBgCIAEoBSI7Cg1HZXRTa3VSZXF1ZXN0EgwKAmlkGAEgASgNSAASDgoEY29kZRgCIAEoCUgAQgwKCmlkZW50aWZpZXIiZAoOR2V0U2t1UmVzcG9uc2USLQoIZXJyX2NvZGUYASABKA4yGy53YXJnYXBvcy5zdG9jay52MS5Ta3VFcnJvchIjCgNza3UYAiABKAsyFi53YXJnYXBvcy5zdG9jay52MS5Ta3UqPQoIU2t1RXJyb3ISGQoVU0tVX0VSUk9SX1VOU1BFQ0lGSUVEEAASFgoSU0tVX0VSUk9SX05PVEZPVU5EEAEqcwoLUHJpY2luZ1R5cGUSHAoYUFJJQ0lOR19UWVBFX1VOU1BFQ0lGSUVEEAASFQoRUFJJQ0lOR19UWVBFX0xJRk8QARIVChFQUklDSU5HX1RZUEVfRklGTxACEhgKFFBSSUNJTkdfVFlQRV9BVkVSQUdFEANCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_stock_v1_rack]);
+  fileDesc("Cht3YXJnYXBvcy9zdG9jay92MS9za3UucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxImYKDVJhY2tQbGFjZW1lbnQSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEiUKBHJhY2sYAyABKAsyFy53YXJnYXBvcy5zdG9jay52MS5SYWNrEhIKCmxlZnRfc3RvY2sYBCABKAUiswMKA1NrdRIKCgJpZBgBIAEoDRIMCgRjb2RlGAIgASgJEhIKCnByb2R1Y3RfaWQYAyABKA0SEQoJYnJhbmNoX2lkGAQgASgNEhQKDHdhcmVob3VzZV9pZBgFIAEoDRI0CgxwcmljaW5nX3R5cGUYBiABKA4yHi53YXJnYXBvcy5zdG9jay52MS5QcmljaW5nVHlwZRIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIPCgdkZWxldGVkGAkgASgIEhIKCmxlZnRfc3RvY2sYCiABKAUSMQoNbGFzdF9zdG9ja19pbhgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMwoPbGFzdF9hZGp1c3RtZW50GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5sYXN0X3N0b2NrX291dBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiMgoXTGlzdFNrdVBsYWNlbWVudFJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAIlAKGExpc3RTa3VQbGFjZW1lbnRSZXNwb25zZRI0CgpwbGFjZW1lbnRzGAEgAygLMiAud2FyZ2Fwb3Muc3RvY2sudjEuUmFja1BsYWNlbWVudCJ7ChBDcmVhdGVTa3VSZXF1ZXN0EhgKBGNvZGUYASABKAlCCrpIB3IFEAEY/wESGwoKcHJvZHVjdF9pZBgCIAEoDUIHukgEKgIgABIRCglicmFuY2hfaWQYAyABKA0SHQoMd2FyZWhvdXNlX2lkGAQgASgNQge6SAQqAiAAIjgKEUNyZWF0ZVNrdVJlc3BvbnNlEiMKA3NrdRgBIAEoCzIWLndhcmdhcG9zLnN0b2NrLnYxLlNrdSJBChBVcGRhdGVTa3VSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAEhgKBGNvZGUYAiABKAlCCrpIB3IFEAEY/wEiOAoRVXBkYXRlU2t1UmVzcG9uc2USIwoDc2t1GAEgASgLMhYud2FyZ2Fwb3Muc3RvY2sudjEuU2t1IicKEERlbGV0ZVNrdVJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAAiEwoRRGVsZXRlU2t1UmVzcG9uc2UiVQoOTGlzdFNrdVJlcXVlc3QSDAoEcGFnZRgBIAEoBRIRCglwYWdlX3NpemUYAiABKAUSEgoKcHJvZHVjdF9pZBgDIAEoDRIOCgZzZWFyY2gYBCABKAkiRgoPTGlzdFNrdVJlc3BvbnNlEiQKBHNrdXMYASADKAsyFi53YXJnYXBvcy5zdG9jay52MS5Ta3USDQoFdG90YWwYAiABKAUiOwoNR2V0U2t1UmVxdWVzdBIMCgJpZBgBIAEoDUgAEg4KBGNvZGUYAiABKAlIAEIMCgppZGVudGlmaWVyImQKDkdldFNrdVJlc3BvbnNlEi0KCGVycl9jb2RlGAEgASgOMhsud2FyZ2Fwb3Muc3RvY2sudjEuU2t1RXJyb3ISIwoDc2t1GAIgASgLMhYud2FyZ2Fwb3Muc3RvY2sudjEuU2t1Kj0KCFNrdUVycm9yEhkKFVNLVV9FUlJPUl9VTlNQRUNJRklFRBAAEhYKElNLVV9FUlJPUl9OT1RGT1VORBABKq0BCgtQcmljaW5nVHlwZRIcChhQUklDSU5HX1RZUEVfVU5TUEVDSUZJRUQQABIVChFQUklDSU5HX1RZUEVfTElGTxABEhUKEVBSSUNJTkdfVFlQRV9GSUZPEAISGgoWUFJJQ0lOR19UWVBFX01BWF9QUklDRRAEEhoKFlBSSUNJTkdfVFlQRV9NSU5fUFJJQ0UQBRIaChZQUklDSU5HX1RZUEVfRklYX1BSSUNFEAZCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_stock_v1_rack]);
 
 /**
  * @generated from message wargapos.stock.v1.RackPlacement
@@ -79,24 +79,44 @@ export type Sku = Message<"wargapos.stock.v1.Sku"> & {
   warehouseId: number;
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 6;
+   * @generated from field: wargapos.stock.v1.PricingType pricing_type = 6;
+   */
+  pricingType: PricingType;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 7;
    */
   createdAt?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 7;
+   * @generated from field: google.protobuf.Timestamp updated_at = 8;
    */
   updatedAt?: Timestamp;
 
   /**
-   * @generated from field: bool deleted = 8;
+   * @generated from field: bool deleted = 9;
    */
   deleted: boolean;
 
   /**
-   * @generated from field: int64 average_price = 9;
+   * @generated from field: int32 left_stock = 10;
    */
-  averagePrice: bigint;
+  leftStock: number;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_stock_in = 11;
+   */
+  lastStockIn?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_adjustment = 12;
+   */
+  lastAdjustment?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_stock_out = 13;
+   */
+  lastStockOut?: Timestamp;
 };
 
 /**
@@ -202,11 +222,6 @@ export type UpdateSkuRequest = Message<"wargapos.stock.v1.UpdateSkuRequest"> & {
    * @generated from field: string code = 2;
    */
   code: string;
-
-  /**
-   * @generated from field: uint32 warehouse_id = 3;
-   */
-  warehouseId: number;
 };
 
 /**
@@ -413,9 +428,19 @@ export enum PricingType {
   FIFO = 2,
 
   /**
-   * @generated from enum value: PRICING_TYPE_AVERAGE = 3;
+   * @generated from enum value: PRICING_TYPE_MAX_PRICE = 4;
    */
-  AVERAGE = 3,
+  MAX_PRICE = 4,
+
+  /**
+   * @generated from enum value: PRICING_TYPE_MIN_PRICE = 5;
+   */
+  MIN_PRICE = 5,
+
+  /**
+   * @generated from enum value: PRICING_TYPE_FIX_PRICE = 6;
+   */
+  FIX_PRICE = 6,
 }
 
 /**

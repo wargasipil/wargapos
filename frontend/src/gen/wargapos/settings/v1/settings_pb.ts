@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/settings/v1/settings.proto.
  */
 export const file_wargapos_settings_v1_settings: GenFile = /*@__PURE__*/
-  fileDesc("CiN3YXJnYXBvcy9zZXR0aW5ncy92MS9zZXR0aW5ncy5wcm90bxIUd2FyZ2Fwb3Muc2V0dGluZ3MudjEiTwoQTWlkdHJhbnNTZXR0aW5ncxISCgpzZXJ2ZXJfa2V5GAEgASgJEhIKCmNsaWVudF9rZXkYAiABKAkSEwoLZW52aXJvbm1lbnQYAyABKAkiFAoSR2V0U2V0dGluZ3NSZXF1ZXN0InoKFU1hbnVhbFBheW1lbnRTZXR0aW5ncxIRCgliYW5rX25hbWUYASABKAkSGwoTYmFua19hY2NvdW50X251bWJlchgCIAEoCRIZChFiYW5rX2FjY291bnRfbmFtZRgDIAEoCRIWCg5xcmlzX2ltYWdlX3VybBgEIAEoCSKuAQoPUHJpbnRlclNldHRpbmdzEg0KBXRpdGxlGAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEg8KB2FkZHJlc3MYAyABKAkSEAoIYWRkcmVzczIYBCABKAkSDwoHY29udGFjdBgFIAEoCRIOCgZmb290ZXIYBiABKAkSMwoKcHJpbnRfbW9kZRgHIAEoDjIfLndhcmdhcG9zLnNldHRpbmdzLnYxLlByaW50TW9kZSKfAgoTR2V0U2V0dGluZ3NSZXNwb25zZRI4CghtaWR0cmFucxgBIAEoCzImLndhcmdhcG9zLnNldHRpbmdzLnYxLk1pZHRyYW5zU2V0dGluZ3MSGwoTbWlkdHJhbnNfY29uZmlndXJlZBgCIAEoCBJDCg5tYW51YWxfcGF5bWVudBgDIAEoCzIrLndhcmdhcG9zLnNldHRpbmdzLnYxLk1hbnVhbFBheW1lbnRTZXR0aW5ncxI2CgdwcmludGVyGAQgASgLMiUud2FyZ2Fwb3Muc2V0dGluZ3MudjEuUHJpbnRlclNldHRpbmdzEjQKBmJhY2t1cBgFIAEoCzIkLndhcmdhcG9zLnNldHRpbmdzLnYxLkJhY2t1cFNldHRpbmdzIpoBCg5CYWNrdXBTZXR0aW5ncxIPCgdlbmFibGVkGAEgASgIEhYKDmludGVydmFsX2hvdXJzGAIgASgFEhcKD3JldGVudGlvbl9jb3VudBgDIAEoBRISCgpiYWNrdXBfZGlyGAQgASgJEjIKDmxhc3RfYmFja3VwX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCKEAgoVVXBkYXRlU2V0dGluZ3NSZXF1ZXN0EjgKCG1pZHRyYW5zGAEgASgLMiYud2FyZ2Fwb3Muc2V0dGluZ3MudjEuTWlkdHJhbnNTZXR0aW5ncxJDCg5tYW51YWxfcGF5bWVudBgCIAEoCzIrLndhcmdhcG9zLnNldHRpbmdzLnYxLk1hbnVhbFBheW1lbnRTZXR0aW5ncxI2CgdwcmludGVyGAMgASgLMiUud2FyZ2Fwb3Muc2V0dGluZ3MudjEuUHJpbnRlclNldHRpbmdzEjQKBmJhY2t1cBgEIAEoCzIkLndhcmdhcG9zLnNldHRpbmdzLnYxLkJhY2t1cFNldHRpbmdzIhgKFlVwZGF0ZVNldHRpbmdzUmVzcG9uc2UqWQoJUHJpbnRNb2RlEhoKFlBSSU5UX01PREVfVU5TUEVDSUZJRUQQABIYChRQUklOVF9NT0RFX0NPTk5FQ1RPUhABEhYKElBSSU5UX01PREVfQlJPV1NFUhACMuIBCg9TZXR0aW5nc1NlcnZpY2USYgoLR2V0U2V0dGluZ3MSKC53YXJnYXBvcy5zZXR0aW5ncy52MS5HZXRTZXR0aW5nc1JlcXVlc3QaKS53YXJnYXBvcy5zZXR0aW5ncy52MS5HZXRTZXR0aW5nc1Jlc3BvbnNlEmsKDlVwZGF0ZVNldHRpbmdzEisud2FyZ2Fwb3Muc2V0dGluZ3MudjEuVXBkYXRlU2V0dGluZ3NSZXF1ZXN0Giwud2FyZ2Fwb3Muc2V0dGluZ3MudjEuVXBkYXRlU2V0dGluZ3NSZXNwb25zZUI2WjR3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zZXR0aW5ncy92MTtzZXR0aW5nc3YxYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("CiN3YXJnYXBvcy9zZXR0aW5ncy92MS9zZXR0aW5ncy5wcm90bxIUd2FyZ2Fwb3Muc2V0dGluZ3MudjEiTwoQTWlkdHJhbnNTZXR0aW5ncxISCgpzZXJ2ZXJfa2V5GAEgASgJEhIKCmNsaWVudF9rZXkYAiABKAkSEwoLZW52aXJvbm1lbnQYAyABKAkiFAoSR2V0U2V0dGluZ3NSZXF1ZXN0InoKFU1hbnVhbFBheW1lbnRTZXR0aW5ncxIRCgliYW5rX25hbWUYASABKAkSGwoTYmFua19hY2NvdW50X251bWJlchgCIAEoCRIZChFiYW5rX2FjY291bnRfbmFtZRgDIAEoCRIWCg5xcmlzX2ltYWdlX3VybBgEIAEoCSKuAQoPUHJpbnRlclNldHRpbmdzEg0KBXRpdGxlGAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEg8KB2FkZHJlc3MYAyABKAkSEAoIYWRkcmVzczIYBCABKAkSDwoHY29udGFjdBgFIAEoCRIOCgZmb290ZXIYBiABKAkSMwoKcHJpbnRfbW9kZRgHIAEoDjIfLndhcmdhcG9zLnNldHRpbmdzLnYxLlByaW50TW9kZSLaAgoTR2V0U2V0dGluZ3NSZXNwb25zZRI4CghtaWR0cmFucxgBIAEoCzImLndhcmdhcG9zLnNldHRpbmdzLnYxLk1pZHRyYW5zU2V0dGluZ3MSGwoTbWlkdHJhbnNfY29uZmlndXJlZBgCIAEoCBJDCg5tYW51YWxfcGF5bWVudBgDIAEoCzIrLndhcmdhcG9zLnNldHRpbmdzLnYxLk1hbnVhbFBheW1lbnRTZXR0aW5ncxI2CgdwcmludGVyGAQgASgLMiUud2FyZ2Fwb3Muc2V0dGluZ3MudjEuUHJpbnRlclNldHRpbmdzEjQKBmJhY2t1cBgFIAEoCzIkLndhcmdhcG9zLnNldHRpbmdzLnYxLkJhY2t1cFNldHRpbmdzEjkKDWJ1c2luZXNzX3R5cGUYBiABKA4yIi53YXJnYXBvcy5zZXR0aW5ncy52MS5CdXNpbmVzc1R5cGUimgEKDkJhY2t1cFNldHRpbmdzEg8KB2VuYWJsZWQYASABKAgSFgoOaW50ZXJ2YWxfaG91cnMYAiABKAUSFwoPcmV0ZW50aW9uX2NvdW50GAMgASgFEhIKCmJhY2t1cF9kaXIYBCABKAkSMgoObGFzdF9iYWNrdXBfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIr8CChVVcGRhdGVTZXR0aW5nc1JlcXVlc3QSOAoIbWlkdHJhbnMYASABKAsyJi53YXJnYXBvcy5zZXR0aW5ncy52MS5NaWR0cmFuc1NldHRpbmdzEkMKDm1hbnVhbF9wYXltZW50GAIgASgLMisud2FyZ2Fwb3Muc2V0dGluZ3MudjEuTWFudWFsUGF5bWVudFNldHRpbmdzEjYKB3ByaW50ZXIYAyABKAsyJS53YXJnYXBvcy5zZXR0aW5ncy52MS5QcmludGVyU2V0dGluZ3MSNAoGYmFja3VwGAQgASgLMiQud2FyZ2Fwb3Muc2V0dGluZ3MudjEuQmFja3VwU2V0dGluZ3MSOQoNYnVzaW5lc3NfdHlwZRgHIAEoDjIiLndhcmdhcG9zLnNldHRpbmdzLnYxLkJ1c2luZXNzVHlwZSIYChZVcGRhdGVTZXR0aW5nc1Jlc3BvbnNlKmQKDEJ1c2luZXNzVHlwZRIdChlCVVNJTkVTU19UWVBFX1VOU1BFQ0lGSUVEEAASFgoSQlVTSU5FU1NfVFlQRV9DQUZFEAESHQoZQlVTSU5FU1NfVFlQRV9NQVJLRVRQTEFDRRACKlkKCVByaW50TW9kZRIaChZQUklOVF9NT0RFX1VOU1BFQ0lGSUVEEAASGAoUUFJJTlRfTU9ERV9DT05ORUNUT1IQARIWChJQUklOVF9NT0RFX0JST1dTRVIQAjLiAQoPU2V0dGluZ3NTZXJ2aWNlEmIKC0dldFNldHRpbmdzEigud2FyZ2Fwb3Muc2V0dGluZ3MudjEuR2V0U2V0dGluZ3NSZXF1ZXN0Gikud2FyZ2Fwb3Muc2V0dGluZ3MudjEuR2V0U2V0dGluZ3NSZXNwb25zZRJrCg5VcGRhdGVTZXR0aW5ncxIrLndhcmdhcG9zLnNldHRpbmdzLnYxLlVwZGF0ZVNldHRpbmdzUmVxdWVzdBosLndhcmdhcG9zLnNldHRpbmdzLnYxLlVwZGF0ZVNldHRpbmdzUmVzcG9uc2VCNlo0d2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc2V0dGluZ3MvdjE7c2V0dGluZ3N2MWIGcHJvdG8z", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message wargapos.settings.v1.MidtransSettings
@@ -165,6 +165,11 @@ export type GetSettingsResponse = Message<"wargapos.settings.v1.GetSettingsRespo
    * @generated from field: wargapos.settings.v1.BackupSettings backup = 5;
    */
   backup?: BackupSettings;
+
+  /**
+   * @generated from field: wargapos.settings.v1.BusinessType business_type = 6;
+   */
+  businessType: BusinessType;
 };
 
 /**
@@ -234,6 +239,11 @@ export type UpdateSettingsRequest = Message<"wargapos.settings.v1.UpdateSettings
    * @generated from field: wargapos.settings.v1.BackupSettings backup = 4;
    */
   backup?: BackupSettings;
+
+  /**
+   * @generated from field: wargapos.settings.v1.BusinessType business_type = 7;
+   */
+  businessType: BusinessType;
 };
 
 /**
@@ -255,6 +265,32 @@ export type UpdateSettingsResponse = Message<"wargapos.settings.v1.UpdateSetting
  */
 export const UpdateSettingsResponseSchema: GenMessage<UpdateSettingsResponse> = /*@__PURE__*/
   messageDesc(file_wargapos_settings_v1_settings, 7);
+
+/**
+ * @generated from enum wargapos.settings.v1.BusinessType
+ */
+export enum BusinessType {
+  /**
+   * @generated from enum value: BUSINESS_TYPE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: BUSINESS_TYPE_CAFE = 1;
+   */
+  CAFE = 1,
+
+  /**
+   * @generated from enum value: BUSINESS_TYPE_MARKETPLACE = 2;
+   */
+  MARKETPLACE = 2,
+}
+
+/**
+ * Describes the enum wargapos.settings.v1.BusinessType.
+ */
+export const BusinessTypeSchema: GenEnum<BusinessType> = /*@__PURE__*/
+  enumDesc(file_wargapos_settings_v1_settings, 0);
 
 /**
  * @generated from enum wargapos.settings.v1.PrintMode
@@ -282,7 +318,7 @@ export enum PrintMode {
  * Describes the enum wargapos.settings.v1.PrintMode.
  */
 export const PrintModeSchema: GenEnum<PrintMode> = /*@__PURE__*/
-  enumDesc(file_wargapos_settings_v1_settings, 0);
+  enumDesc(file_wargapos_settings_v1_settings, 1);
 
 /**
  * @generated from service wargapos.settings.v1.SettingsService

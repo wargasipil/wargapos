@@ -14,7 +14,7 @@ enum Role {
 }
 
 message User {
-  int64  id        = 1;
+  uint32 id        = 1;
   string username  = 2;
   string full_name = 3;
   string email     = 4;
@@ -33,11 +33,15 @@ message CreateUserRequest {
 
 message CreateUserResponse { User user = 1; }
 
-message GetUserRequest  { int64 id = 1 [(buf.validate.field).int64.gt = 0]; }
-message GetUserResponse { User user = 1; }
+message GetUserRequest {
+  repeated uint32 ids = 1 [(buf.validate.field).repeated.min_items = 1];
+}
+message GetUserResponse {
+  map<uint32, User> users = 1;
+}
 
 message UpdateUserRequest {
-  int64  id        = 1 [(buf.validate.field).int64.gt = 0];
+  uint32 id        = 1 [(buf.validate.field).uint32.gt = 0];
   string full_name = 2;
   string email     = 3;
   Role   role      = 4;
@@ -46,7 +50,7 @@ message UpdateUserRequest {
 
 message UpdateUserResponse { User user = 1; }
 
-message DeleteUserRequest  { int64 id = 1 [(buf.validate.field).int64.gt = 0]; }
+message DeleteUserRequest  { uint32 id = 1 [(buf.validate.field).uint32.gt = 0]; }
 message DeleteUserResponse {}
 
 message ListUsersRequest {

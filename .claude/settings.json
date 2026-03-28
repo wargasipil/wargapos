@@ -15,7 +15,10 @@
       "Bash(find /d/research/wargapos/frontend/src -type f \\\\\\(-name *.ts -o -name *.tsx \\\\\\))",
       "Bash(find d:/research/wargapos/backend/internal/service/settings_service -type f -name *.go)",
       "Bash(find d:/research/wargapos/backend/internal/service/backup_service -type f -name *.go)",
-      "Bash(xargs ls:*)"
+      "Bash(xargs ls:*)",
+      "Bash(ls /d/research/wargapos/backend/internal/service/*/)",
+      "Bash(/tmp/user_id_refactor_map.txt:*)",
+      "Read(//tmp/**)"
     ]
   }
 }

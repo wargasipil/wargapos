@@ -382,7 +382,7 @@ func (x *OrderItem) GetNotes() string {
 type Order struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Id                int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	CashierId         int64                  `protobuf:"varint,2,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
+	CashierId         uint32                 `protobuf:"varint,2,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
 	Items             []*OrderItem           `protobuf:"bytes,3,rep,name=items,proto3" json:"items,omitempty"`
 	TotalCents        int64                  `protobuf:"varint,4,opt,name=total_cents,json=totalCents,proto3" json:"total_cents,omitempty"`
 	Status            OrderStatus            `protobuf:"varint,5,opt,name=status,proto3,enum=wargapos.transaction.v1.OrderStatus" json:"status,omitempty"`
@@ -436,7 +436,7 @@ func (x *Order) GetId() int64 {
 	return 0
 }
 
-func (x *Order) GetCashierId() int64 {
+func (x *Order) GetCashierId() uint32 {
 	if x != nil {
 		return x.CashierId
 	}
@@ -889,7 +889,7 @@ func (x *MarkOrderDeliveredResponse) GetOrder() *Order {
 
 type ListOrdersFilter struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
-	CashierId           int64                  `protobuf:"varint,3,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
+	CashierId           uint32                 `protobuf:"varint,3,opt,name=cashier_id,json=cashierId,proto3" json:"cashier_id,omitempty"`
 	StatusFilter        OrderStatus            `protobuf:"varint,4,opt,name=status_filter,json=statusFilter,proto3,enum=wargapos.transaction.v1.OrderStatus" json:"status_filter,omitempty"`
 	TableId             int64                  `protobuf:"varint,5,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
 	OrderFromFilter     OrderFrom              `protobuf:"varint,6,opt,name=order_from_filter,json=orderFromFilter,proto3,enum=wargapos.transaction.v1.OrderFrom" json:"order_from_filter,omitempty"`
@@ -932,7 +932,7 @@ func (*ListOrdersFilter) Descriptor() ([]byte, []int) {
 	return file_wargapos_transaction_v1_order_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *ListOrdersFilter) GetCashierId() int64 {
+func (x *ListOrdersFilter) GetCashierId() uint32 {
 	if x != nil {
 		return x.CashierId
 	}
@@ -1184,7 +1184,7 @@ const file_wargapos_transaction_v1_order_proto_rawDesc = "" +
 	"\x05Order\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
-	"cashier_id\x18\x02 \x01(\x03R\tcashierId\x128\n" +
+	"cashier_id\x18\x02 \x01(\rR\tcashierId\x128\n" +
 	"\x05items\x18\x03 \x03(\v2\".wargapos.transaction.v1.OrderItemR\x05items\x12\x1f\n" +
 	"\vtotal_cents\x18\x04 \x01(\x03R\n" +
 	"totalCents\x12<\n" +
@@ -1220,7 +1220,7 @@ const file_wargapos_transaction_v1_order_proto_rawDesc = "" +
 	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"\xbb\x04\n" +
 	"\x10ListOrdersFilter\x12\x1d\n" +
 	"\n" +
-	"cashier_id\x18\x03 \x01(\x03R\tcashierId\x12I\n" +
+	"cashier_id\x18\x03 \x01(\rR\tcashierId\x12I\n" +
 	"\rstatus_filter\x18\x04 \x01(\x0e2$.wargapos.transaction.v1.OrderStatusR\fstatusFilter\x12\x19\n" +
 	"\btable_id\x18\x05 \x01(\x03R\atableId\x12N\n" +
 	"\x11order_from_filter\x18\x06 \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\x0forderFromFilter\x12Z\n" +

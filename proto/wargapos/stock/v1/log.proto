@@ -2,7 +2,18 @@ syntax = "proto3";
 
 package wargapos.stock.v1;
 
-// import "buf/validate/validate.proto";
-// import "google/protobuf/timestamp.proto";
+import "buf/validate/validate.proto";
+import "wargapos/stock/v1/stock.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
+
+message ListStockLogSkuRequest {
+  uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message ListStockLogSkuResponse {
+  repeated StockLog logs = 1;
+  int32 total = 2;
+}

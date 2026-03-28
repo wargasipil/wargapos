@@ -24,8 +24,7 @@ func (s *IngredientService) CreateMaterial(
 	m := models.Material{
 		Code:     req.Msg.Code,
 		Name:     req.Msg.Name,
-		QtyType:  int16(req.Msg.QtyType),
-		Qty:      req.Msg.Qty,
+		QtyType:  req.Msg.QtyType,
 		BranchID: branchID,
 	}
 	if err := s.db.WithContext(ctx).Create(&m).Error; err != nil {
