@@ -45,6 +45,7 @@ func (s *StockService) ListStockLogSku(
 			ActorId:       r.ActorID,
 			LogType:       r.LogType,
 			Change:        r.Change,
+			CostVersionId: r.CostVersionID,
 			CreatedAt:     timestamppb.New(r.CreatedAt),
 		}
 	}

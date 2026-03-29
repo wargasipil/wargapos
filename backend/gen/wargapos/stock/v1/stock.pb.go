@@ -32,6 +32,8 @@ const (
 	LogType_LOG_TYPE_STOCK_OUT    LogType = 3
 	LogType_LOG_TYPE_ADJUSTMENT   LogType = 4
 	LogType_LOG_TYPE_ORDER        LogType = 5
+	LogType_LOG_TYPE_BROKEN       LogType = 6
+	LogType_LOG_TYPE_LOST         LogType = 7
 )
 
 // Enum value maps for LogType.
@@ -43,6 +45,8 @@ var (
 		3: "LOG_TYPE_STOCK_OUT",
 		4: "LOG_TYPE_ADJUSTMENT",
 		5: "LOG_TYPE_ORDER",
+		6: "LOG_TYPE_BROKEN",
+		7: "LOG_TYPE_LOST",
 	}
 	LogType_value = map[string]int32{
 		"LOG_TYPE_UNSPECIFIED":  0,
@@ -51,6 +55,8 @@ var (
 		"LOG_TYPE_STOCK_OUT":    3,
 		"LOG_TYPE_ADJUSTMENT":   4,
 		"LOG_TYPE_ORDER":        5,
+		"LOG_TYPE_BROKEN":       6,
+		"LOG_TYPE_LOST":         7,
 	}
 )
 
@@ -187,6 +193,7 @@ type StockLog struct {
 	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	TransactionId uint64                 `protobuf:"varint,4,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
 	ActorId       uint32                 `protobuf:"varint,5,opt,name=actor_id,json=actorId,proto3" json:"actor_id,omitempty"`
+	CostVersionId uint64                 `protobuf:"varint,6,opt,name=cost_version_id,json=costVersionId,proto3" json:"cost_version_id,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	LogType       LogType                `protobuf:"varint,9,opt,name=log_type,json=logType,proto3,enum=wargapos.stock.v1.LogType" json:"log_type,omitempty"`
 	Change        int32                  `protobuf:"varint,10,opt,name=change,proto3" json:"change,omitempty"`
@@ -248,6 +255,13 @@ func (x *StockLog) GetTransactionId() uint64 {
 func (x *StockLog) GetActorId() uint32 {
 	if x != nil {
 		return x.ActorId
+	}
+	return 0
+}
+
+func (x *StockLog) GetCostVersionId() uint64 {
+	if x != nil {
+		return x.CostVersionId
 	}
 	return 0
 }
@@ -377,12 +391,13 @@ const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"\tunit_cost\x18\x06 \x01(\x01R\bunitCost\x12%\n" +
 	"\x0estock_initiate\x18\a \x01(\x05R\rstockInitiate\x12\x1d\n" +
 	"\n" +
-	"left_stock\x18\b \x01(\x05R\tleftStock\"\xfd\x01\n" +
+	"left_stock\x18\b \x01(\x05R\tleftStock\"\xa5\x02\n" +
 	"\bStockLog\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12%\n" +
 	"\x0etransaction_id\x18\x04 \x01(\x04R\rtransactionId\x12\x19\n" +
-	"\bactor_id\x18\x05 \x01(\rR\aactorId\x129\n" +
+	"\bactor_id\x18\x05 \x01(\rR\aactorId\x12&\n" +
+	"\x0fcost_version_id\x18\x06 \x01(\x04R\rcostVersionId\x129\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x125\n" +
 	"\blog_type\x18\t \x01(\x0e2\x1a.wargapos.stock.v1.LogTypeR\alogType\x12\x16\n" +
@@ -391,14 +406,16 @@ const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"\x12ListCostSkuRequest\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"K\n" +
 	"\x13ListCostSkuResponse\x124\n" +
-	"\x05costs\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.CostVersionR\x05costs*\x9a\x01\n" +
+	"\x05costs\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.CostVersionR\x05costs*\xc2\x01\n" +
 	"\aLogType\x12\x18\n" +
 	"\x14LOG_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15LOG_TYPE_STOCK_CANCEL\x10\x01\x12\x15\n" +
 	"\x11LOG_TYPE_STOCK_IN\x10\x02\x12\x16\n" +
 	"\x12LOG_TYPE_STOCK_OUT\x10\x03\x12\x17\n" +
 	"\x13LOG_TYPE_ADJUSTMENT\x10\x04\x12\x12\n" +
-	"\x0eLOG_TYPE_ORDER\x10\x05B0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
+	"\x0eLOG_TYPE_ORDER\x10\x05\x12\x13\n" +
+	"\x0fLOG_TYPE_BROKEN\x10\x06\x12\x11\n" +
+	"\rLOG_TYPE_LOST\x10\aB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
 
 var (
 	file_wargapos_stock_v1_stock_proto_rawDescOnce sync.Once

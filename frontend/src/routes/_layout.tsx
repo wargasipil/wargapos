@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Outlet, Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { Accordion, Box, Button, Flex, IconButton, Popover, Text, Tooltip, VStack, HStack } from '@chakra-ui/react'
-import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight, Warehouse, Barcode, ChevronDown, UtensilsCrossed, ArrowLeftRight, FlaskConical, type LucideIcon } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight, Warehouse, Barcode, ChevronDown, UtensilsCrossed, ArrowLeftRight, FlaskConical, ShoppingBag, Store, ClipboardList, type LucideIcon } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
+import { settingsClient } from '../client'
+import { BusinessType } from '../gen/wargapos/settings/v1/settings_pb'
 import { Toaster } from '../components/ui/toaster'
 import { toaster } from '../components/ui/toaster'
 
@@ -14,28 +17,19 @@ type SidebarEntry = NavLeaf | NavGroup
 function isGroup(e: SidebarEntry): e is NavGroup { return 'children' in e }
 
 // --- Static nav items ---
-const baseNavItems: NavLeaf[] = [
+const cafeNavItems: NavLeaf[] = [
   { label: 'Dashboard', to: '/', Icon: LayoutDashboard },
-  { label: 'POS', to: '/pos', Icon: ShoppingCart },
-  { label: 'Orders', to: '/orders', Icon: Receipt },
-  { label: 'Kitchen', to: '/kitchen', Icon: ChefHat },
+  { label: 'POS', to: '/cafe/pos', Icon: ShoppingCart },
+  { label: 'Orders', to: '/cafe/orders', Icon: Receipt },
+  { label: 'Kitchen', to: '/cafe/kitchen', Icon: ChefHat },
   { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
-const baseSidebarEntries: SidebarEntry[] = [
-  { label: 'Dashboard', to: '/', Icon: LayoutDashboard, exact: true },
-  {
-    label: 'Cafe',
-    Icon: UtensilsCrossed,
-    children: [
-      { label: 'POS / Cashier', to: '/pos', Icon: ShoppingCart },
-      { label: 'Orders', to: '/orders', Icon: Receipt },
-      { label: 'Kitchen', to: '/kitchen', Icon: ChefHat },
-      { label: 'Tables', to: '/tables', Icon: LayoutGrid },
-      { label: 'Products', to: '/products', Icon: Package, exact: true },
-      { label: 'Ingredients', to: '/ingredients', Icon: FlaskConical },
-    ],
-  },
+const marketplaceNavItems: NavLeaf[] = [
+  { label: 'Dashboard', to: '/', Icon: LayoutDashboard },
+  { label: 'Shop', to: '/marketplace/shop', Icon: Store },
+  { label: 'Orders', to: '/marketplace/orders', Icon: ClipboardList },
+  { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
 const STORAGE_KEY = 'sidebar-open-groups'
@@ -85,10 +79,41 @@ export function ProtectedLayout() {
   const isAdmin = role === 'admin'
   const isAdminOrManager = role === 'admin' || role === 'manager'
 
-  const navItems = isAdmin ? [...baseNavItems, { label: 'Team', to: '/users', Icon: Users }] : baseNavItems
+  const { data: settingsData } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsClient.getSettings({}),
+    staleTime: 5 * 60 * 1000,
+  })
+  const businessType = settingsData?.businessType ?? BusinessType.UNSPECIFIED
+  const showCafe        = businessType !== BusinessType.MARKETPLACE
+  const showMarketplace = businessType !== BusinessType.CAFE
+
+  const baseNav = showCafe ? cafeNavItems : marketplaceNavItems
+  const navItems = isAdmin ? [...baseNav, { label: 'Team', to: '/users', Icon: Users }] : baseNav
 
   const sidebarEntries: SidebarEntry[] = [
-    ...baseSidebarEntries,
+    { label: 'Dashboard', to: '/', Icon: LayoutDashboard, exact: true },
+    ...(showCafe ? [{
+      label: 'Cafe',
+      Icon: UtensilsCrossed,
+      children: [
+        { label: 'POS / Cashier', to: '/cafe/pos', Icon: ShoppingCart },
+        { label: 'Orders', to: '/cafe/orders', Icon: Receipt },
+        { label: 'Kitchen', to: '/cafe/kitchen', Icon: ChefHat },
+        { label: 'Tables', to: '/cafe/tables', Icon: LayoutGrid },
+        { label: 'Products', to: '/cafe/products', Icon: Package, exact: true as const },
+        { label: 'Ingredients', to: '/cafe/ingredients', Icon: FlaskConical },
+      ],
+    }] : []),
+    ...(isAdminOrManager && showMarketplace ? [{
+      label: 'Marketplace',
+      Icon: ShoppingBag,
+      children: [
+        { label: 'Shop',     to: '/marketplace/shop',     Icon: Store },
+        { label: 'Products', to: '/marketplace/products', Icon: Package },
+        { label: 'Orders',   to: '/marketplace/orders',   Icon: ClipboardList },
+      ],
+    }] : []),
     ...(isAdminOrManager ? [{
       label: 'Stock',
       Icon: Warehouse,

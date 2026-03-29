@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package wargapos.stock.v1;
+
+// import "buf/validate/validate.proto";
+import "wargapos/stock/v1/stock.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
+
+message StockLogEvent {
+  repeated StockLog stock_log = 1;
+}
+
+message StockEvent {
+  oneof event {
+    StockLogEvent logs = 1;
+  }
+}

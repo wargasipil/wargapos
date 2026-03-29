@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/stock.proto.
  */
 export const file_wargapos_stock_v1_stock: GenFile = /*@__PURE__*/
-  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi4AEKC0Nvc3RWZXJzaW9uEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgDIAEoBBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIRCgl1bml0X2Nvc3QYBiABKAESFgoOc3RvY2tfaW5pdGlhdGUYByABKAUSEgoKbGVmdF9zdG9jaxgIIAEoBSK+AQoIU3RvY2tMb2cSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAQgASgEEhAKCGFjdG9yX2lkGAUgASgNEi4KCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiwKCGxvZ190eXBlGAkgASgOMhoud2FyZ2Fwb3Muc3RvY2sudjEuTG9nVHlwZRIOCgZjaGFuZ2UYCiABKAUiLQoSTGlzdENvc3RTa3VSZXF1ZXN0EhcKBnNrdV9pZBgBIAEoDUIHukgEKgIgACJEChNMaXN0Q29zdFNrdVJlc3BvbnNlEi0KBWNvc3RzGAEgAygLMh4ud2FyZ2Fwb3Muc3RvY2sudjEuQ29zdFZlcnNpb24qmgEKB0xvZ1R5cGUSGAoUTE9HX1RZUEVfVU5TUEVDSUZJRUQQABIZChVMT0dfVFlQRV9TVE9DS19DQU5DRUwQARIVChFMT0dfVFlQRV9TVE9DS19JThACEhYKEkxPR19UWVBFX1NUT0NLX09VVBADEhcKE0xPR19UWVBFX0FESlVTVE1FTlQQBBISCg5MT0dfVFlQRV9PUkRFUhAFQjBaLndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3N0b2NrL3YxO3N0b2NrdjFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi4AEKC0Nvc3RWZXJzaW9uEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgDIAEoBBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIRCgl1bml0X2Nvc3QYBiABKAESFgoOc3RvY2tfaW5pdGlhdGUYByABKAUSEgoKbGVmdF9zdG9jaxgIIAEoBSLXAQoIU3RvY2tMb2cSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAQgASgEEhAKCGFjdG9yX2lkGAUgASgNEhcKD2Nvc3RfdmVyc2lvbl9pZBgGIAEoBBIuCgpjcmVhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIsCghsb2dfdHlwZRgJIAEoDjIaLndhcmdhcG9zLnN0b2NrLnYxLkxvZ1R5cGUSDgoGY2hhbmdlGAogASgFIi0KEkxpc3RDb3N0U2t1UmVxdWVzdBIXCgZza3VfaWQYASABKA1CB7pIBCoCIAAiRAoTTGlzdENvc3RTa3VSZXNwb25zZRItCgVjb3N0cxgBIAMoCzIeLndhcmdhcG9zLnN0b2NrLnYxLkNvc3RWZXJzaW9uKsIBCgdMb2dUeXBlEhgKFExPR19UWVBFX1VOU1BFQ0lGSUVEEAASGQoVTE9HX1RZUEVfU1RPQ0tfQ0FOQ0VMEAESFQoRTE9HX1RZUEVfU1RPQ0tfSU4QAhIWChJMT0dfVFlQRV9TVE9DS19PVVQQAxIXChNMT0dfVFlQRV9BREpVU1RNRU5UEAQSEgoOTE9HX1RZUEVfT1JERVIQBRITCg9MT0dfVFlQRV9CUk9LRU4QBhIRCg1MT0dfVFlQRV9MT1NUEAdCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message wargapos.stock.v1.CostVersion
@@ -90,6 +90,11 @@ export type StockLog = Message<"wargapos.stock.v1.StockLog"> & {
    * @generated from field: uint32 actor_id = 5;
    */
   actorId: number;
+
+  /**
+   * @generated from field: uint64 cost_version_id = 6;
+   */
+  costVersionId: bigint;
 
   /**
    * @generated from field: google.protobuf.Timestamp created_at = 8;
@@ -181,6 +186,16 @@ export enum LogType {
    * @generated from enum value: LOG_TYPE_ORDER = 5;
    */
   ORDER = 5,
+
+  /**
+   * @generated from enum value: LOG_TYPE_BROKEN = 6;
+   */
+  BROKEN = 6,
+
+  /**
+   * @generated from enum value: LOG_TYPE_LOST = 7;
+   */
+  LOST = 7,
 }
 
 /**

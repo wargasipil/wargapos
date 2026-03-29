@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package wargapos.marketplace.v1;
+
+option go_package = "wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1";
+
+import "google/protobuf/timestamp.proto";
+
+message MarketplaceProduct {
+  uint64 id = 1;
+  string name = 2;
+  string description = 3;
+  int64 price_cents = 4;
+  string image_url = 5;
+  bool is_active = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}

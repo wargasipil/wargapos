@@ -19,7 +19,12 @@
       "Bash(ls /d/research/wargapos/backend/internal/service/*/)",
       "Bash(/tmp/user_id_refactor_map.txt:*)",
       "Read(//tmp/**)",
-      "Bash(find d:/research/wargapos/backend/internal -name *.go -type f)"
+      "Bash(find d:/research/wargapos/backend/internal -name *.go -type f)",
+      "Bash(find /d/research/wargapos/frontend -type f -name *marketplace* -o -name *market*)",
+      "Bash(make migrate-up:*)",
+      "Bash(make migrate-down:*)",
+      "Bash(make migrate-status:*)",
+      "Bash(psql \"postgresql://postgres:NxLKwaqQIMThoZKvVodYDQjepdJpSBcc@centerbeam.proxy.rlwy.net:37834/railway\" -c \"\\\\d stock_logs\")"
     ]
   }
 }

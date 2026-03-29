@@ -1,1 +1,1 @@
-export { OrdersPage } from './orders/index'
+export { OrdersPage } from './cafe/orders/index'

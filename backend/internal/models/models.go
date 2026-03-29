@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 	ingredientv1 "wargapos/backend/gen/wargapos/ingredient/v1"
+	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
 )
 
@@ -204,4 +205,48 @@ type RecipeItem struct {
 	Qty        int32  `gorm:"not null"`
 	CreatedAt  time.Time
 	Material   *Material `gorm:"foreignKey:MaterialID"`
+}
+
+type MarketplaceShop struct {
+	ID        uint64                           `gorm:"primaryKey;autoIncrement"`
+	Name      string                           `gorm:"not null;size:300"`
+	Type      marketplacev1.MarketplaceShopType `gorm:"not null;default:0"`
+	Username  string                           `gorm:"not null;default:''"`
+	URL       string                           `gorm:"column:url;not null;default:''"`
+	IsActive  bool                             `gorm:"column:is_active;not null;default:true"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+type MarketplaceOrder struct {
+	ID           uint64                               `gorm:"primaryKey;autoIncrement"`
+	ShopID       uint64                               `gorm:"column:shop_id;not null"`
+	Shop         MarketplaceShop                      `gorm:"foreignKey:ShopID"`
+	CustomerName string                               `gorm:"column:customer_name;not null;default:''"`
+	PhoneNumber  string                               `gorm:"column:phone_number;not null;default:''"`
+	TotalCents   int64                                `gorm:"column:total_cents;not null;default:0"`
+	Status       marketplacev1.MarketplaceOrderStatus `gorm:"not null;default:0"`
+	Items        []MarketplaceOrderItem               `gorm:"foreignKey:OrderID"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+}
+
+type MarketplaceOrderItem struct {
+	ID             uint64 `gorm:"primaryKey;autoIncrement"`
+	OrderID        uint64 `gorm:"column:order_id;not null"`
+	ItemName       string `gorm:"column:item_name;not null"`
+	Quantity       int32  `gorm:"not null;default:1"`
+	UnitPriceCents int64  `gorm:"column:unit_price_cents;not null;default:0"`
+	SubtotalCents  int64  `gorm:"column:subtotal_cents;not null;default:0"`
+}
+
+type MarketplaceProduct struct {
+	ID          uint64 `gorm:"primaryKey;autoIncrement"`
+	Name        string `gorm:"not null;size:300"`
+	Description string `gorm:"type:text;not null;default:''"`
+	PriceCents  int64  `gorm:"column:price_cents;not null;default:0"`
+	ImageURL    string `gorm:"column:image_url;not null;default:''"`
+	IsActive    bool   `gorm:"column:is_active;not null;default:true"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }

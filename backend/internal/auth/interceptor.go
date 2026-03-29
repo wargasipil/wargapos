@@ -33,6 +33,9 @@ var publicRoutes = map[string]bool{
 	"/wargapos.product.v1.ProductService/GetProduct":                  true,
 	"/wargapos.product.v1.ProductService/ListCategories":              true,
 	"/wargapos.transaction.v1.TransactionService/CreateTransaction":   true,
+	"/wargapos.marketplace.v1.MarketplaceService/CreateOrder": true,
+	"/wargapos.marketplace.v1.MarketplaceService/ListShops":   true,
+	"/wargapos.marketplace.v1.MarketplaceService/GetShop":     true,
 	"/wargapos.table.v1.TableService/GetTable":                        true,
 	"/wargapos.table.v1.TableService/ListTables":                      true,
 	"/wargapos.settings.v1.SettingsService/GetSettings":               true,
@@ -103,6 +106,18 @@ var routeRoles = map[string][]string{
 	"/wargapos.user.v1.UserService/DeleteUser":             {"admin"},
 	"/wargapos.user.v1.UserService/ListUsers":              {"admin"},
 	"/wargapos.settings.v1.SettingsService/UpdateSettings": {"admin"},
+	// Marketplace
+	"/wargapos.marketplace.v1.MarketplaceService/CreateProduct":    {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/UpdateProduct":    {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/DeleteProduct":    {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/ListProducts":     {"admin", "manager", "cashier"},
+	"/wargapos.marketplace.v1.MarketplaceService/GetProduct":       {"admin", "manager", "cashier"},
+	"/wargapos.marketplace.v1.MarketplaceService/CreateShop":       {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/UpdateShop":       {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/DeleteShop":       {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/ListOrders":       {"admin", "manager", "cashier"},
+	"/wargapos.marketplace.v1.MarketplaceService/GetOrder":         {"admin", "manager", "cashier"},
+	"/wargapos.marketplace.v1.MarketplaceService/UpdateOrderStatus": {"admin", "manager"},
 }
 
 const authContextKey = "auth_token"

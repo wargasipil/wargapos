@@ -12,6 +12,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	v1 "wargapos/backend/gen/wargapos/stock/v1"
 )
 
 const (
@@ -22,7 +23,11 @@ const (
 )
 
 type SendRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Event:
+	//
+	//	*SendRequest_StockEvent
+	Event         isSendRequest_Event `protobuf_oneof:"event"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -56,6 +61,32 @@ func (x *SendRequest) ProtoReflect() protoreflect.Message {
 func (*SendRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_event_v1_service_proto_rawDescGZIP(), []int{0}
 }
+
+func (x *SendRequest) GetEvent() isSendRequest_Event {
+	if x != nil {
+		return x.Event
+	}
+	return nil
+}
+
+func (x *SendRequest) GetStockEvent() *v1.StockEvent {
+	if x != nil {
+		if x, ok := x.Event.(*SendRequest_StockEvent); ok {
+			return x.StockEvent
+		}
+	}
+	return nil
+}
+
+type isSendRequest_Event interface {
+	isSendRequest_Event()
+}
+
+type SendRequest_StockEvent struct {
+	StockEvent *v1.StockEvent `protobuf:"bytes,1,opt,name=stock_event,json=stockEvent,proto3,oneof"`
+}
+
+func (*SendRequest_StockEvent) isSendRequest_Event() {}
 
 type SendResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -94,7 +125,11 @@ func (*SendResponse) Descriptor() ([]byte, []int) {
 }
 
 type PullResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Event:
+	//
+	//	*PullResponse_StockEvent
+	Event         isPullResponse_Event `protobuf_oneof:"event"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -129,8 +164,35 @@ func (*PullResponse) Descriptor() ([]byte, []int) {
 	return file_wargapos_event_v1_service_proto_rawDescGZIP(), []int{2}
 }
 
+func (x *PullResponse) GetEvent() isPullResponse_Event {
+	if x != nil {
+		return x.Event
+	}
+	return nil
+}
+
+func (x *PullResponse) GetStockEvent() *v1.StockEvent {
+	if x != nil {
+		if x, ok := x.Event.(*PullResponse_StockEvent); ok {
+			return x.StockEvent
+		}
+	}
+	return nil
+}
+
+type isPullResponse_Event interface {
+	isPullResponse_Event()
+}
+
+type PullResponse_StockEvent struct {
+	StockEvent *v1.StockEvent `protobuf:"bytes,1,opt,name=stock_event,json=stockEvent,proto3,oneof"`
+}
+
+func (*PullResponse_StockEvent) isPullResponse_Event() {}
+
 type PullRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	ServiceName   string                 `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -165,15 +227,29 @@ func (*PullRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_event_v1_service_proto_rawDescGZIP(), []int{3}
 }
 
+func (x *PullRequest) GetServiceName() string {
+	if x != nil {
+		return x.ServiceName
+	}
+	return ""
+}
+
 var File_wargapos_event_v1_service_proto protoreflect.FileDescriptor
 
 const file_wargapos_event_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1fwargapos/event/v1/service.proto\x12\x11wargapos.event.v1\"\r\n" +
-	"\vSendRequest\"\x0e\n" +
-	"\fSendResponse\"\x0e\n" +
-	"\fPullResponse\"\r\n" +
-	"\vPullRequest2\xa2\x01\n" +
+	"\x1fwargapos/event/v1/service.proto\x12\x11wargapos.event.v1\x1a\x1dwargapos/stock/v1/event.proto\"X\n" +
+	"\vSendRequest\x12@\n" +
+	"\vstock_event\x18\x01 \x01(\v2\x1d.wargapos.stock.v1.StockEventH\x00R\n" +
+	"stockEventB\a\n" +
+	"\x05event\"\x0e\n" +
+	"\fSendResponse\"Y\n" +
+	"\fPullResponse\x12@\n" +
+	"\vstock_event\x18\x01 \x01(\v2\x1d.wargapos.stock.v1.StockEventH\x00R\n" +
+	"stockEventB\a\n" +
+	"\x05event\"0\n" +
+	"\vPullRequest\x12!\n" +
+	"\fservice_name\x18\x01 \x01(\tR\vserviceName2\xa2\x01\n" +
 	"\fEventService\x12G\n" +
 	"\x04Send\x12\x1e.wargapos.event.v1.SendRequest\x1a\x1f.wargapos.event.v1.SendResponse\x12I\n" +
 	"\x04Pull\x12\x1e.wargapos.event.v1.PullRequest\x1a\x1f.wargapos.event.v1.PullResponse0\x01B0Z.wargapos/backend/gen/wargapos/event/v1;eventv1b\x06proto3"
@@ -192,27 +268,36 @@ func file_wargapos_event_v1_service_proto_rawDescGZIP() []byte {
 
 var file_wargapos_event_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_wargapos_event_v1_service_proto_goTypes = []any{
-	(*SendRequest)(nil),  // 0: wargapos.event.v1.SendRequest
-	(*SendResponse)(nil), // 1: wargapos.event.v1.SendResponse
-	(*PullResponse)(nil), // 2: wargapos.event.v1.PullResponse
-	(*PullRequest)(nil),  // 3: wargapos.event.v1.PullRequest
+	(*SendRequest)(nil),   // 0: wargapos.event.v1.SendRequest
+	(*SendResponse)(nil),  // 1: wargapos.event.v1.SendResponse
+	(*PullResponse)(nil),  // 2: wargapos.event.v1.PullResponse
+	(*PullRequest)(nil),   // 3: wargapos.event.v1.PullRequest
+	(*v1.StockEvent)(nil), // 4: wargapos.stock.v1.StockEvent
 }
 var file_wargapos_event_v1_service_proto_depIdxs = []int32{
-	0, // 0: wargapos.event.v1.EventService.Send:input_type -> wargapos.event.v1.SendRequest
-	3, // 1: wargapos.event.v1.EventService.Pull:input_type -> wargapos.event.v1.PullRequest
-	1, // 2: wargapos.event.v1.EventService.Send:output_type -> wargapos.event.v1.SendResponse
-	2, // 3: wargapos.event.v1.EventService.Pull:output_type -> wargapos.event.v1.PullResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	4, // 0: wargapos.event.v1.SendRequest.stock_event:type_name -> wargapos.stock.v1.StockEvent
+	4, // 1: wargapos.event.v1.PullResponse.stock_event:type_name -> wargapos.stock.v1.StockEvent
+	0, // 2: wargapos.event.v1.EventService.Send:input_type -> wargapos.event.v1.SendRequest
+	3, // 3: wargapos.event.v1.EventService.Pull:input_type -> wargapos.event.v1.PullRequest
+	1, // 4: wargapos.event.v1.EventService.Send:output_type -> wargapos.event.v1.SendResponse
+	2, // 5: wargapos.event.v1.EventService.Pull:output_type -> wargapos.event.v1.PullResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_event_v1_service_proto_init() }
 func file_wargapos_event_v1_service_proto_init() {
 	if File_wargapos_event_v1_service_proto != nil {
 		return
+	}
+	file_wargapos_event_v1_service_proto_msgTypes[0].OneofWrappers = []any{
+		(*SendRequest_StockEvent)(nil),
+	}
+	file_wargapos_event_v1_service_proto_msgTypes[2].OneofWrappers = []any{
+		(*PullResponse_StockEvent)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

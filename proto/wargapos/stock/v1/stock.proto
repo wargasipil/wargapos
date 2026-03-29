@@ -14,6 +14,8 @@ enum LogType {
   LOG_TYPE_STOCK_OUT = 3;
   LOG_TYPE_ADJUSTMENT = 4;
   LOG_TYPE_ORDER = 5;
+  LOG_TYPE_BROKEN = 6;
+  LOG_TYPE_LOST = 7;
 }
 
 message CostVersion {
@@ -33,6 +35,7 @@ message StockLog {
   uint32 sku_id = 2;
   uint64 transaction_id = 4;
   uint32 actor_id = 5;
+  uint64 cost_version_id = 6;
   google.protobuf.Timestamp created_at = 8;
   LogType log_type = 9;
   int32 change = 10;

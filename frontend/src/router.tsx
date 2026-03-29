@@ -5,18 +5,18 @@ import { useAuthStore } from './store/auth'
 import { ProtectedLayout } from './routes/_layout'
 import { LoginPage } from './routes/login'
 import { DashboardPage } from './routes/dashboard'
-import { PosPage } from './routes/pos/index'
-import { ProductsPage } from './routes/products'
-import { ProductNewPage } from './routes/products/new'
-import { ProductEditPage } from './routes/products/edit'
-import { TablesPage } from './routes/tables/index'
+import { PosPage } from './routes/cafe/pos/index'
+import { ProductsPage } from './routes/cafe/products'
+import { ProductNewPage } from './routes/cafe/products/new'
+import { ProductEditPage } from './routes/cafe/products/edit'
+import { TablesPage } from './routes/cafe/tables/index'
 import { MenuPage } from './routes/menu'
-import { OrdersPage } from './routes/orders/index'
-import { OrderDetailPage } from './routes/orders/detail'
-import { ProductDetailPage } from './routes/products/detail'
+import { OrdersPage } from './routes/cafe/orders/index'
+import { OrderDetailPage } from './routes/cafe/orders/detail'
+import { ProductDetailPage } from './routes/cafe/products/detail'
 import { SettingsPage } from './routes/settings'
 import { UsersPage } from './routes/users/index'
-import { KitchenPage } from './routes/kitchen'
+import { KitchenPage } from './routes/cafe/kitchen'
 import { PlaygroundPage } from './routes/playground'
 import { SetupPage } from './routes/setup'
 import { PrintPage } from './routes/print'
@@ -25,7 +25,15 @@ import { SkusPage } from './routes/stock/skus/index'
 import { SkuDetail } from './routes/stock/skus/Detail'
 import { TransactionsPage } from './routes/stock/transactions'
 import { TransactionDetailPage } from './routes/stock/transactions/Detail'
-import { IngredientsPage } from './routes/ingredients/index'
+import { IngredientsPage } from './routes/cafe/ingredients/index'
+import { ShopListingPage } from './routes/marketplace/shop/index'
+import { ShopListingNewPage } from './routes/marketplace/shop/new'
+import { ShopListingEditPage } from './routes/marketplace/shop/edit'
+import { MarketplaceOrdersPage } from './routes/marketplace/orders/index'
+import { MarketplaceOrderDetailPage } from './routes/marketplace/orders/detail'
+import { MarketplaceProductsPage } from './routes/marketplace/products/index'
+import { MarketplaceProductNewPage } from './routes/marketplace/products/new'
+import { MarketplaceProductEditPage } from './routes/marketplace/products/edit'
 
 async function checkSetupNeeded(): Promise<boolean> {
   try {
@@ -100,49 +108,49 @@ const dashboardRoute = createRoute({
 
 const posRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/pos',
+  path: '/cafe/pos',
   component: PosPage,
 })
 
 const productsRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/products',
+  path: '/cafe/products',
   component: ProductsPage,
 })
 
 const productNewRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/products/new',
+  path: '/cafe/products/new',
   component: ProductNewPage,
 })
 
 const productEditRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/products/$id/edit',
+  path: '/cafe/products/$id/edit',
   component: ProductEditPage,
 })
 
 const productDetailRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/products/$id',
+  path: '/cafe/products/$id',
   component: ProductDetailPage,
 })
 
 const tablesRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/tables',
+  path: '/cafe/tables',
   component: TablesPage,
 })
 
 const ordersRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/orders',
+  path: '/cafe/orders',
   component: OrdersPage,
 })
 
 const orderDetailRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/orders/$id',
+  path: '/cafe/orders/$id',
   component: OrderDetailPage,
 })
 
@@ -154,7 +162,7 @@ const settingsRoute = createRoute({
 
 const kitchenRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/kitchen',
+  path: '/cafe/kitchen',
   component: KitchenPage,
 })
 
@@ -212,8 +220,88 @@ const transactionDetailRoute = createRoute({
 
 const ingredientsRoute = createRoute({
   getParentRoute: () => layoutRoute,
-  path: '/ingredients',
+  path: '/cafe/ingredients',
   component: IngredientsPage,
+})
+
+const marketplaceShopRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/shop',
+  component: ShopListingPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceShopNewRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/shop/new',
+  component: ShopListingNewPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceShopEditRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/shop/$id/edit',
+  component: ShopListingEditPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceOrdersRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/orders',
+  component: MarketplaceOrdersPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager' && role !== 'cashier') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceOrderDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/orders/$id',
+  component: MarketplaceOrderDetailPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager' && role !== 'cashier') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceProductsRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/products',
+  component: MarketplaceProductsPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceProductNewRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/products/new',
+  component: MarketplaceProductNewPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceProductEditRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/products/$id/edit',
+  component: MarketplaceProductEditPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
 })
 
 const playgroundRoute = createRoute({
@@ -247,6 +335,14 @@ const routeTree = rootRoute.addChildren([
     transactionRoute,
     transactionDetailRoute,
     ingredientsRoute,
+    marketplaceShopRoute,
+    marketplaceShopNewRoute,
+    marketplaceShopEditRoute,
+    marketplaceOrdersRoute,
+    marketplaceOrderDetailRoute,
+    marketplaceProductsRoute,
+    marketplaceProductNewRoute,
+    marketplaceProductEditRoute,
   ]),
 ])
 

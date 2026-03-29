@@ -4,18 +4,30 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
+import type { StockEvent } from "../../stock/v1/event_pb";
+import { file_wargapos_stock_v1_event } from "../../stock/v1/event_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/event/v1/service.proto.
  */
 export const file_wargapos_event_v1_service: GenFile = /*@__PURE__*/
-  fileDesc("Ch93YXJnYXBvcy9ldmVudC92MS9zZXJ2aWNlLnByb3RvEhF3YXJnYXBvcy5ldmVudC52MSINCgtTZW5kUmVxdWVzdCIOCgxTZW5kUmVzcG9uc2UiDgoMUHVsbFJlc3BvbnNlIg0KC1B1bGxSZXF1ZXN0MqIBCgxFdmVudFNlcnZpY2USRwoEU2VuZBIeLndhcmdhcG9zLmV2ZW50LnYxLlNlbmRSZXF1ZXN0Gh8ud2FyZ2Fwb3MuZXZlbnQudjEuU2VuZFJlc3BvbnNlEkkKBFB1bGwSHi53YXJnYXBvcy5ldmVudC52MS5QdWxsUmVxdWVzdBofLndhcmdhcG9zLmV2ZW50LnYxLlB1bGxSZXNwb25zZTABQjBaLndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL2V2ZW50L3YxO2V2ZW50djFiBnByb3RvMw");
+  fileDesc("Ch93YXJnYXBvcy9ldmVudC92MS9zZXJ2aWNlLnByb3RvEhF3YXJnYXBvcy5ldmVudC52MSJMCgtTZW5kUmVxdWVzdBI0CgtzdG9ja19ldmVudBgBIAEoCzIdLndhcmdhcG9zLnN0b2NrLnYxLlN0b2NrRXZlbnRIAEIHCgVldmVudCIOCgxTZW5kUmVzcG9uc2UiTQoMUHVsbFJlc3BvbnNlEjQKC3N0b2NrX2V2ZW50GAEgASgLMh0ud2FyZ2Fwb3Muc3RvY2sudjEuU3RvY2tFdmVudEgAQgcKBWV2ZW50IiMKC1B1bGxSZXF1ZXN0EhQKDHNlcnZpY2VfbmFtZRgBIAEoCTKiAQoMRXZlbnRTZXJ2aWNlEkcKBFNlbmQSHi53YXJnYXBvcy5ldmVudC52MS5TZW5kUmVxdWVzdBofLndhcmdhcG9zLmV2ZW50LnYxLlNlbmRSZXNwb25zZRJJCgRQdWxsEh4ud2FyZ2Fwb3MuZXZlbnQudjEuUHVsbFJlcXVlc3QaHy53YXJnYXBvcy5ldmVudC52MS5QdWxsUmVzcG9uc2UwAUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9ldmVudC92MTtldmVudHYxYgZwcm90bzM", [file_wargapos_stock_v1_event]);
 
 /**
  * @generated from message wargapos.event.v1.SendRequest
  */
 export type SendRequest = Message<"wargapos.event.v1.SendRequest"> & {
+  /**
+   * @generated from oneof wargapos.event.v1.SendRequest.event
+   */
+  event: {
+    /**
+     * @generated from field: wargapos.stock.v1.StockEvent stock_event = 1;
+     */
+    value: StockEvent;
+    case: "stockEvent";
+  } | { case: undefined; value?: undefined };
 };
 
 /**
@@ -42,6 +54,16 @@ export const SendResponseSchema: GenMessage<SendResponse> = /*@__PURE__*/
  * @generated from message wargapos.event.v1.PullResponse
  */
 export type PullResponse = Message<"wargapos.event.v1.PullResponse"> & {
+  /**
+   * @generated from oneof wargapos.event.v1.PullResponse.event
+   */
+  event: {
+    /**
+     * @generated from field: wargapos.stock.v1.StockEvent stock_event = 1;
+     */
+    value: StockEvent;
+    case: "stockEvent";
+  } | { case: undefined; value?: undefined };
 };
 
 /**
@@ -55,6 +77,10 @@ export const PullResponseSchema: GenMessage<PullResponse> = /*@__PURE__*/
  * @generated from message wargapos.event.v1.PullRequest
  */
 export type PullRequest = Message<"wargapos.event.v1.PullRequest"> & {
+  /**
+   * @generated from field: string service_name = 1;
+   */
+  serviceName: string;
 };
 
 /**

@@ -24,12 +24,12 @@ export function ProductCard({ p, categoryName, margin, togglePending, onToggle, 
       display="flex"
       flexDir="column"
     >
-      <Link to="/products/$id" params={{ id: String(p.id) }} style={{ flexShrink: 0 }}>
+      <Link to="/cafe/products/$id" params={{ id: String(p.id) }} style={{ flexShrink: 0 }}>
         <ProductImage src={p.imageUrl} />
       </Link>
 
       <Box p={3} flex="1">
-        <Link to="/products/$id" params={{ id: String(p.id) }}>
+        <Link to="/cafe/products/$id" params={{ id: String(p.id) }}>
           <Text fontWeight="semibold" fontSize="sm" lineClamp={2} mb={0.5}>{p.name}</Text>
         </Link>
         {p.sku && <Text fontSize="xs" color="gray.400" mb={0.5}>{p.sku}</Text>}
@@ -63,7 +63,7 @@ export function ProductCard({ p, categoryName, margin, togglePending, onToggle, 
         </Button>
         <HStack gap={0.5}>
           <Button asChild size="xs" variant="ghost">
-            <Link to="/products/$id/edit" params={{ id: String(p.id) }}><Pencil size={14} /></Link>
+            <Link to="/cafe/products/$id/edit" params={{ id: String(p.id) }}><Pencil size={14} /></Link>
           </Button>
           <Button size="xs" variant="ghost" colorPalette="red" onClick={onDelete}>
             <Trash2 size={14} />

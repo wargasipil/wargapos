@@ -1,0 +1,175 @@
+syntax = "proto3";
+
+package wargapos.marketplace.v1;
+
+option go_package = "wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1";
+
+import "wargapos/marketplace/v1/shop.proto";
+import "wargapos/marketplace/v1/order.proto";
+import "wargapos/marketplace/v1/product.proto";
+
+service MarketplaceService {
+  // Shop CRUD
+  rpc CreateShop(CreateShopRequest) returns (CreateShopResponse);
+  rpc GetShop(GetShopRequest) returns (GetShopResponse);
+  rpc UpdateShop(UpdateShopRequest) returns (UpdateShopResponse);
+  rpc DeleteShop(DeleteShopRequest) returns (DeleteShopResponse);
+  rpc ListShops(ListShopsRequest) returns (ListShopsResponse);
+  // Products
+  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
+  rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
+  rpc ListProducts(ListProductsRequest) returns (ListProductsResponse);
+  // Orders
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+  rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse);
+}
+
+// --- Shop messages ---
+
+message CreateShopRequest {
+  string name = 1;
+  MarketplaceShopType type = 2;
+  string username = 3;
+  string url = 4;
+}
+
+message CreateShopResponse {
+  MarketplaceShop shop = 1;
+}
+
+message GetShopRequest {
+  uint64 id = 1;
+}
+
+message GetShopResponse {
+  MarketplaceShop shop = 1;
+}
+
+message UpdateShopRequest {
+  uint64 id = 1;
+  string name = 2;
+  MarketplaceShopType type = 3;
+  string username = 4;
+  string url = 5;
+  bool is_active = 6;
+}
+
+message UpdateShopResponse {
+  MarketplaceShop shop = 1;
+}
+
+message DeleteShopRequest {
+  uint64 id = 1;
+}
+
+message DeleteShopResponse {}
+
+message ListShopsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+  bool active_only = 4;
+}
+
+message ListShopsResponse {
+  repeated MarketplaceShop shops = 1;
+  int32 total = 2;
+}
+
+// --- Order messages ---
+
+message CreateOrderRequest {
+  uint64 shop_id = 1;
+  string customer_name = 2;
+  string phone_number = 3;
+  repeated MarketplaceOrderItem items = 4;
+}
+
+message CreateOrderResponse {
+  MarketplaceOrder order = 1;
+}
+
+message GetOrderRequest {
+  uint64 id = 1;
+}
+
+message GetOrderResponse {
+  MarketplaceOrder order = 1;
+}
+
+message ListOrdersRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  MarketplaceOrderStatus status_filter = 3;
+  uint64 shop_id = 4;
+}
+
+message ListOrdersResponse {
+  repeated MarketplaceOrder orders = 1;
+  int32 total = 2;
+}
+
+message UpdateOrderStatusRequest {
+  uint64 id = 1;
+  MarketplaceOrderStatus status = 2;
+}
+
+message UpdateOrderStatusResponse {
+  MarketplaceOrder order = 1;
+}
+
+// --- Product messages ---
+
+message CreateProductRequest {
+  string name = 1;
+  string description = 2;
+  int64 price_cents = 3;
+  string image_url = 4;
+}
+
+message CreateProductResponse {
+  MarketplaceProduct product = 1;
+}
+
+message GetProductRequest {
+  uint64 id = 1;
+}
+
+message GetProductResponse {
+  MarketplaceProduct product = 1;
+}
+
+message UpdateProductRequest {
+  uint64 id = 1;
+  string name = 2;
+  string description = 3;
+  int64 price_cents = 4;
+  string image_url = 5;
+  bool is_active = 6;
+}
+
+message UpdateProductResponse {
+  MarketplaceProduct product = 1;
+}
+
+message DeleteProductRequest {
+  uint64 id = 1;
+}
+
+message DeleteProductResponse {}
+
+message ListProductsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+  bool active_only = 4;
+}
+
+message ListProductsResponse {
+  repeated MarketplaceProduct products = 1;
+  int32 total = 2;
+}

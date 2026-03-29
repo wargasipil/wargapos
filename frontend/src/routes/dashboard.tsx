@@ -205,7 +205,7 @@ export function DashboardPage() {
                         borderRadius="md"
                         px={1}
                         py={0.5}
-                        onClick={() => navigate({ to: '/orders/$id', params: { id: String(order.id) } })}
+                        onClick={() => navigate({ to: '/cafe/orders/$id', params: { id: String(order.id) } })}
                       >
                         <HStack gap={2}>
                           <Text fontSize="sm" fontWeight="medium">#{String(order.id)}</Text>

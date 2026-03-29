@@ -89,6 +89,7 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 						Change:        -costVersion.StockInitiate,
 						ActorID:       pay.UserId,
 						LogType:       stockv1.LogType_LOG_TYPE_STOCK_CANCEL,
+						CostVersionID: costVersion.ID,
 						CreatedAt:     time.Now(),
 					}
 

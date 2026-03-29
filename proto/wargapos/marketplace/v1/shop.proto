@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package wargapos.marketplace.v1;
+
+option go_package = "wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1";
+
+import "google/protobuf/timestamp.proto";
+
+enum MarketplaceShopType {
+  MARKETPLACE_SHOP_TYPE_UNSPECIFIED = 0;
+  MARKETPLACE_SHOP_TYPE_SHOPEE = 1;
+  MARKETPLACE_SHOP_TYPE_TOKOPEDIA = 2;
+  MARKETPLACE_SHOP_TYPE_LAZADA = 3;
+  MARKETPLACE_SHOP_TYPE_OTHER = 4;
+}
+
+message MarketplaceShop {
+  uint64 id = 1;
+  string name = 2;
+  MarketplaceShopType type = 3;
+  string username = 4;
+  string url = 5;
+  bool is_active = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}

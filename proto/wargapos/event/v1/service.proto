@@ -4,6 +4,7 @@ package wargapos.event.v1;
 
 // import "buf/validate/validate.proto";
 // import "google/protobuf/timestamp.proto";
+import "wargapos/stock/v1/event.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/event/v1;eventv1";
 
@@ -12,8 +13,18 @@ service EventService {
   rpc Pull(PullRequest) returns (stream PullResponse);
 }
 
-message SendRequest {}
+message SendRequest {
+  oneof event {
+    wargapos.stock.v1.StockEvent stock_event = 1;
+  }
+}
 message SendResponse {}
 
-message PullResponse {}
-message PullRequest {}
+message PullResponse {
+  oneof event {
+    wargapos.stock.v1.StockEvent stock_event = 1;
+  }
+}
+message PullRequest {
+  string service_name = 1;
+}

@@ -77,6 +77,7 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 						Change:        int32(pay.Qty),
 						ActorID:       pay.UserId,
 						LogType:       stockv1.LogType_LOG_TYPE_STOCK_IN,
+						CostVersionID: costVersion.ID,
 						CreatedAt:     pay.CreatedAt,
 					}
 

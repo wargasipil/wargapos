@@ -16,5 +16,7 @@ type StockLog struct {
 
 	ActorID uint32 `gorm:"column:actor_id"`
 
+	CostVersionID uint64 `gorm:"column:cost_version_id"`
+
 	CreatedAt time.Time `gorm:"autoCreateTime"`
 }

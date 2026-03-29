@@ -18,7 +18,7 @@ export function ProductTableRow({ p, categoryName, margin, togglePending, onTogg
   return (
     <Table.Row>
       <Table.Cell>
-        <Link to="/products/$id" params={{ id: String(p.id) }}>
+        <Link to="/cafe/products/$id" params={{ id: String(p.id) }}>
           <Flex align="center" gap={2}>
             <ProductImage src={p.imageUrl} size={36} radius={4} />
             <Text fontWeight="medium">{p.name}</Text>
@@ -43,7 +43,7 @@ export function ProductTableRow({ p, categoryName, margin, togglePending, onTogg
       <Table.Cell>
         <Flex gap={1} justify="flex-end">
           <Button asChild size="xs" variant="ghost">
-            <Link to="/products/$id/edit" params={{ id: String(p.id) }}><Pencil size={14} /></Link>
+            <Link to="/cafe/products/$id/edit" params={{ id: String(p.id) }}><Pencil size={14} /></Link>
           </Button>
           <Button size="xs" variant="ghost" colorPalette="red" onClick={onDelete}>
             <Trash2 size={14} />

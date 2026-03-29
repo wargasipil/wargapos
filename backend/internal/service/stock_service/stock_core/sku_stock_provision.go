@@ -126,6 +126,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 						Change:        -price.Qty,
 						LogType:       stockv1.LogType_LOG_TYPE_ORDER,
 						ActorID:       pay.UserId,
+						CostVersionID: price.PriceId,
 						CreatedAt:     time.Now(),
 					}
 

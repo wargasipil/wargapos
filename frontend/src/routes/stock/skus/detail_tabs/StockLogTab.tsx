@@ -39,6 +39,7 @@ export function StockLogTab({ id, skuId }: { id: string; skuId: number }) {
             <th style={thStyle}>Type</th>
             <th style={{ ...thStyle, textAlign: 'right' }}>Change</th>
             <th style={{ ...thStyle, textAlign: 'right' }}>Tx ID</th>
+            <th style={{ ...thStyle, textAlign: 'right' }}>Cost Ver.</th>
             <th style={{ ...thStyle, textAlign: 'right' }}>Date</th>
             <th style={thStyle}>Actor</th>
           </tr>
@@ -51,11 +52,12 @@ export function StockLogTab({ id, skuId }: { id: string; skuId: number }) {
                 {l.change >= 0 ? '+' : ''}{l.change}
               </td>
               <td style={{ ...tdRight, color: '#718096' }}>{String(l.transactionId)}</td>
+              <td style={{ ...tdRight, color: '#718096' }}>{l.costVersionId > 0n ? String(l.costVersionId) : '—'}</td>
               <td style={{ ...tdRight, color: '#718096' }}>{formatDateTime(l.createdAt as Timestamp | undefined)}</td>
               <td style={tdStyle}>{actorsData?.users[l.actorId]?.fullName ?? (l.actorId > 0 ? `#${l.actorId}` : '—')}</td>
             </tr>
           ))}
-          {logs.length === 0 && <EmptyRow cols={5} />}
+          {logs.length === 0 && <EmptyRow cols={6} />}
         </tbody>
       </table>
     </Box>

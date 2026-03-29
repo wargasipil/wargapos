@@ -45,7 +45,7 @@ export function NotificationPanel({ unreadCount }: Props) {
 
   function handleItemClick(orderId: bigint) {
     if (orderId) {
-      navigate({ to: '/orders/$id', params: { id: String(orderId) } })
+      navigate({ to: '/cafe/orders/$id', params: { id: String(orderId) } })
     }
   }
 

@@ -1,1 +1,1 @@
-export { TablesPage } from './tables/index'
+export { TablesPage } from './cafe/tables/index'
