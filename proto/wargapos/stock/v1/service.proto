@@ -74,7 +74,7 @@ service StockService {
   rpc DeleteSku(DeleteSkuRequest) returns (DeleteSkuResponse);
   rpc ListSku(ListSkuRequest) returns (ListSkuResponse);
   rpc ListSkuPlacement(ListSkuPlacementRequest) returns (ListSkuPlacementResponse);
-  rpc ListPriceSku(ListPriceSkuRequest) returns (ListPriceSkuResponse);
+  rpc ListCostSku(ListCostSkuRequest) returns (ListCostSkuResponse);
   rpc ListStockSku(ListStockSkuRequest) returns (ListStockSkuResponse);
   rpc ListStockLogSku(ListStockLogSkuRequest) returns (ListStockLogSkuResponse);
 

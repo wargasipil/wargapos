@@ -69,9 +69,9 @@ const (
 	// StockServiceListSkuPlacementProcedure is the fully-qualified name of the StockService's
 	// ListSkuPlacement RPC.
 	StockServiceListSkuPlacementProcedure = "/wargapos.stock.v1.StockService/ListSkuPlacement"
-	// StockServiceListPriceSkuProcedure is the fully-qualified name of the StockService's ListPriceSku
+	// StockServiceListCostSkuProcedure is the fully-qualified name of the StockService's ListCostSku
 	// RPC.
-	StockServiceListPriceSkuProcedure = "/wargapos.stock.v1.StockService/ListPriceSku"
+	StockServiceListCostSkuProcedure = "/wargapos.stock.v1.StockService/ListCostSku"
 	// StockServiceListStockSkuProcedure is the fully-qualified name of the StockService's ListStockSku
 	// RPC.
 	StockServiceListStockSkuProcedure = "/wargapos.stock.v1.StockService/ListStockSku"
@@ -118,7 +118,7 @@ type StockServiceClient interface {
 	DeleteSku(context.Context, *connect.Request[v1.DeleteSkuRequest]) (*connect.Response[v1.DeleteSkuResponse], error)
 	ListSku(context.Context, *connect.Request[v1.ListSkuRequest]) (*connect.Response[v1.ListSkuResponse], error)
 	ListSkuPlacement(context.Context, *connect.Request[v1.ListSkuPlacementRequest]) (*connect.Response[v1.ListSkuPlacementResponse], error)
-	ListPriceSku(context.Context, *connect.Request[v1.ListPriceSkuRequest]) (*connect.Response[v1.ListPriceSkuResponse], error)
+	ListCostSku(context.Context, *connect.Request[v1.ListCostSkuRequest]) (*connect.Response[v1.ListCostSkuResponse], error)
 	ListStockSku(context.Context, *connect.Request[v1.ListStockSkuRequest]) (*connect.Response[v1.ListStockSkuResponse], error)
 	ListStockLogSku(context.Context, *connect.Request[v1.ListStockLogSkuRequest]) (*connect.Response[v1.ListStockLogSkuResponse], error)
 	// bagian transaction
@@ -231,10 +231,10 @@ func NewStockServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(stockServiceMethods.ByName("ListSkuPlacement")),
 			connect.WithClientOptions(opts...),
 		),
-		listPriceSku: connect.NewClient[v1.ListPriceSkuRequest, v1.ListPriceSkuResponse](
+		listCostSku: connect.NewClient[v1.ListCostSkuRequest, v1.ListCostSkuResponse](
 			httpClient,
-			baseURL+StockServiceListPriceSkuProcedure,
-			connect.WithSchema(stockServiceMethods.ByName("ListPriceSku")),
+			baseURL+StockServiceListCostSkuProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("ListCostSku")),
 			connect.WithClientOptions(opts...),
 		),
 		listStockSku: connect.NewClient[v1.ListStockSkuRequest, v1.ListStockSkuResponse](
@@ -305,7 +305,7 @@ type stockServiceClient struct {
 	deleteSku          *connect.Client[v1.DeleteSkuRequest, v1.DeleteSkuResponse]
 	listSku            *connect.Client[v1.ListSkuRequest, v1.ListSkuResponse]
 	listSkuPlacement   *connect.Client[v1.ListSkuPlacementRequest, v1.ListSkuPlacementResponse]
-	listPriceSku       *connect.Client[v1.ListPriceSkuRequest, v1.ListPriceSkuResponse]
+	listCostSku        *connect.Client[v1.ListCostSkuRequest, v1.ListCostSkuResponse]
 	listStockSku       *connect.Client[v1.ListStockSkuRequest, v1.ListStockSkuResponse]
 	listStockLogSku    *connect.Client[v1.ListStockLogSkuRequest, v1.ListStockLogSkuResponse]
 	createTransaction  *connect.Client[v1.CreateTransactionRequest, v1.CreateTransactionResponse]
@@ -391,9 +391,9 @@ func (c *stockServiceClient) ListSkuPlacement(ctx context.Context, req *connect.
 	return c.listSkuPlacement.CallUnary(ctx, req)
 }
 
-// ListPriceSku calls wargapos.stock.v1.StockService.ListPriceSku.
-func (c *stockServiceClient) ListPriceSku(ctx context.Context, req *connect.Request[v1.ListPriceSkuRequest]) (*connect.Response[v1.ListPriceSkuResponse], error) {
-	return c.listPriceSku.CallUnary(ctx, req)
+// ListCostSku calls wargapos.stock.v1.StockService.ListCostSku.
+func (c *stockServiceClient) ListCostSku(ctx context.Context, req *connect.Request[v1.ListCostSkuRequest]) (*connect.Response[v1.ListCostSkuResponse], error) {
+	return c.listCostSku.CallUnary(ctx, req)
 }
 
 // ListStockSku calls wargapos.stock.v1.StockService.ListStockSku.
@@ -456,7 +456,7 @@ type StockServiceHandler interface {
 	DeleteSku(context.Context, *connect.Request[v1.DeleteSkuRequest]) (*connect.Response[v1.DeleteSkuResponse], error)
 	ListSku(context.Context, *connect.Request[v1.ListSkuRequest]) (*connect.Response[v1.ListSkuResponse], error)
 	ListSkuPlacement(context.Context, *connect.Request[v1.ListSkuPlacementRequest]) (*connect.Response[v1.ListSkuPlacementResponse], error)
-	ListPriceSku(context.Context, *connect.Request[v1.ListPriceSkuRequest]) (*connect.Response[v1.ListPriceSkuResponse], error)
+	ListCostSku(context.Context, *connect.Request[v1.ListCostSkuRequest]) (*connect.Response[v1.ListCostSkuResponse], error)
 	ListStockSku(context.Context, *connect.Request[v1.ListStockSkuRequest]) (*connect.Response[v1.ListStockSkuResponse], error)
 	ListStockLogSku(context.Context, *connect.Request[v1.ListStockLogSkuRequest]) (*connect.Response[v1.ListStockLogSkuResponse], error)
 	// bagian transaction
@@ -565,10 +565,10 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(stockServiceMethods.ByName("ListSkuPlacement")),
 		connect.WithHandlerOptions(opts...),
 	)
-	stockServiceListPriceSkuHandler := connect.NewUnaryHandler(
-		StockServiceListPriceSkuProcedure,
-		svc.ListPriceSku,
-		connect.WithSchema(stockServiceMethods.ByName("ListPriceSku")),
+	stockServiceListCostSkuHandler := connect.NewUnaryHandler(
+		StockServiceListCostSkuProcedure,
+		svc.ListCostSku,
+		connect.WithSchema(stockServiceMethods.ByName("ListCostSku")),
 		connect.WithHandlerOptions(opts...),
 	)
 	stockServiceListStockSkuHandler := connect.NewUnaryHandler(
@@ -651,8 +651,8 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 			stockServiceListSkuHandler.ServeHTTP(w, r)
 		case StockServiceListSkuPlacementProcedure:
 			stockServiceListSkuPlacementHandler.ServeHTTP(w, r)
-		case StockServiceListPriceSkuProcedure:
-			stockServiceListPriceSkuHandler.ServeHTTP(w, r)
+		case StockServiceListCostSkuProcedure:
+			stockServiceListCostSkuHandler.ServeHTTP(w, r)
 		case StockServiceListStockSkuProcedure:
 			stockServiceListStockSkuHandler.ServeHTTP(w, r)
 		case StockServiceListStockLogSkuProcedure:
@@ -738,8 +738,8 @@ func (UnimplementedStockServiceHandler) ListSkuPlacement(context.Context, *conne
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListSkuPlacement is not implemented"))
 }
 
-func (UnimplementedStockServiceHandler) ListPriceSku(context.Context, *connect.Request[v1.ListPriceSkuRequest]) (*connect.Response[v1.ListPriceSkuResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListPriceSku is not implemented"))
+func (UnimplementedStockServiceHandler) ListCostSku(context.Context, *connect.Request[v1.ListCostSkuRequest]) (*connect.Response[v1.ListCostSkuResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListCostSku is not implemented"))
 }
 
 func (UnimplementedStockServiceHandler) ListStockSku(context.Context, *connect.Request[v1.ListStockSkuRequest]) (*connect.Response[v1.ListStockSkuResponse], error) {

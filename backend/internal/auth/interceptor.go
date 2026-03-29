@@ -87,7 +87,7 @@ var routeRoles = map[string][]string{
 	"/wargapos.stock.v1.StockService/ListTransaction":             {"admin", "manager", "cashier"},
 	"/wargapos.stock.v1.StockService/DetailTransaction":           {"admin", "manager", "cashier"},
 	"/wargapos.stock.v1.StockService/ListSkuPlacement":            {"admin", "manager", "cashier"},
-	"/wargapos.stock.v1.StockService/ListPriceSku":                {"admin", "manager", "cashier"},
+	"/wargapos.stock.v1.StockService/ListCostSku":                 {"admin", "manager", "cashier"},
 	"/wargapos.stock.v1.StockService/ListStockSku":                {"admin", "manager", "cashier"},
 	"/wargapos.stock.v1.StockService/ListStockLogSku":             {"admin", "manager", "cashier"},
 	"/wargapos.table.v1.TableService/CreateTable":                   {"admin", "manager"},

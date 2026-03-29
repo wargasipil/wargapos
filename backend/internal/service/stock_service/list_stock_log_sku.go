@@ -43,7 +43,7 @@ func (s *StockService) ListStockLogSku(
 			SkuId:          r.SkuID,
 			TransactionId:  r.TransactionID,
 			ActorId:        r.ActorID,
-			PriceVersionId: r.PriceVersionID,
+			CostVersionId: r.CostVersionID,
 			StockId:        r.StockID,
 			LogType:        r.LogType,
 			Change:         r.Change,

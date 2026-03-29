@@ -13,13 +13,18 @@ enum SkuError {
   SKU_ERROR_NOTFOUND = 1;
 }
 
-enum PricingType {
-  PRICING_TYPE_UNSPECIFIED = 0;
-  PRICING_TYPE_LIFO = 1;
-  PRICING_TYPE_FIFO = 2;
-  PRICING_TYPE_MAX_PRICE = 4;
-  PRICING_TYPE_MIN_PRICE = 5;
-  PRICING_TYPE_FIX_PRICE = 6;
+enum CostingType {
+  COSTING_TYPE_UNSPECIFIED = 0;
+  COSTING_TYPE_LIFO = 1;
+  COSTING_TYPE_FIFO = 2;
+  COSTING_TYPE_MAX_PRICE = 4;
+  COSTING_TYPE_MIN_PRICE = 5;
+}
+
+enum StockQueueType {
+  STOCK_QUEUE_TYPE_UNSPECIFIED = 0;
+  STOCK_QUEUE_TYPE_LIFO = 1;
+  STOCK_QUEUE_TYPE_FIFO = 2;
 }
 
 message RackPlacement {
@@ -35,7 +40,7 @@ message Sku {
   uint32 product_id = 3;
   uint32 branch_id = 4;
   uint32 warehouse_id = 5;
-  PricingType pricing_type = 6;
+  CostingType costing_type = 6;
   google.protobuf.Timestamp created_at = 7;
   google.protobuf.Timestamp updated_at = 8;
   bool deleted = 9;

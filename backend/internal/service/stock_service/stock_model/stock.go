@@ -27,7 +27,7 @@ type StockLog struct {
 	LogType stockv1.LogType `gorm:"type:varchar(20);not null;index"`
 
 	ActorID        uint32 `gorm:"column:actor_id"`
-	PriceVersionID uint64 `gorm:"column:price_version_id"`
+	CostVersionID uint64 `gorm:"column:cost_version_id"`
 	StockID        uint64 `gorm:"column:stock_id"`
 
 	CreatedAt time.Time `gorm:"autoCreateTime"`

@@ -61,13 +61,13 @@ func TestCreateTransaction(t *testing.T) {
 					skuId := createSku.Msg.Sku.Id
 
 					// ensure price version
-					var priceVersion stock_model.PriceVersion
-					r := db.Where("transaction_id = ? AND sku_id = ?", txId, skuId).First(&priceVersion)
+					var costVersion stock_model.CostVersion
+					r := db.Where("transaction_id = ? AND sku_id = ?", txId, skuId).First(&costVersion)
 					assert.Nil(t, r.Error, "price version query error")
-					assert.NotZero(t, priceVersion.ID, "price version should be created")
-					assert.Equal(t, int32(9), priceVersion.StockInitiate)
-					assert.Equal(t, int32(9), priceVersion.LeftStock)
-					assert.InDelta(t, 12000.0/9, priceVersion.Price, 0.01)
+					assert.NotZero(t, costVersion.ID, "price version should be created")
+					assert.Equal(t, int32(9), costVersion.StockInitiate)
+					assert.Equal(t, int32(9), costVersion.LeftStock)
+					assert.InDelta(t, 12000.0/9, costVersion.UnitCost, 0.01)
 
 					// ensure stock
 					var stock stock_model.Stock
@@ -84,7 +84,7 @@ func TestCreateTransaction(t *testing.T) {
 					assert.NotZero(t, stockLog.ID, "stock log should be created")
 					assert.Equal(t, int32(9), stockLog.Change)
 					assert.Equal(t, stockv1.LogType_LOG_TYPE_STOCK_IN, stockLog.LogType)
-					assert.Equal(t, priceVersion.ID, stockLog.PriceVersionID)
+					assert.Equal(t, costVersion.ID, stockLog.CostVersionID)
 					assert.Equal(t, stock.ID, stockLog.StockID)
 				})
 			})

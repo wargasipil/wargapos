@@ -26,7 +26,7 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 
 	err = db.Transaction(func(tx *gorm.DB) error {
 		var sku models.Sku
-		var priceVersion stock_model.PriceVersion
+		var costVersion stock_model.CostVersion
 		var stock stock_model.Stock
 		var stockLog stock_model.StockLog
 
@@ -49,19 +49,19 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 				}
 			},
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
-				return func(ctx context.Context) (context.Context, error) { // pricing
-					var price float64 = pay.Total / float64(pay.Qty)
-					priceVersion = stock_model.PriceVersion{
+				return func(ctx context.Context) (context.Context, error) { // costing
+					var unitCost float64 = pay.Total / float64(pay.Qty)
+					costVersion = stock_model.CostVersion{
 						SkuId:         pay.SkuId,
 						TransactionId: pay.TransactionId,
 						CreatedAt:     pay.CreatedAt,
-						Price:         price,
+						UnitCost:      unitCost,
 						StockInitiate: pay.Qty,
 						LeftStock:     pay.Qty,
 					}
 
 					err = tx.
-						Create(&priceVersion).
+						Create(&costVersion).
 						Error
 					if err != nil {
 						return ctx, err
@@ -95,14 +95,14 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 				return func(ctx context.Context) (context.Context, error) { // writing log
 
 					stockLog = stock_model.StockLog{
-						SkuID:          pay.SkuId,
-						TransactionID:  pay.TransactionId,
-						Change:         int32(pay.Qty),
-						PriceVersionID: priceVersion.ID,
-						StockID:        stock.ID,
-						ActorID:        pay.UserId,
-						LogType:        stockv1.LogType_LOG_TYPE_STOCK_IN,
-						CreatedAt:      pay.CreatedAt,
+						SkuID:         pay.SkuId,
+						TransactionID: pay.TransactionId,
+						Change:        int32(pay.Qty),
+						CostVersionID: costVersion.ID,
+						StockID:       stock.ID,
+						ActorID:       pay.UserId,
+						LogType:       stockv1.LogType_LOG_TYPE_STOCK_IN,
+						CreatedAt:     pay.CreatedAt,
 					}
 
 					err = tx.

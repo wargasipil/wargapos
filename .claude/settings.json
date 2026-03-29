@@ -18,7 +18,8 @@
       "Bash(xargs ls:*)",
       "Bash(ls /d/research/wargapos/backend/internal/service/*/)",
       "Bash(/tmp/user_id_refactor_map.txt:*)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(find d:/research/wargapos/backend/internal -name *.go -type f)"
     ]
   }
 }

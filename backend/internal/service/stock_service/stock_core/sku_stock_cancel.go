@@ -23,7 +23,7 @@ type SkuStockCancelPayload struct {
 func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload) error {
 	var err error
 	var sku models.Sku
-	var priceVersion stock_model.PriceVersion
+	var costVersion stock_model.CostVersion
 	var stock stock_model.Stock
 	var stockLog stock_model.StockLog
 
@@ -47,13 +47,13 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 				}
 			},
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
-				return func(ctx context.Context) (context.Context, error) { // getting price version dan stock
+				return func(ctx context.Context) (context.Context, error) { // getting cost version and stock
 					err = tx.
-						Model(&stock_model.PriceVersion{}).
+						Model(&stock_model.CostVersion{}).
 						Where("transaction_id = ?", pay.TransactionId).
 						Where("sku_id = ?", pay.SkuId).
 						Limit(1).
-						Find(&priceVersion).
+						Find(&costVersion).
 						Error
 
 					if err != nil {
@@ -72,24 +72,24 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 						return ctx, err
 					}
 
-					if priceVersion.ID == 0 {
-						return ctx, fmt.Errorf("skuId %d priceversion not found", sku.ID)
+					if costVersion.ID == 0 {
+						return ctx, fmt.Errorf("skuId %d cost version not found", sku.ID)
 					}
 
 					if stock.ID == 0 {
 						return ctx, fmt.Errorf("skuId %d stock not found", sku.ID)
 					}
 
-					if priceVersion.StockInitiate != priceVersion.LeftStock {
-						return ctx, fmt.Errorf("price stock already use and cannot canceling %d", priceVersion.SkuId)
+					if costVersion.StockInitiate != costVersion.LeftStock {
+						return ctx, fmt.Errorf("cost stock already use and cannot canceling %d", costVersion.SkuId)
 					}
 
 					if stock.StockInitiate != stock.LeftStock {
 						return ctx, fmt.Errorf("stock already use and cannot canceling %d", stock.SkuID)
 					}
 
-					if stock.LeftStock != priceVersion.LeftStock {
-						return ctx, fmt.Errorf("price version and sku stock not matched %d", sku.ID)
+					if stock.LeftStock != costVersion.LeftStock {
+						return ctx, fmt.Errorf("cost version and sku stock not matched %d", sku.ID)
 					}
 
 					return next(ctx)
@@ -97,11 +97,11 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 				}
 			},
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
-				return func(ctx context.Context) (context.Context, error) { // canceling price and stock
-					priceVersion.LeftStock = 0
+				return func(ctx context.Context) (context.Context, error) { // canceling cost version and stock
+					costVersion.LeftStock = 0
 					stock.LeftStock = 0
 
-					err = tx.Save(&priceVersion).Error
+					err = tx.Save(&costVersion).Error
 					if err != nil {
 						return ctx, err
 					}
@@ -116,14 +116,14 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 				return func(data context.Context) (context.Context, error) { // creating log
 					stockLog = stock_model.StockLog{
-						SkuID:          pay.SkuId,
-						TransactionID:  pay.TransactionId,
-						Change:         -stock.StockInitiate,
-						PriceVersionID: priceVersion.ID,
-						StockID:        stock.ID,
-						ActorID:        pay.UserId,
-						LogType:        stockv1.LogType_LOG_TYPE_STOCK_CANCEL,
-						CreatedAt:      time.Now(),
+						SkuID:         pay.SkuId,
+						TransactionID: pay.TransactionId,
+						Change:        -costVersion.StockInitiate,
+						CostVersionID: costVersion.ID,
+						StockID:       stock.ID,
+						ActorID:       pay.UserId,
+						LogType:       stockv1.LogType_LOG_TYPE_STOCK_CANCEL,
+						CreatedAt:     time.Now(),
 					}
 
 					err = tx.
@@ -141,7 +141,7 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 					err = tx.
 						Model(&models.Sku{}).
 						Where("id = ?", sku.ID).
-						Update("stock_qty", gorm.Expr("stock_qty - ?", stock.StockInitiate)).
+						Update("stock_qty", gorm.Expr("stock_qty - ?", costVersion.StockInitiate)).
 						Error
 
 					if err != nil {

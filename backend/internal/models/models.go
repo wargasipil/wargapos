@@ -139,10 +139,12 @@ type Sku struct {
 	Code        string `gorm:"uniqueIndex;not null;size:255"`
 	ProductID   uint32 `gorm:"column:product_id;not null"`
 	BranchID    uint32 `gorm:"column:branch_id;not null"`
-	WarehouseID uint32     `gorm:"column:warehouse_id;not null"`
-	StockQty    int64      `gorm:"column:stock_qty;not null;default:0"`
-	Deleted     bool       `gorm:"not null;default:false"`
-	LastStockIn *time.Time `gorm:"column:last_stock_in"`
+	WarehouseID uint32              `gorm:"column:warehouse_id;not null"`
+	StockQty    int64               `gorm:"column:stock_qty;not null;default:0"`
+	Deleted     bool                `gorm:"not null;default:false"`
+	LastStockIn  *time.Time          `gorm:"column:last_stock_in"`
+	LastStockOut *time.Time          `gorm:"column:last_stock_out"`
+	CostingType  stockv1.CostingType `gorm:"column:costing_type;not null;default:0"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }

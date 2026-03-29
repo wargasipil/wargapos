@@ -397,7 +397,7 @@ const file_wargapos_stock_v1_service_proto_rawDesc = "" +
 	"\adate_to\x18\x05 \x01(\tR\x06dateTo\"r\n" +
 	"\x1aListStockMovementsResponse\x12>\n" +
 	"\tmovements\x18\x01 \x03(\v2 .wargapos.stock.v1.StockMovementR\tmovements\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total2\xc4\x12\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total2\xc1\x12\n" +
 	"\fStockService\x12h\n" +
 	"\x0fCreateWarehouse\x12).wargapos.stock.v1.CreateWarehouseRequest\x1a*.wargapos.stock.v1.CreateWarehouseResponse\x12h\n" +
 	"\x0fUpdateWarehouse\x12).wargapos.stock.v1.UpdateWarehouseRequest\x1a*.wargapos.stock.v1.UpdateWarehouseResponse\x12h\n" +
@@ -416,8 +416,8 @@ const file_wargapos_stock_v1_service_proto_rawDesc = "" +
 	"\tUpdateSku\x12#.wargapos.stock.v1.UpdateSkuRequest\x1a$.wargapos.stock.v1.UpdateSkuResponse\x12V\n" +
 	"\tDeleteSku\x12#.wargapos.stock.v1.DeleteSkuRequest\x1a$.wargapos.stock.v1.DeleteSkuResponse\x12P\n" +
 	"\aListSku\x12!.wargapos.stock.v1.ListSkuRequest\x1a\".wargapos.stock.v1.ListSkuResponse\x12k\n" +
-	"\x10ListSkuPlacement\x12*.wargapos.stock.v1.ListSkuPlacementRequest\x1a+.wargapos.stock.v1.ListSkuPlacementResponse\x12_\n" +
-	"\fListPriceSku\x12&.wargapos.stock.v1.ListPriceSkuRequest\x1a'.wargapos.stock.v1.ListPriceSkuResponse\x12_\n" +
+	"\x10ListSkuPlacement\x12*.wargapos.stock.v1.ListSkuPlacementRequest\x1a+.wargapos.stock.v1.ListSkuPlacementResponse\x12\\\n" +
+	"\vListCostSku\x12%.wargapos.stock.v1.ListCostSkuRequest\x1a&.wargapos.stock.v1.ListCostSkuResponse\x12_\n" +
 	"\fListStockSku\x12&.wargapos.stock.v1.ListStockSkuRequest\x1a'.wargapos.stock.v1.ListStockSkuResponse\x12h\n" +
 	"\x0fListStockLogSku\x12).wargapos.stock.v1.ListStockLogSkuRequest\x1a*.wargapos.stock.v1.ListStockLogSkuResponse\x12n\n" +
 	"\x11CreateTransaction\x12+.wargapos.stock.v1.CreateTransactionRequest\x1a,.wargapos.stock.v1.CreateTransactionResponse\x12h\n" +
@@ -461,7 +461,7 @@ var file_wargapos_stock_v1_service_proto_goTypes = []any{
 	(*DeleteSkuRequest)(nil),           // 17: wargapos.stock.v1.DeleteSkuRequest
 	(*ListSkuRequest)(nil),             // 18: wargapos.stock.v1.ListSkuRequest
 	(*ListSkuPlacementRequest)(nil),    // 19: wargapos.stock.v1.ListSkuPlacementRequest
-	(*ListPriceSkuRequest)(nil),        // 20: wargapos.stock.v1.ListPriceSkuRequest
+	(*ListCostSkuRequest)(nil),         // 20: wargapos.stock.v1.ListCostSkuRequest
 	(*ListStockSkuRequest)(nil),        // 21: wargapos.stock.v1.ListStockSkuRequest
 	(*ListStockLogSkuRequest)(nil),     // 22: wargapos.stock.v1.ListStockLogSkuRequest
 	(*CreateTransactionRequest)(nil),   // 23: wargapos.stock.v1.CreateTransactionRequest
@@ -483,7 +483,7 @@ var file_wargapos_stock_v1_service_proto_goTypes = []any{
 	(*DeleteSkuResponse)(nil),          // 39: wargapos.stock.v1.DeleteSkuResponse
 	(*ListSkuResponse)(nil),            // 40: wargapos.stock.v1.ListSkuResponse
 	(*ListSkuPlacementResponse)(nil),   // 41: wargapos.stock.v1.ListSkuPlacementResponse
-	(*ListPriceSkuResponse)(nil),       // 42: wargapos.stock.v1.ListPriceSkuResponse
+	(*ListCostSkuResponse)(nil),        // 42: wargapos.stock.v1.ListCostSkuResponse
 	(*ListStockSkuResponse)(nil),       // 43: wargapos.stock.v1.ListStockSkuResponse
 	(*ListStockLogSkuResponse)(nil),    // 44: wargapos.stock.v1.ListStockLogSkuResponse
 	(*CreateTransactionResponse)(nil),  // 45: wargapos.stock.v1.CreateTransactionResponse
@@ -508,7 +508,7 @@ var file_wargapos_stock_v1_service_proto_depIdxs = []int32{
 	17, // 13: wargapos.stock.v1.StockService.DeleteSku:input_type -> wargapos.stock.v1.DeleteSkuRequest
 	18, // 14: wargapos.stock.v1.StockService.ListSku:input_type -> wargapos.stock.v1.ListSkuRequest
 	19, // 15: wargapos.stock.v1.StockService.ListSkuPlacement:input_type -> wargapos.stock.v1.ListSkuPlacementRequest
-	20, // 16: wargapos.stock.v1.StockService.ListPriceSku:input_type -> wargapos.stock.v1.ListPriceSkuRequest
+	20, // 16: wargapos.stock.v1.StockService.ListCostSku:input_type -> wargapos.stock.v1.ListCostSkuRequest
 	21, // 17: wargapos.stock.v1.StockService.ListStockSku:input_type -> wargapos.stock.v1.ListStockSkuRequest
 	22, // 18: wargapos.stock.v1.StockService.ListStockLogSku:input_type -> wargapos.stock.v1.ListStockLogSkuRequest
 	23, // 19: wargapos.stock.v1.StockService.CreateTransaction:input_type -> wargapos.stock.v1.CreateTransactionRequest
@@ -532,7 +532,7 @@ var file_wargapos_stock_v1_service_proto_depIdxs = []int32{
 	39, // 37: wargapos.stock.v1.StockService.DeleteSku:output_type -> wargapos.stock.v1.DeleteSkuResponse
 	40, // 38: wargapos.stock.v1.StockService.ListSku:output_type -> wargapos.stock.v1.ListSkuResponse
 	41, // 39: wargapos.stock.v1.StockService.ListSkuPlacement:output_type -> wargapos.stock.v1.ListSkuPlacementResponse
-	42, // 40: wargapos.stock.v1.StockService.ListPriceSku:output_type -> wargapos.stock.v1.ListPriceSkuResponse
+	42, // 40: wargapos.stock.v1.StockService.ListCostSku:output_type -> wargapos.stock.v1.ListCostSkuResponse
 	43, // 41: wargapos.stock.v1.StockService.ListStockSku:output_type -> wargapos.stock.v1.ListStockSkuResponse
 	44, // 42: wargapos.stock.v1.StockService.ListStockLogSku:output_type -> wargapos.stock.v1.ListStockLogSkuResponse
 	45, // 43: wargapos.stock.v1.StockService.CreateTransaction:output_type -> wargapos.stock.v1.CreateTransactionResponse

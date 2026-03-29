@@ -10,11 +10,11 @@ import (
 	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
-func (s *StockService) ListPriceSku(
+func (s *StockService) ListCostSku(
 	ctx context.Context,
-	req *connect.Request[stockv1.ListPriceSkuRequest],
-) (*connect.Response[stockv1.ListPriceSkuResponse], error) {
-	var rows []stock_model.PriceVersion
+	req *connect.Request[stockv1.ListCostSkuRequest],
+) (*connect.Response[stockv1.ListCostSkuResponse], error) {
+	var rows []stock_model.CostVersion
 	if err := s.db.WithContext(ctx).
 		Where("sku_id = ?", req.Msg.SkuId).
 		Order("id desc").
@@ -22,13 +22,13 @@ func (s *StockService) ListPriceSku(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	prices := make([]*stockv1.PriceVersion, len(rows))
+	costs := make([]*stockv1.CostVersion, len(rows))
 	for i, r := range rows {
-		prices[i] = &stockv1.PriceVersion{
+		costs[i] = &stockv1.CostVersion{
 			Id:            r.ID,
 			SkuId:         r.SkuId,
 			TransactionId: r.TransactionId,
-			Price:         r.Price,
+			UnitCost:      r.UnitCost,
 			StockInitiate: r.StockInitiate,
 			LeftStock:     r.LeftStock,
 			CreatedAt:     timestamppb.New(r.CreatedAt),
@@ -36,5 +36,5 @@ func (s *StockService) ListPriceSku(
 		}
 	}
 
-	return connect.NewResponse(&stockv1.ListPriceSkuResponse{Prices: prices}), nil
+	return connect.NewResponse(&stockv1.ListCostSkuResponse{Costs: costs}), nil
 }

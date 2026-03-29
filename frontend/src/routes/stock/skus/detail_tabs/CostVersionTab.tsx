@@ -5,20 +5,20 @@ import { formatDateTime, formatPrice } from '../../../../lib/format'
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
 import { EmptyRow, thStyle, tdStyle, tdRight } from './common'
 
-export function PriceVersionTab({ id, skuId }: { id: string; skuId: number }) {
-  const { data: pricesData } = useQuery({
-    queryKey: ['sku-prices', id],
-    queryFn: () => stockClient.listPriceSku({ skuId }),
+export function CostVersionTab({ id, skuId }: { id: string; skuId: number }) {
+  const { data: costsData } = useQuery({
+    queryKey: ['sku-costs', id],
+    queryFn: () => stockClient.listCostSku({ skuId }),
   })
 
-  const prices = pricesData?.prices ?? []
+  const costs = costsData?.costs ?? []
 
   return (
     <Box borderWidth={1} borderColor="gray.100" borderRadius="md" overflow="hidden">
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead style={{ background: '#f7fafc' }}>
           <tr>
-            <th style={thStyle}>Price</th>
+            <th style={thStyle}>Unit Cost</th>
             <th style={{ ...thStyle, textAlign: 'right' }}>Initiate</th>
             <th style={{ ...thStyle, textAlign: 'right' }}>Left</th>
             <th style={{ ...thStyle, textAlign: 'right' }}>Tx ID</th>
@@ -26,16 +26,16 @@ export function PriceVersionTab({ id, skuId }: { id: string; skuId: number }) {
           </tr>
         </thead>
         <tbody>
-          {prices.map((p) => (
-            <tr key={String(p.id)}>
-              <td style={{ ...tdStyle, fontFamily: 'monospace' }}>{formatPrice(BigInt(Math.round(p.price)))}</td>
-              <td style={tdRight}>{p.stockInitiate}</td>
-              <td style={tdRight}>{p.leftStock}</td>
-              <td style={{ ...tdRight, color: '#718096' }}>{String(p.transactionId)}</td>
-              <td style={{ ...tdRight, color: '#718096' }}>{formatDateTime(p.createdAt as Timestamp | undefined)}</td>
+          {costs.map((c) => (
+            <tr key={String(c.id)}>
+              <td style={{ ...tdStyle, fontFamily: 'monospace' }}>{formatPrice(BigInt(Math.round(c.unitCost)))}</td>
+              <td style={tdRight}>{c.stockInitiate}</td>
+              <td style={tdRight}>{c.leftStock}</td>
+              <td style={{ ...tdRight, color: '#718096' }}>{String(c.transactionId)}</td>
+              <td style={{ ...tdRight, color: '#718096' }}>{formatDateTime(c.createdAt as Timestamp | undefined)}</td>
             </tr>
           ))}
-          {prices.length === 0 && <EmptyRow cols={5} />}
+          {costs.length === 0 && <EmptyRow cols={5} />}
         </tbody>
       </table>
     </Box>

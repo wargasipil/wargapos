@@ -8,7 +8,7 @@ import { stockClient } from '../../../client'
 import { formatDateTime } from '../../../lib/format'
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
 import { StockLogTab } from './detail_tabs/StockLogTab'
-import { PriceVersionTab } from './detail_tabs/PriceVersionTab'
+import { CostVersionTab } from './detail_tabs/CostVersionTab'
 import { StockTab } from './detail_tabs/StockTab'
 
 function DetailRow({ label, value }: { label: string; value: string }) {
@@ -72,7 +72,7 @@ export function SkuDetail() {
           <Tabs.Trigger value="stock">Stock</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="stocklog"><StockLogTab id={id} skuId={skuId} /></Tabs.Content>
-        <Tabs.Content value="priceversion"><PriceVersionTab id={id} skuId={skuId} /></Tabs.Content>
+        <Tabs.Content value="priceversion"><CostVersionTab id={id} skuId={skuId} /></Tabs.Content>
         <Tabs.Content value="stock"><StockTab id={id} skuId={skuId} /></Tabs.Content>
       </Tabs.Root>
     </Box>

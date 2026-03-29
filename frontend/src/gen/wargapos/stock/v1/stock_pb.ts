@@ -13,12 +13,12 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/stock.proto.
  */
 export const file_wargapos_stock_v1_stock: GenFile = /*@__PURE__*/
-  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi3QEKDFByaWNlVmVyc2lvbhIKCgJpZBgBIAEoBBIOCgZza3VfaWQYAiABKA0SFgoOdHJhbnNhY3Rpb25faWQYAyABKAQSLgoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDQoFcHJpY2UYBiABKAESFgoOc3RvY2tfaW5pdGlhdGUYByABKAUSEgoKbGVmdF9zdG9jaxgIIAEoBSLHAQoFU3RvY2sSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAMgASgEEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDnN0b2NrX2luaXRpYXRlGAYgASgFEhIKCmxlZnRfc3RvY2sYByABKAUi6gEKCFN0b2NrTG9nEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgEIAEoBBIQCghhY3Rvcl9pZBgFIAEoDRIYChBwcmljZV92ZXJzaW9uX2lkGAYgASgEEhAKCHN0b2NrX2lkGAcgASgEEi4KCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiwKCGxvZ190eXBlGAkgASgOMhoud2FyZ2Fwb3Muc3RvY2sudjEuTG9nVHlwZRIOCgZjaGFuZ2UYCiABKAUiLgoTTGlzdFByaWNlU2t1UmVxdWVzdBIXCgZza3VfaWQYASABKA1CB7pIBCoCIAAiRwoUTGlzdFByaWNlU2t1UmVzcG9uc2USLwoGcHJpY2VzGAEgAygLMh8ud2FyZ2Fwb3Muc3RvY2sudjEuUHJpY2VWZXJzaW9uIi4KE0xpc3RTdG9ja1NrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAIkAKFExpc3RTdG9ja1NrdVJlc3BvbnNlEigKBnN0b2NrcxgBIAMoCzIYLndhcmdhcG9zLnN0b2NrLnYxLlN0b2NrKpoBCgdMb2dUeXBlEhgKFExPR19UWVBFX1VOU1BFQ0lGSUVEEAASGQoVTE9HX1RZUEVfU1RPQ0tfQ0FOQ0VMEAESFQoRTE9HX1RZUEVfU1RPQ0tfSU4QAhIWChJMT0dfVFlQRV9TVE9DS19PVVQQAxIXChNMT0dfVFlQRV9BREpVU1RNRU5UEAQSEgoOTE9HX1RZUEVfT1JERVIQBUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi4AEKC0Nvc3RWZXJzaW9uEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgDIAEoBBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIRCgl1bml0X2Nvc3QYBiABKAESFgoOc3RvY2tfaW5pdGlhdGUYByABKAUSEgoKbGVmdF9zdG9jaxgIIAEoBSLHAQoFU3RvY2sSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAMgASgEEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDnN0b2NrX2luaXRpYXRlGAYgASgFEhIKCmxlZnRfc3RvY2sYByABKAUi6QEKCFN0b2NrTG9nEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgEIAEoBBIQCghhY3Rvcl9pZBgFIAEoDRIXCg9jb3N0X3ZlcnNpb25faWQYBiABKAQSEAoIc3RvY2tfaWQYByABKAQSLgoKY3JlYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLAoIbG9nX3R5cGUYCSABKA4yGi53YXJnYXBvcy5zdG9jay52MS5Mb2dUeXBlEg4KBmNoYW5nZRgKIAEoBSItChJMaXN0Q29zdFNrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAIkQKE0xpc3RDb3N0U2t1UmVzcG9uc2USLQoFY29zdHMYASADKAsyHi53YXJnYXBvcy5zdG9jay52MS5Db3N0VmVyc2lvbiIuChNMaXN0U3RvY2tTa3VSZXF1ZXN0EhcKBnNrdV9pZBgBIAEoDUIHukgEKgIgACJAChRMaXN0U3RvY2tTa3VSZXNwb25zZRIoCgZzdG9ja3MYASADKAsyGC53YXJnYXBvcy5zdG9jay52MS5TdG9jayqaAQoHTG9nVHlwZRIYChRMT0dfVFlQRV9VTlNQRUNJRklFRBAAEhkKFUxPR19UWVBFX1NUT0NLX0NBTkNFTBABEhUKEUxPR19UWVBFX1NUT0NLX0lOEAISFgoSTE9HX1RZUEVfU1RPQ0tfT1VUEAMSFwoTTE9HX1RZUEVfQURKVVNUTUVOVBAEEhIKDkxPR19UWVBFX09SREVSEAVCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
- * @generated from message wargapos.stock.v1.PriceVersion
+ * @generated from message wargapos.stock.v1.CostVersion
  */
-export type PriceVersion = Message<"wargapos.stock.v1.PriceVersion"> & {
+export type CostVersion = Message<"wargapos.stock.v1.CostVersion"> & {
   /**
    * @generated from field: uint64 id = 1;
    */
@@ -45,9 +45,9 @@ export type PriceVersion = Message<"wargapos.stock.v1.PriceVersion"> & {
   updatedAt?: Timestamp;
 
   /**
-   * @generated from field: double price = 6;
+   * @generated from field: double unit_cost = 6;
    */
-  price: number;
+  unitCost: number;
 
   /**
    * @generated from field: int32 stock_initiate = 7;
@@ -61,10 +61,10 @@ export type PriceVersion = Message<"wargapos.stock.v1.PriceVersion"> & {
 };
 
 /**
- * Describes the message wargapos.stock.v1.PriceVersion.
- * Use `create(PriceVersionSchema)` to create a new message.
+ * Describes the message wargapos.stock.v1.CostVersion.
+ * Use `create(CostVersionSchema)` to create a new message.
  */
-export const PriceVersionSchema: GenMessage<PriceVersion> = /*@__PURE__*/
+export const CostVersionSchema: GenMessage<CostVersion> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 0);
 
 /**
@@ -139,9 +139,9 @@ export type StockLog = Message<"wargapos.stock.v1.StockLog"> & {
   actorId: number;
 
   /**
-   * @generated from field: uint64 price_version_id = 6;
+   * @generated from field: uint64 cost_version_id = 6;
    */
-  priceVersionId: bigint;
+  costVersionId: bigint;
 
   /**
    * @generated from field: uint64 stock_id = 7;
@@ -172,9 +172,9 @@ export const StockLogSchema: GenMessage<StockLog> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 2);
 
 /**
- * @generated from message wargapos.stock.v1.ListPriceSkuRequest
+ * @generated from message wargapos.stock.v1.ListCostSkuRequest
  */
-export type ListPriceSkuRequest = Message<"wargapos.stock.v1.ListPriceSkuRequest"> & {
+export type ListCostSkuRequest = Message<"wargapos.stock.v1.ListCostSkuRequest"> & {
   /**
    * @generated from field: uint32 sku_id = 1;
    */
@@ -182,27 +182,27 @@ export type ListPriceSkuRequest = Message<"wargapos.stock.v1.ListPriceSkuRequest
 };
 
 /**
- * Describes the message wargapos.stock.v1.ListPriceSkuRequest.
- * Use `create(ListPriceSkuRequestSchema)` to create a new message.
+ * Describes the message wargapos.stock.v1.ListCostSkuRequest.
+ * Use `create(ListCostSkuRequestSchema)` to create a new message.
  */
-export const ListPriceSkuRequestSchema: GenMessage<ListPriceSkuRequest> = /*@__PURE__*/
+export const ListCostSkuRequestSchema: GenMessage<ListCostSkuRequest> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 3);
 
 /**
- * @generated from message wargapos.stock.v1.ListPriceSkuResponse
+ * @generated from message wargapos.stock.v1.ListCostSkuResponse
  */
-export type ListPriceSkuResponse = Message<"wargapos.stock.v1.ListPriceSkuResponse"> & {
+export type ListCostSkuResponse = Message<"wargapos.stock.v1.ListCostSkuResponse"> & {
   /**
-   * @generated from field: repeated wargapos.stock.v1.PriceVersion prices = 1;
+   * @generated from field: repeated wargapos.stock.v1.CostVersion costs = 1;
    */
-  prices: PriceVersion[];
+  costs: CostVersion[];
 };
 
 /**
- * Describes the message wargapos.stock.v1.ListPriceSkuResponse.
- * Use `create(ListPriceSkuResponseSchema)` to create a new message.
+ * Describes the message wargapos.stock.v1.ListCostSkuResponse.
+ * Use `create(ListCostSkuResponseSchema)` to create a new message.
  */
-export const ListPriceSkuResponseSchema: GenMessage<ListPriceSkuResponse> = /*@__PURE__*/
+export const ListCostSkuResponseSchema: GenMessage<ListCostSkuResponse> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_stock, 4);
 
 /**

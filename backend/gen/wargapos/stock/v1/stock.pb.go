@@ -81,34 +81,34 @@ func (LogType) EnumDescriptor() ([]byte, []int) {
 	return file_wargapos_stock_v1_stock_proto_rawDescGZIP(), []int{0}
 }
 
-type PriceVersion struct {
+type CostVersion struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	TransactionId uint64                 `protobuf:"varint,3,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Price         float64                `protobuf:"fixed64,6,opt,name=price,proto3" json:"price,omitempty"`
+	UnitCost      float64                `protobuf:"fixed64,6,opt,name=unit_cost,json=unitCost,proto3" json:"unit_cost,omitempty"`
 	StockInitiate int32                  `protobuf:"varint,7,opt,name=stock_initiate,json=stockInitiate,proto3" json:"stock_initiate,omitempty"`
 	LeftStock     int32                  `protobuf:"varint,8,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PriceVersion) Reset() {
-	*x = PriceVersion{}
+func (x *CostVersion) Reset() {
+	*x = CostVersion{}
 	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PriceVersion) String() string {
+func (x *CostVersion) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PriceVersion) ProtoMessage() {}
+func (*CostVersion) ProtoMessage() {}
 
-func (x *PriceVersion) ProtoReflect() protoreflect.Message {
+func (x *CostVersion) ProtoReflect() protoreflect.Message {
 	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -120,61 +120,61 @@ func (x *PriceVersion) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PriceVersion.ProtoReflect.Descriptor instead.
-func (*PriceVersion) Descriptor() ([]byte, []int) {
+// Deprecated: Use CostVersion.ProtoReflect.Descriptor instead.
+func (*CostVersion) Descriptor() ([]byte, []int) {
 	return file_wargapos_stock_v1_stock_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *PriceVersion) GetId() uint64 {
+func (x *CostVersion) GetId() uint64 {
 	if x != nil {
 		return x.Id
 	}
 	return 0
 }
 
-func (x *PriceVersion) GetSkuId() uint32 {
+func (x *CostVersion) GetSkuId() uint32 {
 	if x != nil {
 		return x.SkuId
 	}
 	return 0
 }
 
-func (x *PriceVersion) GetTransactionId() uint64 {
+func (x *CostVersion) GetTransactionId() uint64 {
 	if x != nil {
 		return x.TransactionId
 	}
 	return 0
 }
 
-func (x *PriceVersion) GetCreatedAt() *timestamppb.Timestamp {
+func (x *CostVersion) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
 	}
 	return nil
 }
 
-func (x *PriceVersion) GetUpdatedAt() *timestamppb.Timestamp {
+func (x *CostVersion) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
 	}
 	return nil
 }
 
-func (x *PriceVersion) GetPrice() float64 {
+func (x *CostVersion) GetUnitCost() float64 {
 	if x != nil {
-		return x.Price
+		return x.UnitCost
 	}
 	return 0
 }
 
-func (x *PriceVersion) GetStockInitiate() int32 {
+func (x *CostVersion) GetStockInitiate() int32 {
 	if x != nil {
 		return x.StockInitiate
 	}
 	return 0
 }
 
-func (x *PriceVersion) GetLeftStock() int32 {
+func (x *CostVersion) GetLeftStock() int32 {
 	if x != nil {
 		return x.LeftStock
 	}
@@ -274,18 +274,18 @@ func (x *Stock) GetLeftStock() int32 {
 }
 
 type StockLog struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Id             uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	SkuId          uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
-	TransactionId  uint64                 `protobuf:"varint,4,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
-	ActorId        uint32                 `protobuf:"varint,5,opt,name=actor_id,json=actorId,proto3" json:"actor_id,omitempty"`
-	PriceVersionId uint64                 `protobuf:"varint,6,opt,name=price_version_id,json=priceVersionId,proto3" json:"price_version_id,omitempty"`
-	StockId        uint64                 `protobuf:"varint,7,opt,name=stock_id,json=stockId,proto3" json:"stock_id,omitempty"`
-	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	LogType        LogType                `protobuf:"varint,9,opt,name=log_type,json=logType,proto3,enum=wargapos.stock.v1.LogType" json:"log_type,omitempty"`
-	Change         int32                  `protobuf:"varint,10,opt,name=change,proto3" json:"change,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
+	TransactionId uint64                 `protobuf:"varint,4,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	ActorId       uint32                 `protobuf:"varint,5,opt,name=actor_id,json=actorId,proto3" json:"actor_id,omitempty"`
+	CostVersionId uint64                 `protobuf:"varint,6,opt,name=cost_version_id,json=costVersionId,proto3" json:"cost_version_id,omitempty"`
+	StockId       uint64                 `protobuf:"varint,7,opt,name=stock_id,json=stockId,proto3" json:"stock_id,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	LogType       LogType                `protobuf:"varint,9,opt,name=log_type,json=logType,proto3,enum=wargapos.stock.v1.LogType" json:"log_type,omitempty"`
+	Change        int32                  `protobuf:"varint,10,opt,name=change,proto3" json:"change,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *StockLog) Reset() {
@@ -346,9 +346,9 @@ func (x *StockLog) GetActorId() uint32 {
 	return 0
 }
 
-func (x *StockLog) GetPriceVersionId() uint64 {
+func (x *StockLog) GetCostVersionId() uint64 {
 	if x != nil {
-		return x.PriceVersionId
+		return x.CostVersionId
 	}
 	return 0
 }
@@ -381,27 +381,27 @@ func (x *StockLog) GetChange() int32 {
 	return 0
 }
 
-type ListPriceSkuRequest struct {
+type ListCostSkuRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SkuId         uint32                 `protobuf:"varint,1,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListPriceSkuRequest) Reset() {
-	*x = ListPriceSkuRequest{}
+func (x *ListCostSkuRequest) Reset() {
+	*x = ListCostSkuRequest{}
 	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListPriceSkuRequest) String() string {
+func (x *ListCostSkuRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListPriceSkuRequest) ProtoMessage() {}
+func (*ListCostSkuRequest) ProtoMessage() {}
 
-func (x *ListPriceSkuRequest) ProtoReflect() protoreflect.Message {
+func (x *ListCostSkuRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -413,39 +413,39 @@ func (x *ListPriceSkuRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListPriceSkuRequest.ProtoReflect.Descriptor instead.
-func (*ListPriceSkuRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListCostSkuRequest.ProtoReflect.Descriptor instead.
+func (*ListCostSkuRequest) Descriptor() ([]byte, []int) {
 	return file_wargapos_stock_v1_stock_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListPriceSkuRequest) GetSkuId() uint32 {
+func (x *ListCostSkuRequest) GetSkuId() uint32 {
 	if x != nil {
 		return x.SkuId
 	}
 	return 0
 }
 
-type ListPriceSkuResponse struct {
+type ListCostSkuResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Prices        []*PriceVersion        `protobuf:"bytes,1,rep,name=prices,proto3" json:"prices,omitempty"`
+	Costs         []*CostVersion         `protobuf:"bytes,1,rep,name=costs,proto3" json:"costs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListPriceSkuResponse) Reset() {
-	*x = ListPriceSkuResponse{}
+func (x *ListCostSkuResponse) Reset() {
+	*x = ListCostSkuResponse{}
 	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListPriceSkuResponse) String() string {
+func (x *ListCostSkuResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListPriceSkuResponse) ProtoMessage() {}
+func (*ListCostSkuResponse) ProtoMessage() {}
 
-func (x *ListPriceSkuResponse) ProtoReflect() protoreflect.Message {
+func (x *ListCostSkuResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -457,14 +457,14 @@ func (x *ListPriceSkuResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListPriceSkuResponse.ProtoReflect.Descriptor instead.
-func (*ListPriceSkuResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListCostSkuResponse.ProtoReflect.Descriptor instead.
+func (*ListCostSkuResponse) Descriptor() ([]byte, []int) {
 	return file_wargapos_stock_v1_stock_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ListPriceSkuResponse) GetPrices() []*PriceVersion {
+func (x *ListCostSkuResponse) GetCosts() []*CostVersion {
 	if x != nil {
-		return x.Prices
+		return x.Costs
 	}
 	return nil
 }
@@ -561,16 +561,16 @@ var File_wargapos_stock_v1_stock_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"\n" +
-	"\x1dwargapos/stock/v1/stock.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xae\x02\n" +
-	"\fPriceVersion\x12\x0e\n" +
+	"\x1dwargapos/stock/v1/stock.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb4\x02\n" +
+	"\vCostVersion\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12%\n" +
 	"\x0etransaction_id\x18\x03 \x01(\x04R\rtransactionId\x129\n" +
 	"\n" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x14\n" +
-	"\x05price\x18\x06 \x01(\x01R\x05price\x12%\n" +
+	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x1b\n" +
+	"\tunit_cost\x18\x06 \x01(\x01R\bunitCost\x12%\n" +
 	"\x0estock_initiate\x18\a \x01(\x05R\rstockInitiate\x12\x1d\n" +
 	"\n" +
 	"left_stock\x18\b \x01(\x05R\tleftStock\"\x91\x02\n" +
@@ -584,23 +584,23 @@ const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12%\n" +
 	"\x0estock_initiate\x18\x06 \x01(\x05R\rstockInitiate\x12\x1d\n" +
 	"\n" +
-	"left_stock\x18\a \x01(\x05R\tleftStock\"\xc2\x02\n" +
+	"left_stock\x18\a \x01(\x05R\tleftStock\"\xc0\x02\n" +
 	"\bStockLog\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12%\n" +
 	"\x0etransaction_id\x18\x04 \x01(\x04R\rtransactionId\x12\x19\n" +
-	"\bactor_id\x18\x05 \x01(\rR\aactorId\x12(\n" +
-	"\x10price_version_id\x18\x06 \x01(\x04R\x0epriceVersionId\x12\x19\n" +
+	"\bactor_id\x18\x05 \x01(\rR\aactorId\x12&\n" +
+	"\x0fcost_version_id\x18\x06 \x01(\x04R\rcostVersionId\x12\x19\n" +
 	"\bstock_id\x18\a \x01(\x04R\astockId\x129\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x125\n" +
 	"\blog_type\x18\t \x01(\x0e2\x1a.wargapos.stock.v1.LogTypeR\alogType\x12\x16\n" +
 	"\x06change\x18\n" +
-	" \x01(\x05R\x06change\"5\n" +
-	"\x13ListPriceSkuRequest\x12\x1e\n" +
-	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"O\n" +
-	"\x14ListPriceSkuResponse\x127\n" +
-	"\x06prices\x18\x01 \x03(\v2\x1f.wargapos.stock.v1.PriceVersionR\x06prices\"5\n" +
+	" \x01(\x05R\x06change\"4\n" +
+	"\x12ListCostSkuRequest\x12\x1e\n" +
+	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"K\n" +
+	"\x13ListCostSkuResponse\x124\n" +
+	"\x05costs\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.CostVersionR\x05costs\"5\n" +
 	"\x13ListStockSkuRequest\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"H\n" +
 	"\x14ListStockSkuResponse\x120\n" +
@@ -629,23 +629,23 @@ var file_wargapos_stock_v1_stock_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wargapos_stock_v1_stock_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_wargapos_stock_v1_stock_proto_goTypes = []any{
 	(LogType)(0),                  // 0: wargapos.stock.v1.LogType
-	(*PriceVersion)(nil),          // 1: wargapos.stock.v1.PriceVersion
+	(*CostVersion)(nil),           // 1: wargapos.stock.v1.CostVersion
 	(*Stock)(nil),                 // 2: wargapos.stock.v1.Stock
 	(*StockLog)(nil),              // 3: wargapos.stock.v1.StockLog
-	(*ListPriceSkuRequest)(nil),   // 4: wargapos.stock.v1.ListPriceSkuRequest
-	(*ListPriceSkuResponse)(nil),  // 5: wargapos.stock.v1.ListPriceSkuResponse
+	(*ListCostSkuRequest)(nil),    // 4: wargapos.stock.v1.ListCostSkuRequest
+	(*ListCostSkuResponse)(nil),   // 5: wargapos.stock.v1.ListCostSkuResponse
 	(*ListStockSkuRequest)(nil),   // 6: wargapos.stock.v1.ListStockSkuRequest
 	(*ListStockSkuResponse)(nil),  // 7: wargapos.stock.v1.ListStockSkuResponse
 	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
 }
 var file_wargapos_stock_v1_stock_proto_depIdxs = []int32{
-	8, // 0: wargapos.stock.v1.PriceVersion.created_at:type_name -> google.protobuf.Timestamp
-	8, // 1: wargapos.stock.v1.PriceVersion.updated_at:type_name -> google.protobuf.Timestamp
+	8, // 0: wargapos.stock.v1.CostVersion.created_at:type_name -> google.protobuf.Timestamp
+	8, // 1: wargapos.stock.v1.CostVersion.updated_at:type_name -> google.protobuf.Timestamp
 	8, // 2: wargapos.stock.v1.Stock.created_at:type_name -> google.protobuf.Timestamp
 	8, // 3: wargapos.stock.v1.Stock.updated_at:type_name -> google.protobuf.Timestamp
 	8, // 4: wargapos.stock.v1.StockLog.created_at:type_name -> google.protobuf.Timestamp
 	0, // 5: wargapos.stock.v1.StockLog.log_type:type_name -> wargapos.stock.v1.LogType
-	1, // 6: wargapos.stock.v1.ListPriceSkuResponse.prices:type_name -> wargapos.stock.v1.PriceVersion
+	1, // 6: wargapos.stock.v1.ListCostSkuResponse.costs:type_name -> wargapos.stock.v1.CostVersion
 	2, // 7: wargapos.stock.v1.ListStockSkuResponse.stocks:type_name -> wargapos.stock.v1.Stock
 	8, // [8:8] is the sub-list for method output_type
 	8, // [8:8] is the sub-list for method input_type
