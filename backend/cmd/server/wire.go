@@ -8,6 +8,7 @@ import (
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
+	"wargapos/backend/internal/service/event_service"
 	"wargapos/backend/internal/service/ingredient_service"
 	"wargapos/backend/internal/service/marketplace_service"
 	"wargapos/backend/internal/service/notification_service"
@@ -28,6 +29,7 @@ func InitializeApp(cfg *config.Config) (App, error) {
 		config.ProvideMidtransConfig,
 		NewDefaultServiceClientOption,
 		NewStockServiceClient,
+		event_service.NewEventService,
 		auth_service.NewAuthService,
 		user_service.NewUserService,
 		product_service.NewProductService,

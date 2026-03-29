@@ -4,6 +4,7 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
+import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
 import type { StockEvent } from "../../stock/v1/event_pb";
 import { file_wargapos_stock_v1_event } from "../../stock/v1/event_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -12,18 +13,37 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/event/v1/service.proto.
  */
 export const file_wargapos_event_v1_service: GenFile = /*@__PURE__*/
-  fileDesc("Ch93YXJnYXBvcy9ldmVudC92MS9zZXJ2aWNlLnByb3RvEhF3YXJnYXBvcy5ldmVudC52MSJMCgtTZW5kUmVxdWVzdBI0CgtzdG9ja19ldmVudBgBIAEoCzIdLndhcmdhcG9zLnN0b2NrLnYxLlN0b2NrRXZlbnRIAEIHCgVldmVudCIOCgxTZW5kUmVzcG9uc2UiTQoMUHVsbFJlc3BvbnNlEjQKC3N0b2NrX2V2ZW50GAEgASgLMh0ud2FyZ2Fwb3Muc3RvY2sudjEuU3RvY2tFdmVudEgAQgcKBWV2ZW50IiMKC1B1bGxSZXF1ZXN0EhQKDHNlcnZpY2VfbmFtZRgBIAEoCTKiAQoMRXZlbnRTZXJ2aWNlEkcKBFNlbmQSHi53YXJnYXBvcy5ldmVudC52MS5TZW5kUmVxdWVzdBofLndhcmdhcG9zLmV2ZW50LnYxLlNlbmRSZXNwb25zZRJJCgRQdWxsEh4ud2FyZ2Fwb3MuZXZlbnQudjEuUHVsbFJlcXVlc3QaHy53YXJnYXBvcy5ldmVudC52MS5QdWxsUmVzcG9uc2UwAUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9ldmVudC92MTtldmVudHYxYgZwcm90bzM", [file_wargapos_stock_v1_event]);
+  fileDesc("Ch93YXJnYXBvcy9ldmVudC92MS9zZXJ2aWNlLnByb3RvEhF3YXJnYXBvcy5ldmVudC52MSIGCgRQaW5nIm8KBUV2ZW50EicKBHBpbmcYASABKAsyFy53YXJnYXBvcy5ldmVudC52MS5QaW5nSAASNAoLc3RvY2tfZXZlbnQYAiABKAsyHS53YXJnYXBvcy5zdG9jay52MS5TdG9ja0V2ZW50SABCBwoFZXZlbnQiRQoLU2VuZFJlcXVlc3QSDwoHcHVzaF9pZBgBIAEoCRIlCgNldnQYAiABKAsyGC53YXJnYXBvcy5ldmVudC52MS5FdmVudCIOCgxTZW5kUmVzcG9uc2UiNQoMUHVsbFJlc3BvbnNlEiUKA2V2dBgCIAEoCzIYLndhcmdhcG9zLmV2ZW50LnYxLkV2ZW50Ii8KC1B1bGxSZXF1ZXN0EiAKDHN1YnNjcmliZV9pZBgBIAEoCUIKukgHcgUQARisAjKiAQoMRXZlbnRTZXJ2aWNlEkcKBFNlbmQSHi53YXJnYXBvcy5ldmVudC52MS5TZW5kUmVxdWVzdBofLndhcmdhcG9zLmV2ZW50LnYxLlNlbmRSZXNwb25zZRJJCgRQdWxsEh4ud2FyZ2Fwb3MuZXZlbnQudjEuUHVsbFJlcXVlc3QaHy53YXJnYXBvcy5ldmVudC52MS5QdWxsUmVzcG9uc2UwAUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9ldmVudC92MTtldmVudHYxYgZwcm90bzM", [file_buf_validate_validate, file_wargapos_stock_v1_event]);
 
 /**
- * @generated from message wargapos.event.v1.SendRequest
+ * @generated from message wargapos.event.v1.Ping
  */
-export type SendRequest = Message<"wargapos.event.v1.SendRequest"> & {
+export type Ping = Message<"wargapos.event.v1.Ping"> & {
+};
+
+/**
+ * Describes the message wargapos.event.v1.Ping.
+ * Use `create(PingSchema)` to create a new message.
+ */
+export const PingSchema: GenMessage<Ping> = /*@__PURE__*/
+  messageDesc(file_wargapos_event_v1_service, 0);
+
+/**
+ * @generated from message wargapos.event.v1.Event
+ */
+export type Event = Message<"wargapos.event.v1.Event"> & {
   /**
-   * @generated from oneof wargapos.event.v1.SendRequest.event
+   * @generated from oneof wargapos.event.v1.Event.event
    */
   event: {
     /**
-     * @generated from field: wargapos.stock.v1.StockEvent stock_event = 1;
+     * @generated from field: wargapos.event.v1.Ping ping = 1;
+     */
+    value: Ping;
+    case: "ping";
+  } | {
+    /**
+     * @generated from field: wargapos.stock.v1.StockEvent stock_event = 2;
      */
     value: StockEvent;
     case: "stockEvent";
@@ -31,11 +51,33 @@ export type SendRequest = Message<"wargapos.event.v1.SendRequest"> & {
 };
 
 /**
+ * Describes the message wargapos.event.v1.Event.
+ * Use `create(EventSchema)` to create a new message.
+ */
+export const EventSchema: GenMessage<Event> = /*@__PURE__*/
+  messageDesc(file_wargapos_event_v1_service, 1);
+
+/**
+ * @generated from message wargapos.event.v1.SendRequest
+ */
+export type SendRequest = Message<"wargapos.event.v1.SendRequest"> & {
+  /**
+   * @generated from field: string push_id = 1;
+   */
+  pushId: string;
+
+  /**
+   * @generated from field: wargapos.event.v1.Event evt = 2;
+   */
+  evt?: Event;
+};
+
+/**
  * Describes the message wargapos.event.v1.SendRequest.
  * Use `create(SendRequestSchema)` to create a new message.
  */
 export const SendRequestSchema: GenMessage<SendRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_event_v1_service, 0);
+  messageDesc(file_wargapos_event_v1_service, 2);
 
 /**
  * @generated from message wargapos.event.v1.SendResponse
@@ -48,22 +90,16 @@ export type SendResponse = Message<"wargapos.event.v1.SendResponse"> & {
  * Use `create(SendResponseSchema)` to create a new message.
  */
 export const SendResponseSchema: GenMessage<SendResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_event_v1_service, 1);
+  messageDesc(file_wargapos_event_v1_service, 3);
 
 /**
  * @generated from message wargapos.event.v1.PullResponse
  */
 export type PullResponse = Message<"wargapos.event.v1.PullResponse"> & {
   /**
-   * @generated from oneof wargapos.event.v1.PullResponse.event
+   * @generated from field: wargapos.event.v1.Event evt = 2;
    */
-  event: {
-    /**
-     * @generated from field: wargapos.stock.v1.StockEvent stock_event = 1;
-     */
-    value: StockEvent;
-    case: "stockEvent";
-  } | { case: undefined; value?: undefined };
+  evt?: Event;
 };
 
 /**
@@ -71,16 +107,16 @@ export type PullResponse = Message<"wargapos.event.v1.PullResponse"> & {
  * Use `create(PullResponseSchema)` to create a new message.
  */
 export const PullResponseSchema: GenMessage<PullResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_event_v1_service, 2);
+  messageDesc(file_wargapos_event_v1_service, 4);
 
 /**
  * @generated from message wargapos.event.v1.PullRequest
  */
 export type PullRequest = Message<"wargapos.event.v1.PullRequest"> & {
   /**
-   * @generated from field: string service_name = 1;
+   * @generated from field: string subscribe_id = 1;
    */
-  serviceName: string;
+  subscribeId: string;
 };
 
 /**
@@ -88,7 +124,7 @@ export type PullRequest = Message<"wargapos.event.v1.PullRequest"> & {
  * Use `create(PullRequestSchema)` to create a new message.
  */
 export const PullRequestSchema: GenMessage<PullRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_event_v1_service, 3);
+  messageDesc(file_wargapos_event_v1_service, 5);
 
 /**
  * @generated from service wargapos.event.v1.EventService

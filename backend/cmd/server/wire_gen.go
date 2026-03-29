@@ -12,6 +12,7 @@ import (
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
+	"wargapos/backend/internal/service/event_service"
 	"wargapos/backend/internal/service/ingredient_service"
 	"wargapos/backend/internal/service/marketplace_service"
 	"wargapos/backend/internal/service/notification_service"
@@ -31,6 +32,7 @@ func InitializeApp(cfg *config.Config) (App, error) {
 	authConfig := config.ProvideAuthConfig(cfg)
 	authService := auth_service.NewAuthService(db, authConfig)
 	userService := user_service.NewUserService(db)
+	eventService := event_service.NewEventService()
 	productService := product_service.NewProductService(db)
 	transactionService := transaction_service.NewTransactionService(db, midtransConfig)
 	tableService := table_service.NewTableService(db)
@@ -43,7 +45,7 @@ func InitializeApp(cfg *config.Config) (App, error) {
 	deviceService := device_service.NewDeviceService()
 	notificationService := notification_service.NewNotificationService(db)
 	backupService := backup_service.NewBackupService(db, cfg, authConfig)
-	webRunnerFunc := NewWebRunnerFunc(db, cfg, midtransConfig, authConfig, authService, userService, productService, transactionService, tableService, settingsService, stockService, ingredientService, marketplaceService, deviceService, notificationService, backupService)
+	webRunnerFunc := NewWebRunnerFunc(db, cfg, midtransConfig, authConfig, authService, userService, eventService, productService, transactionService, tableService, settingsService, stockService, ingredientService, marketplaceService, deviceService, notificationService, backupService)
 	runner := transaction_service.NewTransactionRunner()
 	partitionRunner := NewPartitionRunner(db)
 	partitionRunnerFunc := NewPartitionRunnerFunc(partitionRunner)

@@ -9,6 +9,7 @@ import (
 	"wargapos/backend/gen/wargapos/auth/v1/authv1connect"
 	backupv1connect "wargapos/backend/gen/wargapos/backup/v1/backupv1connect"
 	devicev1connect "wargapos/backend/gen/wargapos/device/v1/devicev1connect"
+	"wargapos/backend/gen/wargapos/event/v1/eventv1connect"
 	ingredientv1connect "wargapos/backend/gen/wargapos/ingredient/v1/ingredientv1connect"
 	marketplacev1connect "wargapos/backend/gen/wargapos/marketplace/v1/marketplacev1connect"
 	notificationv1connect "wargapos/backend/gen/wargapos/notification/v1/notificationv1connect"
@@ -23,6 +24,7 @@ import (
 	"wargapos/backend/internal/service/auth_service"
 	"wargapos/backend/internal/service/backup_service"
 	"wargapos/backend/internal/service/device_service"
+	"wargapos/backend/internal/service/event_service"
 	"wargapos/backend/internal/service/ingredient_service"
 	"wargapos/backend/internal/service/marketplace_service"
 	"wargapos/backend/internal/service/notification_service"
@@ -51,6 +53,7 @@ func NewWebRunnerFunc(
 	authCfg config.AuthConfig,
 	authSvc *auth_service.AuthService,
 	userSvc *user_service.UserService,
+	eventSvc *event_service.EventService,
 	productSvc *product_service.ProductService,
 	txSvc *transaction_service.TransactionService,
 	tableSvc *table_service.TableService,
@@ -63,15 +66,20 @@ func NewWebRunnerFunc(
 	backupSvc *backup_service.BackupService,
 ) WebRunnerFunc {
 
+	validator := validate.NewInterceptor()
+
 	interceptor := connect.WithInterceptors(
 		auth.NewAuthTokenInterceptor(),
-		validate.NewInterceptor(),
+		validator,
 		auth.NewInterceptor([]byte(authCfg.JWTSecret)),
 	)
 
 	mux := http.NewServeMux()
 	mux.Handle(authv1connect.NewAuthServiceHandler(authSvc, interceptor))
 	mux.Handle(userv1connect.NewUserServiceHandler(userSvc, interceptor))
+	mux.Handle(eventv1connect.NewEventServiceHandler(eventSvc,
+		connect.WithInterceptors(validator),
+	))
 	mux.Handle(productv1connect.NewProductServiceHandler(productSvc, interceptor))
 	mux.Handle(transactionv1connect.NewTransactionServiceHandler(txSvc, interceptor))
 	mux.Handle(tablev1connect.NewTableServiceHandler(tableSvc, interceptor))
@@ -86,6 +94,7 @@ func NewWebRunnerFunc(
 	reflector := grpcreflect.NewStaticReflector(
 		authv1connect.AuthServiceName,
 		userv1connect.UserServiceName,
+		eventv1connect.EventServiceName,
 		productv1connect.ProductServiceName,
 		transactionv1connect.TransactionServiceName,
 		tablev1connect.TableServiceName,
