@@ -397,7 +397,7 @@ const file_wargapos_stock_v1_service_proto_rawDesc = "" +
 	"\adate_to\x18\x05 \x01(\tR\x06dateTo\"r\n" +
 	"\x1aListStockMovementsResponse\x12>\n" +
 	"\tmovements\x18\x01 \x03(\v2 .wargapos.stock.v1.StockMovementR\tmovements\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total2\xc1\x12\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total2\xe0\x11\n" +
 	"\fStockService\x12h\n" +
 	"\x0fCreateWarehouse\x12).wargapos.stock.v1.CreateWarehouseRequest\x1a*.wargapos.stock.v1.CreateWarehouseResponse\x12h\n" +
 	"\x0fUpdateWarehouse\x12).wargapos.stock.v1.UpdateWarehouseRequest\x1a*.wargapos.stock.v1.UpdateWarehouseResponse\x12h\n" +
@@ -417,8 +417,7 @@ const file_wargapos_stock_v1_service_proto_rawDesc = "" +
 	"\tDeleteSku\x12#.wargapos.stock.v1.DeleteSkuRequest\x1a$.wargapos.stock.v1.DeleteSkuResponse\x12P\n" +
 	"\aListSku\x12!.wargapos.stock.v1.ListSkuRequest\x1a\".wargapos.stock.v1.ListSkuResponse\x12k\n" +
 	"\x10ListSkuPlacement\x12*.wargapos.stock.v1.ListSkuPlacementRequest\x1a+.wargapos.stock.v1.ListSkuPlacementResponse\x12\\\n" +
-	"\vListCostSku\x12%.wargapos.stock.v1.ListCostSkuRequest\x1a&.wargapos.stock.v1.ListCostSkuResponse\x12_\n" +
-	"\fListStockSku\x12&.wargapos.stock.v1.ListStockSkuRequest\x1a'.wargapos.stock.v1.ListStockSkuResponse\x12h\n" +
+	"\vListCostSku\x12%.wargapos.stock.v1.ListCostSkuRequest\x1a&.wargapos.stock.v1.ListCostSkuResponse\x12h\n" +
 	"\x0fListStockLogSku\x12).wargapos.stock.v1.ListStockLogSkuRequest\x1a*.wargapos.stock.v1.ListStockLogSkuResponse\x12n\n" +
 	"\x11CreateTransaction\x12+.wargapos.stock.v1.CreateTransactionRequest\x1a,.wargapos.stock.v1.CreateTransactionResponse\x12h\n" +
 	"\x0fListTransaction\x12).wargapos.stock.v1.ListTransactionRequest\x1a*.wargapos.stock.v1.ListTransactionResponse\x12n\n" +
@@ -462,34 +461,32 @@ var file_wargapos_stock_v1_service_proto_goTypes = []any{
 	(*ListSkuRequest)(nil),             // 18: wargapos.stock.v1.ListSkuRequest
 	(*ListSkuPlacementRequest)(nil),    // 19: wargapos.stock.v1.ListSkuPlacementRequest
 	(*ListCostSkuRequest)(nil),         // 20: wargapos.stock.v1.ListCostSkuRequest
-	(*ListStockSkuRequest)(nil),        // 21: wargapos.stock.v1.ListStockSkuRequest
-	(*ListStockLogSkuRequest)(nil),     // 22: wargapos.stock.v1.ListStockLogSkuRequest
-	(*CreateTransactionRequest)(nil),   // 23: wargapos.stock.v1.CreateTransactionRequest
-	(*ListTransactionRequest)(nil),     // 24: wargapos.stock.v1.ListTransactionRequest
-	(*DetailTransactionRequest)(nil),   // 25: wargapos.stock.v1.DetailTransactionRequest
-	(*CancelTransactionRequest)(nil),   // 26: wargapos.stock.v1.CancelTransactionRequest
-	(*CreateWarehouseResponse)(nil),    // 27: wargapos.stock.v1.CreateWarehouseResponse
-	(*UpdateWarehouseResponse)(nil),    // 28: wargapos.stock.v1.UpdateWarehouseResponse
-	(*DeleteWarehouseResponse)(nil),    // 29: wargapos.stock.v1.DeleteWarehouseResponse
-	(*ListWarehouseResponse)(nil),      // 30: wargapos.stock.v1.ListWarehouseResponse
-	(*GetWarehouseResponse)(nil),       // 31: wargapos.stock.v1.GetWarehouseResponse
-	(*CreateRackResponse)(nil),         // 32: wargapos.stock.v1.CreateRackResponse
-	(*UpdateRackResponse)(nil),         // 33: wargapos.stock.v1.UpdateRackResponse
-	(*DeleteRackResponse)(nil),         // 34: wargapos.stock.v1.DeleteRackResponse
-	(*ListRackResponse)(nil),           // 35: wargapos.stock.v1.ListRackResponse
-	(*CreateSkuResponse)(nil),          // 36: wargapos.stock.v1.CreateSkuResponse
-	(*GetSkuResponse)(nil),             // 37: wargapos.stock.v1.GetSkuResponse
-	(*UpdateSkuResponse)(nil),          // 38: wargapos.stock.v1.UpdateSkuResponse
-	(*DeleteSkuResponse)(nil),          // 39: wargapos.stock.v1.DeleteSkuResponse
-	(*ListSkuResponse)(nil),            // 40: wargapos.stock.v1.ListSkuResponse
-	(*ListSkuPlacementResponse)(nil),   // 41: wargapos.stock.v1.ListSkuPlacementResponse
-	(*ListCostSkuResponse)(nil),        // 42: wargapos.stock.v1.ListCostSkuResponse
-	(*ListStockSkuResponse)(nil),       // 43: wargapos.stock.v1.ListStockSkuResponse
-	(*ListStockLogSkuResponse)(nil),    // 44: wargapos.stock.v1.ListStockLogSkuResponse
-	(*CreateTransactionResponse)(nil),  // 45: wargapos.stock.v1.CreateTransactionResponse
-	(*ListTransactionResponse)(nil),    // 46: wargapos.stock.v1.ListTransactionResponse
-	(*DetailTransactionResponse)(nil),  // 47: wargapos.stock.v1.DetailTransactionResponse
-	(*CancelTransactionResponse)(nil),  // 48: wargapos.stock.v1.CancelTransactionResponse
+	(*ListStockLogSkuRequest)(nil),     // 21: wargapos.stock.v1.ListStockLogSkuRequest
+	(*CreateTransactionRequest)(nil),   // 22: wargapos.stock.v1.CreateTransactionRequest
+	(*ListTransactionRequest)(nil),     // 23: wargapos.stock.v1.ListTransactionRequest
+	(*DetailTransactionRequest)(nil),   // 24: wargapos.stock.v1.DetailTransactionRequest
+	(*CancelTransactionRequest)(nil),   // 25: wargapos.stock.v1.CancelTransactionRequest
+	(*CreateWarehouseResponse)(nil),    // 26: wargapos.stock.v1.CreateWarehouseResponse
+	(*UpdateWarehouseResponse)(nil),    // 27: wargapos.stock.v1.UpdateWarehouseResponse
+	(*DeleteWarehouseResponse)(nil),    // 28: wargapos.stock.v1.DeleteWarehouseResponse
+	(*ListWarehouseResponse)(nil),      // 29: wargapos.stock.v1.ListWarehouseResponse
+	(*GetWarehouseResponse)(nil),       // 30: wargapos.stock.v1.GetWarehouseResponse
+	(*CreateRackResponse)(nil),         // 31: wargapos.stock.v1.CreateRackResponse
+	(*UpdateRackResponse)(nil),         // 32: wargapos.stock.v1.UpdateRackResponse
+	(*DeleteRackResponse)(nil),         // 33: wargapos.stock.v1.DeleteRackResponse
+	(*ListRackResponse)(nil),           // 34: wargapos.stock.v1.ListRackResponse
+	(*CreateSkuResponse)(nil),          // 35: wargapos.stock.v1.CreateSkuResponse
+	(*GetSkuResponse)(nil),             // 36: wargapos.stock.v1.GetSkuResponse
+	(*UpdateSkuResponse)(nil),          // 37: wargapos.stock.v1.UpdateSkuResponse
+	(*DeleteSkuResponse)(nil),          // 38: wargapos.stock.v1.DeleteSkuResponse
+	(*ListSkuResponse)(nil),            // 39: wargapos.stock.v1.ListSkuResponse
+	(*ListSkuPlacementResponse)(nil),   // 40: wargapos.stock.v1.ListSkuPlacementResponse
+	(*ListCostSkuResponse)(nil),        // 41: wargapos.stock.v1.ListCostSkuResponse
+	(*ListStockLogSkuResponse)(nil),    // 42: wargapos.stock.v1.ListStockLogSkuResponse
+	(*CreateTransactionResponse)(nil),  // 43: wargapos.stock.v1.CreateTransactionResponse
+	(*ListTransactionResponse)(nil),    // 44: wargapos.stock.v1.ListTransactionResponse
+	(*DetailTransactionResponse)(nil),  // 45: wargapos.stock.v1.DetailTransactionResponse
+	(*CancelTransactionResponse)(nil),  // 46: wargapos.stock.v1.CancelTransactionResponse
 }
 var file_wargapos_stock_v1_service_proto_depIdxs = []int32{
 	0,  // 0: wargapos.stock.v1.ListStockMovementsResponse.movements:type_name -> wargapos.stock.v1.StockMovement
@@ -509,40 +506,38 @@ var file_wargapos_stock_v1_service_proto_depIdxs = []int32{
 	18, // 14: wargapos.stock.v1.StockService.ListSku:input_type -> wargapos.stock.v1.ListSkuRequest
 	19, // 15: wargapos.stock.v1.StockService.ListSkuPlacement:input_type -> wargapos.stock.v1.ListSkuPlacementRequest
 	20, // 16: wargapos.stock.v1.StockService.ListCostSku:input_type -> wargapos.stock.v1.ListCostSkuRequest
-	21, // 17: wargapos.stock.v1.StockService.ListStockSku:input_type -> wargapos.stock.v1.ListStockSkuRequest
-	22, // 18: wargapos.stock.v1.StockService.ListStockLogSku:input_type -> wargapos.stock.v1.ListStockLogSkuRequest
-	23, // 19: wargapos.stock.v1.StockService.CreateTransaction:input_type -> wargapos.stock.v1.CreateTransactionRequest
-	24, // 20: wargapos.stock.v1.StockService.ListTransaction:input_type -> wargapos.stock.v1.ListTransactionRequest
-	25, // 21: wargapos.stock.v1.StockService.DetailTransaction:input_type -> wargapos.stock.v1.DetailTransactionRequest
-	26, // 22: wargapos.stock.v1.StockService.CancelTransaction:input_type -> wargapos.stock.v1.CancelTransactionRequest
-	1,  // 23: wargapos.stock.v1.StockService.AdjustStock:input_type -> wargapos.stock.v1.AdjustStockRequest
-	3,  // 24: wargapos.stock.v1.StockService.ListStockMovements:input_type -> wargapos.stock.v1.ListStockMovementsRequest
-	27, // 25: wargapos.stock.v1.StockService.CreateWarehouse:output_type -> wargapos.stock.v1.CreateWarehouseResponse
-	28, // 26: wargapos.stock.v1.StockService.UpdateWarehouse:output_type -> wargapos.stock.v1.UpdateWarehouseResponse
-	29, // 27: wargapos.stock.v1.StockService.DeleteWarehouse:output_type -> wargapos.stock.v1.DeleteWarehouseResponse
-	30, // 28: wargapos.stock.v1.StockService.ListWarehouse:output_type -> wargapos.stock.v1.ListWarehouseResponse
-	31, // 29: wargapos.stock.v1.StockService.GetWarehouse:output_type -> wargapos.stock.v1.GetWarehouseResponse
-	32, // 30: wargapos.stock.v1.StockService.CreateRack:output_type -> wargapos.stock.v1.CreateRackResponse
-	33, // 31: wargapos.stock.v1.StockService.UpdateRack:output_type -> wargapos.stock.v1.UpdateRackResponse
-	34, // 32: wargapos.stock.v1.StockService.DeleteRack:output_type -> wargapos.stock.v1.DeleteRackResponse
-	35, // 33: wargapos.stock.v1.StockService.ListRack:output_type -> wargapos.stock.v1.ListRackResponse
-	36, // 34: wargapos.stock.v1.StockService.CreateSku:output_type -> wargapos.stock.v1.CreateSkuResponse
-	37, // 35: wargapos.stock.v1.StockService.GetSku:output_type -> wargapos.stock.v1.GetSkuResponse
-	38, // 36: wargapos.stock.v1.StockService.UpdateSku:output_type -> wargapos.stock.v1.UpdateSkuResponse
-	39, // 37: wargapos.stock.v1.StockService.DeleteSku:output_type -> wargapos.stock.v1.DeleteSkuResponse
-	40, // 38: wargapos.stock.v1.StockService.ListSku:output_type -> wargapos.stock.v1.ListSkuResponse
-	41, // 39: wargapos.stock.v1.StockService.ListSkuPlacement:output_type -> wargapos.stock.v1.ListSkuPlacementResponse
-	42, // 40: wargapos.stock.v1.StockService.ListCostSku:output_type -> wargapos.stock.v1.ListCostSkuResponse
-	43, // 41: wargapos.stock.v1.StockService.ListStockSku:output_type -> wargapos.stock.v1.ListStockSkuResponse
-	44, // 42: wargapos.stock.v1.StockService.ListStockLogSku:output_type -> wargapos.stock.v1.ListStockLogSkuResponse
-	45, // 43: wargapos.stock.v1.StockService.CreateTransaction:output_type -> wargapos.stock.v1.CreateTransactionResponse
-	46, // 44: wargapos.stock.v1.StockService.ListTransaction:output_type -> wargapos.stock.v1.ListTransactionResponse
-	47, // 45: wargapos.stock.v1.StockService.DetailTransaction:output_type -> wargapos.stock.v1.DetailTransactionResponse
-	48, // 46: wargapos.stock.v1.StockService.CancelTransaction:output_type -> wargapos.stock.v1.CancelTransactionResponse
-	2,  // 47: wargapos.stock.v1.StockService.AdjustStock:output_type -> wargapos.stock.v1.AdjustStockResponse
-	4,  // 48: wargapos.stock.v1.StockService.ListStockMovements:output_type -> wargapos.stock.v1.ListStockMovementsResponse
-	25, // [25:49] is the sub-list for method output_type
-	1,  // [1:25] is the sub-list for method input_type
+	21, // 17: wargapos.stock.v1.StockService.ListStockLogSku:input_type -> wargapos.stock.v1.ListStockLogSkuRequest
+	22, // 18: wargapos.stock.v1.StockService.CreateTransaction:input_type -> wargapos.stock.v1.CreateTransactionRequest
+	23, // 19: wargapos.stock.v1.StockService.ListTransaction:input_type -> wargapos.stock.v1.ListTransactionRequest
+	24, // 20: wargapos.stock.v1.StockService.DetailTransaction:input_type -> wargapos.stock.v1.DetailTransactionRequest
+	25, // 21: wargapos.stock.v1.StockService.CancelTransaction:input_type -> wargapos.stock.v1.CancelTransactionRequest
+	1,  // 22: wargapos.stock.v1.StockService.AdjustStock:input_type -> wargapos.stock.v1.AdjustStockRequest
+	3,  // 23: wargapos.stock.v1.StockService.ListStockMovements:input_type -> wargapos.stock.v1.ListStockMovementsRequest
+	26, // 24: wargapos.stock.v1.StockService.CreateWarehouse:output_type -> wargapos.stock.v1.CreateWarehouseResponse
+	27, // 25: wargapos.stock.v1.StockService.UpdateWarehouse:output_type -> wargapos.stock.v1.UpdateWarehouseResponse
+	28, // 26: wargapos.stock.v1.StockService.DeleteWarehouse:output_type -> wargapos.stock.v1.DeleteWarehouseResponse
+	29, // 27: wargapos.stock.v1.StockService.ListWarehouse:output_type -> wargapos.stock.v1.ListWarehouseResponse
+	30, // 28: wargapos.stock.v1.StockService.GetWarehouse:output_type -> wargapos.stock.v1.GetWarehouseResponse
+	31, // 29: wargapos.stock.v1.StockService.CreateRack:output_type -> wargapos.stock.v1.CreateRackResponse
+	32, // 30: wargapos.stock.v1.StockService.UpdateRack:output_type -> wargapos.stock.v1.UpdateRackResponse
+	33, // 31: wargapos.stock.v1.StockService.DeleteRack:output_type -> wargapos.stock.v1.DeleteRackResponse
+	34, // 32: wargapos.stock.v1.StockService.ListRack:output_type -> wargapos.stock.v1.ListRackResponse
+	35, // 33: wargapos.stock.v1.StockService.CreateSku:output_type -> wargapos.stock.v1.CreateSkuResponse
+	36, // 34: wargapos.stock.v1.StockService.GetSku:output_type -> wargapos.stock.v1.GetSkuResponse
+	37, // 35: wargapos.stock.v1.StockService.UpdateSku:output_type -> wargapos.stock.v1.UpdateSkuResponse
+	38, // 36: wargapos.stock.v1.StockService.DeleteSku:output_type -> wargapos.stock.v1.DeleteSkuResponse
+	39, // 37: wargapos.stock.v1.StockService.ListSku:output_type -> wargapos.stock.v1.ListSkuResponse
+	40, // 38: wargapos.stock.v1.StockService.ListSkuPlacement:output_type -> wargapos.stock.v1.ListSkuPlacementResponse
+	41, // 39: wargapos.stock.v1.StockService.ListCostSku:output_type -> wargapos.stock.v1.ListCostSkuResponse
+	42, // 40: wargapos.stock.v1.StockService.ListStockLogSku:output_type -> wargapos.stock.v1.ListStockLogSkuResponse
+	43, // 41: wargapos.stock.v1.StockService.CreateTransaction:output_type -> wargapos.stock.v1.CreateTransactionResponse
+	44, // 42: wargapos.stock.v1.StockService.ListTransaction:output_type -> wargapos.stock.v1.ListTransactionResponse
+	45, // 43: wargapos.stock.v1.StockService.DetailTransaction:output_type -> wargapos.stock.v1.DetailTransactionResponse
+	46, // 44: wargapos.stock.v1.StockService.CancelTransaction:output_type -> wargapos.stock.v1.CancelTransactionResponse
+	2,  // 45: wargapos.stock.v1.StockService.AdjustStock:output_type -> wargapos.stock.v1.AdjustStockResponse
+	4,  // 46: wargapos.stock.v1.StockService.ListStockMovements:output_type -> wargapos.stock.v1.ListStockMovementsResponse
+	24, // [24:47] is the sub-list for method output_type
+	1,  // [1:24] is the sub-list for method input_type
 	1,  // [1:1] is the sub-list for extension type_name
 	1,  // [1:1] is the sub-list for extension extendee
 	0,  // [0:1] is the sub-list for field type_name

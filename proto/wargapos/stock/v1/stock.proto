@@ -28,23 +28,11 @@ message CostVersion {
   int32 left_stock = 8;
 }
 
-message Stock {
-  uint64 id = 1;
-  uint32 sku_id = 2;
-  uint64 transaction_id = 3;
-  google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp updated_at = 5;
-  int32 stock_initiate = 6;
-  int32 left_stock = 7;
-}
-
 message StockLog {
   uint64 id = 1;
   uint32 sku_id = 2;
   uint64 transaction_id = 4;
   uint32 actor_id = 5;
-  uint64 cost_version_id = 6;
-  uint64 stock_id = 7;
   google.protobuf.Timestamp created_at = 8;
   LogType log_type = 9;
   int32 change = 10;
@@ -55,11 +43,4 @@ message ListCostSkuRequest {
 }
 message ListCostSkuResponse {
   repeated CostVersion costs = 1;
-}
-
-message ListStockSkuRequest {
-  uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
-}
-message ListStockSkuResponse {
-  repeated Stock stocks = 1;
 }

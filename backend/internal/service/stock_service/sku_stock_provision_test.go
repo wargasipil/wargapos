@@ -198,7 +198,6 @@ func TestSkuStockProvision(t *testing.T) {
 					dummyTxId, skuId, stockv1.LogType_LOG_TYPE_ORDER).First(&stockLog)
 				assert.NotZero(t, stockLog.ID, "stock log should be created")
 				assert.Equal(t, int32(-5), stockLog.Change, "change should be negative qty")
-				assert.Equal(t, cv1.ID, stockLog.CostVersionID)
 
 				// sku stock_qty should be decremented: was 8 (5+3), now 3
 				var skuAfter models.Sku

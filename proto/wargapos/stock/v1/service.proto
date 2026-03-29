@@ -75,7 +75,6 @@ service StockService {
   rpc ListSku(ListSkuRequest) returns (ListSkuResponse);
   rpc ListSkuPlacement(ListSkuPlacementRequest) returns (ListSkuPlacementResponse);
   rpc ListCostSku(ListCostSkuRequest) returns (ListCostSkuResponse);
-  rpc ListStockSku(ListStockSkuRequest) returns (ListStockSkuResponse);
   rpc ListStockLogSku(ListStockLogSkuRequest) returns (ListStockLogSkuResponse);
 
   // bagian transaction

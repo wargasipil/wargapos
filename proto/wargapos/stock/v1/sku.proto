@@ -21,12 +21,6 @@ enum CostingType {
   COSTING_TYPE_MIN_PRICE = 5;
 }
 
-enum StockQueueType {
-  STOCK_QUEUE_TYPE_UNSPECIFIED = 0;
-  STOCK_QUEUE_TYPE_LIFO = 1;
-  STOCK_QUEUE_TYPE_FIFO = 2;
-}
-
 message RackPlacement {
   uint64 id = 1;
   uint32 sku_id = 2;

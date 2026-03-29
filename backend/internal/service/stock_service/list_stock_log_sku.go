@@ -39,15 +39,13 @@ func (s *StockService) ListStockLogSku(
 	logs := make([]*stockv1.StockLog, len(rows))
 	for i, r := range rows {
 		logs[i] = &stockv1.StockLog{
-			Id:             r.ID,
-			SkuId:          r.SkuID,
-			TransactionId:  r.TransactionID,
-			ActorId:        r.ActorID,
-			CostVersionId: r.CostVersionID,
-			StockId:        r.StockID,
-			LogType:        r.LogType,
-			Change:         r.Change,
-			CreatedAt:      timestamppb.New(r.CreatedAt),
+			Id:            r.ID,
+			SkuId:         r.SkuID,
+			TransactionId: r.TransactionID,
+			ActorId:       r.ActorID,
+			LogType:       r.LogType,
+			Change:        r.Change,
+			CreatedAt:     timestamppb.New(r.CreatedAt),
 		}
 	}
 

@@ -27,7 +27,6 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 	err = db.Transaction(func(tx *gorm.DB) error {
 		var sku models.Sku
 		var costVersion stock_model.CostVersion
-		var stock stock_model.Stock
 		var stockLog stock_model.StockLog
 
 		caller := runner.NewChainParam(
@@ -71,35 +70,11 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 				}
 			},
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
-				return func(ctx context.Context) (context.Context, error) { // quantity
-
-					stock = stock_model.Stock{
-						SkuID:         pay.SkuId,
-						TransactionID: pay.TransactionId,
-						StockInitiate: pay.Qty,
-						LeftStock:     pay.Qty,
-						CreatedAt:     pay.CreatedAt,
-					}
-
-					err = tx.
-						Create(&stock).
-						Error
-					if err != nil {
-						return ctx, err
-					}
-
-					return next(ctx)
-				}
-			},
-			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 				return func(ctx context.Context) (context.Context, error) { // writing log
-
 					stockLog = stock_model.StockLog{
 						SkuID:         pay.SkuId,
 						TransactionID: pay.TransactionId,
 						Change:        int32(pay.Qty),
-						CostVersionID: costVersion.ID,
-						StockID:       stock.ID,
 						ActorID:       pay.UserId,
 						LogType:       stockv1.LogType_LOG_TYPE_STOCK_IN,
 						CreatedAt:     pay.CreatedAt,

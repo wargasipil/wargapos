@@ -65,15 +65,10 @@ func TestCancelTransaction(t *testing.T) {
 					db.First(&txRecord, txId)
 					assert.True(t, txRecord.Cancelled, "transaction should be cancelled")
 
-					// ensure stock price version left stock 0
+					// ensure cost version left_stock 0
 					var costVersion stock_model.CostVersion
 					db.Where("transaction_id = ? AND sku_id = ?", txId, skuId).First(&costVersion)
-					assert.Equal(t, int32(0), costVersion.LeftStock, "price version left_stock should be 0 after cancel")
-
-					// ensure stock left 0
-					var stock stock_model.Stock
-					db.Where("transaction_id = ? AND sku_id = ?", txId, skuId).First(&stock)
-					assert.Equal(t, int32(0), stock.LeftStock, "stock left_stock should be 0 after cancel")
+					assert.Equal(t, int32(0), costVersion.LeftStock, "cost version left_stock should be 0 after cancel")
 
 					// ensure sku stock_qty rolled back to 0
 					var sku models.Sku

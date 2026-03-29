@@ -28,9 +28,6 @@ type SkuStockProvisionPayload struct {
 func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionPayload) ([]PriceProvision, runner.NextFuncParam[uint64], error) {
 	var err error
 	var sku models.Sku
-	// var costVersion stock_model.CostVersion
-	// var stock stock_model.Stock
-	// var stockLog stock_model.StockLog
 	var priceProvision []PriceProvision
 
 	caller := runner.NewChainParam(
@@ -52,7 +49,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 			}
 		},
 		func(next runner.NextFuncParam[*gorm.DB]) runner.NextFuncParam[*gorm.DB] {
-			return func(tx *gorm.DB) (*gorm.DB, error) { // provisining pricing
+			return func(tx *gorm.DB) (*gorm.DB, error) { // provisioning cost versions
 				query := tx.
 					Model(&stock_model.CostVersion{}).
 					Where("sku_id = ?", pay.SkuId).
@@ -60,17 +57,13 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 
 				switch pay.CostingType {
 				case stockv1.CostingType_COSTING_TYPE_FIFO:
-					query = query.
-						Order("created_at asc")
+					query = query.Order("created_at asc")
 				case stockv1.CostingType_COSTING_TYPE_LIFO:
-					query = query.
-						Order("created_at desc")
+					query = query.Order("created_at desc")
 				case stockv1.CostingType_COSTING_TYPE_MAX_PRICE:
-					query = query.
-						Order("unit_cost desc")
+					query = query.Order("unit_cost desc")
 				case stockv1.CostingType_COSTING_TYPE_MIN_PRICE:
-					query = query.
-						Order("unit_cost asc")
+					query = query.Order("unit_cost asc")
 				default:
 					return tx, fmt.Errorf("%s not implemented", stockv1.CostingType_name[int32(pay.CostingType)])
 				}
@@ -97,7 +90,6 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 
 					if cost.LeftStock >= needQty {
 						delta = needQty
-
 					} else {
 						delta = cost.LeftStock
 					}
@@ -119,7 +111,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 		},
 	)
 
-	// running provisining
+	// running provisioning
 	_, err = caller(tx)
 
 	commited := runner.NewChainParam(
@@ -134,16 +126,13 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 						Change:        -price.Qty,
 						LogType:       stockv1.LogType_LOG_TYPE_ORDER,
 						ActorID:       pay.UserId,
-						CostVersionID: price.PriceId,
 						CreatedAt:     time.Now(),
 					}
 
 					err = tx.Create(&stockLog).Error
-
 					if err != nil {
 						return txId, err
 					}
-
 				}
 
 				return next(txId)
@@ -182,7 +171,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 					Model(&models.Sku{}).
 					Where("id = ?", pay.SkuId).
 					Updates(map[string]interface{}{
-						"stock_qty":     gorm.Expr("stock_qty - ?", totalQty),
+						"stock_qty":      gorm.Expr("stock_qty - ?", totalQty),
 						"last_stock_out": now,
 					}).
 					Error
@@ -197,5 +186,4 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 	)
 
 	return priceProvision, commited, err
-
 }
