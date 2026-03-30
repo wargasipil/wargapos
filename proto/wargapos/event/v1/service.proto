@@ -13,7 +13,7 @@ service EventService {
   rpc Pull(PullRequest) returns (stream PullResponse);
 }
 
-service PullService {
+service PushService {
   rpc Push(PushRequest) returns (PushResponse);
 }
 

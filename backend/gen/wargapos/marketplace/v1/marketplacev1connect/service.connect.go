@@ -63,6 +63,9 @@ const (
 	// MarketplaceServiceListProductsProcedure is the fully-qualified name of the MarketplaceService's
 	// ListProducts RPC.
 	MarketplaceServiceListProductsProcedure = "/wargapos.marketplace.v1.MarketplaceService/ListProducts"
+	// MarketplaceServiceRestockProductProcedure is the fully-qualified name of the MarketplaceService's
+	// RestockProduct RPC.
+	MarketplaceServiceRestockProductProcedure = "/wargapos.marketplace.v1.MarketplaceService/RestockProduct"
 	// MarketplaceServiceCreateOrderProcedure is the fully-qualified name of the MarketplaceService's
 	// CreateOrder RPC.
 	MarketplaceServiceCreateOrderProcedure = "/wargapos.marketplace.v1.MarketplaceService/CreateOrder"
@@ -91,6 +94,7 @@ type MarketplaceServiceClient interface {
 	UpdateProduct(context.Context, *connect.Request[v1.UpdateProductRequest]) (*connect.Response[v1.UpdateProductResponse], error)
 	DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error)
 	ListProducts(context.Context, *connect.Request[v1.ListProductsRequest]) (*connect.Response[v1.ListProductsResponse], error)
+	RestockProduct(context.Context, *connect.Request[v1.RestockProductRequest]) (*connect.Response[v1.RestockProductResponse], error)
 	// Orders
 	CreateOrder(context.Context, *connect.Request[v1.CreateOrderRequest]) (*connect.Response[v1.CreateOrderResponse], error)
 	GetOrder(context.Context, *connect.Request[v1.GetOrderRequest]) (*connect.Response[v1.GetOrderResponse], error)
@@ -169,6 +173,12 @@ func NewMarketplaceServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(marketplaceServiceMethods.ByName("ListProducts")),
 			connect.WithClientOptions(opts...),
 		),
+		restockProduct: connect.NewClient[v1.RestockProductRequest, v1.RestockProductResponse](
+			httpClient,
+			baseURL+MarketplaceServiceRestockProductProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("RestockProduct")),
+			connect.WithClientOptions(opts...),
+		),
 		createOrder: connect.NewClient[v1.CreateOrderRequest, v1.CreateOrderResponse](
 			httpClient,
 			baseURL+MarketplaceServiceCreateOrderProcedure,
@@ -208,6 +218,7 @@ type marketplaceServiceClient struct {
 	updateProduct     *connect.Client[v1.UpdateProductRequest, v1.UpdateProductResponse]
 	deleteProduct     *connect.Client[v1.DeleteProductRequest, v1.DeleteProductResponse]
 	listProducts      *connect.Client[v1.ListProductsRequest, v1.ListProductsResponse]
+	restockProduct    *connect.Client[v1.RestockProductRequest, v1.RestockProductResponse]
 	createOrder       *connect.Client[v1.CreateOrderRequest, v1.CreateOrderResponse]
 	getOrder          *connect.Client[v1.GetOrderRequest, v1.GetOrderResponse]
 	listOrders        *connect.Client[v1.ListOrdersRequest, v1.ListOrdersResponse]
@@ -264,6 +275,11 @@ func (c *marketplaceServiceClient) ListProducts(ctx context.Context, req *connec
 	return c.listProducts.CallUnary(ctx, req)
 }
 
+// RestockProduct calls wargapos.marketplace.v1.MarketplaceService.RestockProduct.
+func (c *marketplaceServiceClient) RestockProduct(ctx context.Context, req *connect.Request[v1.RestockProductRequest]) (*connect.Response[v1.RestockProductResponse], error) {
+	return c.restockProduct.CallUnary(ctx, req)
+}
+
 // CreateOrder calls wargapos.marketplace.v1.MarketplaceService.CreateOrder.
 func (c *marketplaceServiceClient) CreateOrder(ctx context.Context, req *connect.Request[v1.CreateOrderRequest]) (*connect.Response[v1.CreateOrderResponse], error) {
 	return c.createOrder.CallUnary(ctx, req)
@@ -299,6 +315,7 @@ type MarketplaceServiceHandler interface {
 	UpdateProduct(context.Context, *connect.Request[v1.UpdateProductRequest]) (*connect.Response[v1.UpdateProductResponse], error)
 	DeleteProduct(context.Context, *connect.Request[v1.DeleteProductRequest]) (*connect.Response[v1.DeleteProductResponse], error)
 	ListProducts(context.Context, *connect.Request[v1.ListProductsRequest]) (*connect.Response[v1.ListProductsResponse], error)
+	RestockProduct(context.Context, *connect.Request[v1.RestockProductRequest]) (*connect.Response[v1.RestockProductResponse], error)
 	// Orders
 	CreateOrder(context.Context, *connect.Request[v1.CreateOrderRequest]) (*connect.Response[v1.CreateOrderResponse], error)
 	GetOrder(context.Context, *connect.Request[v1.GetOrderRequest]) (*connect.Response[v1.GetOrderResponse], error)
@@ -373,6 +390,12 @@ func NewMarketplaceServiceHandler(svc MarketplaceServiceHandler, opts ...connect
 		connect.WithSchema(marketplaceServiceMethods.ByName("ListProducts")),
 		connect.WithHandlerOptions(opts...),
 	)
+	marketplaceServiceRestockProductHandler := connect.NewUnaryHandler(
+		MarketplaceServiceRestockProductProcedure,
+		svc.RestockProduct,
+		connect.WithSchema(marketplaceServiceMethods.ByName("RestockProduct")),
+		connect.WithHandlerOptions(opts...),
+	)
 	marketplaceServiceCreateOrderHandler := connect.NewUnaryHandler(
 		MarketplaceServiceCreateOrderProcedure,
 		svc.CreateOrder,
@@ -419,6 +442,8 @@ func NewMarketplaceServiceHandler(svc MarketplaceServiceHandler, opts ...connect
 			marketplaceServiceDeleteProductHandler.ServeHTTP(w, r)
 		case MarketplaceServiceListProductsProcedure:
 			marketplaceServiceListProductsHandler.ServeHTTP(w, r)
+		case MarketplaceServiceRestockProductProcedure:
+			marketplaceServiceRestockProductHandler.ServeHTTP(w, r)
 		case MarketplaceServiceCreateOrderProcedure:
 			marketplaceServiceCreateOrderHandler.ServeHTTP(w, r)
 		case MarketplaceServiceGetOrderProcedure:
@@ -474,6 +499,10 @@ func (UnimplementedMarketplaceServiceHandler) DeleteProduct(context.Context, *co
 
 func (UnimplementedMarketplaceServiceHandler) ListProducts(context.Context, *connect.Request[v1.ListProductsRequest]) (*connect.Response[v1.ListProductsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.ListProducts is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) RestockProduct(context.Context, *connect.Request[v1.RestockProductRequest]) (*connect.Response[v1.RestockProductResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.RestockProduct is not implemented"))
 }
 
 func (UnimplementedMarketplaceServiceHandler) CreateOrder(context.Context, *connect.Request[v1.CreateOrderRequest]) (*connect.Response[v1.CreateOrderResponse], error) {

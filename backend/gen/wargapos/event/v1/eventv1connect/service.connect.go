@@ -23,6 +23,8 @@ const _ = connect.IsAtLeastVersion1_13_0
 const (
 	// EventServiceName is the fully-qualified name of the EventService service.
 	EventServiceName = "wargapos.event.v1.EventService"
+	// PushServiceName is the fully-qualified name of the PushService service.
+	PushServiceName = "wargapos.event.v1.PushService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -37,6 +39,8 @@ const (
 	EventServiceSendProcedure = "/wargapos.event.v1.EventService/Send"
 	// EventServicePullProcedure is the fully-qualified name of the EventService's Pull RPC.
 	EventServicePullProcedure = "/wargapos.event.v1.EventService/Pull"
+	// PushServicePushProcedure is the fully-qualified name of the PushService's Push RPC.
+	PushServicePushProcedure = "/wargapos.event.v1.PushService/Push"
 )
 
 // EventServiceClient is a client for the wargapos.event.v1.EventService service.
@@ -133,4 +137,74 @@ func (UnimplementedEventServiceHandler) Send(context.Context, *connect.Request[v
 
 func (UnimplementedEventServiceHandler) Pull(context.Context, *connect.Request[v1.PullRequest], *connect.ServerStream[v1.PullResponse]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.event.v1.EventService.Pull is not implemented"))
+}
+
+// PushServiceClient is a client for the wargapos.event.v1.PushService service.
+type PushServiceClient interface {
+	Push(context.Context, *connect.Request[v1.PushRequest]) (*connect.Response[v1.PushResponse], error)
+}
+
+// NewPushServiceClient constructs a client for the wargapos.event.v1.PushService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewPushServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PushServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	pushServiceMethods := v1.File_wargapos_event_v1_service_proto.Services().ByName("PushService").Methods()
+	return &pushServiceClient{
+		push: connect.NewClient[v1.PushRequest, v1.PushResponse](
+			httpClient,
+			baseURL+PushServicePushProcedure,
+			connect.WithSchema(pushServiceMethods.ByName("Push")),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// pushServiceClient implements PushServiceClient.
+type pushServiceClient struct {
+	push *connect.Client[v1.PushRequest, v1.PushResponse]
+}
+
+// Push calls wargapos.event.v1.PushService.Push.
+func (c *pushServiceClient) Push(ctx context.Context, req *connect.Request[v1.PushRequest]) (*connect.Response[v1.PushResponse], error) {
+	return c.push.CallUnary(ctx, req)
+}
+
+// PushServiceHandler is an implementation of the wargapos.event.v1.PushService service.
+type PushServiceHandler interface {
+	Push(context.Context, *connect.Request[v1.PushRequest]) (*connect.Response[v1.PushResponse], error)
+}
+
+// NewPushServiceHandler builds an HTTP handler from the service implementation. It returns the path
+// on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewPushServiceHandler(svc PushServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	pushServiceMethods := v1.File_wargapos_event_v1_service_proto.Services().ByName("PushService").Methods()
+	pushServicePushHandler := connect.NewUnaryHandler(
+		PushServicePushProcedure,
+		svc.Push,
+		connect.WithSchema(pushServiceMethods.ByName("Push")),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/wargapos.event.v1.PushService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case PushServicePushProcedure:
+			pushServicePushHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedPushServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedPushServiceHandler struct{}
+
+func (UnimplementedPushServiceHandler) Push(context.Context, *connect.Request[v1.PushRequest]) (*connect.Response[v1.PushResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.event.v1.PushService.Push is not implemented"))
 }

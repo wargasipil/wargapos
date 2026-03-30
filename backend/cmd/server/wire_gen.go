@@ -37,11 +37,12 @@ func InitializeApp(cfg *config.Config) (App, error) {
 	transactionService := transaction_service.NewTransactionService(db, midtransConfig)
 	tableService := table_service.NewTableService(db)
 	settingsService := settings_service.NewSettingsService(db, midtransConfig)
-	stockService := stock_service.NewStockService(db)
+	eventServiceClient := NewEventServiceClient(cfg)
+	stockService := stock_service.NewStockService(db, eventServiceClient)
 	defaultServiceClientOption := NewDefaultServiceClientOption()
 	stockServiceClient := NewStockServiceClient(cfg, defaultServiceClientOption)
 	ingredientService := ingredient_service.NewIngredientService(db, stockServiceClient)
-	marketplaceService := marketplace_service.NewMarketplaceService(db)
+	marketplaceService := marketplace_service.NewMarketplaceService(cfg, db, stockServiceClient)
 	deviceService := device_service.NewDeviceService()
 	notificationService := notification_service.NewNotificationService(db)
 	backupService := backup_service.NewBackupService(db, cfg, authConfig)
@@ -49,6 +50,6 @@ func InitializeApp(cfg *config.Config) (App, error) {
 	runner := transaction_service.NewTransactionRunner()
 	partitionRunner := NewPartitionRunner(db)
 	partitionRunnerFunc := NewPartitionRunnerFunc(partitionRunner)
-	app := NewApp(webRunnerFunc, runner, partitionRunnerFunc)
+	app := NewApp(webRunnerFunc, runner, partitionRunnerFunc, eventService, marketplaceService)
 	return app, nil
 }

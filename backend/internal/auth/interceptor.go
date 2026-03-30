@@ -115,9 +115,10 @@ var routeRoles = map[string][]string{
 	"/wargapos.marketplace.v1.MarketplaceService/CreateShop":       {"admin", "manager"},
 	"/wargapos.marketplace.v1.MarketplaceService/UpdateShop":       {"admin", "manager"},
 	"/wargapos.marketplace.v1.MarketplaceService/DeleteShop":       {"admin", "manager"},
-	"/wargapos.marketplace.v1.MarketplaceService/ListOrders":       {"admin", "manager", "cashier"},
-	"/wargapos.marketplace.v1.MarketplaceService/GetOrder":         {"admin", "manager", "cashier"},
+	"/wargapos.marketplace.v1.MarketplaceService/ListOrders":        {"admin", "manager", "cashier"},
+	"/wargapos.marketplace.v1.MarketplaceService/GetOrder":          {"admin", "manager", "cashier"},
 	"/wargapos.marketplace.v1.MarketplaceService/UpdateOrderStatus": {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/RestockProduct":    {"admin", "manager"},
 }
 
 const authContextKey = "auth_token"

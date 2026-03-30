@@ -30,7 +30,7 @@ func (s *MarketplaceService) ListProducts(ctx context.Context, req *connect.Requ
 	q.Count(&total)
 
 	var products []models.MarketplaceProduct
-	if err := q.Order("created_at desc").Offset((page - 1) * pageSize).Limit(pageSize).Find(&products).Error; err != nil {
+	if err := q.Preload("Stocks").Order("created_at desc").Offset((page - 1) * pageSize).Limit(pageSize).Find(&products).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 

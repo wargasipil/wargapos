@@ -28,6 +28,7 @@ func InitializeApp(cfg *config.Config) (App, error) {
 		config.ProvideAuthConfig,
 		config.ProvideMidtransConfig,
 		NewDefaultServiceClientOption,
+		NewEventServiceClient,
 		NewStockServiceClient,
 		event_service.NewEventService,
 		auth_service.NewAuthService,

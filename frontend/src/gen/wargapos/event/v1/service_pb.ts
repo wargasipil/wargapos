@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/event/v1/service.proto.
  */
 export const file_wargapos_event_v1_service: GenFile = /*@__PURE__*/
-  fileDesc("Ch93YXJnYXBvcy9ldmVudC92MS9zZXJ2aWNlLnByb3RvEhF3YXJnYXBvcy5ldmVudC52MSIGCgRQaW5nIm8KBUV2ZW50EicKBHBpbmcYASABKAsyFy53YXJnYXBvcy5ldmVudC52MS5QaW5nSAASNAoLc3RvY2tfZXZlbnQYAiABKAsyHS53YXJnYXBvcy5zdG9jay52MS5TdG9ja0V2ZW50SABCBwoFZXZlbnQiRQoLU2VuZFJlcXVlc3QSDwoHcHVzaF9pZBgBIAEoCRIlCgNldnQYAiABKAsyGC53YXJnYXBvcy5ldmVudC52MS5FdmVudCIOCgxTZW5kUmVzcG9uc2UiNQoMUHVsbFJlc3BvbnNlEiUKA2V2dBgCIAEoCzIYLndhcmdhcG9zLmV2ZW50LnYxLkV2ZW50Ii8KC1B1bGxSZXF1ZXN0EiAKDHN1YnNjcmliZV9pZBgBIAEoCUIKukgHcgUQARisAjKiAQoMRXZlbnRTZXJ2aWNlEkcKBFNlbmQSHi53YXJnYXBvcy5ldmVudC52MS5TZW5kUmVxdWVzdBofLndhcmdhcG9zLmV2ZW50LnYxLlNlbmRSZXNwb25zZRJJCgRQdWxsEh4ud2FyZ2Fwb3MuZXZlbnQudjEuUHVsbFJlcXVlc3QaHy53YXJnYXBvcy5ldmVudC52MS5QdWxsUmVzcG9uc2UwAUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9ldmVudC92MTtldmVudHYxYgZwcm90bzM", [file_buf_validate_validate, file_wargapos_stock_v1_event]);
+  fileDesc("Ch93YXJnYXBvcy9ldmVudC92MS9zZXJ2aWNlLnByb3RvEhF3YXJnYXBvcy5ldmVudC52MSIGCgRQaW5nIm8KBUV2ZW50EicKBHBpbmcYASABKAsyFy53YXJnYXBvcy5ldmVudC52MS5QaW5nSAASNAoLc3RvY2tfZXZlbnQYAiABKAsyHS53YXJnYXBvcy5zdG9jay52MS5TdG9ja0V2ZW50SABCBwoFZXZlbnQiRQoLU2VuZFJlcXVlc3QSDwoHcHVzaF9pZBgBIAEoCRIlCgNldnQYAiABKAsyGC53YXJnYXBvcy5ldmVudC52MS5FdmVudCIOCgxTZW5kUmVzcG9uc2UiNQoMUHVsbFJlc3BvbnNlEiUKA2V2dBgCIAEoCzIYLndhcmdhcG9zLmV2ZW50LnYxLkV2ZW50Ii8KC1B1bGxSZXF1ZXN0EiAKDHN1YnNjcmliZV9pZBgBIAEoCUIKukgHcgUQARisAiI0CgtQdXNoUmVxdWVzdBIlCgNldnQYAiABKAsyGC53YXJnYXBvcy5ldmVudC52MS5FdmVudCIOCgxQdXNoUmVzcG9uc2UyogEKDEV2ZW50U2VydmljZRJHCgRTZW5kEh4ud2FyZ2Fwb3MuZXZlbnQudjEuU2VuZFJlcXVlc3QaHy53YXJnYXBvcy5ldmVudC52MS5TZW5kUmVzcG9uc2USSQoEUHVsbBIeLndhcmdhcG9zLmV2ZW50LnYxLlB1bGxSZXF1ZXN0Gh8ud2FyZ2Fwb3MuZXZlbnQudjEuUHVsbFJlc3BvbnNlMAEyVgoLUHVzaFNlcnZpY2USRwoEUHVzaBIeLndhcmdhcG9zLmV2ZW50LnYxLlB1c2hSZXF1ZXN0Gh8ud2FyZ2Fwb3MuZXZlbnQudjEuUHVzaFJlc3BvbnNlQjBaLndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL2V2ZW50L3YxO2V2ZW50djFiBnByb3RvMw", [file_buf_validate_validate, file_wargapos_stock_v1_event]);
 
 /**
  * @generated from message wargapos.event.v1.Ping
@@ -127,6 +127,36 @@ export const PullRequestSchema: GenMessage<PullRequest> = /*@__PURE__*/
   messageDesc(file_wargapos_event_v1_service, 5);
 
 /**
+ * @generated from message wargapos.event.v1.PushRequest
+ */
+export type PushRequest = Message<"wargapos.event.v1.PushRequest"> & {
+  /**
+   * @generated from field: wargapos.event.v1.Event evt = 2;
+   */
+  evt?: Event;
+};
+
+/**
+ * Describes the message wargapos.event.v1.PushRequest.
+ * Use `create(PushRequestSchema)` to create a new message.
+ */
+export const PushRequestSchema: GenMessage<PushRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_event_v1_service, 6);
+
+/**
+ * @generated from message wargapos.event.v1.PushResponse
+ */
+export type PushResponse = Message<"wargapos.event.v1.PushResponse"> & {
+};
+
+/**
+ * Describes the message wargapos.event.v1.PushResponse.
+ * Use `create(PushResponseSchema)` to create a new message.
+ */
+export const PushResponseSchema: GenMessage<PushResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_event_v1_service, 7);
+
+/**
  * @generated from service wargapos.event.v1.EventService
  */
 export const EventService: GenService<{
@@ -148,4 +178,19 @@ export const EventService: GenService<{
   },
 }> = /*@__PURE__*/
   serviceDesc(file_wargapos_event_v1_service, 0);
+
+/**
+ * @generated from service wargapos.event.v1.PushService
+ */
+export const PushService: GenService<{
+  /**
+   * @generated from rpc wargapos.event.v1.PushService.Push
+   */
+  push: {
+    methodKind: "unary";
+    input: typeof PushRequestSchema;
+    output: typeof PushResponseSchema;
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_wargapos_event_v1_service, 1);
 

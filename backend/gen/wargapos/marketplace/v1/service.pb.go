@@ -1373,6 +1373,110 @@ func (*DeleteProductResponse) Descriptor() ([]byte, []int) {
 	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{25}
 }
 
+type RestockProductRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProductId     uint64                 `protobuf:"varint,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	WarehouseId   uint32                 `protobuf:"varint,2,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	Delta         int32                  `protobuf:"varint,3,opt,name=delta,proto3" json:"delta,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RestockProductRequest) Reset() {
+	*x = RestockProductRequest{}
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RestockProductRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestockProductRequest) ProtoMessage() {}
+
+func (x *RestockProductRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestockProductRequest.ProtoReflect.Descriptor instead.
+func (*RestockProductRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *RestockProductRequest) GetProductId() uint64 {
+	if x != nil {
+		return x.ProductId
+	}
+	return 0
+}
+
+func (x *RestockProductRequest) GetWarehouseId() uint32 {
+	if x != nil {
+		return x.WarehouseId
+	}
+	return 0
+}
+
+func (x *RestockProductRequest) GetDelta() int32 {
+	if x != nil {
+		return x.Delta
+	}
+	return 0
+}
+
+type RestockProductResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Product       *MarketplaceProduct    `protobuf:"bytes,1,opt,name=product,proto3" json:"product,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RestockProductResponse) Reset() {
+	*x = RestockProductResponse{}
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RestockProductResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestockProductResponse) ProtoMessage() {}
+
+func (x *RestockProductResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestockProductResponse.ProtoReflect.Descriptor instead.
+func (*RestockProductResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *RestockProductResponse) GetProduct() *MarketplaceProduct {
+	if x != nil {
+		return x.Product
+	}
+	return nil
+}
+
 type ListProductsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
@@ -1385,7 +1489,7 @@ type ListProductsRequest struct {
 
 func (x *ListProductsRequest) Reset() {
 	*x = ListProductsRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[26]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1397,7 +1501,7 @@ func (x *ListProductsRequest) String() string {
 func (*ListProductsRequest) ProtoMessage() {}
 
 func (x *ListProductsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[26]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1410,7 +1514,7 @@ func (x *ListProductsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProductsRequest.ProtoReflect.Descriptor instead.
 func (*ListProductsRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{26}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ListProductsRequest) GetPage() int32 {
@@ -1451,7 +1555,7 @@ type ListProductsResponse struct {
 
 func (x *ListProductsResponse) Reset() {
 	*x = ListProductsResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[27]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1463,7 +1567,7 @@ func (x *ListProductsResponse) String() string {
 func (*ListProductsResponse) ProtoMessage() {}
 
 func (x *ListProductsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[27]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1476,7 +1580,7 @@ func (x *ListProductsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProductsResponse.ProtoReflect.Descriptor instead.
 func (*ListProductsResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{27}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ListProductsResponse) GetProducts() []*MarketplaceProduct {
@@ -1578,7 +1682,14 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"&\n" +
 	"\x14DeleteProductRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\"\x17\n" +
-	"\x15DeleteProductResponse\"\x7f\n" +
+	"\x15DeleteProductResponse\"o\n" +
+	"\x15RestockProductRequest\x12\x1d\n" +
+	"\n" +
+	"product_id\x18\x01 \x01(\x04R\tproductId\x12!\n" +
+	"\fwarehouse_id\x18\x02 \x01(\rR\vwarehouseId\x12\x14\n" +
+	"\x05delta\x18\x03 \x01(\x05R\x05delta\"_\n" +
+	"\x16RestockProductResponse\x12E\n" +
+	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"\x7f\n" +
 	"\x13ListProductsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x16\n" +
@@ -1587,7 +1698,7 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"activeOnly\"u\n" +
 	"\x14ListProductsResponse\x12G\n" +
 	"\bproducts\x18\x01 \x03(\v2+.wargapos.marketplace.v1.MarketplaceProductR\bproducts\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total2\xdd\v\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total2\xd0\f\n" +
 	"\x12MarketplaceService\x12e\n" +
 	"\n" +
 	"CreateShop\x12*.wargapos.marketplace.v1.CreateShopRequest\x1a+.wargapos.marketplace.v1.CreateShopResponse\x12\\\n" +
@@ -1602,7 +1713,8 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"GetProduct\x12*.wargapos.marketplace.v1.GetProductRequest\x1a+.wargapos.marketplace.v1.GetProductResponse\x12n\n" +
 	"\rUpdateProduct\x12-.wargapos.marketplace.v1.UpdateProductRequest\x1a..wargapos.marketplace.v1.UpdateProductResponse\x12n\n" +
 	"\rDeleteProduct\x12-.wargapos.marketplace.v1.DeleteProductRequest\x1a..wargapos.marketplace.v1.DeleteProductResponse\x12k\n" +
-	"\fListProducts\x12,.wargapos.marketplace.v1.ListProductsRequest\x1a-.wargapos.marketplace.v1.ListProductsResponse\x12h\n" +
+	"\fListProducts\x12,.wargapos.marketplace.v1.ListProductsRequest\x1a-.wargapos.marketplace.v1.ListProductsResponse\x12q\n" +
+	"\x0eRestockProduct\x12..wargapos.marketplace.v1.RestockProductRequest\x1a/.wargapos.marketplace.v1.RestockProductResponse\x12h\n" +
 	"\vCreateOrder\x12+.wargapos.marketplace.v1.CreateOrderRequest\x1a,.wargapos.marketplace.v1.CreateOrderResponse\x12_\n" +
 	"\bGetOrder\x12(.wargapos.marketplace.v1.GetOrderRequest\x1a).wargapos.marketplace.v1.GetOrderResponse\x12e\n" +
 	"\n" +
@@ -1621,7 +1733,7 @@ func file_wargapos_marketplace_v1_service_proto_rawDescGZIP() []byte {
 	return file_wargapos_marketplace_v1_service_proto_rawDescData
 }
 
-var file_wargapos_marketplace_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
+var file_wargapos_marketplace_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_wargapos_marketplace_v1_service_proto_goTypes = []any{
 	(*CreateShopRequest)(nil),         // 0: wargapos.marketplace.v1.CreateShopRequest
 	(*CreateShopResponse)(nil),        // 1: wargapos.marketplace.v1.CreateShopResponse
@@ -1649,66 +1761,71 @@ var file_wargapos_marketplace_v1_service_proto_goTypes = []any{
 	(*UpdateProductResponse)(nil),     // 23: wargapos.marketplace.v1.UpdateProductResponse
 	(*DeleteProductRequest)(nil),      // 24: wargapos.marketplace.v1.DeleteProductRequest
 	(*DeleteProductResponse)(nil),     // 25: wargapos.marketplace.v1.DeleteProductResponse
-	(*ListProductsRequest)(nil),       // 26: wargapos.marketplace.v1.ListProductsRequest
-	(*ListProductsResponse)(nil),      // 27: wargapos.marketplace.v1.ListProductsResponse
-	(MarketplaceShopType)(0),          // 28: wargapos.marketplace.v1.MarketplaceShopType
-	(*MarketplaceShop)(nil),           // 29: wargapos.marketplace.v1.MarketplaceShop
-	(*MarketplaceOrderItem)(nil),      // 30: wargapos.marketplace.v1.MarketplaceOrderItem
-	(*MarketplaceOrder)(nil),          // 31: wargapos.marketplace.v1.MarketplaceOrder
-	(MarketplaceOrderStatus)(0),       // 32: wargapos.marketplace.v1.MarketplaceOrderStatus
-	(*MarketplaceProduct)(nil),        // 33: wargapos.marketplace.v1.MarketplaceProduct
+	(*RestockProductRequest)(nil),     // 26: wargapos.marketplace.v1.RestockProductRequest
+	(*RestockProductResponse)(nil),    // 27: wargapos.marketplace.v1.RestockProductResponse
+	(*ListProductsRequest)(nil),       // 28: wargapos.marketplace.v1.ListProductsRequest
+	(*ListProductsResponse)(nil),      // 29: wargapos.marketplace.v1.ListProductsResponse
+	(MarketplaceShopType)(0),          // 30: wargapos.marketplace.v1.MarketplaceShopType
+	(*MarketplaceShop)(nil),           // 31: wargapos.marketplace.v1.MarketplaceShop
+	(*MarketplaceOrderItem)(nil),      // 32: wargapos.marketplace.v1.MarketplaceOrderItem
+	(*MarketplaceOrder)(nil),          // 33: wargapos.marketplace.v1.MarketplaceOrder
+	(MarketplaceOrderStatus)(0),       // 34: wargapos.marketplace.v1.MarketplaceOrderStatus
+	(*MarketplaceProduct)(nil),        // 35: wargapos.marketplace.v1.MarketplaceProduct
 }
 var file_wargapos_marketplace_v1_service_proto_depIdxs = []int32{
-	28, // 0: wargapos.marketplace.v1.CreateShopRequest.type:type_name -> wargapos.marketplace.v1.MarketplaceShopType
-	29, // 1: wargapos.marketplace.v1.CreateShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
-	29, // 2: wargapos.marketplace.v1.GetShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
-	28, // 3: wargapos.marketplace.v1.UpdateShopRequest.type:type_name -> wargapos.marketplace.v1.MarketplaceShopType
-	29, // 4: wargapos.marketplace.v1.UpdateShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
-	29, // 5: wargapos.marketplace.v1.ListShopsResponse.shops:type_name -> wargapos.marketplace.v1.MarketplaceShop
-	30, // 6: wargapos.marketplace.v1.CreateOrderRequest.items:type_name -> wargapos.marketplace.v1.MarketplaceOrderItem
-	31, // 7: wargapos.marketplace.v1.CreateOrderResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
-	31, // 8: wargapos.marketplace.v1.GetOrderResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
-	32, // 9: wargapos.marketplace.v1.ListOrdersRequest.status_filter:type_name -> wargapos.marketplace.v1.MarketplaceOrderStatus
-	31, // 10: wargapos.marketplace.v1.ListOrdersResponse.orders:type_name -> wargapos.marketplace.v1.MarketplaceOrder
-	32, // 11: wargapos.marketplace.v1.UpdateOrderStatusRequest.status:type_name -> wargapos.marketplace.v1.MarketplaceOrderStatus
-	31, // 12: wargapos.marketplace.v1.UpdateOrderStatusResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
-	33, // 13: wargapos.marketplace.v1.CreateProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	33, // 14: wargapos.marketplace.v1.GetProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	33, // 15: wargapos.marketplace.v1.UpdateProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	33, // 16: wargapos.marketplace.v1.ListProductsResponse.products:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	0,  // 17: wargapos.marketplace.v1.MarketplaceService.CreateShop:input_type -> wargapos.marketplace.v1.CreateShopRequest
-	2,  // 18: wargapos.marketplace.v1.MarketplaceService.GetShop:input_type -> wargapos.marketplace.v1.GetShopRequest
-	4,  // 19: wargapos.marketplace.v1.MarketplaceService.UpdateShop:input_type -> wargapos.marketplace.v1.UpdateShopRequest
-	6,  // 20: wargapos.marketplace.v1.MarketplaceService.DeleteShop:input_type -> wargapos.marketplace.v1.DeleteShopRequest
-	8,  // 21: wargapos.marketplace.v1.MarketplaceService.ListShops:input_type -> wargapos.marketplace.v1.ListShopsRequest
-	18, // 22: wargapos.marketplace.v1.MarketplaceService.CreateProduct:input_type -> wargapos.marketplace.v1.CreateProductRequest
-	20, // 23: wargapos.marketplace.v1.MarketplaceService.GetProduct:input_type -> wargapos.marketplace.v1.GetProductRequest
-	22, // 24: wargapos.marketplace.v1.MarketplaceService.UpdateProduct:input_type -> wargapos.marketplace.v1.UpdateProductRequest
-	24, // 25: wargapos.marketplace.v1.MarketplaceService.DeleteProduct:input_type -> wargapos.marketplace.v1.DeleteProductRequest
-	26, // 26: wargapos.marketplace.v1.MarketplaceService.ListProducts:input_type -> wargapos.marketplace.v1.ListProductsRequest
-	10, // 27: wargapos.marketplace.v1.MarketplaceService.CreateOrder:input_type -> wargapos.marketplace.v1.CreateOrderRequest
-	12, // 28: wargapos.marketplace.v1.MarketplaceService.GetOrder:input_type -> wargapos.marketplace.v1.GetOrderRequest
-	14, // 29: wargapos.marketplace.v1.MarketplaceService.ListOrders:input_type -> wargapos.marketplace.v1.ListOrdersRequest
-	16, // 30: wargapos.marketplace.v1.MarketplaceService.UpdateOrderStatus:input_type -> wargapos.marketplace.v1.UpdateOrderStatusRequest
-	1,  // 31: wargapos.marketplace.v1.MarketplaceService.CreateShop:output_type -> wargapos.marketplace.v1.CreateShopResponse
-	3,  // 32: wargapos.marketplace.v1.MarketplaceService.GetShop:output_type -> wargapos.marketplace.v1.GetShopResponse
-	5,  // 33: wargapos.marketplace.v1.MarketplaceService.UpdateShop:output_type -> wargapos.marketplace.v1.UpdateShopResponse
-	7,  // 34: wargapos.marketplace.v1.MarketplaceService.DeleteShop:output_type -> wargapos.marketplace.v1.DeleteShopResponse
-	9,  // 35: wargapos.marketplace.v1.MarketplaceService.ListShops:output_type -> wargapos.marketplace.v1.ListShopsResponse
-	19, // 36: wargapos.marketplace.v1.MarketplaceService.CreateProduct:output_type -> wargapos.marketplace.v1.CreateProductResponse
-	21, // 37: wargapos.marketplace.v1.MarketplaceService.GetProduct:output_type -> wargapos.marketplace.v1.GetProductResponse
-	23, // 38: wargapos.marketplace.v1.MarketplaceService.UpdateProduct:output_type -> wargapos.marketplace.v1.UpdateProductResponse
-	25, // 39: wargapos.marketplace.v1.MarketplaceService.DeleteProduct:output_type -> wargapos.marketplace.v1.DeleteProductResponse
-	27, // 40: wargapos.marketplace.v1.MarketplaceService.ListProducts:output_type -> wargapos.marketplace.v1.ListProductsResponse
-	11, // 41: wargapos.marketplace.v1.MarketplaceService.CreateOrder:output_type -> wargapos.marketplace.v1.CreateOrderResponse
-	13, // 42: wargapos.marketplace.v1.MarketplaceService.GetOrder:output_type -> wargapos.marketplace.v1.GetOrderResponse
-	15, // 43: wargapos.marketplace.v1.MarketplaceService.ListOrders:output_type -> wargapos.marketplace.v1.ListOrdersResponse
-	17, // 44: wargapos.marketplace.v1.MarketplaceService.UpdateOrderStatus:output_type -> wargapos.marketplace.v1.UpdateOrderStatusResponse
-	31, // [31:45] is the sub-list for method output_type
-	17, // [17:31] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	30, // 0: wargapos.marketplace.v1.CreateShopRequest.type:type_name -> wargapos.marketplace.v1.MarketplaceShopType
+	31, // 1: wargapos.marketplace.v1.CreateShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
+	31, // 2: wargapos.marketplace.v1.GetShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
+	30, // 3: wargapos.marketplace.v1.UpdateShopRequest.type:type_name -> wargapos.marketplace.v1.MarketplaceShopType
+	31, // 4: wargapos.marketplace.v1.UpdateShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
+	31, // 5: wargapos.marketplace.v1.ListShopsResponse.shops:type_name -> wargapos.marketplace.v1.MarketplaceShop
+	32, // 6: wargapos.marketplace.v1.CreateOrderRequest.items:type_name -> wargapos.marketplace.v1.MarketplaceOrderItem
+	33, // 7: wargapos.marketplace.v1.CreateOrderResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
+	33, // 8: wargapos.marketplace.v1.GetOrderResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
+	34, // 9: wargapos.marketplace.v1.ListOrdersRequest.status_filter:type_name -> wargapos.marketplace.v1.MarketplaceOrderStatus
+	33, // 10: wargapos.marketplace.v1.ListOrdersResponse.orders:type_name -> wargapos.marketplace.v1.MarketplaceOrder
+	34, // 11: wargapos.marketplace.v1.UpdateOrderStatusRequest.status:type_name -> wargapos.marketplace.v1.MarketplaceOrderStatus
+	33, // 12: wargapos.marketplace.v1.UpdateOrderStatusResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
+	35, // 13: wargapos.marketplace.v1.CreateProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	35, // 14: wargapos.marketplace.v1.GetProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	35, // 15: wargapos.marketplace.v1.UpdateProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	35, // 16: wargapos.marketplace.v1.RestockProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	35, // 17: wargapos.marketplace.v1.ListProductsResponse.products:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	0,  // 18: wargapos.marketplace.v1.MarketplaceService.CreateShop:input_type -> wargapos.marketplace.v1.CreateShopRequest
+	2,  // 19: wargapos.marketplace.v1.MarketplaceService.GetShop:input_type -> wargapos.marketplace.v1.GetShopRequest
+	4,  // 20: wargapos.marketplace.v1.MarketplaceService.UpdateShop:input_type -> wargapos.marketplace.v1.UpdateShopRequest
+	6,  // 21: wargapos.marketplace.v1.MarketplaceService.DeleteShop:input_type -> wargapos.marketplace.v1.DeleteShopRequest
+	8,  // 22: wargapos.marketplace.v1.MarketplaceService.ListShops:input_type -> wargapos.marketplace.v1.ListShopsRequest
+	18, // 23: wargapos.marketplace.v1.MarketplaceService.CreateProduct:input_type -> wargapos.marketplace.v1.CreateProductRequest
+	20, // 24: wargapos.marketplace.v1.MarketplaceService.GetProduct:input_type -> wargapos.marketplace.v1.GetProductRequest
+	22, // 25: wargapos.marketplace.v1.MarketplaceService.UpdateProduct:input_type -> wargapos.marketplace.v1.UpdateProductRequest
+	24, // 26: wargapos.marketplace.v1.MarketplaceService.DeleteProduct:input_type -> wargapos.marketplace.v1.DeleteProductRequest
+	28, // 27: wargapos.marketplace.v1.MarketplaceService.ListProducts:input_type -> wargapos.marketplace.v1.ListProductsRequest
+	26, // 28: wargapos.marketplace.v1.MarketplaceService.RestockProduct:input_type -> wargapos.marketplace.v1.RestockProductRequest
+	10, // 29: wargapos.marketplace.v1.MarketplaceService.CreateOrder:input_type -> wargapos.marketplace.v1.CreateOrderRequest
+	12, // 30: wargapos.marketplace.v1.MarketplaceService.GetOrder:input_type -> wargapos.marketplace.v1.GetOrderRequest
+	14, // 31: wargapos.marketplace.v1.MarketplaceService.ListOrders:input_type -> wargapos.marketplace.v1.ListOrdersRequest
+	16, // 32: wargapos.marketplace.v1.MarketplaceService.UpdateOrderStatus:input_type -> wargapos.marketplace.v1.UpdateOrderStatusRequest
+	1,  // 33: wargapos.marketplace.v1.MarketplaceService.CreateShop:output_type -> wargapos.marketplace.v1.CreateShopResponse
+	3,  // 34: wargapos.marketplace.v1.MarketplaceService.GetShop:output_type -> wargapos.marketplace.v1.GetShopResponse
+	5,  // 35: wargapos.marketplace.v1.MarketplaceService.UpdateShop:output_type -> wargapos.marketplace.v1.UpdateShopResponse
+	7,  // 36: wargapos.marketplace.v1.MarketplaceService.DeleteShop:output_type -> wargapos.marketplace.v1.DeleteShopResponse
+	9,  // 37: wargapos.marketplace.v1.MarketplaceService.ListShops:output_type -> wargapos.marketplace.v1.ListShopsResponse
+	19, // 38: wargapos.marketplace.v1.MarketplaceService.CreateProduct:output_type -> wargapos.marketplace.v1.CreateProductResponse
+	21, // 39: wargapos.marketplace.v1.MarketplaceService.GetProduct:output_type -> wargapos.marketplace.v1.GetProductResponse
+	23, // 40: wargapos.marketplace.v1.MarketplaceService.UpdateProduct:output_type -> wargapos.marketplace.v1.UpdateProductResponse
+	25, // 41: wargapos.marketplace.v1.MarketplaceService.DeleteProduct:output_type -> wargapos.marketplace.v1.DeleteProductResponse
+	29, // 42: wargapos.marketplace.v1.MarketplaceService.ListProducts:output_type -> wargapos.marketplace.v1.ListProductsResponse
+	27, // 43: wargapos.marketplace.v1.MarketplaceService.RestockProduct:output_type -> wargapos.marketplace.v1.RestockProductResponse
+	11, // 44: wargapos.marketplace.v1.MarketplaceService.CreateOrder:output_type -> wargapos.marketplace.v1.CreateOrderResponse
+	13, // 45: wargapos.marketplace.v1.MarketplaceService.GetOrder:output_type -> wargapos.marketplace.v1.GetOrderResponse
+	15, // 46: wargapos.marketplace.v1.MarketplaceService.ListOrders:output_type -> wargapos.marketplace.v1.ListOrdersResponse
+	17, // 47: wargapos.marketplace.v1.MarketplaceService.UpdateOrderStatus:output_type -> wargapos.marketplace.v1.UpdateOrderStatusResponse
+	33, // [33:48] is the sub-list for method output_type
+	18, // [18:33] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_marketplace_v1_service_proto_init() }
@@ -1725,7 +1842,7 @@ func file_wargapos_marketplace_v1_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_marketplace_v1_service_proto_rawDesc), len(file_wargapos_marketplace_v1_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   28,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

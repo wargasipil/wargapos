@@ -81,6 +81,7 @@ export function MarketplaceProductsPage() {
                 <Table.Row>
                   <Table.ColumnHeader>Name</Table.ColumnHeader>
                   <Table.ColumnHeader>Price</Table.ColumnHeader>
+                  <Table.ColumnHeader>Stock</Table.ColumnHeader>
                   <Table.ColumnHeader>Status</Table.ColumnHeader>
                   <Table.ColumnHeader textAlign="right">Actions</Table.ColumnHeader>
                 </Table.Row>
@@ -93,10 +94,13 @@ export function MarketplaceProductsPage() {
                         {p.imageUrl && (
                           <img src={p.imageUrl} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }} />
                         )}
-                        <Text fontWeight="medium">{p.name}</Text>
+                        <Link to="/marketplace/products/$id" params={{ id: String(p.id) }}>
+                          <Text fontWeight="medium" color="blue.600" _hover={{ textDecoration: 'underline' }}>{p.name}</Text>
+                        </Link>
                       </HStack>
                     </Table.Cell>
                     <Table.Cell>{formatPrice(BigInt(p.priceCents))}</Table.Cell>
+                    <Table.Cell>{p.leftStock.toLocaleString('id-ID')}</Table.Cell>
                     <Table.Cell>
                       <Button
                         size="xs"
@@ -147,9 +151,10 @@ export function MarketplaceProductsPage() {
                     {p.isActive ? 'Active' : 'Inactive'}
                   </Button>
                 </Flex>
-                <Text fontSize="sm" color="blue.600" fontWeight="medium" mb={3}>
+                <Text fontSize="sm" color="blue.600" fontWeight="medium">
                   {formatPrice(BigInt(p.priceCents))}
                 </Text>
+                <Text fontSize="xs" color="gray.500" mb={3}>Stock: {p.leftStock.toLocaleString('id-ID')}</Text>
                 <Flex gap={2}>
                   <Button asChild size="xs" variant="outline" flex={1}>
                     <Link to="/marketplace/products/$id/edit" params={{ id: String(p.id) }}>

@@ -21,8 +21,9 @@ type SkuStockAddPayload struct {
 	CreatedAt     time.Time
 }
 
-func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) error {
+func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) ([]*stock_model.StockLog, error) {
 	var err error
+	var stockLogs []*stock_model.StockLog = []*stock_model.StockLog{}
 
 	err = db.Transaction(func(tx *gorm.DB) error {
 		var sku models.Sku
@@ -88,6 +89,7 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 						return ctx, err
 					}
 
+					stockLogs = append(stockLogs, &stockLog)
 					return next(ctx)
 				}
 			},
@@ -114,5 +116,5 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) erro
 		return err
 	})
 
-	return err
+	return stockLogs, err
 }

@@ -12,7 +12,34 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/marketplace/v1/product.proto.
  */
 export const file_wargapos_marketplace_v1_product: GenFile = /*@__PURE__*/
-  fileDesc("CiV3YXJnYXBvcy9tYXJrZXRwbGFjZS92MS9wcm9kdWN0LnByb3RvEhd3YXJnYXBvcy5tYXJrZXRwbGFjZS52MSLeAQoSTWFya2V0cGxhY2VQcm9kdWN0EgoKAmlkGAEgASgEEgwKBG5hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEwoLcHJpY2VfY2VudHMYBCABKAMSEQoJaW1hZ2VfdXJsGAUgASgJEhEKCWlzX2FjdGl2ZRgGIAEoCBIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEI8Wjp3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9tYXJrZXRwbGFjZS92MTttYXJrZXRwbGFjZXYxYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("CiV3YXJnYXBvcy9tYXJrZXRwbGFjZS92MS9wcm9kdWN0LnByb3RvEhd3YXJnYXBvcy5tYXJrZXRwbGFjZS52MSJKCg5XYXJlaG91c2VTdG9jaxIUCgx3YXJlaG91c2VfaWQYASABKA0SDgoGc2t1X2lkGAIgASgNEhIKCmxlZnRfc3RvY2sYAyABKAUitAIKEk1hcmtldHBsYWNlUHJvZHVjdBIKCgJpZBgBIAEoBBIMCgRuYW1lGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhMKC3ByaWNlX2NlbnRzGAQgASgDEhEKCWltYWdlX3VybBgFIAEoCRIRCglpc19hY3RpdmUYBiABKAgSEgoKbGVmdF9zdG9jaxgJIAEoBRJACg93YXJlaG91c2Vfc3RvY2sYCiADKAsyJy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5XYXJlaG91c2VTdG9jaxIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEI8Wjp3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9tYXJrZXRwbGFjZS92MTttYXJrZXRwbGFjZXYxYgZwcm90bzM", [file_google_protobuf_timestamp]);
+
+/**
+ * @generated from message wargapos.marketplace.v1.WarehouseStock
+ */
+export type WarehouseStock = Message<"wargapos.marketplace.v1.WarehouseStock"> & {
+  /**
+   * @generated from field: uint32 warehouse_id = 1;
+   */
+  warehouseId: number;
+
+  /**
+   * @generated from field: uint32 sku_id = 2;
+   */
+  skuId: number;
+
+  /**
+   * @generated from field: int32 left_stock = 3;
+   */
+  leftStock: number;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.WarehouseStock.
+ * Use `create(WarehouseStockSchema)` to create a new message.
+ */
+export const WarehouseStockSchema: GenMessage<WarehouseStock> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_product, 0);
 
 /**
  * @generated from message wargapos.marketplace.v1.MarketplaceProduct
@@ -49,6 +76,16 @@ export type MarketplaceProduct = Message<"wargapos.marketplace.v1.MarketplacePro
   isActive: boolean;
 
   /**
+   * @generated from field: int32 left_stock = 9;
+   */
+  leftStock: number;
+
+  /**
+   * @generated from field: repeated wargapos.marketplace.v1.WarehouseStock warehouse_stock = 10;
+   */
+  warehouseStock: WarehouseStock[];
+
+  /**
    * @generated from field: google.protobuf.Timestamp created_at = 7;
    */
   createdAt?: Timestamp;
@@ -64,5 +101,5 @@ export type MarketplaceProduct = Message<"wargapos.marketplace.v1.MarketplacePro
  * Use `create(MarketplaceProductSchema)` to create a new message.
  */
 export const MarketplaceProductSchema: GenMessage<MarketplaceProduct> = /*@__PURE__*/
-  messageDesc(file_wargapos_marketplace_v1_product, 0);
+  messageDesc(file_wargapos_marketplace_v1_product, 1);
 

@@ -3,6 +3,7 @@ package stock_service
 import (
 	"gorm.io/gorm"
 
+	"wargapos/backend/gen/wargapos/event/v1/eventv1connect"
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
 	"wargapos/backend/gen/wargapos/stock/v1/stockv1connect"
 	"wargapos/backend/internal/models"
@@ -13,12 +14,13 @@ import (
 // StockService implements stockv1connect.StockServiceHandler.
 type StockService struct {
 	stockv1connect.UnimplementedStockServiceHandler
-	db *gorm.DB
+	db          *gorm.DB
+	eventClient eventv1connect.EventServiceClient
 }
 
 // NewStockService is the Wire provider constructor.
-func NewStockService(db *gorm.DB) *StockService {
-	return &StockService{db: db}
+func NewStockService(db *gorm.DB, eventClient eventv1connect.EventServiceClient) *StockService {
+	return &StockService{db: db, eventClient: eventClient}
 }
 
 func toProtoTransaction(t *models.StockTransaction) *stockv1.Transaction {

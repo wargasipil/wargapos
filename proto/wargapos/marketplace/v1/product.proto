@@ -2,9 +2,15 @@ syntax = "proto3";
 
 package wargapos.marketplace.v1;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1";
 
-import "google/protobuf/timestamp.proto";
+message WarehouseStock {
+  uint32 warehouse_id = 1;
+  uint32 sku_id = 2;
+  int32 left_stock = 3;
+}
 
 message MarketplaceProduct {
   uint64 id = 1;
@@ -13,6 +19,8 @@ message MarketplaceProduct {
   int64 price_cents = 4;
   string image_url = 5;
   bool is_active = 6;
+  int32 left_stock = 9;
+  repeated WarehouseStock warehouse_stock = 10;
   google.protobuf.Timestamp created_at = 7;
   google.protobuf.Timestamp updated_at = 8;
 }

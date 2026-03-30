@@ -39,7 +39,7 @@ export function LoginPage() {
             <ShoppingCart size={28} color="#3b82f6" />
             <Heading size="xl" color="gray.800">WargaPOS</Heading>
           </HStack>
-          <Text fontSize="sm" color="gray.500">Café Point of Sale</Text>
+          <Text fontSize="sm" color="gray.500">Let's Manage Stock</Text>
         </VStack>
       <Card.Root width="full">
         <Card.Body p={8}>

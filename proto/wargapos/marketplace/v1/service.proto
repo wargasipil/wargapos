@@ -21,6 +21,7 @@ service MarketplaceService {
   rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
   rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
   rpc ListProducts(ListProductsRequest) returns (ListProductsResponse);
+  rpc RestockProduct(RestockProductRequest) returns (RestockProductResponse);
   // Orders
   rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
   rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
@@ -161,6 +162,16 @@ message DeleteProductRequest {
 }
 
 message DeleteProductResponse {}
+
+message RestockProductRequest {
+  uint64 product_id = 1;
+  uint32 warehouse_id = 2;
+  int32 delta = 3;
+}
+
+message RestockProductResponse {
+  MarketplaceProduct product = 1;
+}
 
 message ListProductsRequest {
   int32 page = 1;

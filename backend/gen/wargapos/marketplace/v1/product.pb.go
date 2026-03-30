@@ -22,23 +22,85 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type MarketplaceProduct struct {
+type WarehouseStock struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	PriceCents    int64                  `protobuf:"varint,4,opt,name=price_cents,json=priceCents,proto3" json:"price_cents,omitempty"`
-	ImageUrl      string                 `protobuf:"bytes,5,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
-	IsActive      bool                   `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	WarehouseId   uint32                 `protobuf:"varint,1,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
+	LeftStock     int32                  `protobuf:"varint,3,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *WarehouseStock) Reset() {
+	*x = WarehouseStock{}
+	mi := &file_wargapos_marketplace_v1_product_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WarehouseStock) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WarehouseStock) ProtoMessage() {}
+
+func (x *WarehouseStock) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_marketplace_v1_product_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WarehouseStock.ProtoReflect.Descriptor instead.
+func (*WarehouseStock) Descriptor() ([]byte, []int) {
+	return file_wargapos_marketplace_v1_product_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *WarehouseStock) GetWarehouseId() uint32 {
+	if x != nil {
+		return x.WarehouseId
+	}
+	return 0
+}
+
+func (x *WarehouseStock) GetSkuId() uint32 {
+	if x != nil {
+		return x.SkuId
+	}
+	return 0
+}
+
+func (x *WarehouseStock) GetLeftStock() int32 {
+	if x != nil {
+		return x.LeftStock
+	}
+	return 0
+}
+
+type MarketplaceProduct struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description    string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	PriceCents     int64                  `protobuf:"varint,4,opt,name=price_cents,json=priceCents,proto3" json:"price_cents,omitempty"`
+	ImageUrl       string                 `protobuf:"bytes,5,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
+	IsActive       bool                   `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	LeftStock      int32                  `protobuf:"varint,9,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
+	WarehouseStock []*WarehouseStock      `protobuf:"bytes,10,rep,name=warehouse_stock,json=warehouseStock,proto3" json:"warehouse_stock,omitempty"`
+	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
 func (x *MarketplaceProduct) Reset() {
 	*x = MarketplaceProduct{}
-	mi := &file_wargapos_marketplace_v1_product_proto_msgTypes[0]
+	mi := &file_wargapos_marketplace_v1_product_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -50,7 +112,7 @@ func (x *MarketplaceProduct) String() string {
 func (*MarketplaceProduct) ProtoMessage() {}
 
 func (x *MarketplaceProduct) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_product_proto_msgTypes[0]
+	mi := &file_wargapos_marketplace_v1_product_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -63,7 +125,7 @@ func (x *MarketplaceProduct) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketplaceProduct.ProtoReflect.Descriptor instead.
 func (*MarketplaceProduct) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_product_proto_rawDescGZIP(), []int{0}
+	return file_wargapos_marketplace_v1_product_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *MarketplaceProduct) GetId() uint64 {
@@ -108,6 +170,20 @@ func (x *MarketplaceProduct) GetIsActive() bool {
 	return false
 }
 
+func (x *MarketplaceProduct) GetLeftStock() int32 {
+	if x != nil {
+		return x.LeftStock
+	}
+	return 0
+}
+
+func (x *MarketplaceProduct) GetWarehouseStock() []*WarehouseStock {
+	if x != nil {
+		return x.WarehouseStock
+	}
+	return nil
+}
+
 func (x *MarketplaceProduct) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
@@ -126,7 +202,12 @@ var File_wargapos_marketplace_v1_product_proto protoreflect.FileDescriptor
 
 const file_wargapos_marketplace_v1_product_proto_rawDesc = "" +
 	"\n" +
-	"%wargapos/marketplace/v1/product.proto\x12\x17wargapos.marketplace.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xab\x02\n" +
+	"%wargapos/marketplace/v1/product.proto\x12\x17wargapos.marketplace.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"i\n" +
+	"\x0eWarehouseStock\x12!\n" +
+	"\fwarehouse_id\x18\x01 \x01(\rR\vwarehouseId\x12\x15\n" +
+	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12\x1d\n" +
+	"\n" +
+	"left_stock\x18\x03 \x01(\x05R\tleftStock\"\x9c\x03\n" +
 	"\x12MarketplaceProduct\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -134,7 +215,11 @@ const file_wargapos_marketplace_v1_product_proto_rawDesc = "" +
 	"\vprice_cents\x18\x04 \x01(\x03R\n" +
 	"priceCents\x12\x1b\n" +
 	"\timage_url\x18\x05 \x01(\tR\bimageUrl\x12\x1b\n" +
-	"\tis_active\x18\x06 \x01(\bR\bisActive\x129\n" +
+	"\tis_active\x18\x06 \x01(\bR\bisActive\x12\x1d\n" +
+	"\n" +
+	"left_stock\x18\t \x01(\x05R\tleftStock\x12P\n" +
+	"\x0fwarehouse_stock\x18\n" +
+	" \x03(\v2'.wargapos.marketplace.v1.WarehouseStockR\x0ewarehouseStock\x129\n" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
@@ -152,19 +237,21 @@ func file_wargapos_marketplace_v1_product_proto_rawDescGZIP() []byte {
 	return file_wargapos_marketplace_v1_product_proto_rawDescData
 }
 
-var file_wargapos_marketplace_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_wargapos_marketplace_v1_product_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wargapos_marketplace_v1_product_proto_goTypes = []any{
-	(*MarketplaceProduct)(nil),    // 0: wargapos.marketplace.v1.MarketplaceProduct
-	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
+	(*WarehouseStock)(nil),        // 0: wargapos.marketplace.v1.WarehouseStock
+	(*MarketplaceProduct)(nil),    // 1: wargapos.marketplace.v1.MarketplaceProduct
+	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
 }
 var file_wargapos_marketplace_v1_product_proto_depIdxs = []int32{
-	1, // 0: wargapos.marketplace.v1.MarketplaceProduct.created_at:type_name -> google.protobuf.Timestamp
-	1, // 1: wargapos.marketplace.v1.MarketplaceProduct.updated_at:type_name -> google.protobuf.Timestamp
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // 0: wargapos.marketplace.v1.MarketplaceProduct.warehouse_stock:type_name -> wargapos.marketplace.v1.WarehouseStock
+	2, // 1: wargapos.marketplace.v1.MarketplaceProduct.created_at:type_name -> google.protobuf.Timestamp
+	2, // 2: wargapos.marketplace.v1.MarketplaceProduct.updated_at:type_name -> google.protobuf.Timestamp
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_marketplace_v1_product_proto_init() }
@@ -178,7 +265,7 @@ func file_wargapos_marketplace_v1_product_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_marketplace_v1_product_proto_rawDesc), len(file_wargapos_marketplace_v1_product_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

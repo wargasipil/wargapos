@@ -2,6 +2,8 @@ package marketplace_service
 
 import (
 	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
+	"wargapos/backend/gen/wargapos/stock/v1/stockv1connect"
+	"wargapos/backend/internal/config"
 	"wargapos/backend/internal/models"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -9,11 +11,13 @@ import (
 )
 
 type MarketplaceService struct {
-	db *gorm.DB
+	cfg      *config.Config
+	db       *gorm.DB
+	stockSrv stockv1connect.StockServiceClient
 }
 
-func NewMarketplaceService(db *gorm.DB) *MarketplaceService {
-	return &MarketplaceService{db: db}
+func NewMarketplaceService(cfg *config.Config, db *gorm.DB, stockSrv stockv1connect.StockServiceClient) *MarketplaceService {
+	return &MarketplaceService{cfg: cfg, db: db, stockSrv: stockSrv}
 }
 
 func toShopProto(m models.MarketplaceShop) *marketplacev1.MarketplaceShop {
@@ -30,15 +34,27 @@ func toShopProto(m models.MarketplaceShop) *marketplacev1.MarketplaceShop {
 }
 
 func toProductProto(p models.MarketplaceProduct) *marketplacev1.MarketplaceProduct {
+	var leftStock int32
+	whs := make([]*marketplacev1.WarehouseStock, 0, len(p.Stocks))
+	for _, s := range p.Stocks {
+		leftStock += s.LeftStock
+		whs = append(whs, &marketplacev1.WarehouseStock{
+			WarehouseId: s.WarehouseID,
+			SkuId:       s.SkuID,
+			LeftStock:   s.LeftStock,
+		})
+	}
 	return &marketplacev1.MarketplaceProduct{
-		Id:          p.ID,
-		Name:        p.Name,
-		Description: p.Description,
-		PriceCents:  p.PriceCents,
-		ImageUrl:    p.ImageURL,
-		IsActive:    p.IsActive,
-		CreatedAt:   timestamppb.New(p.CreatedAt),
-		UpdatedAt:   timestamppb.New(p.UpdatedAt),
+		Id:             p.ID,
+		Name:           p.Name,
+		Description:    p.Description,
+		PriceCents:     p.PriceCents,
+		ImageUrl:       p.ImageURL,
+		IsActive:       p.IsActive,
+		LeftStock:      leftStock,
+		WarehouseStock: whs,
+		CreatedAt:      timestamppb.New(p.CreatedAt),
+		UpdatedAt:      timestamppb.New(p.UpdatedAt),
 	}
 }
 

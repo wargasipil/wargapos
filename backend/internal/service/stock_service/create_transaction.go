@@ -6,8 +6,10 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
+	eventv1 "wargapos/backend/gen/wargapos/event/v1"
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
 	"wargapos/backend/internal/auth"
 	"wargapos/backend/internal/models"
@@ -28,6 +30,7 @@ func (s *StockService) CreateTransaction(
 	}
 
 	var txRecord models.StockTransaction
+	var stockLogs []*stockv1.StockLog
 
 	err = s.
 		db.
@@ -96,7 +99,7 @@ func (s *StockService) CreateTransaction(
 
 								// iterating sku
 								for _, item := range req.Msg.Items {
-									err = stock_core.SkuStockAdd(ctx, tx, &stock_core.SkuStockAddPayload{
+									logs, err := stock_core.SkuStockAdd(ctx, tx, &stock_core.SkuStockAddPayload{
 										SkuId:         item.SkuId,
 										TransactionId: txRecord.ID,
 										UserId:        userID,
@@ -105,6 +108,19 @@ func (s *StockService) CreateTransaction(
 									})
 									if err != nil {
 										return ctx, err
+									}
+
+									for _, log := range logs {
+										stockLogs = append(stockLogs, &stockv1.StockLog{
+											Id:            log.ID,
+											SkuId:         log.SkuID,
+											TransactionId: log.TransactionID,
+											ActorId:       log.ActorID,
+											CostVersionId: log.CostVersionID,
+											CreatedAt:     timestamppb.New(log.CreatedAt),
+											LogType:       log.LogType,
+											Change:        log.Change,
+										})
 									}
 								}
 
@@ -121,6 +137,32 @@ func (s *StockService) CreateTransaction(
 			return err
 
 		})
+
+	if err != nil {
+		return nil, err
+	}
+
+	// sending to event
+	_, err = s.eventClient.Send(ctx, &connect.Request[eventv1.SendRequest]{
+		Msg: &eventv1.SendRequest{
+			PushId: "default",
+			Evt: &eventv1.Event{
+				Event: &eventv1.Event_StockEvent{
+					StockEvent: &stockv1.StockEvent{
+						Event: &stockv1.StockEvent_Logs{
+							Logs: &stockv1.StockLogEvent{
+								StockLog: stockLogs,
+							},
+						},
+					},
+				},
+			},
+		},
+	})
+
+	if err != nil {
+		return nil, err
+	}
 
 	return connect.NewResponse(&stockv1.CreateTransactionResponse{
 		Transaction: toProtoTransaction(&txRecord),

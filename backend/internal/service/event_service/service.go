@@ -10,6 +10,7 @@ import (
 type EventService struct {
 	sync.Mutex
 	listeners map[string]*connect.ServerStream[eventv1.PullResponse]
+	eventChan chan *eventv1.Event
 }
 
 func NewEventService() *EventService {

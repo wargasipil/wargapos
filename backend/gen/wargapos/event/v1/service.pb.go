@@ -7,13 +7,14 @@
 package eventv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
 	v1 "wargapos/backend/gen/wargapos/stock/v1"
+
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -317,6 +318,86 @@ func (x *PullRequest) GetSubscribeId() string {
 	return ""
 }
 
+type PushRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Evt           *Event                 `protobuf:"bytes,2,opt,name=evt,proto3" json:"evt,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PushRequest) Reset() {
+	*x = PushRequest{}
+	mi := &file_wargapos_event_v1_service_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PushRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PushRequest) ProtoMessage() {}
+
+func (x *PushRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_event_v1_service_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PushRequest.ProtoReflect.Descriptor instead.
+func (*PushRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_event_v1_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *PushRequest) GetEvt() *Event {
+	if x != nil {
+		return x.Evt
+	}
+	return nil
+}
+
+type PushResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PushResponse) Reset() {
+	*x = PushResponse{}
+	mi := &file_wargapos_event_v1_service_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PushResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PushResponse) ProtoMessage() {}
+
+func (x *PushResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_event_v1_service_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PushResponse.ProtoReflect.Descriptor instead.
+func (*PushResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_event_v1_service_proto_rawDescGZIP(), []int{7}
+}
+
 var File_wargapos_event_v1_service_proto protoreflect.FileDescriptor
 
 const file_wargapos_event_v1_service_proto_rawDesc = "" +
@@ -336,10 +417,15 @@ const file_wargapos_event_v1_service_proto_rawDesc = "" +
 	"\x03evt\x18\x02 \x01(\v2\x18.wargapos.event.v1.EventR\x03evt\"<\n" +
 	"\vPullRequest\x12-\n" +
 	"\fsubscribe_id\x18\x01 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\vsubscribeId2\xa2\x01\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\vsubscribeId\"9\n" +
+	"\vPushRequest\x12*\n" +
+	"\x03evt\x18\x02 \x01(\v2\x18.wargapos.event.v1.EventR\x03evt\"\x0e\n" +
+	"\fPushResponse2\xa2\x01\n" +
 	"\fEventService\x12G\n" +
 	"\x04Send\x12\x1e.wargapos.event.v1.SendRequest\x1a\x1f.wargapos.event.v1.SendResponse\x12I\n" +
-	"\x04Pull\x12\x1e.wargapos.event.v1.PullRequest\x1a\x1f.wargapos.event.v1.PullResponse0\x01B0Z.wargapos/backend/gen/wargapos/event/v1;eventv1b\x06proto3"
+	"\x04Pull\x12\x1e.wargapos.event.v1.PullRequest\x1a\x1f.wargapos.event.v1.PullResponse0\x012V\n" +
+	"\vPushService\x12G\n" +
+	"\x04Push\x12\x1e.wargapos.event.v1.PushRequest\x1a\x1f.wargapos.event.v1.PushResponseB0Z.wargapos/backend/gen/wargapos/event/v1;eventv1b\x06proto3"
 
 var (
 	file_wargapos_event_v1_service_proto_rawDescOnce sync.Once
@@ -353,7 +439,7 @@ func file_wargapos_event_v1_service_proto_rawDescGZIP() []byte {
 	return file_wargapos_event_v1_service_proto_rawDescData
 }
 
-var file_wargapos_event_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_wargapos_event_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_wargapos_event_v1_service_proto_goTypes = []any{
 	(*Ping)(nil),          // 0: wargapos.event.v1.Ping
 	(*Event)(nil),         // 1: wargapos.event.v1.Event
@@ -361,22 +447,27 @@ var file_wargapos_event_v1_service_proto_goTypes = []any{
 	(*SendResponse)(nil),  // 3: wargapos.event.v1.SendResponse
 	(*PullResponse)(nil),  // 4: wargapos.event.v1.PullResponse
 	(*PullRequest)(nil),   // 5: wargapos.event.v1.PullRequest
-	(*v1.StockEvent)(nil), // 6: wargapos.stock.v1.StockEvent
+	(*PushRequest)(nil),   // 6: wargapos.event.v1.PushRequest
+	(*PushResponse)(nil),  // 7: wargapos.event.v1.PushResponse
+	(*v1.StockEvent)(nil), // 8: wargapos.stock.v1.StockEvent
 }
 var file_wargapos_event_v1_service_proto_depIdxs = []int32{
 	0, // 0: wargapos.event.v1.Event.ping:type_name -> wargapos.event.v1.Ping
-	6, // 1: wargapos.event.v1.Event.stock_event:type_name -> wargapos.stock.v1.StockEvent
+	8, // 1: wargapos.event.v1.Event.stock_event:type_name -> wargapos.stock.v1.StockEvent
 	1, // 2: wargapos.event.v1.SendRequest.evt:type_name -> wargapos.event.v1.Event
 	1, // 3: wargapos.event.v1.PullResponse.evt:type_name -> wargapos.event.v1.Event
-	2, // 4: wargapos.event.v1.EventService.Send:input_type -> wargapos.event.v1.SendRequest
-	5, // 5: wargapos.event.v1.EventService.Pull:input_type -> wargapos.event.v1.PullRequest
-	3, // 6: wargapos.event.v1.EventService.Send:output_type -> wargapos.event.v1.SendResponse
-	4, // 7: wargapos.event.v1.EventService.Pull:output_type -> wargapos.event.v1.PullResponse
-	6, // [6:8] is the sub-list for method output_type
-	4, // [4:6] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	1, // 4: wargapos.event.v1.PushRequest.evt:type_name -> wargapos.event.v1.Event
+	2, // 5: wargapos.event.v1.EventService.Send:input_type -> wargapos.event.v1.SendRequest
+	5, // 6: wargapos.event.v1.EventService.Pull:input_type -> wargapos.event.v1.PullRequest
+	6, // 7: wargapos.event.v1.PushService.Push:input_type -> wargapos.event.v1.PushRequest
+	3, // 8: wargapos.event.v1.EventService.Send:output_type -> wargapos.event.v1.SendResponse
+	4, // 9: wargapos.event.v1.EventService.Pull:output_type -> wargapos.event.v1.PullResponse
+	7, // 10: wargapos.event.v1.PushService.Push:output_type -> wargapos.event.v1.PushResponse
+	8, // [8:11] is the sub-list for method output_type
+	5, // [5:8] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_event_v1_service_proto_init() }
@@ -394,9 +485,9 @@ func file_wargapos_event_v1_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_event_v1_service_proto_rawDesc), len(file_wargapos_event_v1_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   8,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_wargapos_event_v1_service_proto_goTypes,
 		DependencyIndexes: file_wargapos_event_v1_service_proto_depIdxs,

@@ -5,6 +5,8 @@ import (
 
 	"github.com/urfave/cli/v3"
 
+	"wargapos/backend/internal/service/event_service"
+	"wargapos/backend/internal/service/marketplace_service"
 	"wargapos/backend/internal/service/transaction_service"
 	"wargapos/backend/pkgs/runner"
 )
@@ -17,6 +19,8 @@ func NewApp(
 	webrunner WebRunnerFunc,
 	transactionRunner transaction_service.Runner,
 	partitionRunner PartitionRunnerFunc,
+	eventSvc *event_service.EventService,
+	marketplaceSvc *marketplace_service.MarketplaceService,
 ) App {
 
 	command := &cli.Command{
@@ -25,6 +29,8 @@ func NewApp(
 
 			rctx := runner.NewRunnerContext(ctx)
 			rctx.Run(runner.RunnerFunc(transactionRunner))
+			rctx.Run(eventSvc.EventRunner)
+			rctx.Run(marketplaceSvc.EventPullRunner)
 			rctx.Run(runner.RunnerFunc(webrunner))
 
 			<-rctx.Done()

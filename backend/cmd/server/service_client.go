@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"wargapos/backend/gen/wargapos/event/v1/eventv1connect"
 	"wargapos/backend/gen/wargapos/stock/v1/stockv1connect"
 	"wargapos/backend/internal/config"
 
@@ -19,4 +20,10 @@ func NewStockServiceClient(
 		connect.WithGRPC(),
 		defaultOpts,
 	)
+}
+
+func NewEventServiceClient(
+	cfg *config.Config,
+) eventv1connect.EventServiceClient {
+	return eventv1connect.NewEventServiceClient(http.DefaultClient, cfg.Server.GetBase())
 }

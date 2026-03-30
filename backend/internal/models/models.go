@@ -249,4 +249,15 @@ type MarketplaceProduct struct {
 	IsActive    bool   `gorm:"column:is_active;not null;default:true"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+	Stocks      []MarketplaceProductStock `gorm:"foreignKey:MarketplaceProductID"`
+}
+
+type MarketplaceProductStock struct {
+	ID                   uint64    `gorm:"primaryKey;autoIncrement"`
+	MarketplaceProductID uint64    `gorm:"column:marketplace_product_id;not null"`
+	WarehouseID          uint32    `gorm:"column:warehouse_id;not null"`
+	SkuID                uint32    `gorm:"column:sku_id;not null;default:0"`
+	LeftStock            int32     `gorm:"column:left_stock;not null;default:0"`
+	CreatedAt            time.Time
+	UpdatedAt            time.Time
 }

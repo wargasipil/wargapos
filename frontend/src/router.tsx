@@ -34,6 +34,7 @@ import { MarketplaceOrderDetailPage } from './routes/marketplace/orders/detail'
 import { MarketplaceProductsPage } from './routes/marketplace/products/index'
 import { MarketplaceProductNewPage } from './routes/marketplace/products/new'
 import { MarketplaceProductEditPage } from './routes/marketplace/products/edit'
+import { MarketplaceProductDetailPage } from './routes/marketplace/products/detail'
 
 async function checkSetupNeeded(): Promise<boolean> {
   try {
@@ -304,6 +305,16 @@ const marketplaceProductEditRoute = createRoute({
   },
 })
 
+const marketplaceProductDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/products/$id',
+  component: MarketplaceProductDetailPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
 const playgroundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/playground',
@@ -343,6 +354,7 @@ const routeTree = rootRoute.addChildren([
     marketplaceProductsRoute,
     marketplaceProductNewRoute,
     marketplaceProductEditRoute,
+    marketplaceProductDetailRoute,
   ]),
 ])
 
