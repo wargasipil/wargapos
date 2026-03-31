@@ -33,7 +33,6 @@ var publicRoutes = map[string]bool{
 	"/wargapos.product.v1.ProductService/GetProduct":                  true,
 	"/wargapos.product.v1.ProductService/ListCategories":              true,
 	"/wargapos.transaction.v1.TransactionService/CreateTransaction":   true,
-	"/wargapos.marketplace.v1.MarketplaceService/CreateOrder": true,
 	"/wargapos.marketplace.v1.MarketplaceService/ListShops":   true,
 	"/wargapos.marketplace.v1.MarketplaceService/GetShop":     true,
 	"/wargapos.table.v1.TableService/GetTable":                        true,
@@ -119,6 +118,13 @@ var routeRoles = map[string][]string{
 	"/wargapos.marketplace.v1.MarketplaceService/GetOrder":          {"admin", "manager", "cashier"},
 	"/wargapos.marketplace.v1.MarketplaceService/UpdateOrderStatus": {"admin", "manager"},
 	"/wargapos.marketplace.v1.MarketplaceService/RestockProduct":    {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/CreateOrder":       {"admin", "manager"},
+	// Marketplace Customers
+	"/wargapos.marketplace.v1.MarketplaceService/CreateCustomer": {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/GetCustomer":    {"admin", "manager", "cashier"},
+	"/wargapos.marketplace.v1.MarketplaceService/UpdateCustomer": {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/DeleteCustomer": {"admin", "manager"},
+	"/wargapos.marketplace.v1.MarketplaceService/ListCustomers":  {"admin", "manager", "cashier"},
 }
 
 const authContextKey = "auth_token"

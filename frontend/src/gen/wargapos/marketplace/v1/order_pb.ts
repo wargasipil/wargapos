@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/marketplace/v1/order.proto.
  */
 export const file_wargapos_marketplace_v1_order: GenFile = /*@__PURE__*/
-  fileDesc("CiN3YXJnYXBvcy9tYXJrZXRwbGFjZS92MS9vcmRlci5wcm90bxIXd2FyZ2Fwb3MubWFya2V0cGxhY2UudjEieQoUTWFya2V0cGxhY2VPcmRlckl0ZW0SCgoCaWQYASABKAQSEQoJaXRlbV9uYW1lGAIgASgJEhAKCHF1YW50aXR5GAMgASgFEhgKEHVuaXRfcHJpY2VfY2VudHMYBCABKAMSFgoOc3VidG90YWxfY2VudHMYBSABKAMi4wIKEE1hcmtldHBsYWNlT3JkZXISCgoCaWQYASABKAQSDwoHc2hvcF9pZBgCIAEoBBIRCglzaG9wX25hbWUYAyABKAkSFQoNY3VzdG9tZXJfbmFtZRgEIAEoCRIUCgxwaG9uZV9udW1iZXIYBSABKAkSPAoFaXRlbXMYBiADKAsyLS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZU9yZGVySXRlbRITCgt0b3RhbF9jZW50cxgHIAEoAxI/CgZzdGF0dXMYCCABKA4yLy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZU9yZGVyU3RhdHVzEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wKpABChZNYXJrZXRwbGFjZU9yZGVyU3RhdHVzEigKJE1BUktFVFBMQUNFX09SREVSX1NUQVRVU19VTlNQRUNJRklFRBAAEiQKIE1BUktFVFBMQUNFX09SREVSX1NUQVRVU19QRU5ESU5HEAESJgoiTUFSS0VUUExBQ0VfT1JERVJfU1RBVFVTX0NBTkNFTExFRBACQjxaOndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL21hcmtldHBsYWNlL3YxO21hcmtldHBsYWNldjFiBnByb3RvMw", [file_google_protobuf_timestamp]);
+  fileDesc("CiN3YXJnYXBvcy9tYXJrZXRwbGFjZS92MS9vcmRlci5wcm90bxIXd2FyZ2Fwb3MubWFya2V0cGxhY2UudjEieQoUTWFya2V0cGxhY2VPcmRlckl0ZW0SCgoCaWQYASABKAQSEQoJaXRlbV9uYW1lGAIgASgJEhAKCHF1YW50aXR5GAMgASgFEhgKEHVuaXRfcHJpY2VfY2VudHMYBCABKAMSFgoOc3VidG90YWxfY2VudHMYBSABKAMipAQKEE1hcmtldHBsYWNlT3JkZXISCgoCaWQYASABKAQSDwoHc2hvcF9pZBgCIAEoBBIRCglzaG9wX25hbWUYAyABKAkSFQoNY3VzdG9tZXJfbmFtZRgEIAEoCRIUCgxwaG9uZV9udW1iZXIYBSABKAkSPAoFaXRlbXMYBiADKAsyLS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZU9yZGVySXRlbRITCgt0b3RhbF9jZW50cxgHIAEoAxI/CgZzdGF0dXMYCCABKA4yLy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZU9yZGVyU3RhdHVzEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhQKDHdhcmVob3VzZV9pZBgLIAEoDRITCgtjdXN0b21lcl9pZBgMIAEoBBISCgphZGRyZXNzX2lkGA0gASgEEhYKDnNoaXBwaW5nX2xhYmVsGA4gASgJEhgKEHNoaXBwaW5nX2FkZHJlc3MYDyABKAkSFQoNc2hpcHBpbmdfY2l0eRgQIAEoCRIZChFzaGlwcGluZ19wcm92aW5jZRgRIAEoCRIcChRzaGlwcGluZ19wb3N0YWxfY29kZRgSIAEoCSqQAQoWTWFya2V0cGxhY2VPcmRlclN0YXR1cxIoCiRNQVJLRVRQTEFDRV9PUkRFUl9TVEFUVVNfVU5TUEVDSUZJRUQQABIkCiBNQVJLRVRQTEFDRV9PUkRFUl9TVEFUVVNfUEVORElORxABEiYKIk1BUktFVFBMQUNFX09SREVSX1NUQVRVU19DQU5DRUxMRUQQAkI8Wjp3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9tYXJrZXRwbGFjZS92MTttYXJrZXRwbGFjZXYxYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message wargapos.marketplace.v1.MarketplaceOrderItem
@@ -104,6 +104,46 @@ export type MarketplaceOrder = Message<"wargapos.marketplace.v1.MarketplaceOrder
    * @generated from field: google.protobuf.Timestamp updated_at = 10;
    */
   updatedAt?: Timestamp;
+
+  /**
+   * @generated from field: uint32 warehouse_id = 11;
+   */
+  warehouseId: number;
+
+  /**
+   * @generated from field: uint64 customer_id = 12;
+   */
+  customerId: bigint;
+
+  /**
+   * @generated from field: uint64 address_id = 13;
+   */
+  addressId: bigint;
+
+  /**
+   * @generated from field: string shipping_label = 14;
+   */
+  shippingLabel: string;
+
+  /**
+   * @generated from field: string shipping_address = 15;
+   */
+  shippingAddress: string;
+
+  /**
+   * @generated from field: string shipping_city = 16;
+   */
+  shippingCity: string;
+
+  /**
+   * @generated from field: string shipping_province = 17;
+   */
+  shippingProvince: string;
+
+  /**
+   * @generated from field: string shipping_postal_code = 18;
+   */
+  shippingPostalCode: string;
 };
 
 /**

@@ -25,6 +25,9 @@ func (s *MarketplaceService) ListOrders(ctx context.Context, req *connect.Reques
 	if req.Msg.ShopId > 0 {
 		q = q.Where("shop_id = ?", req.Msg.ShopId)
 	}
+	if req.Msg.CustomerId > 0 {
+		q = q.Where("customer_id = ?", req.Msg.CustomerId)
+	}
 
 	var total int64
 	q.Count(&total)

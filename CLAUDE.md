@@ -1,6 +1,6 @@
 # WargaPOS
 
-POS app for cafes (monorepo). Backend: Go + ConnectRPC. Frontend: React 19 + Vite + Chakra UI v3.
+POS app for cafes and marketplace management (monorepo). Backend: Go + ConnectRPC. Frontend: React 19 + Vite + Chakra UI v3.
 
 ## Stack
 - Backend: Go (`wargapos/backend` module), Connect Protocol (connectrpc.com/connect), GORM + PostgreSQL, Google Wire DI
@@ -27,6 +27,9 @@ POS app for cafes (monorepo). Backend: Go + ConnectRPC. Frontend: React 19 + Vit
 | Transaction | `transaction_service` | `wargapos.transaction.v1` |
 | Table | `table_service` | `wargapos.table.v1` |
 | Connector | `connector_service` | `wargapos.connector.v1` |
+| Stock | `stock_service` | `wargapos.stock.v1` |
+| Ingredient | `ingredient_service` | `wargapos.ingredient.v1` |
+| Marketplace | `marketplace_service` | `wargapos.marketplace.v1` |
 
 ## Dev Commands
 - `make backend-run` — start Go server on :8080
@@ -48,6 +51,17 @@ POS app for cafes (monorepo). Backend: Go + ConnectRPC. Frontend: React 19 + Vit
 | products | id, name, sku, price_cents, category_id (FK), is_active |
 | orders | id, cashier_id (FK), table_id, total_cents, status, payment_method |
 | order_items | id, order_id (FK), product_id (FK), quantity, unit_price_cents |
+| warehouses | id, name, deleted |
+| skus | id, code, product_id, warehouse_id, stock_qty, costing_type |
+| stock_transactions | id, transaction_type, cancelled |
+| stock_logs | id, sku_id, transaction_id, change, log_type, cost_version_id |
+| cost_versions | id, sku_id, transaction_id, unit_cost, stock_initiate, left_stock |
+| marketplace_shops | id, name, type, username, url, is_active |
+| marketplace_products | id, name, description, price_cents, image_url, is_active |
+| marketplace_product_stocks | id, marketplace_product_id, warehouse_id, sku_id, left_stock |
+| marketplace_customers | id, name, phone_number |
+| marketplace_orders | id, shop_id, customer_id, warehouse_id, customer_name, phone_number, total_cents, status |
+| marketplace_order_items | id, order_id, item_name, quantity, unit_price_cents, subtotal_cents |
 
 ## Design Principles
 - **Mobile-first**: primary target is mobile/tablet (POS use case)
@@ -55,6 +69,19 @@ POS app for cafes (monorepo). Backend: Go + ConnectRPC. Frontend: React 19 + Vit
 - Card-based lists on mobile, tables on desktop
 - Pricing in IDR (BigInt cents, stored as int64)
 - Connect RPC errors: strip `[code] ` prefix before showing to user
+
+## Marketplace Module
+- Shops: CRUD for marketplace storefronts (Shopee, Tokopedia, Lazada, Other)
+- Products: catalog with per-warehouse stock tracking; restock via stock SKU system (`MP-{productId}-{warehouseId}`)
+- Customers: standalone customer records (name, phone) linked to orders via `customer_id` FK
+- Orders: created with shop + warehouse + customer; line items are free-text (not linked to marketplace products)
+- Auth: most marketplace RPCs require `admin` or `manager`; `ListShops` is public
+
+## Stock Module
+- Warehouses → SKUs (per product+warehouse) → stock transactions (STOCK_IN / STOCK_OUT / provision)
+- Cost versioning: FIFO/LIFO tracking via `cost_versions` table; `cost_version_id` on every `stock_log`
+- `stock_core` package: `SkuStockAdd`, `SkuStockProvision`, `SkuStockCancel` — core stock mutation functions
+- Ingredient service uses stock SKUs for material tracking; marketplace restock also uses stock SKUs
 
 ## Guest Ordering
 - Public route `/menu?table=<table_uuid>` — no auth required

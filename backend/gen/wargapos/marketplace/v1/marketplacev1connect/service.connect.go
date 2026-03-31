@@ -78,6 +78,33 @@ const (
 	// MarketplaceServiceUpdateOrderStatusProcedure is the fully-qualified name of the
 	// MarketplaceService's UpdateOrderStatus RPC.
 	MarketplaceServiceUpdateOrderStatusProcedure = "/wargapos.marketplace.v1.MarketplaceService/UpdateOrderStatus"
+	// MarketplaceServiceCreateCustomerProcedure is the fully-qualified name of the MarketplaceService's
+	// CreateCustomer RPC.
+	MarketplaceServiceCreateCustomerProcedure = "/wargapos.marketplace.v1.MarketplaceService/CreateCustomer"
+	// MarketplaceServiceGetCustomerProcedure is the fully-qualified name of the MarketplaceService's
+	// GetCustomer RPC.
+	MarketplaceServiceGetCustomerProcedure = "/wargapos.marketplace.v1.MarketplaceService/GetCustomer"
+	// MarketplaceServiceUpdateCustomerProcedure is the fully-qualified name of the MarketplaceService's
+	// UpdateCustomer RPC.
+	MarketplaceServiceUpdateCustomerProcedure = "/wargapos.marketplace.v1.MarketplaceService/UpdateCustomer"
+	// MarketplaceServiceDeleteCustomerProcedure is the fully-qualified name of the MarketplaceService's
+	// DeleteCustomer RPC.
+	MarketplaceServiceDeleteCustomerProcedure = "/wargapos.marketplace.v1.MarketplaceService/DeleteCustomer"
+	// MarketplaceServiceListCustomersProcedure is the fully-qualified name of the MarketplaceService's
+	// ListCustomers RPC.
+	MarketplaceServiceListCustomersProcedure = "/wargapos.marketplace.v1.MarketplaceService/ListCustomers"
+	// MarketplaceServiceCreateCustomerAddressProcedure is the fully-qualified name of the
+	// MarketplaceService's CreateCustomerAddress RPC.
+	MarketplaceServiceCreateCustomerAddressProcedure = "/wargapos.marketplace.v1.MarketplaceService/CreateCustomerAddress"
+	// MarketplaceServiceUpdateCustomerAddressProcedure is the fully-qualified name of the
+	// MarketplaceService's UpdateCustomerAddress RPC.
+	MarketplaceServiceUpdateCustomerAddressProcedure = "/wargapos.marketplace.v1.MarketplaceService/UpdateCustomerAddress"
+	// MarketplaceServiceDeleteCustomerAddressProcedure is the fully-qualified name of the
+	// MarketplaceService's DeleteCustomerAddress RPC.
+	MarketplaceServiceDeleteCustomerAddressProcedure = "/wargapos.marketplace.v1.MarketplaceService/DeleteCustomerAddress"
+	// MarketplaceServiceListCustomerAddressesProcedure is the fully-qualified name of the
+	// MarketplaceService's ListCustomerAddresses RPC.
+	MarketplaceServiceListCustomerAddressesProcedure = "/wargapos.marketplace.v1.MarketplaceService/ListCustomerAddresses"
 )
 
 // MarketplaceServiceClient is a client for the wargapos.marketplace.v1.MarketplaceService service.
@@ -100,6 +127,17 @@ type MarketplaceServiceClient interface {
 	GetOrder(context.Context, *connect.Request[v1.GetOrderRequest]) (*connect.Response[v1.GetOrderResponse], error)
 	ListOrders(context.Context, *connect.Request[v1.ListOrdersRequest]) (*connect.Response[v1.ListOrdersResponse], error)
 	UpdateOrderStatus(context.Context, *connect.Request[v1.UpdateOrderStatusRequest]) (*connect.Response[v1.UpdateOrderStatusResponse], error)
+	// Customers
+	CreateCustomer(context.Context, *connect.Request[v1.CreateCustomerRequest]) (*connect.Response[v1.CreateCustomerResponse], error)
+	GetCustomer(context.Context, *connect.Request[v1.GetCustomerRequest]) (*connect.Response[v1.GetCustomerResponse], error)
+	UpdateCustomer(context.Context, *connect.Request[v1.UpdateCustomerRequest]) (*connect.Response[v1.UpdateCustomerResponse], error)
+	DeleteCustomer(context.Context, *connect.Request[v1.DeleteCustomerRequest]) (*connect.Response[v1.DeleteCustomerResponse], error)
+	ListCustomers(context.Context, *connect.Request[v1.ListCustomersRequest]) (*connect.Response[v1.ListCustomersResponse], error)
+	// Customer Addresses
+	CreateCustomerAddress(context.Context, *connect.Request[v1.CreateCustomerAddressRequest]) (*connect.Response[v1.CreateCustomerAddressResponse], error)
+	UpdateCustomerAddress(context.Context, *connect.Request[v1.UpdateCustomerAddressRequest]) (*connect.Response[v1.UpdateCustomerAddressResponse], error)
+	DeleteCustomerAddress(context.Context, *connect.Request[v1.DeleteCustomerAddressRequest]) (*connect.Response[v1.DeleteCustomerAddressResponse], error)
+	ListCustomerAddresses(context.Context, *connect.Request[v1.ListCustomerAddressesRequest]) (*connect.Response[v1.ListCustomerAddressesResponse], error)
 }
 
 // NewMarketplaceServiceClient constructs a client for the
@@ -203,26 +241,89 @@ func NewMarketplaceServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(marketplaceServiceMethods.ByName("UpdateOrderStatus")),
 			connect.WithClientOptions(opts...),
 		),
+		createCustomer: connect.NewClient[v1.CreateCustomerRequest, v1.CreateCustomerResponse](
+			httpClient,
+			baseURL+MarketplaceServiceCreateCustomerProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("CreateCustomer")),
+			connect.WithClientOptions(opts...),
+		),
+		getCustomer: connect.NewClient[v1.GetCustomerRequest, v1.GetCustomerResponse](
+			httpClient,
+			baseURL+MarketplaceServiceGetCustomerProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("GetCustomer")),
+			connect.WithClientOptions(opts...),
+		),
+		updateCustomer: connect.NewClient[v1.UpdateCustomerRequest, v1.UpdateCustomerResponse](
+			httpClient,
+			baseURL+MarketplaceServiceUpdateCustomerProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("UpdateCustomer")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteCustomer: connect.NewClient[v1.DeleteCustomerRequest, v1.DeleteCustomerResponse](
+			httpClient,
+			baseURL+MarketplaceServiceDeleteCustomerProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("DeleteCustomer")),
+			connect.WithClientOptions(opts...),
+		),
+		listCustomers: connect.NewClient[v1.ListCustomersRequest, v1.ListCustomersResponse](
+			httpClient,
+			baseURL+MarketplaceServiceListCustomersProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("ListCustomers")),
+			connect.WithClientOptions(opts...),
+		),
+		createCustomerAddress: connect.NewClient[v1.CreateCustomerAddressRequest, v1.CreateCustomerAddressResponse](
+			httpClient,
+			baseURL+MarketplaceServiceCreateCustomerAddressProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("CreateCustomerAddress")),
+			connect.WithClientOptions(opts...),
+		),
+		updateCustomerAddress: connect.NewClient[v1.UpdateCustomerAddressRequest, v1.UpdateCustomerAddressResponse](
+			httpClient,
+			baseURL+MarketplaceServiceUpdateCustomerAddressProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("UpdateCustomerAddress")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteCustomerAddress: connect.NewClient[v1.DeleteCustomerAddressRequest, v1.DeleteCustomerAddressResponse](
+			httpClient,
+			baseURL+MarketplaceServiceDeleteCustomerAddressProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("DeleteCustomerAddress")),
+			connect.WithClientOptions(opts...),
+		),
+		listCustomerAddresses: connect.NewClient[v1.ListCustomerAddressesRequest, v1.ListCustomerAddressesResponse](
+			httpClient,
+			baseURL+MarketplaceServiceListCustomerAddressesProcedure,
+			connect.WithSchema(marketplaceServiceMethods.ByName("ListCustomerAddresses")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // marketplaceServiceClient implements MarketplaceServiceClient.
 type marketplaceServiceClient struct {
-	createShop        *connect.Client[v1.CreateShopRequest, v1.CreateShopResponse]
-	getShop           *connect.Client[v1.GetShopRequest, v1.GetShopResponse]
-	updateShop        *connect.Client[v1.UpdateShopRequest, v1.UpdateShopResponse]
-	deleteShop        *connect.Client[v1.DeleteShopRequest, v1.DeleteShopResponse]
-	listShops         *connect.Client[v1.ListShopsRequest, v1.ListShopsResponse]
-	createProduct     *connect.Client[v1.CreateProductRequest, v1.CreateProductResponse]
-	getProduct        *connect.Client[v1.GetProductRequest, v1.GetProductResponse]
-	updateProduct     *connect.Client[v1.UpdateProductRequest, v1.UpdateProductResponse]
-	deleteProduct     *connect.Client[v1.DeleteProductRequest, v1.DeleteProductResponse]
-	listProducts      *connect.Client[v1.ListProductsRequest, v1.ListProductsResponse]
-	restockProduct    *connect.Client[v1.RestockProductRequest, v1.RestockProductResponse]
-	createOrder       *connect.Client[v1.CreateOrderRequest, v1.CreateOrderResponse]
-	getOrder          *connect.Client[v1.GetOrderRequest, v1.GetOrderResponse]
-	listOrders        *connect.Client[v1.ListOrdersRequest, v1.ListOrdersResponse]
-	updateOrderStatus *connect.Client[v1.UpdateOrderStatusRequest, v1.UpdateOrderStatusResponse]
+	createShop            *connect.Client[v1.CreateShopRequest, v1.CreateShopResponse]
+	getShop               *connect.Client[v1.GetShopRequest, v1.GetShopResponse]
+	updateShop            *connect.Client[v1.UpdateShopRequest, v1.UpdateShopResponse]
+	deleteShop            *connect.Client[v1.DeleteShopRequest, v1.DeleteShopResponse]
+	listShops             *connect.Client[v1.ListShopsRequest, v1.ListShopsResponse]
+	createProduct         *connect.Client[v1.CreateProductRequest, v1.CreateProductResponse]
+	getProduct            *connect.Client[v1.GetProductRequest, v1.GetProductResponse]
+	updateProduct         *connect.Client[v1.UpdateProductRequest, v1.UpdateProductResponse]
+	deleteProduct         *connect.Client[v1.DeleteProductRequest, v1.DeleteProductResponse]
+	listProducts          *connect.Client[v1.ListProductsRequest, v1.ListProductsResponse]
+	restockProduct        *connect.Client[v1.RestockProductRequest, v1.RestockProductResponse]
+	createOrder           *connect.Client[v1.CreateOrderRequest, v1.CreateOrderResponse]
+	getOrder              *connect.Client[v1.GetOrderRequest, v1.GetOrderResponse]
+	listOrders            *connect.Client[v1.ListOrdersRequest, v1.ListOrdersResponse]
+	updateOrderStatus     *connect.Client[v1.UpdateOrderStatusRequest, v1.UpdateOrderStatusResponse]
+	createCustomer        *connect.Client[v1.CreateCustomerRequest, v1.CreateCustomerResponse]
+	getCustomer           *connect.Client[v1.GetCustomerRequest, v1.GetCustomerResponse]
+	updateCustomer        *connect.Client[v1.UpdateCustomerRequest, v1.UpdateCustomerResponse]
+	deleteCustomer        *connect.Client[v1.DeleteCustomerRequest, v1.DeleteCustomerResponse]
+	listCustomers         *connect.Client[v1.ListCustomersRequest, v1.ListCustomersResponse]
+	createCustomerAddress *connect.Client[v1.CreateCustomerAddressRequest, v1.CreateCustomerAddressResponse]
+	updateCustomerAddress *connect.Client[v1.UpdateCustomerAddressRequest, v1.UpdateCustomerAddressResponse]
+	deleteCustomerAddress *connect.Client[v1.DeleteCustomerAddressRequest, v1.DeleteCustomerAddressResponse]
+	listCustomerAddresses *connect.Client[v1.ListCustomerAddressesRequest, v1.ListCustomerAddressesResponse]
 }
 
 // CreateShop calls wargapos.marketplace.v1.MarketplaceService.CreateShop.
@@ -300,6 +401,51 @@ func (c *marketplaceServiceClient) UpdateOrderStatus(ctx context.Context, req *c
 	return c.updateOrderStatus.CallUnary(ctx, req)
 }
 
+// CreateCustomer calls wargapos.marketplace.v1.MarketplaceService.CreateCustomer.
+func (c *marketplaceServiceClient) CreateCustomer(ctx context.Context, req *connect.Request[v1.CreateCustomerRequest]) (*connect.Response[v1.CreateCustomerResponse], error) {
+	return c.createCustomer.CallUnary(ctx, req)
+}
+
+// GetCustomer calls wargapos.marketplace.v1.MarketplaceService.GetCustomer.
+func (c *marketplaceServiceClient) GetCustomer(ctx context.Context, req *connect.Request[v1.GetCustomerRequest]) (*connect.Response[v1.GetCustomerResponse], error) {
+	return c.getCustomer.CallUnary(ctx, req)
+}
+
+// UpdateCustomer calls wargapos.marketplace.v1.MarketplaceService.UpdateCustomer.
+func (c *marketplaceServiceClient) UpdateCustomer(ctx context.Context, req *connect.Request[v1.UpdateCustomerRequest]) (*connect.Response[v1.UpdateCustomerResponse], error) {
+	return c.updateCustomer.CallUnary(ctx, req)
+}
+
+// DeleteCustomer calls wargapos.marketplace.v1.MarketplaceService.DeleteCustomer.
+func (c *marketplaceServiceClient) DeleteCustomer(ctx context.Context, req *connect.Request[v1.DeleteCustomerRequest]) (*connect.Response[v1.DeleteCustomerResponse], error) {
+	return c.deleteCustomer.CallUnary(ctx, req)
+}
+
+// ListCustomers calls wargapos.marketplace.v1.MarketplaceService.ListCustomers.
+func (c *marketplaceServiceClient) ListCustomers(ctx context.Context, req *connect.Request[v1.ListCustomersRequest]) (*connect.Response[v1.ListCustomersResponse], error) {
+	return c.listCustomers.CallUnary(ctx, req)
+}
+
+// CreateCustomerAddress calls wargapos.marketplace.v1.MarketplaceService.CreateCustomerAddress.
+func (c *marketplaceServiceClient) CreateCustomerAddress(ctx context.Context, req *connect.Request[v1.CreateCustomerAddressRequest]) (*connect.Response[v1.CreateCustomerAddressResponse], error) {
+	return c.createCustomerAddress.CallUnary(ctx, req)
+}
+
+// UpdateCustomerAddress calls wargapos.marketplace.v1.MarketplaceService.UpdateCustomerAddress.
+func (c *marketplaceServiceClient) UpdateCustomerAddress(ctx context.Context, req *connect.Request[v1.UpdateCustomerAddressRequest]) (*connect.Response[v1.UpdateCustomerAddressResponse], error) {
+	return c.updateCustomerAddress.CallUnary(ctx, req)
+}
+
+// DeleteCustomerAddress calls wargapos.marketplace.v1.MarketplaceService.DeleteCustomerAddress.
+func (c *marketplaceServiceClient) DeleteCustomerAddress(ctx context.Context, req *connect.Request[v1.DeleteCustomerAddressRequest]) (*connect.Response[v1.DeleteCustomerAddressResponse], error) {
+	return c.deleteCustomerAddress.CallUnary(ctx, req)
+}
+
+// ListCustomerAddresses calls wargapos.marketplace.v1.MarketplaceService.ListCustomerAddresses.
+func (c *marketplaceServiceClient) ListCustomerAddresses(ctx context.Context, req *connect.Request[v1.ListCustomerAddressesRequest]) (*connect.Response[v1.ListCustomerAddressesResponse], error) {
+	return c.listCustomerAddresses.CallUnary(ctx, req)
+}
+
 // MarketplaceServiceHandler is an implementation of the wargapos.marketplace.v1.MarketplaceService
 // service.
 type MarketplaceServiceHandler interface {
@@ -321,6 +467,17 @@ type MarketplaceServiceHandler interface {
 	GetOrder(context.Context, *connect.Request[v1.GetOrderRequest]) (*connect.Response[v1.GetOrderResponse], error)
 	ListOrders(context.Context, *connect.Request[v1.ListOrdersRequest]) (*connect.Response[v1.ListOrdersResponse], error)
 	UpdateOrderStatus(context.Context, *connect.Request[v1.UpdateOrderStatusRequest]) (*connect.Response[v1.UpdateOrderStatusResponse], error)
+	// Customers
+	CreateCustomer(context.Context, *connect.Request[v1.CreateCustomerRequest]) (*connect.Response[v1.CreateCustomerResponse], error)
+	GetCustomer(context.Context, *connect.Request[v1.GetCustomerRequest]) (*connect.Response[v1.GetCustomerResponse], error)
+	UpdateCustomer(context.Context, *connect.Request[v1.UpdateCustomerRequest]) (*connect.Response[v1.UpdateCustomerResponse], error)
+	DeleteCustomer(context.Context, *connect.Request[v1.DeleteCustomerRequest]) (*connect.Response[v1.DeleteCustomerResponse], error)
+	ListCustomers(context.Context, *connect.Request[v1.ListCustomersRequest]) (*connect.Response[v1.ListCustomersResponse], error)
+	// Customer Addresses
+	CreateCustomerAddress(context.Context, *connect.Request[v1.CreateCustomerAddressRequest]) (*connect.Response[v1.CreateCustomerAddressResponse], error)
+	UpdateCustomerAddress(context.Context, *connect.Request[v1.UpdateCustomerAddressRequest]) (*connect.Response[v1.UpdateCustomerAddressResponse], error)
+	DeleteCustomerAddress(context.Context, *connect.Request[v1.DeleteCustomerAddressRequest]) (*connect.Response[v1.DeleteCustomerAddressResponse], error)
+	ListCustomerAddresses(context.Context, *connect.Request[v1.ListCustomerAddressesRequest]) (*connect.Response[v1.ListCustomerAddressesResponse], error)
 }
 
 // NewMarketplaceServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -420,6 +577,60 @@ func NewMarketplaceServiceHandler(svc MarketplaceServiceHandler, opts ...connect
 		connect.WithSchema(marketplaceServiceMethods.ByName("UpdateOrderStatus")),
 		connect.WithHandlerOptions(opts...),
 	)
+	marketplaceServiceCreateCustomerHandler := connect.NewUnaryHandler(
+		MarketplaceServiceCreateCustomerProcedure,
+		svc.CreateCustomer,
+		connect.WithSchema(marketplaceServiceMethods.ByName("CreateCustomer")),
+		connect.WithHandlerOptions(opts...),
+	)
+	marketplaceServiceGetCustomerHandler := connect.NewUnaryHandler(
+		MarketplaceServiceGetCustomerProcedure,
+		svc.GetCustomer,
+		connect.WithSchema(marketplaceServiceMethods.ByName("GetCustomer")),
+		connect.WithHandlerOptions(opts...),
+	)
+	marketplaceServiceUpdateCustomerHandler := connect.NewUnaryHandler(
+		MarketplaceServiceUpdateCustomerProcedure,
+		svc.UpdateCustomer,
+		connect.WithSchema(marketplaceServiceMethods.ByName("UpdateCustomer")),
+		connect.WithHandlerOptions(opts...),
+	)
+	marketplaceServiceDeleteCustomerHandler := connect.NewUnaryHandler(
+		MarketplaceServiceDeleteCustomerProcedure,
+		svc.DeleteCustomer,
+		connect.WithSchema(marketplaceServiceMethods.ByName("DeleteCustomer")),
+		connect.WithHandlerOptions(opts...),
+	)
+	marketplaceServiceListCustomersHandler := connect.NewUnaryHandler(
+		MarketplaceServiceListCustomersProcedure,
+		svc.ListCustomers,
+		connect.WithSchema(marketplaceServiceMethods.ByName("ListCustomers")),
+		connect.WithHandlerOptions(opts...),
+	)
+	marketplaceServiceCreateCustomerAddressHandler := connect.NewUnaryHandler(
+		MarketplaceServiceCreateCustomerAddressProcedure,
+		svc.CreateCustomerAddress,
+		connect.WithSchema(marketplaceServiceMethods.ByName("CreateCustomerAddress")),
+		connect.WithHandlerOptions(opts...),
+	)
+	marketplaceServiceUpdateCustomerAddressHandler := connect.NewUnaryHandler(
+		MarketplaceServiceUpdateCustomerAddressProcedure,
+		svc.UpdateCustomerAddress,
+		connect.WithSchema(marketplaceServiceMethods.ByName("UpdateCustomerAddress")),
+		connect.WithHandlerOptions(opts...),
+	)
+	marketplaceServiceDeleteCustomerAddressHandler := connect.NewUnaryHandler(
+		MarketplaceServiceDeleteCustomerAddressProcedure,
+		svc.DeleteCustomerAddress,
+		connect.WithSchema(marketplaceServiceMethods.ByName("DeleteCustomerAddress")),
+		connect.WithHandlerOptions(opts...),
+	)
+	marketplaceServiceListCustomerAddressesHandler := connect.NewUnaryHandler(
+		MarketplaceServiceListCustomerAddressesProcedure,
+		svc.ListCustomerAddresses,
+		connect.WithSchema(marketplaceServiceMethods.ByName("ListCustomerAddresses")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.marketplace.v1.MarketplaceService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case MarketplaceServiceCreateShopProcedure:
@@ -452,6 +663,24 @@ func NewMarketplaceServiceHandler(svc MarketplaceServiceHandler, opts ...connect
 			marketplaceServiceListOrdersHandler.ServeHTTP(w, r)
 		case MarketplaceServiceUpdateOrderStatusProcedure:
 			marketplaceServiceUpdateOrderStatusHandler.ServeHTTP(w, r)
+		case MarketplaceServiceCreateCustomerProcedure:
+			marketplaceServiceCreateCustomerHandler.ServeHTTP(w, r)
+		case MarketplaceServiceGetCustomerProcedure:
+			marketplaceServiceGetCustomerHandler.ServeHTTP(w, r)
+		case MarketplaceServiceUpdateCustomerProcedure:
+			marketplaceServiceUpdateCustomerHandler.ServeHTTP(w, r)
+		case MarketplaceServiceDeleteCustomerProcedure:
+			marketplaceServiceDeleteCustomerHandler.ServeHTTP(w, r)
+		case MarketplaceServiceListCustomersProcedure:
+			marketplaceServiceListCustomersHandler.ServeHTTP(w, r)
+		case MarketplaceServiceCreateCustomerAddressProcedure:
+			marketplaceServiceCreateCustomerAddressHandler.ServeHTTP(w, r)
+		case MarketplaceServiceUpdateCustomerAddressProcedure:
+			marketplaceServiceUpdateCustomerAddressHandler.ServeHTTP(w, r)
+		case MarketplaceServiceDeleteCustomerAddressProcedure:
+			marketplaceServiceDeleteCustomerAddressHandler.ServeHTTP(w, r)
+		case MarketplaceServiceListCustomerAddressesProcedure:
+			marketplaceServiceListCustomerAddressesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -519,4 +748,40 @@ func (UnimplementedMarketplaceServiceHandler) ListOrders(context.Context, *conne
 
 func (UnimplementedMarketplaceServiceHandler) UpdateOrderStatus(context.Context, *connect.Request[v1.UpdateOrderStatusRequest]) (*connect.Response[v1.UpdateOrderStatusResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.UpdateOrderStatus is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) CreateCustomer(context.Context, *connect.Request[v1.CreateCustomerRequest]) (*connect.Response[v1.CreateCustomerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.CreateCustomer is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) GetCustomer(context.Context, *connect.Request[v1.GetCustomerRequest]) (*connect.Response[v1.GetCustomerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.GetCustomer is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) UpdateCustomer(context.Context, *connect.Request[v1.UpdateCustomerRequest]) (*connect.Response[v1.UpdateCustomerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.UpdateCustomer is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) DeleteCustomer(context.Context, *connect.Request[v1.DeleteCustomerRequest]) (*connect.Response[v1.DeleteCustomerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.DeleteCustomer is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) ListCustomers(context.Context, *connect.Request[v1.ListCustomersRequest]) (*connect.Response[v1.ListCustomersResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.ListCustomers is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) CreateCustomerAddress(context.Context, *connect.Request[v1.CreateCustomerAddressRequest]) (*connect.Response[v1.CreateCustomerAddressResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.CreateCustomerAddress is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) UpdateCustomerAddress(context.Context, *connect.Request[v1.UpdateCustomerAddressRequest]) (*connect.Response[v1.UpdateCustomerAddressResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.UpdateCustomerAddress is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) DeleteCustomerAddress(context.Context, *connect.Request[v1.DeleteCustomerAddressRequest]) (*connect.Response[v1.DeleteCustomerAddressResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.DeleteCustomerAddress is not implemented"))
+}
+
+func (UnimplementedMarketplaceServiceHandler) ListCustomerAddresses(context.Context, *connect.Request[v1.ListCustomerAddressesRequest]) (*connect.Response[v1.ListCustomerAddressesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.marketplace.v1.MarketplaceService.ListCustomerAddresses is not implemented"))
 }

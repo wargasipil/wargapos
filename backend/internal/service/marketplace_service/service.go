@@ -78,7 +78,33 @@ func toOrderProto(o models.MarketplaceOrder) *marketplacev1.MarketplaceOrder {
 		Items:        items,
 		TotalCents:   o.TotalCents,
 		Status:       o.Status,
+		WarehouseId:  o.WarehouseID,
+		CustomerId:   o.CustomerID,
 		CreatedAt:    timestamppb.New(o.CreatedAt),
 		UpdatedAt:    timestamppb.New(o.UpdatedAt),
+	}
+}
+
+func toAddressProto(a models.MarketplaceCustomerAddress) *marketplacev1.CustomerAddress {
+	return &marketplacev1.CustomerAddress{
+		Id:         a.ID,
+		CustomerId: a.CustomerID,
+		Label:      a.Label,
+		Address:    a.Address,
+		City:       a.City,
+		Province:   a.Province,
+		PostalCode: a.PostalCode,
+		CreatedAt:  timestamppb.New(a.CreatedAt),
+		UpdatedAt:  timestamppb.New(a.UpdatedAt),
+	}
+}
+
+func toCustomerProto(c models.MarketplaceCustomer) *marketplacev1.MarketplaceCustomer {
+	return &marketplacev1.MarketplaceCustomer{
+		Id:          c.ID,
+		Name:        c.Name,
+		PhoneNumber: c.PhoneNumber,
+		CreatedAt:   timestamppb.New(c.CreatedAt),
+		UpdatedAt:   timestamppb.New(c.UpdatedAt),
 	}
 }

@@ -29,6 +29,7 @@ const marketplaceNavItems: NavLeaf[] = [
   { label: 'Dashboard', to: '/', Icon: LayoutDashboard },
   { label: 'Shop', to: '/marketplace/shop', Icon: Store },
   { label: 'Orders', to: '/marketplace/orders', Icon: ClipboardList },
+  { label: 'Customers', to: '/marketplace/customers', Icon: Users },
   { label: 'Settings', to: '/settings', Icon: Settings },
 ]
 
@@ -110,8 +111,9 @@ export function ProtectedLayout() {
       Icon: ShoppingBag,
       children: [
         { label: 'Shop',     to: '/marketplace/shop',     Icon: Store },
-        { label: 'Products', to: '/marketplace/products', Icon: Package },
-        { label: 'Orders',   to: '/marketplace/orders',   Icon: ClipboardList },
+        { label: 'Products',  to: '/marketplace/products',  Icon: Package },
+        { label: 'Orders',    to: '/marketplace/orders',    Icon: ClipboardList },
+        { label: 'Customers', to: '/marketplace/customers', Icon: Users },
       ],
     }] : []),
     ...(isAdminOrManager ? [{

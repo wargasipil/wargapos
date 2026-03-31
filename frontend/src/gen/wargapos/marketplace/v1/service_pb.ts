@@ -10,13 +10,15 @@ import type { MarketplaceOrder, MarketplaceOrderItem, MarketplaceOrderStatus } f
 import { file_wargapos_marketplace_v1_order } from "./order_pb";
 import type { MarketplaceProduct } from "./product_pb";
 import { file_wargapos_marketplace_v1_product } from "./product_pb";
+import type { CustomerAddress, MarketplaceCustomer } from "./customer_pb";
+import { file_wargapos_marketplace_v1_customer } from "./customer_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/marketplace/v1/service.proto.
  */
 export const file_wargapos_marketplace_v1_service: GenFile = /*@__PURE__*/
-  fileDesc("CiV3YXJnYXBvcy9tYXJrZXRwbGFjZS92MS9zZXJ2aWNlLnByb3RvEhd3YXJnYXBvcy5tYXJrZXRwbGFjZS52MSJ8ChFDcmVhdGVTaG9wUmVxdWVzdBIMCgRuYW1lGAEgASgJEjoKBHR5cGUYAiABKA4yLC53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZVNob3BUeXBlEhAKCHVzZXJuYW1lGAMgASgJEgsKA3VybBgEIAEoCSJMChJDcmVhdGVTaG9wUmVzcG9uc2USNgoEc2hvcBgBIAEoCzIoLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlU2hvcCIcCg5HZXRTaG9wUmVxdWVzdBIKCgJpZBgBIAEoBCJJCg9HZXRTaG9wUmVzcG9uc2USNgoEc2hvcBgBIAEoCzIoLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlU2hvcCKbAQoRVXBkYXRlU2hvcFJlcXVlc3QSCgoCaWQYASABKAQSDAoEbmFtZRgCIAEoCRI6CgR0eXBlGAMgASgOMiwud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTWFya2V0cGxhY2VTaG9wVHlwZRIQCgh1c2VybmFtZRgEIAEoCRILCgN1cmwYBSABKAkSEQoJaXNfYWN0aXZlGAYgASgIIkwKElVwZGF0ZVNob3BSZXNwb25zZRI2CgRzaG9wGAEgASgLMigud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTWFya2V0cGxhY2VTaG9wIh8KEURlbGV0ZVNob3BSZXF1ZXN0EgoKAmlkGAEgASgEIhQKEkRlbGV0ZVNob3BSZXNwb25zZSJYChBMaXN0U2hvcHNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCRITCgthY3RpdmVfb25seRgEIAEoCCJbChFMaXN0U2hvcHNSZXNwb25zZRI3CgVzaG9wcxgBIAMoCzIoLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlU2hvcBINCgV0b3RhbBgCIAEoBSKQAQoSQ3JlYXRlT3JkZXJSZXF1ZXN0Eg8KB3Nob3BfaWQYASABKAQSFQoNY3VzdG9tZXJfbmFtZRgCIAEoCRIUCgxwaG9uZV9udW1iZXIYAyABKAkSPAoFaXRlbXMYBCADKAsyLS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZU9yZGVySXRlbSJPChNDcmVhdGVPcmRlclJlc3BvbnNlEjgKBW9yZGVyGAEgASgLMikud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTWFya2V0cGxhY2VPcmRlciIdCg9HZXRPcmRlclJlcXVlc3QSCgoCaWQYASABKAQiTAoQR2V0T3JkZXJSZXNwb25zZRI4CgVvcmRlchgBIAEoCzIpLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlT3JkZXIijQEKEUxpc3RPcmRlcnNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEkYKDXN0YXR1c19maWx0ZXIYAyABKA4yLy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZU9yZGVyU3RhdHVzEg8KB3Nob3BfaWQYBCABKAQiXgoSTGlzdE9yZGVyc1Jlc3BvbnNlEjkKBm9yZGVycxgBIAMoCzIpLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlT3JkZXISDQoFdG90YWwYAiABKAUiZwoYVXBkYXRlT3JkZXJTdGF0dXNSZXF1ZXN0EgoKAmlkGAEgASgEEj8KBnN0YXR1cxgCIAEoDjIvLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlT3JkZXJTdGF0dXMiVQoZVXBkYXRlT3JkZXJTdGF0dXNSZXNwb25zZRI4CgVvcmRlchgBIAEoCzIpLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlT3JkZXIiYQoUQ3JlYXRlUHJvZHVjdFJlcXVlc3QSDAoEbmFtZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRITCgtwcmljZV9jZW50cxgDIAEoAxIRCglpbWFnZV91cmwYBCABKAkiVQoVQ3JlYXRlUHJvZHVjdFJlc3BvbnNlEjwKB3Byb2R1Y3QYASABKAsyKy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZVByb2R1Y3QiHwoRR2V0UHJvZHVjdFJlcXVlc3QSCgoCaWQYASABKAQiUgoSR2V0UHJvZHVjdFJlc3BvbnNlEjwKB3Byb2R1Y3QYASABKAsyKy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZVByb2R1Y3QigAEKFFVwZGF0ZVByb2R1Y3RSZXF1ZXN0EgoKAmlkGAEgASgEEgwKBG5hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEwoLcHJpY2VfY2VudHMYBCABKAMSEQoJaW1hZ2VfdXJsGAUgASgJEhEKCWlzX2FjdGl2ZRgGIAEoCCJVChVVcGRhdGVQcm9kdWN0UmVzcG9uc2USPAoHcHJvZHVjdBgBIAEoCzIrLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlUHJvZHVjdCIiChREZWxldGVQcm9kdWN0UmVxdWVzdBIKCgJpZBgBIAEoBCIXChVEZWxldGVQcm9kdWN0UmVzcG9uc2UiUAoVUmVzdG9ja1Byb2R1Y3RSZXF1ZXN0EhIKCnByb2R1Y3RfaWQYASABKAQSFAoMd2FyZWhvdXNlX2lkGAIgASgNEg0KBWRlbHRhGAMgASgFIlYKFlJlc3RvY2tQcm9kdWN0UmVzcG9uc2USPAoHcHJvZHVjdBgBIAEoCzIrLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlUHJvZHVjdCJbChNMaXN0UHJvZHVjdHNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCRITCgthY3RpdmVfb25seRgEIAEoCCJkChRMaXN0UHJvZHVjdHNSZXNwb25zZRI9Cghwcm9kdWN0cxgBIAMoCzIrLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlUHJvZHVjdBINCgV0b3RhbBgCIAEoBTLQDAoSTWFya2V0cGxhY2VTZXJ2aWNlEmUKCkNyZWF0ZVNob3ASKi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5DcmVhdGVTaG9wUmVxdWVzdBorLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkNyZWF0ZVNob3BSZXNwb25zZRJcCgdHZXRTaG9wEicud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuR2V0U2hvcFJlcXVlc3QaKC53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5HZXRTaG9wUmVzcG9uc2USZQoKVXBkYXRlU2hvcBIqLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLlVwZGF0ZVNob3BSZXF1ZXN0Gisud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuVXBkYXRlU2hvcFJlc3BvbnNlEmUKCkRlbGV0ZVNob3ASKi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5EZWxldGVTaG9wUmVxdWVzdBorLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkRlbGV0ZVNob3BSZXNwb25zZRJiCglMaXN0U2hvcHMSKS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5MaXN0U2hvcHNSZXF1ZXN0Gioud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTGlzdFNob3BzUmVzcG9uc2USbgoNQ3JlYXRlUHJvZHVjdBItLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkNyZWF0ZVByb2R1Y3RSZXF1ZXN0Gi4ud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuQ3JlYXRlUHJvZHVjdFJlc3BvbnNlEmUKCkdldFByb2R1Y3QSKi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5HZXRQcm9kdWN0UmVxdWVzdBorLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkdldFByb2R1Y3RSZXNwb25zZRJuCg1VcGRhdGVQcm9kdWN0Ei0ud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuVXBkYXRlUHJvZHVjdFJlcXVlc3QaLi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5VcGRhdGVQcm9kdWN0UmVzcG9uc2USbgoNRGVsZXRlUHJvZHVjdBItLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkRlbGV0ZVByb2R1Y3RSZXF1ZXN0Gi4ud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuRGVsZXRlUHJvZHVjdFJlc3BvbnNlEmsKDExpc3RQcm9kdWN0cxIsLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkxpc3RQcm9kdWN0c1JlcXVlc3QaLS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5MaXN0UHJvZHVjdHNSZXNwb25zZRJxCg5SZXN0b2NrUHJvZHVjdBIuLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLlJlc3RvY2tQcm9kdWN0UmVxdWVzdBovLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLlJlc3RvY2tQcm9kdWN0UmVzcG9uc2USaAoLQ3JlYXRlT3JkZXISKy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5DcmVhdGVPcmRlclJlcXVlc3QaLC53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5DcmVhdGVPcmRlclJlc3BvbnNlEl8KCEdldE9yZGVyEigud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuR2V0T3JkZXJSZXF1ZXN0Gikud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuR2V0T3JkZXJSZXNwb25zZRJlCgpMaXN0T3JkZXJzEioud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTGlzdE9yZGVyc1JlcXVlc3QaKy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5MaXN0T3JkZXJzUmVzcG9uc2USegoRVXBkYXRlT3JkZXJTdGF0dXMSMS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5VcGRhdGVPcmRlclN0YXR1c1JlcXVlc3QaMi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5VcGRhdGVPcmRlclN0YXR1c1Jlc3BvbnNlQjxaOndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL21hcmtldHBsYWNlL3YxO21hcmtldHBsYWNldjFiBnByb3RvMw", [file_wargapos_marketplace_v1_shop, file_wargapos_marketplace_v1_order, file_wargapos_marketplace_v1_product]);
+  fileDesc("CiV3YXJnYXBvcy9tYXJrZXRwbGFjZS92MS9zZXJ2aWNlLnByb3RvEhd3YXJnYXBvcy5tYXJrZXRwbGFjZS52MSJ8ChFDcmVhdGVTaG9wUmVxdWVzdBIMCgRuYW1lGAEgASgJEjoKBHR5cGUYAiABKA4yLC53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZVNob3BUeXBlEhAKCHVzZXJuYW1lGAMgASgJEgsKA3VybBgEIAEoCSJMChJDcmVhdGVTaG9wUmVzcG9uc2USNgoEc2hvcBgBIAEoCzIoLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlU2hvcCIcCg5HZXRTaG9wUmVxdWVzdBIKCgJpZBgBIAEoBCJJCg9HZXRTaG9wUmVzcG9uc2USNgoEc2hvcBgBIAEoCzIoLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlU2hvcCKbAQoRVXBkYXRlU2hvcFJlcXVlc3QSCgoCaWQYASABKAQSDAoEbmFtZRgCIAEoCRI6CgR0eXBlGAMgASgOMiwud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTWFya2V0cGxhY2VTaG9wVHlwZRIQCgh1c2VybmFtZRgEIAEoCRILCgN1cmwYBSABKAkSEQoJaXNfYWN0aXZlGAYgASgIIkwKElVwZGF0ZVNob3BSZXNwb25zZRI2CgRzaG9wGAEgASgLMigud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTWFya2V0cGxhY2VTaG9wIh8KEURlbGV0ZVNob3BSZXF1ZXN0EgoKAmlkGAEgASgEIhQKEkRlbGV0ZVNob3BSZXNwb25zZSJYChBMaXN0U2hvcHNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCRITCgthY3RpdmVfb25seRgEIAEoCCJbChFMaXN0U2hvcHNSZXNwb25zZRI3CgVzaG9wcxgBIAMoCzIoLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlU2hvcBINCgV0b3RhbBgCIAEoBSLPAQoSQ3JlYXRlT3JkZXJSZXF1ZXN0Eg8KB3Nob3BfaWQYASABKAQSFQoNY3VzdG9tZXJfbmFtZRgCIAEoCRIUCgxwaG9uZV9udW1iZXIYAyABKAkSPAoFaXRlbXMYBCADKAsyLS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZU9yZGVySXRlbRIUCgx3YXJlaG91c2VfaWQYBSABKA0SEwoLY3VzdG9tZXJfaWQYBiABKAQSEgoKYWRkcmVzc19pZBgHIAEoBCJPChNDcmVhdGVPcmRlclJlc3BvbnNlEjgKBW9yZGVyGAEgASgLMikud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTWFya2V0cGxhY2VPcmRlciIdCg9HZXRPcmRlclJlcXVlc3QSCgoCaWQYASABKAQiTAoQR2V0T3JkZXJSZXNwb25zZRI4CgVvcmRlchgBIAEoCzIpLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlT3JkZXIiogEKEUxpc3RPcmRlcnNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEkYKDXN0YXR1c19maWx0ZXIYAyABKA4yLy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZU9yZGVyU3RhdHVzEg8KB3Nob3BfaWQYBCABKAQSEwoLY3VzdG9tZXJfaWQYBSABKAQiXgoSTGlzdE9yZGVyc1Jlc3BvbnNlEjkKBm9yZGVycxgBIAMoCzIpLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlT3JkZXISDQoFdG90YWwYAiABKAUiZwoYVXBkYXRlT3JkZXJTdGF0dXNSZXF1ZXN0EgoKAmlkGAEgASgEEj8KBnN0YXR1cxgCIAEoDjIvLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlT3JkZXJTdGF0dXMiVQoZVXBkYXRlT3JkZXJTdGF0dXNSZXNwb25zZRI4CgVvcmRlchgBIAEoCzIpLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlT3JkZXIiYQoUQ3JlYXRlUHJvZHVjdFJlcXVlc3QSDAoEbmFtZRgBIAEoCRITCgtkZXNjcmlwdGlvbhgCIAEoCRITCgtwcmljZV9jZW50cxgDIAEoAxIRCglpbWFnZV91cmwYBCABKAkiVQoVQ3JlYXRlUHJvZHVjdFJlc3BvbnNlEjwKB3Byb2R1Y3QYASABKAsyKy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZVByb2R1Y3QiHwoRR2V0UHJvZHVjdFJlcXVlc3QSCgoCaWQYASABKAQiUgoSR2V0UHJvZHVjdFJlc3BvbnNlEjwKB3Byb2R1Y3QYASABKAsyKy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZVByb2R1Y3QigAEKFFVwZGF0ZVByb2R1Y3RSZXF1ZXN0EgoKAmlkGAEgASgEEgwKBG5hbWUYAiABKAkSEwoLZGVzY3JpcHRpb24YAyABKAkSEwoLcHJpY2VfY2VudHMYBCABKAMSEQoJaW1hZ2VfdXJsGAUgASgJEhEKCWlzX2FjdGl2ZRgGIAEoCCJVChVVcGRhdGVQcm9kdWN0UmVzcG9uc2USPAoHcHJvZHVjdBgBIAEoCzIrLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlUHJvZHVjdCIiChREZWxldGVQcm9kdWN0UmVxdWVzdBIKCgJpZBgBIAEoBCIXChVEZWxldGVQcm9kdWN0UmVzcG9uc2UiUAoVUmVzdG9ja1Byb2R1Y3RSZXF1ZXN0EhIKCnByb2R1Y3RfaWQYASABKAQSFAoMd2FyZWhvdXNlX2lkGAIgASgNEg0KBWRlbHRhGAMgASgFIlYKFlJlc3RvY2tQcm9kdWN0UmVzcG9uc2USPAoHcHJvZHVjdBgBIAEoCzIrLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlUHJvZHVjdCJbChNMaXN0UHJvZHVjdHNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCRITCgthY3RpdmVfb25seRgEIAEoCCJkChRMaXN0UHJvZHVjdHNSZXNwb25zZRI9Cghwcm9kdWN0cxgBIAMoCzIrLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlUHJvZHVjdBINCgV0b3RhbBgCIAEoBSI7ChVDcmVhdGVDdXN0b21lclJlcXVlc3QSDAoEbmFtZRgBIAEoCRIUCgxwaG9uZV9udW1iZXIYAiABKAkiWAoWQ3JlYXRlQ3VzdG9tZXJSZXNwb25zZRI+CghjdXN0b21lchgBIAEoCzIsLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlQ3VzdG9tZXIiIAoSR2V0Q3VzdG9tZXJSZXF1ZXN0EgoKAmlkGAEgASgEIlUKE0dldEN1c3RvbWVyUmVzcG9uc2USPgoIY3VzdG9tZXIYASABKAsyLC53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5NYXJrZXRwbGFjZUN1c3RvbWVyIkcKFVVwZGF0ZUN1c3RvbWVyUmVxdWVzdBIKCgJpZBgBIAEoBBIMCgRuYW1lGAIgASgJEhQKDHBob25lX251bWJlchgDIAEoCSJYChZVcGRhdGVDdXN0b21lclJlc3BvbnNlEj4KCGN1c3RvbWVyGAEgASgLMiwud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTWFya2V0cGxhY2VDdXN0b21lciIjChVEZWxldGVDdXN0b21lclJlcXVlc3QSCgoCaWQYASABKAQiGAoWRGVsZXRlQ3VzdG9tZXJSZXNwb25zZSJHChRMaXN0Q3VzdG9tZXJzUmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBRIOCgZzZWFyY2gYAyABKAkiZwoVTGlzdEN1c3RvbWVyc1Jlc3BvbnNlEj8KCWN1c3RvbWVycxgBIAMoCzIsLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLk1hcmtldHBsYWNlQ3VzdG9tZXISDQoFdG90YWwYAiABKAUiiAEKHENyZWF0ZUN1c3RvbWVyQWRkcmVzc1JlcXVlc3QSEwoLY3VzdG9tZXJfaWQYASABKAQSDQoFbGFiZWwYAiABKAkSDwoHYWRkcmVzcxgDIAEoCRIMCgRjaXR5GAQgASgJEhAKCHByb3ZpbmNlGAUgASgJEhMKC3Bvc3RhbF9jb2RlGAYgASgJIloKHUNyZWF0ZUN1c3RvbWVyQWRkcmVzc1Jlc3BvbnNlEjkKB2FkZHJlc3MYASABKAsyKC53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5DdXN0b21lckFkZHJlc3MifwocVXBkYXRlQ3VzdG9tZXJBZGRyZXNzUmVxdWVzdBIKCgJpZBgBIAEoBBINCgVsYWJlbBgCIAEoCRIPCgdhZGRyZXNzGAMgASgJEgwKBGNpdHkYBCABKAkSEAoIcHJvdmluY2UYBSABKAkSEwoLcG9zdGFsX2NvZGUYBiABKAkiWgodVXBkYXRlQ3VzdG9tZXJBZGRyZXNzUmVzcG9uc2USOQoHYWRkcmVzcxgBIAEoCzIoLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkN1c3RvbWVyQWRkcmVzcyIqChxEZWxldGVDdXN0b21lckFkZHJlc3NSZXF1ZXN0EgoKAmlkGAEgASgEIh8KHURlbGV0ZUN1c3RvbWVyQWRkcmVzc1Jlc3BvbnNlIjMKHExpc3RDdXN0b21lckFkZHJlc3Nlc1JlcXVlc3QSEwoLY3VzdG9tZXJfaWQYASABKAQiXAodTGlzdEN1c3RvbWVyQWRkcmVzc2VzUmVzcG9uc2USOwoJYWRkcmVzc2VzGAEgAygLMigud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuQ3VzdG9tZXJBZGRyZXNzMqcVChJNYXJrZXRwbGFjZVNlcnZpY2USZQoKQ3JlYXRlU2hvcBIqLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkNyZWF0ZVNob3BSZXF1ZXN0Gisud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuQ3JlYXRlU2hvcFJlc3BvbnNlElwKB0dldFNob3ASJy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5HZXRTaG9wUmVxdWVzdBooLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkdldFNob3BSZXNwb25zZRJlCgpVcGRhdGVTaG9wEioud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuVXBkYXRlU2hvcFJlcXVlc3QaKy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5VcGRhdGVTaG9wUmVzcG9uc2USZQoKRGVsZXRlU2hvcBIqLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkRlbGV0ZVNob3BSZXF1ZXN0Gisud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuRGVsZXRlU2hvcFJlc3BvbnNlEmIKCUxpc3RTaG9wcxIpLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkxpc3RTaG9wc1JlcXVlc3QaKi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5MaXN0U2hvcHNSZXNwb25zZRJuCg1DcmVhdGVQcm9kdWN0Ei0ud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuQ3JlYXRlUHJvZHVjdFJlcXVlc3QaLi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5DcmVhdGVQcm9kdWN0UmVzcG9uc2USZQoKR2V0UHJvZHVjdBIqLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkdldFByb2R1Y3RSZXF1ZXN0Gisud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuR2V0UHJvZHVjdFJlc3BvbnNlEm4KDVVwZGF0ZVByb2R1Y3QSLS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5VcGRhdGVQcm9kdWN0UmVxdWVzdBouLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLlVwZGF0ZVByb2R1Y3RSZXNwb25zZRJuCg1EZWxldGVQcm9kdWN0Ei0ud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuRGVsZXRlUHJvZHVjdFJlcXVlc3QaLi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5EZWxldGVQcm9kdWN0UmVzcG9uc2USawoMTGlzdFByb2R1Y3RzEiwud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTGlzdFByb2R1Y3RzUmVxdWVzdBotLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkxpc3RQcm9kdWN0c1Jlc3BvbnNlEnEKDlJlc3RvY2tQcm9kdWN0Ei4ud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuUmVzdG9ja1Byb2R1Y3RSZXF1ZXN0Gi8ud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuUmVzdG9ja1Byb2R1Y3RSZXNwb25zZRJoCgtDcmVhdGVPcmRlchIrLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkNyZWF0ZU9yZGVyUmVxdWVzdBosLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkNyZWF0ZU9yZGVyUmVzcG9uc2USXwoIR2V0T3JkZXISKC53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5HZXRPcmRlclJlcXVlc3QaKS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5HZXRPcmRlclJlc3BvbnNlEmUKCkxpc3RPcmRlcnMSKi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5MaXN0T3JkZXJzUmVxdWVzdBorLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkxpc3RPcmRlcnNSZXNwb25zZRJ6ChFVcGRhdGVPcmRlclN0YXR1cxIxLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLlVwZGF0ZU9yZGVyU3RhdHVzUmVxdWVzdBoyLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLlVwZGF0ZU9yZGVyU3RhdHVzUmVzcG9uc2UScQoOQ3JlYXRlQ3VzdG9tZXISLi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5DcmVhdGVDdXN0b21lclJlcXVlc3QaLy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5DcmVhdGVDdXN0b21lclJlc3BvbnNlEmgKC0dldEN1c3RvbWVyEisud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuR2V0Q3VzdG9tZXJSZXF1ZXN0Giwud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuR2V0Q3VzdG9tZXJSZXNwb25zZRJxCg5VcGRhdGVDdXN0b21lchIuLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLlVwZGF0ZUN1c3RvbWVyUmVxdWVzdBovLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLlVwZGF0ZUN1c3RvbWVyUmVzcG9uc2UScQoORGVsZXRlQ3VzdG9tZXISLi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5EZWxldGVDdXN0b21lclJlcXVlc3QaLy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5EZWxldGVDdXN0b21lclJlc3BvbnNlEm4KDUxpc3RDdXN0b21lcnMSLS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5MaXN0Q3VzdG9tZXJzUmVxdWVzdBouLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkxpc3RDdXN0b21lcnNSZXNwb25zZRKGAQoVQ3JlYXRlQ3VzdG9tZXJBZGRyZXNzEjUud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuQ3JlYXRlQ3VzdG9tZXJBZGRyZXNzUmVxdWVzdBo2LndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkNyZWF0ZUN1c3RvbWVyQWRkcmVzc1Jlc3BvbnNlEoYBChVVcGRhdGVDdXN0b21lckFkZHJlc3MSNS53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5VcGRhdGVDdXN0b21lckFkZHJlc3NSZXF1ZXN0GjYud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuVXBkYXRlQ3VzdG9tZXJBZGRyZXNzUmVzcG9uc2UShgEKFURlbGV0ZUN1c3RvbWVyQWRkcmVzcxI1LndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkRlbGV0ZUN1c3RvbWVyQWRkcmVzc1JlcXVlc3QaNi53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5EZWxldGVDdXN0b21lckFkZHJlc3NSZXNwb25zZRKGAQoVTGlzdEN1c3RvbWVyQWRkcmVzc2VzEjUud2FyZ2Fwb3MubWFya2V0cGxhY2UudjEuTGlzdEN1c3RvbWVyQWRkcmVzc2VzUmVxdWVzdBo2LndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLkxpc3RDdXN0b21lckFkZHJlc3Nlc1Jlc3BvbnNlQjxaOndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL21hcmtldHBsYWNlL3YxO21hcmtldHBsYWNldjFiBnByb3RvMw", [file_wargapos_marketplace_v1_shop, file_wargapos_marketplace_v1_order, file_wargapos_marketplace_v1_product, file_wargapos_marketplace_v1_customer]);
 
 /**
  * @generated from message wargapos.marketplace.v1.CreateShopRequest
@@ -267,6 +269,21 @@ export type CreateOrderRequest = Message<"wargapos.marketplace.v1.CreateOrderReq
    * @generated from field: repeated wargapos.marketplace.v1.MarketplaceOrderItem items = 4;
    */
   items: MarketplaceOrderItem[];
+
+  /**
+   * @generated from field: uint32 warehouse_id = 5;
+   */
+  warehouseId: number;
+
+  /**
+   * @generated from field: uint64 customer_id = 6;
+   */
+  customerId: bigint;
+
+  /**
+   * @generated from field: uint64 address_id = 7;
+   */
+  addressId: bigint;
 };
 
 /**
@@ -350,6 +367,11 @@ export type ListOrdersRequest = Message<"wargapos.marketplace.v1.ListOrdersReque
    * @generated from field: uint64 shop_id = 4;
    */
   shopId: bigint;
+
+  /**
+   * @generated from field: uint64 customer_id = 5;
+   */
+  customerId: bigint;
 };
 
 /**
@@ -691,6 +713,384 @@ export const ListProductsResponseSchema: GenMessage<ListProductsResponse> = /*@_
   messageDesc(file_wargapos_marketplace_v1_service, 29);
 
 /**
+ * @generated from message wargapos.marketplace.v1.CreateCustomerRequest
+ */
+export type CreateCustomerRequest = Message<"wargapos.marketplace.v1.CreateCustomerRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string phone_number = 2;
+   */
+  phoneNumber: string;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.CreateCustomerRequest.
+ * Use `create(CreateCustomerRequestSchema)` to create a new message.
+ */
+export const CreateCustomerRequestSchema: GenMessage<CreateCustomerRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 30);
+
+/**
+ * @generated from message wargapos.marketplace.v1.CreateCustomerResponse
+ */
+export type CreateCustomerResponse = Message<"wargapos.marketplace.v1.CreateCustomerResponse"> & {
+  /**
+   * @generated from field: wargapos.marketplace.v1.MarketplaceCustomer customer = 1;
+   */
+  customer?: MarketplaceCustomer;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.CreateCustomerResponse.
+ * Use `create(CreateCustomerResponseSchema)` to create a new message.
+ */
+export const CreateCustomerResponseSchema: GenMessage<CreateCustomerResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 31);
+
+/**
+ * @generated from message wargapos.marketplace.v1.GetCustomerRequest
+ */
+export type GetCustomerRequest = Message<"wargapos.marketplace.v1.GetCustomerRequest"> & {
+  /**
+   * @generated from field: uint64 id = 1;
+   */
+  id: bigint;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.GetCustomerRequest.
+ * Use `create(GetCustomerRequestSchema)` to create a new message.
+ */
+export const GetCustomerRequestSchema: GenMessage<GetCustomerRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 32);
+
+/**
+ * @generated from message wargapos.marketplace.v1.GetCustomerResponse
+ */
+export type GetCustomerResponse = Message<"wargapos.marketplace.v1.GetCustomerResponse"> & {
+  /**
+   * @generated from field: wargapos.marketplace.v1.MarketplaceCustomer customer = 1;
+   */
+  customer?: MarketplaceCustomer;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.GetCustomerResponse.
+ * Use `create(GetCustomerResponseSchema)` to create a new message.
+ */
+export const GetCustomerResponseSchema: GenMessage<GetCustomerResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 33);
+
+/**
+ * @generated from message wargapos.marketplace.v1.UpdateCustomerRequest
+ */
+export type UpdateCustomerRequest = Message<"wargapos.marketplace.v1.UpdateCustomerRequest"> & {
+  /**
+   * @generated from field: uint64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string phone_number = 3;
+   */
+  phoneNumber: string;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.UpdateCustomerRequest.
+ * Use `create(UpdateCustomerRequestSchema)` to create a new message.
+ */
+export const UpdateCustomerRequestSchema: GenMessage<UpdateCustomerRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 34);
+
+/**
+ * @generated from message wargapos.marketplace.v1.UpdateCustomerResponse
+ */
+export type UpdateCustomerResponse = Message<"wargapos.marketplace.v1.UpdateCustomerResponse"> & {
+  /**
+   * @generated from field: wargapos.marketplace.v1.MarketplaceCustomer customer = 1;
+   */
+  customer?: MarketplaceCustomer;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.UpdateCustomerResponse.
+ * Use `create(UpdateCustomerResponseSchema)` to create a new message.
+ */
+export const UpdateCustomerResponseSchema: GenMessage<UpdateCustomerResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 35);
+
+/**
+ * @generated from message wargapos.marketplace.v1.DeleteCustomerRequest
+ */
+export type DeleteCustomerRequest = Message<"wargapos.marketplace.v1.DeleteCustomerRequest"> & {
+  /**
+   * @generated from field: uint64 id = 1;
+   */
+  id: bigint;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.DeleteCustomerRequest.
+ * Use `create(DeleteCustomerRequestSchema)` to create a new message.
+ */
+export const DeleteCustomerRequestSchema: GenMessage<DeleteCustomerRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 36);
+
+/**
+ * @generated from message wargapos.marketplace.v1.DeleteCustomerResponse
+ */
+export type DeleteCustomerResponse = Message<"wargapos.marketplace.v1.DeleteCustomerResponse"> & {
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.DeleteCustomerResponse.
+ * Use `create(DeleteCustomerResponseSchema)` to create a new message.
+ */
+export const DeleteCustomerResponseSchema: GenMessage<DeleteCustomerResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 37);
+
+/**
+ * @generated from message wargapos.marketplace.v1.ListCustomersRequest
+ */
+export type ListCustomersRequest = Message<"wargapos.marketplace.v1.ListCustomersRequest"> & {
+  /**
+   * @generated from field: int32 page = 1;
+   */
+  page: number;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string search = 3;
+   */
+  search: string;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.ListCustomersRequest.
+ * Use `create(ListCustomersRequestSchema)` to create a new message.
+ */
+export const ListCustomersRequestSchema: GenMessage<ListCustomersRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 38);
+
+/**
+ * @generated from message wargapos.marketplace.v1.ListCustomersResponse
+ */
+export type ListCustomersResponse = Message<"wargapos.marketplace.v1.ListCustomersResponse"> & {
+  /**
+   * @generated from field: repeated wargapos.marketplace.v1.MarketplaceCustomer customers = 1;
+   */
+  customers: MarketplaceCustomer[];
+
+  /**
+   * @generated from field: int32 total = 2;
+   */
+  total: number;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.ListCustomersResponse.
+ * Use `create(ListCustomersResponseSchema)` to create a new message.
+ */
+export const ListCustomersResponseSchema: GenMessage<ListCustomersResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 39);
+
+/**
+ * @generated from message wargapos.marketplace.v1.CreateCustomerAddressRequest
+ */
+export type CreateCustomerAddressRequest = Message<"wargapos.marketplace.v1.CreateCustomerAddressRequest"> & {
+  /**
+   * @generated from field: uint64 customer_id = 1;
+   */
+  customerId: bigint;
+
+  /**
+   * @generated from field: string label = 2;
+   */
+  label: string;
+
+  /**
+   * @generated from field: string address = 3;
+   */
+  address: string;
+
+  /**
+   * @generated from field: string city = 4;
+   */
+  city: string;
+
+  /**
+   * @generated from field: string province = 5;
+   */
+  province: string;
+
+  /**
+   * @generated from field: string postal_code = 6;
+   */
+  postalCode: string;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.CreateCustomerAddressRequest.
+ * Use `create(CreateCustomerAddressRequestSchema)` to create a new message.
+ */
+export const CreateCustomerAddressRequestSchema: GenMessage<CreateCustomerAddressRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 40);
+
+/**
+ * @generated from message wargapos.marketplace.v1.CreateCustomerAddressResponse
+ */
+export type CreateCustomerAddressResponse = Message<"wargapos.marketplace.v1.CreateCustomerAddressResponse"> & {
+  /**
+   * @generated from field: wargapos.marketplace.v1.CustomerAddress address = 1;
+   */
+  address?: CustomerAddress;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.CreateCustomerAddressResponse.
+ * Use `create(CreateCustomerAddressResponseSchema)` to create a new message.
+ */
+export const CreateCustomerAddressResponseSchema: GenMessage<CreateCustomerAddressResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 41);
+
+/**
+ * @generated from message wargapos.marketplace.v1.UpdateCustomerAddressRequest
+ */
+export type UpdateCustomerAddressRequest = Message<"wargapos.marketplace.v1.UpdateCustomerAddressRequest"> & {
+  /**
+   * @generated from field: uint64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: string label = 2;
+   */
+  label: string;
+
+  /**
+   * @generated from field: string address = 3;
+   */
+  address: string;
+
+  /**
+   * @generated from field: string city = 4;
+   */
+  city: string;
+
+  /**
+   * @generated from field: string province = 5;
+   */
+  province: string;
+
+  /**
+   * @generated from field: string postal_code = 6;
+   */
+  postalCode: string;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.UpdateCustomerAddressRequest.
+ * Use `create(UpdateCustomerAddressRequestSchema)` to create a new message.
+ */
+export const UpdateCustomerAddressRequestSchema: GenMessage<UpdateCustomerAddressRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 42);
+
+/**
+ * @generated from message wargapos.marketplace.v1.UpdateCustomerAddressResponse
+ */
+export type UpdateCustomerAddressResponse = Message<"wargapos.marketplace.v1.UpdateCustomerAddressResponse"> & {
+  /**
+   * @generated from field: wargapos.marketplace.v1.CustomerAddress address = 1;
+   */
+  address?: CustomerAddress;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.UpdateCustomerAddressResponse.
+ * Use `create(UpdateCustomerAddressResponseSchema)` to create a new message.
+ */
+export const UpdateCustomerAddressResponseSchema: GenMessage<UpdateCustomerAddressResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 43);
+
+/**
+ * @generated from message wargapos.marketplace.v1.DeleteCustomerAddressRequest
+ */
+export type DeleteCustomerAddressRequest = Message<"wargapos.marketplace.v1.DeleteCustomerAddressRequest"> & {
+  /**
+   * @generated from field: uint64 id = 1;
+   */
+  id: bigint;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.DeleteCustomerAddressRequest.
+ * Use `create(DeleteCustomerAddressRequestSchema)` to create a new message.
+ */
+export const DeleteCustomerAddressRequestSchema: GenMessage<DeleteCustomerAddressRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 44);
+
+/**
+ * @generated from message wargapos.marketplace.v1.DeleteCustomerAddressResponse
+ */
+export type DeleteCustomerAddressResponse = Message<"wargapos.marketplace.v1.DeleteCustomerAddressResponse"> & {
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.DeleteCustomerAddressResponse.
+ * Use `create(DeleteCustomerAddressResponseSchema)` to create a new message.
+ */
+export const DeleteCustomerAddressResponseSchema: GenMessage<DeleteCustomerAddressResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 45);
+
+/**
+ * @generated from message wargapos.marketplace.v1.ListCustomerAddressesRequest
+ */
+export type ListCustomerAddressesRequest = Message<"wargapos.marketplace.v1.ListCustomerAddressesRequest"> & {
+  /**
+   * @generated from field: uint64 customer_id = 1;
+   */
+  customerId: bigint;
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.ListCustomerAddressesRequest.
+ * Use `create(ListCustomerAddressesRequestSchema)` to create a new message.
+ */
+export const ListCustomerAddressesRequestSchema: GenMessage<ListCustomerAddressesRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 46);
+
+/**
+ * @generated from message wargapos.marketplace.v1.ListCustomerAddressesResponse
+ */
+export type ListCustomerAddressesResponse = Message<"wargapos.marketplace.v1.ListCustomerAddressesResponse"> & {
+  /**
+   * @generated from field: repeated wargapos.marketplace.v1.CustomerAddress addresses = 1;
+   */
+  addresses: CustomerAddress[];
+};
+
+/**
+ * Describes the message wargapos.marketplace.v1.ListCustomerAddressesResponse.
+ * Use `create(ListCustomerAddressesResponseSchema)` to create a new message.
+ */
+export const ListCustomerAddressesResponseSchema: GenMessage<ListCustomerAddressesResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_marketplace_v1_service, 47);
+
+/**
  * @generated from service wargapos.marketplace.v1.MarketplaceService
  */
 export const MarketplaceService: GenService<{
@@ -819,6 +1219,82 @@ export const MarketplaceService: GenService<{
     methodKind: "unary";
     input: typeof UpdateOrderStatusRequestSchema;
     output: typeof UpdateOrderStatusResponseSchema;
+  },
+  /**
+   * Customers
+   *
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.CreateCustomer
+   */
+  createCustomer: {
+    methodKind: "unary";
+    input: typeof CreateCustomerRequestSchema;
+    output: typeof CreateCustomerResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.GetCustomer
+   */
+  getCustomer: {
+    methodKind: "unary";
+    input: typeof GetCustomerRequestSchema;
+    output: typeof GetCustomerResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.UpdateCustomer
+   */
+  updateCustomer: {
+    methodKind: "unary";
+    input: typeof UpdateCustomerRequestSchema;
+    output: typeof UpdateCustomerResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.DeleteCustomer
+   */
+  deleteCustomer: {
+    methodKind: "unary";
+    input: typeof DeleteCustomerRequestSchema;
+    output: typeof DeleteCustomerResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.ListCustomers
+   */
+  listCustomers: {
+    methodKind: "unary";
+    input: typeof ListCustomersRequestSchema;
+    output: typeof ListCustomersResponseSchema;
+  },
+  /**
+   * Customer Addresses
+   *
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.CreateCustomerAddress
+   */
+  createCustomerAddress: {
+    methodKind: "unary";
+    input: typeof CreateCustomerAddressRequestSchema;
+    output: typeof CreateCustomerAddressResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.UpdateCustomerAddress
+   */
+  updateCustomerAddress: {
+    methodKind: "unary";
+    input: typeof UpdateCustomerAddressRequestSchema;
+    output: typeof UpdateCustomerAddressResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.DeleteCustomerAddress
+   */
+  deleteCustomerAddress: {
+    methodKind: "unary";
+    input: typeof DeleteCustomerAddressRequestSchema;
+    output: typeof DeleteCustomerAddressResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.marketplace.v1.MarketplaceService.ListCustomerAddresses
+   */
+  listCustomerAddresses: {
+    methodKind: "unary";
+    input: typeof ListCustomerAddressesRequestSchema;
+    output: typeof ListCustomerAddressesResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_wargapos_marketplace_v1_service, 0);

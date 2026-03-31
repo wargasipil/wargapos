@@ -13,6 +13,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -770,7 +771,7 @@ var File_wargapos_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/user/v1/user.proto\x12\x10wargapos.user.v1\x1a\x1bbuf/validate/validate.proto\"\xcb\x01\n" +
+	"\x1bwargapos/user/v1/user.proto\x12\x10wargapos.user.v1\x1a\x1bbuf/validate/validate.proto\x1a wargapos/rolebased/v1/role.proto\"\xcb\x01\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x1b\n" +
@@ -821,7 +822,7 @@ const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\n" +
 	"ROLE_ADMIN\x10\x01\x12\x10\n" +
 	"\fROLE_CASHIER\x10\x02\x12\x10\n" +
-	"\fROLE_MANAGER\x10\x032\xa3\x04\n" +
+	"\fROLE_MANAGER\x10\x032\xad\x04\n" +
 	"\vUserService\x12W\n" +
 	"\n" +
 	"CreateUser\x12#.wargapos.user.v1.CreateUserRequest\x1a$.wargapos.user.v1.CreateUserResponse\x12N\n" +
@@ -829,8 +830,9 @@ const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\n" +
 	"UpdateUser\x12#.wargapos.user.v1.UpdateUserRequest\x1a$.wargapos.user.v1.UpdateUserResponse\x12W\n" +
 	"\n" +
-	"DeleteUser\x12#.wargapos.user.v1.DeleteUserRequest\x1a$.wargapos.user.v1.DeleteUserResponse\x12T\n" +
-	"\tListUsers\x12\".wargapos.user.v1.ListUsersRequest\x1a#.wargapos.user.v1.ListUsersResponse\x12c\n" +
+	"DeleteUser\x12#.wargapos.user.v1.DeleteUserRequest\x1a$.wargapos.user.v1.DeleteUserResponse\x12^\n" +
+	"\tListUsers\x12\".wargapos.user.v1.ListUsersRequest\x1a#.wargapos.user.v1.ListUsersResponse\"\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\x12c\n" +
 	"\x0eChangePassword\x12'.wargapos.user.v1.ChangePasswordRequest\x1a(.wargapos.user.v1.ChangePasswordResponseB.Z,wargapos/backend/gen/wargapos/user/v1;userv1b\x06proto3"
 
 var (

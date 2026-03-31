@@ -35,6 +35,11 @@ import { MarketplaceProductsPage } from './routes/marketplace/products/index'
 import { MarketplaceProductNewPage } from './routes/marketplace/products/new'
 import { MarketplaceProductEditPage } from './routes/marketplace/products/edit'
 import { MarketplaceProductDetailPage } from './routes/marketplace/products/detail'
+import { MarketplaceOrderNewPage } from './routes/marketplace/orders/new'
+import { MarketplaceCustomersPage } from './routes/marketplace/customers/index'
+import { MarketplaceCustomerNewPage } from './routes/marketplace/customers/new'
+import { MarketplaceCustomerEditPage } from './routes/marketplace/customers/edit'
+import { MarketplaceCustomerDetailPage } from './routes/marketplace/customers/detail'
 
 async function checkSetupNeeded(): Promise<boolean> {
   try {
@@ -265,6 +270,16 @@ const marketplaceOrdersRoute = createRoute({
   },
 })
 
+const marketplaceOrderNewRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/orders/new',
+  component: MarketplaceOrderNewPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
 const marketplaceOrderDetailRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/marketplace/orders/$id',
@@ -315,6 +330,46 @@ const marketplaceProductDetailRoute = createRoute({
   },
 })
 
+const marketplaceCustomersRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/customers',
+  component: MarketplaceCustomersPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceCustomerNewRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/customers/new',
+  component: MarketplaceCustomerNewPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceCustomerEditRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/customers/$id/edit',
+  component: MarketplaceCustomerEditPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
+const marketplaceCustomerDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/customers/$id',
+  component: MarketplaceCustomerDetailPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+  },
+})
+
 const playgroundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/playground',
@@ -350,11 +405,16 @@ const routeTree = rootRoute.addChildren([
     marketplaceShopNewRoute,
     marketplaceShopEditRoute,
     marketplaceOrdersRoute,
+    marketplaceOrderNewRoute,
     marketplaceOrderDetailRoute,
     marketplaceProductsRoute,
     marketplaceProductNewRoute,
     marketplaceProductEditRoute,
     marketplaceProductDetailRoute,
+    marketplaceCustomersRoute,
+    marketplaceCustomerNewRoute,
+    marketplaceCustomerEditRoute,
+    marketplaceCustomerDetailRoute,
   ]),
 ])
 

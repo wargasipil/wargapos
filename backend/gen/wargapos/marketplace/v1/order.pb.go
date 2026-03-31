@@ -148,19 +148,27 @@ func (x *MarketplaceOrderItem) GetSubtotalCents() int64 {
 }
 
 type MarketplaceOrder struct {
-	state         protoimpl.MessageState  `protogen:"open.v1"`
-	Id            uint64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	ShopId        uint64                  `protobuf:"varint,2,opt,name=shop_id,json=shopId,proto3" json:"shop_id,omitempty"`
-	ShopName      string                  `protobuf:"bytes,3,opt,name=shop_name,json=shopName,proto3" json:"shop_name,omitempty"`
-	CustomerName  string                  `protobuf:"bytes,4,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
-	PhoneNumber   string                  `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
-	Items         []*MarketplaceOrderItem `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`
-	TotalCents    int64                   `protobuf:"varint,7,opt,name=total_cents,json=totalCents,proto3" json:"total_cents,omitempty"`
-	Status        MarketplaceOrderStatus  `protobuf:"varint,8,opt,name=status,proto3,enum=wargapos.marketplace.v1.MarketplaceOrderStatus" json:"status,omitempty"`
-	CreatedAt     *timestamppb.Timestamp  `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp  `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState  `protogen:"open.v1"`
+	Id                 uint64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ShopId             uint64                  `protobuf:"varint,2,opt,name=shop_id,json=shopId,proto3" json:"shop_id,omitempty"`
+	ShopName           string                  `protobuf:"bytes,3,opt,name=shop_name,json=shopName,proto3" json:"shop_name,omitempty"`
+	CustomerName       string                  `protobuf:"bytes,4,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
+	PhoneNumber        string                  `protobuf:"bytes,5,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
+	Items              []*MarketplaceOrderItem `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`
+	TotalCents         int64                   `protobuf:"varint,7,opt,name=total_cents,json=totalCents,proto3" json:"total_cents,omitempty"`
+	Status             MarketplaceOrderStatus  `protobuf:"varint,8,opt,name=status,proto3,enum=wargapos.marketplace.v1.MarketplaceOrderStatus" json:"status,omitempty"`
+	CreatedAt          *timestamppb.Timestamp  `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt          *timestamppb.Timestamp  `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	WarehouseId        uint32                  `protobuf:"varint,11,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	CustomerId         uint64                  `protobuf:"varint,12,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	AddressId          uint64                  `protobuf:"varint,13,opt,name=address_id,json=addressId,proto3" json:"address_id,omitempty"`
+	ShippingLabel      string                  `protobuf:"bytes,14,opt,name=shipping_label,json=shippingLabel,proto3" json:"shipping_label,omitempty"`
+	ShippingAddress    string                  `protobuf:"bytes,15,opt,name=shipping_address,json=shippingAddress,proto3" json:"shipping_address,omitempty"`
+	ShippingCity       string                  `protobuf:"bytes,16,opt,name=shipping_city,json=shippingCity,proto3" json:"shipping_city,omitempty"`
+	ShippingProvince   string                  `protobuf:"bytes,17,opt,name=shipping_province,json=shippingProvince,proto3" json:"shipping_province,omitempty"`
+	ShippingPostalCode string                  `protobuf:"bytes,18,opt,name=shipping_postal_code,json=shippingPostalCode,proto3" json:"shipping_postal_code,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *MarketplaceOrder) Reset() {
@@ -263,6 +271,62 @@ func (x *MarketplaceOrder) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *MarketplaceOrder) GetWarehouseId() uint32 {
+	if x != nil {
+		return x.WarehouseId
+	}
+	return 0
+}
+
+func (x *MarketplaceOrder) GetCustomerId() uint64 {
+	if x != nil {
+		return x.CustomerId
+	}
+	return 0
+}
+
+func (x *MarketplaceOrder) GetAddressId() uint64 {
+	if x != nil {
+		return x.AddressId
+	}
+	return 0
+}
+
+func (x *MarketplaceOrder) GetShippingLabel() string {
+	if x != nil {
+		return x.ShippingLabel
+	}
+	return ""
+}
+
+func (x *MarketplaceOrder) GetShippingAddress() string {
+	if x != nil {
+		return x.ShippingAddress
+	}
+	return ""
+}
+
+func (x *MarketplaceOrder) GetShippingCity() string {
+	if x != nil {
+		return x.ShippingCity
+	}
+	return ""
+}
+
+func (x *MarketplaceOrder) GetShippingProvince() string {
+	if x != nil {
+		return x.ShippingProvince
+	}
+	return ""
+}
+
+func (x *MarketplaceOrder) GetShippingPostalCode() string {
+	if x != nil {
+		return x.ShippingPostalCode
+	}
+	return ""
+}
+
 var File_wargapos_marketplace_v1_order_proto protoreflect.FileDescriptor
 
 const file_wargapos_marketplace_v1_order_proto_rawDesc = "" +
@@ -273,7 +337,7 @@ const file_wargapos_marketplace_v1_order_proto_rawDesc = "" +
 	"\titem_name\x18\x02 \x01(\tR\bitemName\x12\x1a\n" +
 	"\bquantity\x18\x03 \x01(\x05R\bquantity\x12(\n" +
 	"\x10unit_price_cents\x18\x04 \x01(\x03R\x0eunitPriceCents\x12%\n" +
-	"\x0esubtotal_cents\x18\x05 \x01(\x03R\rsubtotalCents\"\xc5\x03\n" +
+	"\x0esubtotal_cents\x18\x05 \x01(\x03R\rsubtotalCents\"\xfe\x05\n" +
 	"\x10MarketplaceOrder\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x17\n" +
 	"\ashop_id\x18\x02 \x01(\x04R\x06shopId\x12\x1b\n" +
@@ -288,7 +352,17 @@ const file_wargapos_marketplace_v1_order_proto_rawDesc = "" +
 	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt*\x90\x01\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12!\n" +
+	"\fwarehouse_id\x18\v \x01(\rR\vwarehouseId\x12\x1f\n" +
+	"\vcustomer_id\x18\f \x01(\x04R\n" +
+	"customerId\x12\x1d\n" +
+	"\n" +
+	"address_id\x18\r \x01(\x04R\taddressId\x12%\n" +
+	"\x0eshipping_label\x18\x0e \x01(\tR\rshippingLabel\x12)\n" +
+	"\x10shipping_address\x18\x0f \x01(\tR\x0fshippingAddress\x12#\n" +
+	"\rshipping_city\x18\x10 \x01(\tR\fshippingCity\x12+\n" +
+	"\x11shipping_province\x18\x11 \x01(\tR\x10shippingProvince\x120\n" +
+	"\x14shipping_postal_code\x18\x12 \x01(\tR\x12shippingPostalCode*\x90\x01\n" +
 	"\x16MarketplaceOrderStatus\x12(\n" +
 	"$MARKETPLACE_ORDER_STATUS_UNSPECIFIED\x10\x00\x12$\n" +
 	" MARKETPLACE_ORDER_STATUS_PENDING\x10\x01\x12&\n" +

@@ -13,6 +13,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -652,14 +653,15 @@ var File_wargapos_settings_v1_settings_proto protoreflect.FileDescriptor
 
 const file_wargapos_settings_v1_settings_proto_rawDesc = "" +
 	"\n" +
-	"#wargapos/settings/v1/settings.proto\x12\x14wargapos.settings.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"r\n" +
+	"#wargapos/settings/v1/settings.proto\x12\x14wargapos.settings.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"r\n" +
 	"\x10MidtransSettings\x12\x1d\n" +
 	"\n" +
 	"server_key\x18\x01 \x01(\tR\tserverKey\x12\x1d\n" +
 	"\n" +
 	"client_key\x18\x02 \x01(\tR\tclientKey\x12 \n" +
-	"\venvironment\x18\x03 \x01(\tR\venvironment\"\x14\n" +
-	"\x12GetSettingsRequest\"\xb6\x01\n" +
+	"\venvironment\x18\x03 \x01(\tR\venvironment\"\x1e\n" +
+	"\x12GetSettingsRequest:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"\xb6\x01\n" +
 	"\x15ManualPaymentSettings\x12\x1b\n" +
 	"\tbank_name\x18\x01 \x01(\tR\bbankName\x12.\n" +
 	"\x13bank_account_number\x18\x02 \x01(\tR\x11bankAccountNumber\x12*\n" +

@@ -56,7 +56,7 @@ export function MarketplaceOrderDetailPage() {
   const isCancelled = order.status === MarketplaceOrderStatus.CANCELLED
 
   return (
-    <Box p={{ base: 3, md: 6 }} maxW="640px">
+    <Box p={{ base: 3, md: 6 }}>
       {/* Header */}
       <HStack gap={3} mb={5}>
         <Button asChild variant="ghost" size="sm" px={2}>

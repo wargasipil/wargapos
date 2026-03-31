@@ -24,6 +24,8 @@ func (s *MarketplaceService) CreateOrder(ctx context.Context, req *connect.Reque
 		CustomerName: req.Msg.CustomerName,
 		PhoneNumber:  req.Msg.PhoneNumber,
 		Status:       marketplacev1.MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_PENDING,
+		WarehouseID:  req.Msg.WarehouseId,
+		CustomerID:   req.Msg.CustomerId,
 	}
 
 	var total int64

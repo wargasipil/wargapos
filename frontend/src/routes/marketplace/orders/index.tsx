@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import {
-  Badge, Box, Flex, Heading, HStack, Spinner, Table, Tabs, Text, VStack, Button,
+  Badge, Box, Button, Flex, Heading, HStack, Spinner, Table, Tabs, Text, VStack,
 } from '@chakra-ui/react'
+import { Plus } from 'lucide-react'
 import { marketplaceClient } from '../../../client'
 import { MarketplaceOrderStatus } from '../../../gen/wargapos/marketplace/v1/order_pb'
 import { formatPrice, formatDateTime } from '../../../lib/format'
@@ -36,7 +37,12 @@ export function MarketplaceOrdersPage() {
 
   return (
     <Box p={{ base: 3, md: 6 }}>
-      <Heading size="md" mb={5}>Marketplace Orders</Heading>
+      <Flex justify="space-between" align="center" mb={5} gap={3} flexWrap="wrap">
+        <Heading size="md">Marketplace Orders</Heading>
+        <Button asChild colorPalette="blue" size="sm">
+          <Link to="/marketplace/orders/new"><Plus size={16} /> Create Order</Link>
+        </Button>
+      </Flex>
 
       {/* Status tabs */}
       <Tabs.Root

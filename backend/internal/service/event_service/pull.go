@@ -2,6 +2,7 @@ package event_service
 
 import (
 	"context"
+	"log/slog"
 	"time"
 	eventv1 "wargapos/backend/gen/wargapos/event/v1"
 
@@ -19,10 +20,15 @@ func (e *EventService) Pull(
 	e.listeners[req.Msg.SubscribeId] = stream
 	e.Unlock()
 
+	logger := slog.With("sub_id", req.Msg.SubscribeId)
+	logger.Info("connected")
+
 	defer func() {
 		e.Lock()
 		defer e.Unlock()
 		delete(e.listeners, req.Msg.SubscribeId)
+
+		logger.Info("disconnected")
 	}()
 
 	tick := time.NewTicker(time.Second * 10)

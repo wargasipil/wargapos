@@ -7,6 +7,7 @@ option go_package = "wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1"
 import "wargapos/marketplace/v1/shop.proto";
 import "wargapos/marketplace/v1/order.proto";
 import "wargapos/marketplace/v1/product.proto";
+import "wargapos/marketplace/v1/customer.proto";
 
 service MarketplaceService {
   // Shop CRUD
@@ -27,6 +28,17 @@ service MarketplaceService {
   rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
   rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
   rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse);
+  // Customers
+  rpc CreateCustomer(CreateCustomerRequest) returns (CreateCustomerResponse);
+  rpc GetCustomer(GetCustomerRequest) returns (GetCustomerResponse);
+  rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse);
+  rpc DeleteCustomer(DeleteCustomerRequest) returns (DeleteCustomerResponse);
+  rpc ListCustomers(ListCustomersRequest) returns (ListCustomersResponse);
+  // Customer Addresses
+  rpc CreateCustomerAddress(CreateCustomerAddressRequest) returns (CreateCustomerAddressResponse);
+  rpc UpdateCustomerAddress(UpdateCustomerAddressRequest) returns (UpdateCustomerAddressResponse);
+  rpc DeleteCustomerAddress(DeleteCustomerAddressRequest) returns (DeleteCustomerAddressResponse);
+  rpc ListCustomerAddresses(ListCustomerAddressesRequest) returns (ListCustomerAddressesResponse);
 }
 
 // --- Shop messages ---
@@ -88,6 +100,9 @@ message CreateOrderRequest {
   string customer_name = 2;
   string phone_number = 3;
   repeated MarketplaceOrderItem items = 4;
+  uint32 warehouse_id = 5;
+  uint64 customer_id = 6;
+  uint64 address_id = 7;
 }
 
 message CreateOrderResponse {
@@ -107,6 +122,7 @@ message ListOrdersRequest {
   int32 page_size = 2;
   MarketplaceOrderStatus status_filter = 3;
   uint64 shop_id = 4;
+  uint64 customer_id = 5;
 }
 
 message ListOrdersResponse {
@@ -183,4 +199,92 @@ message ListProductsRequest {
 message ListProductsResponse {
   repeated MarketplaceProduct products = 1;
   int32 total = 2;
+}
+
+// --- Customer messages ---
+
+message CreateCustomerRequest {
+  string name = 1;
+  string phone_number = 2;
+}
+
+message CreateCustomerResponse {
+  MarketplaceCustomer customer = 1;
+}
+
+message GetCustomerRequest {
+  uint64 id = 1;
+}
+
+message GetCustomerResponse {
+  MarketplaceCustomer customer = 1;
+}
+
+message UpdateCustomerRequest {
+  uint64 id = 1;
+  string name = 2;
+  string phone_number = 3;
+}
+
+message UpdateCustomerResponse {
+  MarketplaceCustomer customer = 1;
+}
+
+message DeleteCustomerRequest {
+  uint64 id = 1;
+}
+
+message DeleteCustomerResponse {}
+
+message ListCustomersRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+}
+
+message ListCustomersResponse {
+  repeated MarketplaceCustomer customers = 1;
+  int32 total = 2;
+}
+
+// --- Customer Address messages ---
+
+message CreateCustomerAddressRequest {
+  uint64 customer_id = 1;
+  string label = 2;
+  string address = 3;
+  string city = 4;
+  string province = 5;
+  string postal_code = 6;
+}
+
+message CreateCustomerAddressResponse {
+  CustomerAddress address = 1;
+}
+
+message UpdateCustomerAddressRequest {
+  uint64 id = 1;
+  string label = 2;
+  string address = 3;
+  string city = 4;
+  string province = 5;
+  string postal_code = 6;
+}
+
+message UpdateCustomerAddressResponse {
+  CustomerAddress address = 1;
+}
+
+message DeleteCustomerAddressRequest {
+  uint64 id = 1;
+}
+
+message DeleteCustomerAddressResponse {}
+
+message ListCustomerAddressesRequest {
+  uint64 customer_id = 1;
+}
+
+message ListCustomerAddressesResponse {
+  repeated CustomerAddress addresses = 1;
 }

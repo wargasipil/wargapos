@@ -31,4 +31,12 @@ message MarketplaceOrder {
   MarketplaceOrderStatus status = 8;
   google.protobuf.Timestamp created_at = 9;
   google.protobuf.Timestamp updated_at = 10;
+  uint32 warehouse_id = 11;
+  uint64 customer_id = 12;
+  uint64 address_id = 13;
+  string shipping_label = 14;
+  string shipping_address = 15;
+  string shipping_city = 16;
+  string shipping_province = 17;
+  string shipping_postal_code = 18;
 }
