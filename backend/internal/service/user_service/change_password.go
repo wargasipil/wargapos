@@ -28,7 +28,7 @@ func (s *UserService) ChangePassword(
 
 	// Load user from DB.
 	var user models.User
-	if err := s.db.WithContext(ctx).First(&user, "id = ?", claims.UserID).Error; err != nil {
+	if err := s.db.WithContext(ctx).First(&user, "id = ?", claims.Identity.IdentityId).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
 		}
@@ -46,7 +46,7 @@ func (s *UserService) ChangePassword(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if err := s.db.WithContext(ctx).Model(&models.User{}).Where("id = ?", claims.UserID).Update("password_hash", string(hashed)).Error; err != nil {
+	if err := s.db.WithContext(ctx).Model(&models.User{}).Where("id = ?", claims.Identity.IdentityId).Update("password_hash", string(hashed)).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 

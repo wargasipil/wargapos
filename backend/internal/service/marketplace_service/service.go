@@ -70,18 +70,24 @@ func toOrderProto(o models.MarketplaceOrder) *marketplacev1.MarketplaceOrder {
 		}
 	}
 	return &marketplacev1.MarketplaceOrder{
-		Id:           o.ID,
-		ShopId:       o.ShopID,
-		ShopName:     o.Shop.Name,
-		CustomerName: o.CustomerName,
-		PhoneNumber:  o.PhoneNumber,
-		Items:        items,
-		TotalCents:   o.TotalCents,
-		Status:       o.Status,
-		WarehouseId:  o.WarehouseID,
-		CustomerId:   o.CustomerID,
-		CreatedAt:    timestamppb.New(o.CreatedAt),
-		UpdatedAt:    timestamppb.New(o.UpdatedAt),
+		Id:                 o.ID,
+		ShopId:             o.ShopID,
+		ShopName:           o.Shop.Name,
+		CustomerName:       o.CustomerName,
+		PhoneNumber:        o.PhoneNumber,
+		Items:              items,
+		TotalCents:         o.TotalCents,
+		Status:             o.Status,
+		WarehouseId:        o.WarehouseID,
+		CustomerId:         o.CustomerID,
+		AddressId:          o.AddressID,
+		ShippingLabel:      o.ShippingLabel,
+		ShippingAddress:    o.ShippingAddress,
+		ShippingCity:       o.ShippingCity,
+		ShippingProvince:   o.ShippingProvince,
+		ShippingPostalCode: o.ShippingPostalCode,
+		CreatedAt:          timestamppb.New(o.CreatedAt),
+		UpdatedAt:          timestamppb.New(o.UpdatedAt),
 	}
 }
 

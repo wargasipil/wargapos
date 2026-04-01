@@ -3,6 +3,7 @@ syntax = "proto3";
 package wargapos.backup.v1;
 
 // import "buf/validate/validate.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/backup/v1;backupv1";
 
@@ -13,7 +14,9 @@ service BackupService {
   rpc RestoreBackup(RestoreBackupRequest) returns (stream RestoreBackupResponse);
 }
 
-message RunBackupRequest {}
+message RunBackupRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN] };
+}
 message RunBackupResponse {
   oneof data {
     string filepath = 1;
@@ -21,18 +24,21 @@ message RunBackupResponse {
   }
 }
 
-message ListBackupRequest {}
+message ListBackupRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN] };
+}
 message ListBackupResponse {
   repeated string fnames = 1;
 }
 
 message DeleteBackupRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN] };
   string fname = 1;
 }
-
 message DeleteBackupResponse {}
 
 message RestoreBackupRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN] };
   string fname = 1;
 }
 message RestoreBackupResponse {

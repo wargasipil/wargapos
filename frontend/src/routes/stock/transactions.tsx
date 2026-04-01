@@ -12,6 +12,7 @@ import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
 import { formatDateTime } from '../../lib/format'
 import { useAuthStore } from '../../store/auth'
+import { canManageStock } from '../../lib/roles'
 import { TransactionType } from '../../gen/wargapos/stock/v1/transaction_pb'
 import { SkuSelect } from '../../components/shared/SkuSelect'
 
@@ -55,7 +56,7 @@ const createTypeOptions = createListCollection({
 
 export function TransactionsPage() {
   const { role } = useAuthStore()
-  const isAdminOrManager = role === 'admin' || role === 'manager'
+  const isAdminOrManager = canManageStock(role)
   const qc = useQueryClient()
   const navigate = useNavigate()
 

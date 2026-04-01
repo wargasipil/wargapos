@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -1171,7 +1172,7 @@ var File_wargapos_transaction_v1_order_proto protoreflect.FileDescriptor
 
 const file_wargapos_transaction_v1_order_proto_rawDesc = "" +
 	"\n" +
-	"#wargapos/transaction/v1/order.proto\x12\x17wargapos.transaction.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe0\x01\n" +
+	"#wargapos/transaction/v1/order.proto\x12\x17wargapos.transaction.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xe0\x01\n" +
 	"\tOrderItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -1200,22 +1201,26 @@ const file_wargapos_transaction_v1_order_proto_rawDesc = "" +
 	"order_from\x18\v \x01(\x0e2\".wargapos.transaction.v1.OrderFromR\torderFrom\x12M\n" +
 	"\x0epayment_status\x18\r \x01(\x0e2&.wargapos.transaction.v1.PaymentStatusR\rpaymentStatus\x12.\n" +
 	"\x13cash_tendered_cents\x18\x0e \x01(\x03R\x11cashTenderedCents\x12!\n" +
-	"\fchange_cents\x18\x0f \x01(\x03R\vchangeCents\"j\n" +
+	"\fchange_cents\x18\x0f \x01(\x03R\vchangeCents\"u\n" +
 	"\x14MarkOrderPaidRequest\x12\"\n" +
 	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\x12.\n" +
-	"\x13cash_tendered_cents\x18\x02 \x01(\x03R\x11cashTenderedCents\"M\n" +
+	"\x13cash_tendered_cents\x18\x02 \x01(\x03R\x11cashTenderedCents:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x04\"M\n" +
 	"\x15MarkOrderPaidResponse\x124\n" +
-	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"8\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"C\n" +
 	"\x12CancelOrderRequest\x12\"\n" +
-	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"K\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x04\"K\n" +
 	"\x13CancelOrderResponse\x124\n" +
-	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\";\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"F\n" +
 	"\x15MarkOrderReadyRequest\x12\"\n" +
-	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"N\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x04\"N\n" +
 	"\x16MarkOrderReadyResponse\x124\n" +
-	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"?\n" +
+	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"J\n" +
 	"\x19MarkOrderDeliveredRequest\x12\"\n" +
-	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId\"R\n" +
+	"\border_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\aorderId:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x04\"R\n" +
 	"\x1aMarkOrderDeliveredResponse\x124\n" +
 	"\x05order\x18\x01 \x01(\v2\x1e.wargapos.transaction.v1.OrderR\x05order\"\xbb\x04\n" +
 	"\x10ListOrdersFilter\x12\x1d\n" +
@@ -1238,12 +1243,14 @@ const file_wargapos_transaction_v1_order_proto_rawDesc = "" +
 	"\x06SortBy\x12\x17\n" +
 	"\x13SORT_BY_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12SORT_BY_CREATED_AT\x10\x01\x12\x13\n" +
-	"\x0fSORT_BY_ORDERID\x10\x02\"\xc4\x01\n" +
+	"\x0fSORT_BY_ORDERID\x10\x02\"\xd0\x01\n" +
 	"\x11ListOrdersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12A\n" +
 	"\x06filter\x18\x03 \x01(\v2).wargapos.transaction.v1.ListOrdersFilterR\x06filter\x12;\n" +
-	"\x04sort\x18\x04 \x01(\v2'.wargapos.transaction.v1.LostOrdersSortR\x04sort\"b\n" +
+	"\x04sort\x18\x04 \x01(\v2'.wargapos.transaction.v1.LostOrdersSortR\x04sort:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x03\x04\"b\n" +
 	"\x12ListOrdersResponse\x126\n" +
 	"\x06orders\x18\x01 \x03(\v2\x1e.wargapos.transaction.v1.OrderR\x06orders\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total*\x98\x01\n" +

@@ -8,6 +8,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	rolebasedv1 "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 func (s *BackupService) ServeRestoreUpload(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +22,7 @@ func (s *BackupService) ServeRestoreUpload(w http.ResponseWriter, r *http.Reques
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
-	if claims.Role != "admin" {
+	if claims.Identity.Role != rolebasedv1.Role_ROLE_ROOT && claims.Identity.Role != rolebasedv1.Role_ROLE_ADMIN {
 		http.Error(w, "forbidden", http.StatusForbidden)
 		return
 	}

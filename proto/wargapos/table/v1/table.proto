@@ -3,6 +3,7 @@ syntax = "proto3";
 package wargapos.table.v1;
 
 import "buf/validate/validate.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/table/v1;tablev1";
 
@@ -12,16 +13,23 @@ message Table {
   string uuid = 3;
 }
 
-message CreateTableRequest  { string name = 1 [(buf.validate.field).string.min_len = 1]; }
+message CreateTableRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN] };
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
 message CreateTableResponse { Table table = 1; }
 
-message UpdateTableRequest  {
+message UpdateTableRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN] };
   int64  id   = 1 [(buf.validate.field).int64.gt = 0];
   string name = 2 [(buf.validate.field).string.min_len = 1];
 }
 message UpdateTableResponse { Table table = 1; }
 
-message DeleteTableRequest  { int64 id = 1 [(buf.validate.field).int64.gt = 0]; }
+message DeleteTableRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN] };
+  int64 id = 1 [(buf.validate.field).int64.gt = 0];
+}
 message DeleteTableResponse {}
 
 message ListTablesRequest  {}

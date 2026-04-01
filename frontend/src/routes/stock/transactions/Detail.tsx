@@ -10,6 +10,7 @@ import { toaster } from '../../../components/ui/toaster'
 import { stripError } from '../../../lib/errors'
 import { formatDateTime } from '../../../lib/format'
 import { useAuthStore } from '../../../store/auth'
+import { canManageStock } from '../../../lib/roles'
 import { TransactionType } from '../../../gen/wargapos/stock/v1/transaction_pb'
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
 
@@ -34,7 +35,7 @@ function formatIDR(cents: bigint) {
 export function TransactionDetailPage() {
   const { id } = useParams({ strict: false }) as { id: string }
   const { role } = useAuthStore()
-  const isAdminOrManager = role === 'admin' || role === 'manager'
+  const isAdminOrManager = canManageStock(role)
   const qc = useQueryClient()
   const [confirmOpen, setConfirmOpen] = useState(false)
 

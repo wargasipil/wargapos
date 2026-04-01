@@ -19,7 +19,7 @@ func TestDeleteSku(t *testing.T) {
 		wargatest.
 			NewScenario(t, database.NewTestDatabase(&db)).
 			Run(func(t *testing.T) {
-				srv := stock_service.NewStockService(&db)
+				srv := stock_service.NewStockService(&db, nil)
 
 				wh, err := srv.CreateWarehouse(t.Context(), &connect.Request[stockv1.CreateWarehouseRequest]{
 					Msg: &stockv1.CreateWarehouseRequest{Name: "WH-Test"},
@@ -58,7 +58,7 @@ func TestDeleteSku(t *testing.T) {
 		wargatest.
 			NewScenario(t, database.NewTestDatabase(&db)).
 			Run(func(t *testing.T) {
-				srv := stock_service.NewStockService(&db)
+				srv := stock_service.NewStockService(&db, nil)
 
 				wh, err := srv.CreateWarehouse(t.Context(), &connect.Request[stockv1.CreateWarehouseRequest]{
 					Msg: &stockv1.CreateWarehouseRequest{Name: "WH-Test"},

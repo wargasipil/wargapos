@@ -2,6 +2,7 @@ package marketplace_service
 
 import (
 	"context"
+	"fmt"
 	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
 	"wargapos/backend/internal/models"
 
@@ -11,21 +12,35 @@ import (
 
 func (s *MarketplaceService) CreateOrder(ctx context.Context, req *connect.Request[marketplacev1.CreateOrderRequest]) (*connect.Response[marketplacev1.CreateOrderResponse], error) {
 	if len(req.Msg.Items) == 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, nil)
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("items required"))
+	}
+	if req.Msg.AddressId == 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("address required"))
 	}
 
 	var shop models.MarketplaceShop
-	if err := s.db.First(&shop, req.Msg.ShopId).Error; err != nil {
+	if err := s.db.WithContext(ctx).First(&shop, req.Msg.ShopId).Error; err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, err)
 	}
 
+	var addr models.MarketplaceCustomerAddress
+	if err := s.db.WithContext(ctx).Where("id = ? AND deleted = false", req.Msg.AddressId).First(&addr).Error; err != nil {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("address not found"))
+	}
+
 	order := models.MarketplaceOrder{
-		ShopID:       req.Msg.ShopId,
-		CustomerName: req.Msg.CustomerName,
-		PhoneNumber:  req.Msg.PhoneNumber,
-		Status:       marketplacev1.MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_PENDING,
-		WarehouseID:  req.Msg.WarehouseId,
-		CustomerID:   req.Msg.CustomerId,
+		ShopID:             req.Msg.ShopId,
+		CustomerName:       req.Msg.CustomerName,
+		PhoneNumber:        req.Msg.PhoneNumber,
+		Status:             marketplacev1.MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_PENDING,
+		WarehouseID:        req.Msg.WarehouseId,
+		CustomerID:         req.Msg.CustomerId,
+		AddressID:          addr.ID,
+		ShippingLabel:      addr.Label,
+		ShippingAddress:    addr.Address,
+		ShippingCity:       addr.City,
+		ShippingProvince:   addr.Province,
+		ShippingPostalCode: addr.PostalCode,
 	}
 
 	var total int64
@@ -42,7 +57,7 @@ func (s *MarketplaceService) CreateOrder(ctx context.Context, req *connect.Reque
 	}
 	order.TotalCents = total
 
-	err := s.db.Transaction(func(tx *gorm.DB) error {
+	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&order).Error; err != nil {
 			return err
 		}

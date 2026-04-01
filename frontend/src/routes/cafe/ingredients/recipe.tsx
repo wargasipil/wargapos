@@ -14,6 +14,7 @@ import { ConfirmDialog } from '../../../components/shared/ConfirmDialog'
 import { toaster } from '../../../components/ui/toaster'
 import { stripError } from '../../../lib/errors'
 import { useAuthStore } from '../../../store/auth'
+import { canManageProducts } from '../../../lib/roles'
 
 function fmtQty(qty: number, qt: QtyType) {
   return qt === QtyType.GRAM ? `${qty} g` : `${qty} pcs`
@@ -27,7 +28,7 @@ interface RecipeRow {
 export function RecipeListTab() {
   const qc = useQueryClient()
   const { role } = useAuthStore()
-  const isManager = role === 'admin' || role === 'manager'
+  const isManager = canManageProducts(role)
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editTarget, setEditTarget] = useState<Recipe | null>(null)

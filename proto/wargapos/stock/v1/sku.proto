@@ -5,6 +5,7 @@ package wargapos.stock.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 import "wargapos/stock/v1/rack.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
@@ -38,7 +39,6 @@ message Sku {
   google.protobuf.Timestamp created_at = 7;
   google.protobuf.Timestamp updated_at = 8;
   bool deleted = 9;
-
   int32 left_stock = 10;
   google.protobuf.Timestamp last_stock_in = 11;
   google.protobuf.Timestamp last_adjustment = 12;
@@ -46,13 +46,13 @@ message Sku {
 }
 
 message ListSkuPlacementRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
 }
-message ListSkuPlacementResponse {
-  repeated RackPlacement placements = 1;
-}
+message ListSkuPlacementResponse { repeated RackPlacement placements = 1; }
 
 message CreateSkuRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   string code = 1 [(buf.validate.field).string = {
     min_len: 1
     max_len: 255
@@ -61,45 +61,38 @@ message CreateSkuRequest {
   uint32 branch_id = 3;
   uint32 warehouse_id = 4 [(buf.validate.field).uint32.gt = 0];
 }
-message CreateSkuResponse {
-  Sku sku = 1;
-}
+message CreateSkuResponse { Sku sku = 1; }
 
 message UpdateSkuRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
   string code = 2 [(buf.validate.field).string = {
     min_len: 1
     max_len: 255
   }];
 }
-message UpdateSkuResponse {
-  Sku sku = 1;
-}
+message UpdateSkuResponse { Sku sku = 1; }
 
 message DeleteSkuRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
 }
 message DeleteSkuResponse {}
 
 message ListSkuRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   int32 page = 1;
   int32 page_size = 2;
-  uint32 product_id = 3; // filter by product (0 = all)
-  string search = 4; // filter by code
+  uint32 product_id = 3;
+  string search = 4;
 }
-message ListSkuResponse {
-  repeated Sku skus = 1;
-  int32 total = 2;
-}
+message ListSkuResponse { repeated Sku skus = 1; int32 total = 2; }
 
 message GetSkuRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   oneof identifier {
     uint32 id = 1;
     string code = 2;
   }
 }
-
-message GetSkuResponse {
-  SkuError err_code = 1;
-  Sku sku = 2;
-}
+message GetSkuResponse { SkuError err_code = 1; Sku sku = 2; }

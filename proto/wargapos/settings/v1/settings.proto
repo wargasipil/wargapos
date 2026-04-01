@@ -73,6 +73,12 @@ message BackupSettings {
 }
 
 message UpdateSettingsRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN
+    ]
+  };
   MidtransSettings midtrans = 1;
   ManualPaymentSettings manual_payment = 2;
   PrinterSettings printer = 3;

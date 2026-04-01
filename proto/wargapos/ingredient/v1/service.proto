@@ -4,12 +4,12 @@ package wargapos.ingredient.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/ingredient/v1;ingredientv1";
 
 service IngredientService {
   // untuk material
-
   rpc CreateMaterial(CreateMaterialRequest) returns (CreateMaterialResponse);
   rpc UpdateMaterial(UpdateMaterialRequest) returns (UpdateMaterialResponse);
   rpc ListMaterial(ListMaterialRequest) returns (ListMaterialResponse);
@@ -22,8 +22,6 @@ service IngredientService {
   rpc GetRecipe(GetRecipeRequest) returns (GetRecipeResponse);
   rpc ListRecipe(ListRecipeRequest) returns (ListRecipeResponse);
   rpc DeleteRecipe(DeleteRecipeRequest) returns (DeleteRecipeResponse);
-
-  // untuk log recipe out
 }
 
 enum QtyType {
@@ -45,9 +43,9 @@ message Material {
 }
 
 message AddMaterialStockRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
   uint32 warehouse_id = 2 [(buf.validate.field).uint32.gt = 0];
-
   int32 qty = 4 [(buf.validate.field).int32.not_in = 0];
   uint64 price = 5 [(buf.validate.field).uint64.gt = 0];
   string note = 6 [(buf.validate.field).string.max_len = 500];
@@ -55,6 +53,7 @@ message AddMaterialStockRequest {
 message AddMaterialStockResponse {}
 
 message CreateMaterialRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   string code = 1 [(buf.validate.field).string = {
     min_len: 1
     max_len: 100
@@ -74,6 +73,7 @@ message CreateMaterialResponse {
 }
 
 message UpdateMaterialRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
   string code = 2 [(buf.validate.field).string = {
     min_len: 1
@@ -94,6 +94,7 @@ message UpdateMaterialResponse {
 }
 
 message ListMaterialRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   int32 page = 1;
   int32 page_size = 2;
   string search = 3;
@@ -104,17 +105,16 @@ message ListMaterialResponse {
 }
 
 message DeleteMaterialRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
 }
 message DeleteMaterialResponse {}
 
-// RecipeItem is used in request payloads (material_id + qty per serving).
 message RecipeItemInput {
   uint32 material_id = 1 [(buf.validate.field).uint32.gt = 0];
   int32 qty = 2 [(buf.validate.field).int32.gt = 0];
 }
 
-// RecipeItem is returned in responses, with the full material embedded.
 message RecipeItem {
   uint32 id = 1;
   uint32 material_id = 2;
@@ -132,6 +132,7 @@ message Recipe {
 }
 
 message CreateRecipeRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 product_id = 1 [(buf.validate.field).uint32.gt = 0];
   string name = 2 [(buf.validate.field).string = {
     min_len: 1
@@ -144,6 +145,7 @@ message CreateRecipeResponse {
 }
 
 message UpdateRecipeRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
   string name = 2 [(buf.validate.field).string = {
     min_len: 1
@@ -156,6 +158,7 @@ message UpdateRecipeResponse {
 }
 
 message GetRecipeRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   uint32 product_id = 1 [(buf.validate.field).uint32.gt = 0];
 }
 message GetRecipeResponse {
@@ -163,6 +166,7 @@ message GetRecipeResponse {
 }
 
 message ListRecipeRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   int32 page = 1;
   int32 page_size = 2;
   string search = 3;
@@ -173,6 +177,7 @@ message ListRecipeResponse {
 }
 
 message DeleteRecipeRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
 }
 message DeleteRecipeResponse {}

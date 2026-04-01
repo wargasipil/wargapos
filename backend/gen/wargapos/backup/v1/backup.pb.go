@@ -12,6 +12,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -391,20 +392,24 @@ var File_wargapos_backup_v1_backup_proto protoreflect.FileDescriptor
 
 const file_wargapos_backup_v1_backup_proto_rawDesc = "" +
 	"\n" +
-	"\x1fwargapos/backup/v1/backup.proto\x12\x12wargapos.backup.v1\"\x12\n" +
-	"\x10RunBackupRequest\"M\n" +
+	"\x1fwargapos/backup/v1/backup.proto\x12\x12wargapos.backup.v1\x1a wargapos/rolebased/v1/role.proto\"\x1c\n" +
+	"\x10RunBackupRequest:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"M\n" +
 	"\x11RunBackupResponse\x12\x1c\n" +
 	"\bfilepath\x18\x01 \x01(\tH\x00R\bfilepath\x12\x12\n" +
 	"\x03msg\x18\x02 \x01(\tH\x00R\x03msgB\x06\n" +
-	"\x04data\"\x13\n" +
-	"\x11ListBackupRequest\",\n" +
+	"\x04data\"\x1d\n" +
+	"\x11ListBackupRequest:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\",\n" +
 	"\x12ListBackupResponse\x12\x16\n" +
-	"\x06fnames\x18\x01 \x03(\tR\x06fnames\"+\n" +
+	"\x06fnames\x18\x01 \x03(\tR\x06fnames\"5\n" +
 	"\x13DeleteBackupRequest\x12\x14\n" +
-	"\x05fname\x18\x01 \x01(\tR\x05fname\"\x16\n" +
-	"\x14DeleteBackupResponse\",\n" +
+	"\x05fname\x18\x01 \x01(\tR\x05fname:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"\x16\n" +
+	"\x14DeleteBackupResponse\"6\n" +
 	"\x14RestoreBackupRequest\x12\x14\n" +
-	"\x05fname\x18\x01 \x01(\tR\x05fname\")\n" +
+	"\x05fname\x18\x01 \x01(\tR\x05fname:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\")\n" +
 	"\x15RestoreBackupResponse\x12\x10\n" +
 	"\x03msg\x18\x01 \x01(\tR\x03msg2\x93\x03\n" +
 	"\rBackupService\x12Z\n" +

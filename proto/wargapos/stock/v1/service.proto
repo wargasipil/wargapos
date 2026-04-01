@@ -3,6 +3,7 @@ syntax = "proto3";
 package wargapos.stock.v1;
 
 import "buf/validate/validate.proto";
+import "wargapos/rolebased/v1/role.proto";
 import "wargapos/stock/v1/log.proto";
 import "wargapos/stock/v1/rack.proto";
 import "wargapos/stock/v1/sku.proto";
@@ -24,6 +25,7 @@ message StockMovement {
 }
 
 message AdjustStockRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   int64 product_id = 1 [(buf.validate.field).int64.gt = 0];
   int32 delta = 2 [(buf.validate.field).int32 = {
     not_in: [0]

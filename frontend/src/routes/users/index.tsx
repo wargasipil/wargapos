@@ -9,27 +9,48 @@ import { userClient } from '../../client'
 import { useAuthStore } from '../../store/auth'
 import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
+import { Role } from '../../gen/wargapos/rolebased/v1/role_pb'
 
-const ROLE_ADMIN = 1
-const ROLE_MANAGER = 3
-const ROLE_CASHIER = 2
-
-function roleToStr(role: number): string {
-  if (role === ROLE_ADMIN) return 'admin'
-  if (role === ROLE_MANAGER) return 'manager'
-  return 'cashier'
+function roleToStr(role: Role): string {
+  switch (role) {
+    case Role.ROOT:             return 'root'
+    case Role.ADMIN:            return 'admin'
+    case Role.ACCOUNTANT:       return 'accountant'
+    case Role.CASHIER:          return 'cashier'
+    case Role.WAREHOUSE_ADMIN:  return 'warehouse_admin'
+    case Role.WAREHOUSE_MEMBER: return 'warehouse_member'
+    default:                    return 'cashier'
+  }
 }
 
-function strToRole(s: string): number {
-  if (s === 'admin') return ROLE_ADMIN
-  if (s === 'manager') return ROLE_MANAGER
-  return ROLE_CASHIER
+function strToRole(s: string): Role {
+  switch (s) {
+    case 'root':             return Role.ROOT
+    case 'admin':            return Role.ADMIN
+    case 'accountant':       return Role.ACCOUNTANT
+    case 'cashier':          return Role.CASHIER
+    case 'warehouse_admin':  return Role.WAREHOUSE_ADMIN
+    case 'warehouse_member': return Role.WAREHOUSE_MEMBER
+    default:                 return Role.CASHIER
+  }
 }
 
 const roleColor: Record<string, string> = {
+  root: 'red',
   admin: 'purple',
-  manager: 'blue',
+  accountant: 'cyan',
   cashier: 'gray',
+  warehouse_admin: 'orange',
+  warehouse_member: 'yellow',
+}
+
+const roleLabel: Record<string, string> = {
+  root: 'Root',
+  admin: 'Admin',
+  accountant: 'Accountant',
+  cashier: 'Cashier',
+  warehouse_admin: 'Warehouse Admin',
+  warehouse_member: 'Warehouse Member',
 }
 
 interface AddForm {
@@ -52,9 +73,12 @@ const emptyAdd: AddForm = { username: '', fullName: '', email: '', password: '',
 
 const roleCollection = createListCollection({
   items: [
-    { label: 'Cashier', value: 'cashier' },
-    { label: 'Manager', value: 'manager' },
-    { label: 'Admin', value: 'admin' },
+    { label: 'Root',             value: 'root' },
+    { label: 'Admin',            value: 'admin' },
+    { label: 'Accountant',       value: 'accountant' },
+    { label: 'Cashier',          value: 'cashier' },
+    { label: 'Warehouse Admin',  value: 'warehouse_admin' },
+    { label: 'Warehouse Member', value: 'warehouse_member' },
   ],
 })
 
@@ -153,7 +177,7 @@ export function UsersPage() {
                     <Table.Cell fontWeight="medium">{u.fullName || u.username}</Table.Cell>
                     <Table.Cell fontSize="xs" color="gray.500">{u.username}</Table.Cell>
                     <Table.Cell>
-                      <Badge colorPalette={roleColor[roleStr]} size="sm">{roleStr}</Badge>
+                      <Badge colorPalette={roleColor[roleStr]} size="sm">{roleLabel[roleStr] ?? roleStr}</Badge>
                     </Table.Cell>
                     <Table.Cell>
                       <Badge colorPalette={u.isActive ? 'green' : 'red'} size="sm" variant="subtle">

@@ -13,6 +13,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -366,7 +367,7 @@ var File_wargapos_stock_v1_service_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1fwargapos/stock/v1/service.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bwargapos/stock/v1/log.proto\x1a\x1cwargapos/stock/v1/rack.proto\x1a\x1bwargapos/stock/v1/sku.proto\x1a\x1dwargapos/stock/v1/stock.proto\x1a#wargapos/stock/v1/transaction.proto\x1a!wargapos/stock/v1/warehouse.proto\"\xe6\x01\n" +
+	"\x1fwargapos/stock/v1/service.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a wargapos/rolebased/v1/role.proto\x1a\x1bwargapos/stock/v1/log.proto\x1a\x1cwargapos/stock/v1/rack.proto\x1a\x1bwargapos/stock/v1/sku.proto\x1a\x1dwargapos/stock/v1/stock.proto\x1a#wargapos/stock/v1/transaction.proto\x1a!wargapos/stock/v1/warehouse.proto\"\xe6\x01\n" +
 	"\rStockMovement\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
 	"\n" +
@@ -378,14 +379,15 @@ const file_wargapos_stock_v1_service_proto_rawDesc = "" +
 	"created_by\x18\x06 \x01(\x03R\tcreatedBy\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\a \x01(\tR\tcreatedAt\x12&\n" +
-	"\x0fcreated_by_name\x18\b \x01(\tR\rcreatedByName\"\xa3\x01\n" +
+	"\x0fcreated_by_name\x18\b \x01(\tR\rcreatedByName\"\xae\x01\n" +
 	"\x12AdjustStockRequest\x12&\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\tproductId\x12\x1d\n" +
 	"\x05delta\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\x05delta\x122\n" +
 	"\x06reason\x18\x03 \x01(\tB\x1a\xbaH\x17r\x15R\arestockR\n" +
 	"adjustmentR\x06reason\x12\x12\n" +
-	"\x04note\x18\x04 \x01(\tR\x04note\"9\n" +
+	"\x04note\x18\x04 \x01(\tR\x04note:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"9\n" +
 	"\x13AdjustStockResponse\x12\"\n" +
 	"\rnew_stock_qty\x18\x01 \x01(\x05R\vnewStockQty\"\xaa\x01\n" +
 	"\x19ListStockMovementsRequest\x12&\n" +

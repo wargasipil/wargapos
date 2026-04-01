@@ -12,6 +12,7 @@ import { formatPrice, formatDateTime } from '../../../lib/format'
 import { stripError } from '../../../lib/errors'
 import { toaster } from '../../../components/ui/toaster'
 import { ConfirmDialog } from '../../../components/shared/ConfirmDialog'
+import { canManageMarketplace } from '../../../lib/roles'
 
 function statusBadge(status: MarketplaceOrderStatus) {
   if (status === MarketplaceOrderStatus.PENDING)   return <Badge colorPalette="yellow">Pending</Badge>
@@ -23,7 +24,7 @@ export function MarketplaceOrderDetailPage() {
   const { id } = useParams({ strict: false }) as { id: string }
   const qc = useQueryClient()
   const { role } = useAuthStore()
-  const isAdminOrManager = role === 'admin' || role === 'manager'
+  const isAdminOrManager = canManageMarketplace(role)
 
   const [cancelOpen, setCancelOpen] = useState(false)
 
@@ -82,6 +83,20 @@ export function MarketplaceOrderDetailPage() {
             <Text color="gray.500">Phone</Text>
             <Text>{order.phoneNumber || '—'}</Text>
           </HStack>
+          {order.shippingAddress && (
+            <HStack justify="space-between" align="flex-start">
+              <Text color="gray.500" flexShrink={0}>Address</Text>
+              <VStack align="flex-end" gap={0}>
+                {order.shippingLabel && <Text fontSize="xs" color="gray.400">{order.shippingLabel}</Text>}
+                <Text textAlign="right">{order.shippingAddress}</Text>
+                {(order.shippingCity || order.shippingProvince) && (
+                  <Text fontSize="xs" color="gray.500">
+                    {[order.shippingCity, order.shippingProvince, order.shippingPostalCode].filter(Boolean).join(', ')}
+                  </Text>
+                )}
+              </VStack>
+            </HStack>
+          )}
           <HStack justify="space-between">
             <Text color="gray.500">Date</Text>
             <Text>{formatDateTime(order.createdAt)}</Text>

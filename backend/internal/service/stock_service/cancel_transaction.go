@@ -24,7 +24,7 @@ func (s *StockService) CancelTransaction(
 	claims := auth.ClaimsFromContext(ctx)
 	var userID uint32
 	if claims != nil {
-		userID = claims.UserID
+		userID = claims.Identity.IdentityId
 	}
 
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

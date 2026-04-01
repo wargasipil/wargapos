@@ -67,6 +67,7 @@ const (
 
 // IngredientServiceClient is a client for the wargapos.ingredient.v1.IngredientService service.
 type IngredientServiceClient interface {
+	// untuk material
 	CreateMaterial(context.Context, *connect.Request[v1.CreateMaterialRequest]) (*connect.Response[v1.CreateMaterialResponse], error)
 	UpdateMaterial(context.Context, *connect.Request[v1.UpdateMaterialRequest]) (*connect.Response[v1.UpdateMaterialResponse], error)
 	ListMaterial(context.Context, *connect.Request[v1.ListMaterialRequest]) (*connect.Response[v1.ListMaterialResponse], error)
@@ -221,6 +222,7 @@ func (c *ingredientServiceClient) DeleteRecipe(ctx context.Context, req *connect
 // IngredientServiceHandler is an implementation of the wargapos.ingredient.v1.IngredientService
 // service.
 type IngredientServiceHandler interface {
+	// untuk material
 	CreateMaterial(context.Context, *connect.Request[v1.CreateMaterialRequest]) (*connect.Response[v1.CreateMaterialResponse], error)
 	UpdateMaterial(context.Context, *connect.Request[v1.UpdateMaterialRequest]) (*connect.Response[v1.UpdateMaterialResponse], error)
 	ListMaterial(context.Context, *connect.Request[v1.ListMaterialRequest]) (*connect.Response[v1.ListMaterialResponse], error)

@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -85,7 +86,7 @@ type Transaction struct {
 	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	Note            string                 `protobuf:"bytes,4,opt,name=note,proto3" json:"note,omitempty"`
 	Cancelled       bool                   `protobuf:"varint,5,opt,name=cancelled,proto3" json:"cancelled,omitempty"`
-	Items           []*TransactionItem     `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"` // populated in DetailTransaction only
+	Items           []*TransactionItem     `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`
 	Total           float64                `protobuf:"fixed64,7,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -174,8 +175,8 @@ type TransactionItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SkuId         uint32                 `protobuf:"varint,1,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
-	Total         float64                `protobuf:"fixed64,3,opt,name=total,proto3" json:"total,omitempty"`                // required for STOCK_IN (sets PriceVersion)
-	RackId        uint32                 `protobuf:"varint,4,opt,name=rack_id,json=rackId,proto3" json:"rack_id,omitempty"` // optional rack placement
+	Total         float64                `protobuf:"fixed64,3,opt,name=total,proto3" json:"total,omitempty"`
+	RackId        uint32                 `protobuf:"varint,4,opt,name=rack_id,json=rackId,proto3" json:"rack_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -434,8 +435,8 @@ type ListTransactionRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Page            int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize        int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	TransactionType TransactionType        `protobuf:"varint,3,opt,name=transaction_type,json=transactionType,proto3,enum=wargapos.stock.v1.TransactionType" json:"transaction_type,omitempty"` // 0 = all
-	Cancelled       bool                   `protobuf:"varint,4,opt,name=cancelled,proto3" json:"cancelled,omitempty"`                                                                           // filter cancelled only (ignored when false)
+	TransactionType TransactionType        `protobuf:"varint,3,opt,name=transaction_type,json=transactionType,proto3,enum=wargapos.stock.v1.TransactionType" json:"transaction_type,omitempty"`
+	Cancelled       bool                   `protobuf:"varint,4,opt,name=cancelled,proto3" json:"cancelled,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -642,7 +643,7 @@ var File_wargapos_stock_v1_transaction_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\n" +
-	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa9\x02\n" +
+	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xa9\x02\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12M\n" +
 	"\x10transaction_type\x18\x02 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x129\n" +
@@ -656,27 +657,31 @@ const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12#\n" +
 	"\bquantity\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\bquantity\x12\x14\n" +
 	"\x05total\x18\x03 \x01(\x01R\x05total\x12\x17\n" +
-	"\arack_id\x18\x04 \x01(\rR\x06rackId\"\xcb\x01\n" +
+	"\arack_id\x18\x04 \x01(\rR\x06rackId\"\xd6\x01\n" +
 	"\x18CreateTransactionRequest\x12W\n" +
 	"\x10transaction_type\x18\x01 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x0ftransactionType\x12B\n" +
 	"\x05items\x18\x02 \x03(\v2\".wargapos.stock.v1.TransactionItemB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items\x12\x12\n" +
-	"\x04note\x18\x03 \x01(\tR\x04note\"]\n" +
+	"\x04note\x18\x03 \x01(\tR\x04note:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"]\n" +
 	"\x19CreateTransactionResponse\x12@\n" +
-	"\vtransaction\x18\x01 \x01(\v2\x1e.wargapos.stock.v1.TransactionR\vtransaction\"b\n" +
+	"\vtransaction\x18\x01 \x01(\v2\x1e.wargapos.stock.v1.TransactionR\vtransaction\"m\n" +
 	"\x18CancelTransactionRequest\x12.\n" +
 	"\x0etransaction_id\x18\x01 \x01(\x04B\a\xbaH\x042\x02 \x00R\rtransactionId\x12\x16\n" +
-	"\x06reason\x18\x02 \x01(\tR\x06reason\"\x1b\n" +
-	"\x19CancelTransactionResponse\"\xb6\x01\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x1b\n" +
+	"\x19CancelTransactionResponse\"\xc3\x01\n" +
 	"\x16ListTransactionRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12M\n" +
 	"\x10transaction_type\x18\x03 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x12\x1c\n" +
-	"\tcancelled\x18\x04 \x01(\bR\tcancelled\"s\n" +
+	"\tcancelled\x18\x04 \x01(\bR\tcancelled:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"s\n" +
 	"\x17ListTransactionResponse\x12B\n" +
 	"\ftransactions\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.TransactionR\ftransactions\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"3\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"@\n" +
 	"\x18DetailTransactionRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x04B\a\xbaH\x042\x02 \x00R\x02id\"]\n" +
+	"\x02id\x18\x01 \x01(\x04B\a\xbaH\x042\x02 \x00R\x02id:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"]\n" +
 	"\x19DetailTransactionResponse\x12@\n" +
 	"\vtransaction\x18\x01 \x01(\v2\x1e.wargapos.stock.v1.TransactionR\vtransaction*\xaf\x01\n" +
 	"\x0fTransactionType\x12 \n" +

@@ -4,7 +4,7 @@
 
 import type { GenEnum, GenExtension, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { enumDesc, extDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import type { MessageOptions, MethodOptions } from "@bufbuild/protobuf/wkt";
+import type { MessageOptions } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_descriptor } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,7 +12,39 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/rolebased/v1/role.proto.
  */
 export const file_wargapos_rolebased_v1_role: GenFile = /*@__PURE__*/
-  fileDesc("CiB3YXJnYXBvcy9yb2xlYmFzZWQvdjEvcm9sZS5wcm90bxIVd2FyZ2Fwb3Mucm9sZWJhc2VkLnYxIjsKDVJlcXVlc3RQb2xpY3kSKgoFcm9sZXMYASADKA4yGy53YXJnYXBvcy5yb2xlYmFzZWQudjEuUm9sZSI6CgxNZXRob2RQb2xpY3kSKgoFcm9sZXMYASADKA4yGy53YXJnYXBvcy5yb2xlYmFzZWQudjEuUm9sZSqFAQoEUm9sZRIUChBST0xFX1VOU1BFQ0lGSUVEEAASDQoJUk9MRV9ST09UEAESDgoKUk9MRV9BRE1JThACEhMKD1JPTEVfQUNDT1VOVEFOVBADEhgKFFJPTEVfV0FSRUhPVVNFX0FETUlOEAQSGQoVUk9MRV9XQVJFSE9VU0VfTUVNQkVSEAU6agoNbWV0aG9kX3BvbGljeRIeLmdvb2dsZS5wcm90b2J1Zi5NZXRob2RPcHRpb25zGNGGAyABKAsyIy53YXJnYXBvcy5yb2xlYmFzZWQudjEuTWV0aG9kUG9saWN5UgxtZXRob2RQb2xpY3k6bgoOcmVxdWVzdF9wb2xpY3kSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0YYDIAEoCzIkLndhcmdhcG9zLnJvbGViYXNlZC52MS5SZXF1ZXN0UG9saWN5Ug1yZXF1ZXN0UG9saWN5QjhaNndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3JvbGViYXNlZC92MTtyb2xlYmFzZWR2MWIGcHJvdG8z", [file_google_protobuf_descriptor]);
+  fileDesc("CiB3YXJnYXBvcy9yb2xlYmFzZWQvdjEvcm9sZS5wcm90bxIVd2FyZ2Fwb3Mucm9sZWJhc2VkLnYxIpUBCghJZGVudGl0eRITCgtpZGVudGl0eV9pZBgBIAEoDRIpCgRyb2xlGAIgASgOMhsud2FyZ2Fwb3Mucm9sZWJhc2VkLnYxLlJvbGUSOgoNaWRlbnRpdHlfdHlwZRgDIAEoDjIjLndhcmdhcG9zLnJvbGViYXNlZC52MS5JZGVudGl0eVR5cGUSDQoFYWdlbnQYBCABKAkibgoNUmVxdWVzdFBvbGljeRIqCgVyb2xlcxgBIAMoDjIbLndhcmdhcG9zLnJvbGViYXNlZC52MS5Sb2xlEhsKE2FsbG93X2F1dGhlbnRpY2F0ZWQYAiABKAgSFAoMYWxsb3dfcHVibGljGAMgASgIKpcBCgRSb2xlEhQKEFJPTEVfVU5TUEVDSUZJRUQQABINCglST0xFX1JPT1QQARIOCgpST0xFX0FETUlOEAISEwoPUk9MRV9BQ0NPVU5UQU5UEAMSEAoMUk9MRV9DQVNISUVSEAQSGAoUUk9MRV9XQVJFSE9VU0VfQURNSU4QBRIZChVST0xFX1dBUkVIT1VTRV9NRU1CRVIQBipnCgxJZGVudGl0eVR5cGUSHQoZSURFTlRJVFlfVFlQRV9VTlNQRUNJRklFRBAAEhgKFElERU5USVRZX1RZUEVfU1lTVEVNEAESHgoaSURFTlRJVFlfVFlQRV9HRU5FUkFMX1VTRVIQAjpuCg5yZXF1ZXN0X3BvbGljeRIfLmdvb2dsZS5wcm90b2J1Zi5NZXNzYWdlT3B0aW9ucxjRhgMgASgLMiQud2FyZ2Fwb3Mucm9sZWJhc2VkLnYxLlJlcXVlc3RQb2xpY3lSDXJlcXVlc3RQb2xpY3lCOFo2d2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvcm9sZWJhc2VkL3YxO3JvbGViYXNlZHYxYgZwcm90bzM", [file_google_protobuf_descriptor]);
+
+/**
+ * @generated from message wargapos.rolebased.v1.Identity
+ */
+export type Identity = Message<"wargapos.rolebased.v1.Identity"> & {
+  /**
+   * @generated from field: uint32 identity_id = 1;
+   */
+  identityId: number;
+
+  /**
+   * @generated from field: wargapos.rolebased.v1.Role role = 2;
+   */
+  role: Role;
+
+  /**
+   * @generated from field: wargapos.rolebased.v1.IdentityType identity_type = 3;
+   */
+  identityType: IdentityType;
+
+  /**
+   * @generated from field: string agent = 4;
+   */
+  agent: string;
+};
+
+/**
+ * Describes the message wargapos.rolebased.v1.Identity.
+ * Use `create(IdentitySchema)` to create a new message.
+ */
+export const IdentitySchema: GenMessage<Identity> = /*@__PURE__*/
+  messageDesc(file_wargapos_rolebased_v1_role, 0);
 
 /**
  * @generated from message wargapos.rolebased.v1.RequestPolicy
@@ -22,6 +54,16 @@ export type RequestPolicy = Message<"wargapos.rolebased.v1.RequestPolicy"> & {
    * @generated from field: repeated wargapos.rolebased.v1.Role roles = 1;
    */
   roles: Role[];
+
+  /**
+   * @generated from field: bool allow_authenticated = 2;
+   */
+  allowAuthenticated: boolean;
+
+  /**
+   * @generated from field: bool allow_public = 3;
+   */
+  allowPublic: boolean;
 };
 
 /**
@@ -29,23 +71,6 @@ export type RequestPolicy = Message<"wargapos.rolebased.v1.RequestPolicy"> & {
  * Use `create(RequestPolicySchema)` to create a new message.
  */
 export const RequestPolicySchema: GenMessage<RequestPolicy> = /*@__PURE__*/
-  messageDesc(file_wargapos_rolebased_v1_role, 0);
-
-/**
- * @generated from message wargapos.rolebased.v1.MethodPolicy
- */
-export type MethodPolicy = Message<"wargapos.rolebased.v1.MethodPolicy"> & {
-  /**
-   * @generated from field: repeated wargapos.rolebased.v1.Role roles = 1;
-   */
-  roles: Role[];
-};
-
-/**
- * Describes the message wargapos.rolebased.v1.MethodPolicy.
- * Use `create(MethodPolicySchema)` to create a new message.
- */
-export const MethodPolicySchema: GenMessage<MethodPolicy> = /*@__PURE__*/
   messageDesc(file_wargapos_rolebased_v1_role, 1);
 
 /**
@@ -73,14 +98,19 @@ export enum Role {
   ACCOUNTANT = 3,
 
   /**
-   * @generated from enum value: ROLE_WAREHOUSE_ADMIN = 4;
+   * @generated from enum value: ROLE_CASHIER = 4;
    */
-  WAREHOUSE_ADMIN = 4,
+  CASHIER = 4,
 
   /**
-   * @generated from enum value: ROLE_WAREHOUSE_MEMBER = 5;
+   * @generated from enum value: ROLE_WAREHOUSE_ADMIN = 5;
    */
-  WAREHOUSE_MEMBER = 5,
+  WAREHOUSE_ADMIN = 5,
+
+  /**
+   * @generated from enum value: ROLE_WAREHOUSE_MEMBER = 6;
+   */
+  WAREHOUSE_MEMBER = 6,
 }
 
 /**
@@ -90,14 +120,34 @@ export const RoleSchema: GenEnum<Role> = /*@__PURE__*/
   enumDesc(file_wargapos_rolebased_v1_role, 0);
 
 /**
- * @generated from extension: wargapos.rolebased.v1.MethodPolicy method_policy = 50001;
+ * @generated from enum wargapos.rolebased.v1.IdentityType
  */
-export const method_policy: GenExtension<MethodOptions, MethodPolicy> = /*@__PURE__*/
-  extDesc(file_wargapos_rolebased_v1_role, 0);
+export enum IdentityType {
+  /**
+   * @generated from enum value: IDENTITY_TYPE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: IDENTITY_TYPE_SYSTEM = 1;
+   */
+  SYSTEM = 1,
+
+  /**
+   * @generated from enum value: IDENTITY_TYPE_GENERAL_USER = 2;
+   */
+  GENERAL_USER = 2,
+}
+
+/**
+ * Describes the enum wargapos.rolebased.v1.IdentityType.
+ */
+export const IdentityTypeSchema: GenEnum<IdentityType> = /*@__PURE__*/
+  enumDesc(file_wargapos_rolebased_v1_role, 1);
 
 /**
  * @generated from extension: wargapos.rolebased.v1.RequestPolicy request_policy = 50001;
  */
 export const request_policy: GenExtension<MessageOptions, RequestPolicy> = /*@__PURE__*/
-  extDesc(file_wargapos_rolebased_v1_role, 1);
+  extDesc(file_wargapos_rolebased_v1_role, 0);
 

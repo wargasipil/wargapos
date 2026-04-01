@@ -9,7 +9,7 @@ import (
 type DefaultServiceClientOption connect.Option
 
 func NewDefaultServiceClientOption() DefaultServiceClientOption {
-	tokenInterceptor := auth.NewAuthTokenInterceptor()
+	tokenInterceptor := auth.NewAuthTokenInterceptor([]byte{})
 	return connect.WithInterceptors(
 		tokenInterceptor,
 	)

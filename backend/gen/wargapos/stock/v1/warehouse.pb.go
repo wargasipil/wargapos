@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -567,7 +568,7 @@ var File_wargapos_stock_v1_warehouse_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_warehouse_proto_rawDesc = "" +
 	"\n" +
-	"!wargapos/stock/v1/warehouse.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbf\x01\n" +
+	"!wargapos/stock/v1/warehouse.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xbf\x01\n" +
 	"\tWarehouse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x129\n" +
@@ -575,32 +576,37 @@ const file_wargapos_stock_v1_warehouse_proto_rawDesc = "" +
 	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x18\n" +
-	"\adeleted\x18\x05 \x01(\bR\adeleted\"8\n" +
+	"\adeleted\x18\x05 \x01(\bR\adeleted\"C\n" +
 	"\x16CreateWarehouseRequest\x12\x1e\n" +
 	"\x04name\x18\x01 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\"U\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"U\n" +
 	"\x17CreateWarehouseResponse\x12:\n" +
-	"\twarehouse\x18\x01 \x01(\v2\x1c.wargapos.stock.v1.WarehouseR\twarehouse\"Q\n" +
+	"\twarehouse\x18\x01 \x01(\v2\x1c.wargapos.stock.v1.WarehouseR\twarehouse\"\\\n" +
 	"\x16UpdateWarehouseRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\"U\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"U\n" +
 	"\x17UpdateWarehouseResponse\x12:\n" +
-	"\twarehouse\x18\x01 \x01(\v2\x1c.wargapos.stock.v1.WarehouseR\twarehouse\"1\n" +
+	"\twarehouse\x18\x01 \x01(\v2\x1c.wargapos.stock.v1.WarehouseR\twarehouse\"<\n" +
 	"\x16DeleteWarehouseRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\"\x19\n" +
-	"\x17DeleteWarehouseResponse\"_\n" +
+	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x19\n" +
+	"\x17DeleteWarehouseResponse\"l\n" +
 	"\x14ListWarehouseRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x16\n" +
-	"\x06search\x18\x03 \x01(\tR\x06search\"k\n" +
+	"\x06search\x18\x03 \x01(\tR\x06search:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"k\n" +
 	"\x15ListWarehouseResponse\x12<\n" +
 	"\n" +
 	"warehouses\x18\x01 \x03(\v2\x1c.wargapos.stock.v1.WarehouseR\n" +
 	"warehouses\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"1\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\">\n" +
 	"\x13GetWarehouseRequest\x12\x1a\n" +
-	"\x03ids\x18\x01 \x03(\rB\b\xbaH\x05\x92\x01\x02\b\x01R\x03ids\"\xcc\x01\n" +
+	"\x03ids\x18\x01 \x03(\rB\b\xbaH\x05\x92\x01\x02\b\x01R\x03ids:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"\xcc\x01\n" +
 	"\x14GetWarehouseResponse\x12W\n" +
 	"\n" +
 	"warehouses\x18\x01 \x03(\v27.wargapos.stock.v1.GetWarehouseResponse.WarehousesEntryR\n" +

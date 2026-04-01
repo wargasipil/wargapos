@@ -13,7 +13,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
-	_ "wargapos/backend/gen/wargapos/rolebased/v1"
+	v1 "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -23,65 +23,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Role int32
-
-const (
-	Role_ROLE_UNSPECIFIED Role = 0
-	Role_ROLE_ADMIN       Role = 1
-	Role_ROLE_CASHIER     Role = 2
-	Role_ROLE_MANAGER     Role = 3
-)
-
-// Enum value maps for Role.
-var (
-	Role_name = map[int32]string{
-		0: "ROLE_UNSPECIFIED",
-		1: "ROLE_ADMIN",
-		2: "ROLE_CASHIER",
-		3: "ROLE_MANAGER",
-	}
-	Role_value = map[string]int32{
-		"ROLE_UNSPECIFIED": 0,
-		"ROLE_ADMIN":       1,
-		"ROLE_CASHIER":     2,
-		"ROLE_MANAGER":     3,
-	}
-)
-
-func (x Role) Enum() *Role {
-	p := new(Role)
-	*p = x
-	return p
-}
-
-func (x Role) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Role) Descriptor() protoreflect.EnumDescriptor {
-	return file_wargapos_user_v1_user_proto_enumTypes[0].Descriptor()
-}
-
-func (Role) Type() protoreflect.EnumType {
-	return &file_wargapos_user_v1_user_proto_enumTypes[0]
-}
-
-func (x Role) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Role.Descriptor instead.
-func (Role) EnumDescriptor() ([]byte, []int) {
-	return file_wargapos_user_v1_user_proto_rawDescGZIP(), []int{0}
-}
-
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
 	FullName      string                 `protobuf:"bytes,3,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
 	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
-	Role          Role                   `protobuf:"varint,5,opt,name=role,proto3,enum=wargapos.user.v1.Role" json:"role,omitempty"`
+	Role          v1.Role                `protobuf:"varint,5,opt,name=role,proto3,enum=wargapos.rolebased.v1.Role" json:"role,omitempty"`
 	IsActive      bool                   `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	ImageUrl      string                 `protobuf:"bytes,7,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -146,11 +94,11 @@ func (x *User) GetEmail() string {
 	return ""
 }
 
-func (x *User) GetRole() Role {
+func (x *User) GetRole() v1.Role {
 	if x != nil {
 		return x.Role
 	}
-	return Role_ROLE_UNSPECIFIED
+	return v1.Role(0)
 }
 
 func (x *User) GetIsActive() bool {
@@ -173,7 +121,7 @@ type CreateUserRequest struct {
 	FullName      string                 `protobuf:"bytes,2,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	Password      string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
-	Role          Role                   `protobuf:"varint,5,opt,name=role,proto3,enum=wargapos.user.v1.Role" json:"role,omitempty"`
+	Role          v1.Role                `protobuf:"varint,5,opt,name=role,proto3,enum=wargapos.rolebased.v1.Role" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -236,11 +184,11 @@ func (x *CreateUserRequest) GetPassword() string {
 	return ""
 }
 
-func (x *CreateUserRequest) GetRole() Role {
+func (x *CreateUserRequest) GetRole() v1.Role {
 	if x != nil {
 		return x.Role
 	}
-	return Role_ROLE_UNSPECIFIED
+	return v1.Role(0)
 }
 
 type CreateUserResponse struct {
@@ -380,7 +328,7 @@ type UpdateUserRequest struct {
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	FullName      string                 `protobuf:"bytes,2,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
-	Role          Role                   `protobuf:"varint,4,opt,name=role,proto3,enum=wargapos.user.v1.Role" json:"role,omitempty"`
+	Role          v1.Role                `protobuf:"varint,4,opt,name=role,proto3,enum=wargapos.rolebased.v1.Role" json:"role,omitempty"`
 	IsActive      bool                   `protobuf:"varint,5,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -437,11 +385,11 @@ func (x *UpdateUserRequest) GetEmail() string {
 	return ""
 }
 
-func (x *UpdateUserRequest) GetRole() Role {
+func (x *UpdateUserRequest) GetRole() v1.Role {
 	if x != nil {
 		return x.Role
 	}
-	return Role_ROLE_UNSPECIFIED
+	return v1.Role(0)
 }
 
 func (x *UpdateUserRequest) GetIsActive() bool {
@@ -771,58 +719,56 @@ var File_wargapos_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/user/v1/user.proto\x12\x10wargapos.user.v1\x1a\x1bbuf/validate/validate.proto\x1a wargapos/rolebased/v1/role.proto\"\xcb\x01\n" +
+	"\x1bwargapos/user/v1/user.proto\x12\x10wargapos.user.v1\x1a\x1bbuf/validate/validate.proto\x1a wargapos/rolebased/v1/role.proto\"\xd0\x01\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x1b\n" +
 	"\tfull_name\x18\x03 \x01(\tR\bfullName\x12\x14\n" +
-	"\x05email\x18\x04 \x01(\tR\x05email\x12*\n" +
-	"\x04role\x18\x05 \x01(\x0e2\x16.wargapos.user.v1.RoleR\x04role\x12\x1b\n" +
+	"\x05email\x18\x04 \x01(\tR\x05email\x12/\n" +
+	"\x04role\x18\x05 \x01(\x0e2\x1b.wargapos.rolebased.v1.RoleR\x04role\x12\x1b\n" +
 	"\tis_active\x18\x06 \x01(\bR\bisActive\x12\x1b\n" +
-	"\timage_url\x18\a \x01(\tR\bimageUrl\"\xda\x01\n" +
+	"\timage_url\x18\a \x01(\tR\bimageUrl\"\xe9\x01\n" +
 	"\x11CreateUserRequest\x12%\n" +
 	"\busername\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x182R\busername\x12$\n" +
 	"\tfull_name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bfullName\x12\x1d\n" +
 	"\x05email\x18\x03 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12#\n" +
-	"\bpassword\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x06R\bpassword\x124\n" +
-	"\x04role\x18\x05 \x01(\x0e2\x16.wargapos.user.v1.RoleB\b\xbaH\x05\x82\x01\x02 \x00R\x04role\"@\n" +
+	"\bpassword\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x10\x06R\bpassword\x129\n" +
+	"\x04role\x18\x05 \x01(\x0e2\x1b.wargapos.rolebased.v1.RoleB\b\xbaH\x05\x82\x01\x02 \x00R\x04role:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"@\n" +
 	"\x12CreateUserResponse\x12*\n" +
-	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\",\n" +
+	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\"4\n" +
 	"\x0eGetUserRequest\x12\x1a\n" +
-	"\x03ids\x18\x01 \x03(\rB\b\xbaH\x05\x92\x01\x02\b\x01R\x03ids\"\xa7\x01\n" +
+	"\x03ids\x18\x01 \x03(\rB\b\xbaH\x05\x92\x01\x02\b\x01R\x03ids:\x06\x8a\xb5\x18\x02\x10\x01\"\xa7\x01\n" +
 	"\x0fGetUserResponse\x12B\n" +
 	"\x05users\x18\x01 \x03(\v2,.wargapos.user.v1.GetUserResponse.UsersEntryR\x05users\x1aP\n" +
 	"\n" +
 	"UsersEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\rR\x03key\x12,\n" +
-	"\x05value\x18\x02 \x01(\v2\x16.wargapos.user.v1.UserR\x05value:\x028\x01\"\xa8\x01\n" +
+	"\x05value\x18\x02 \x01(\v2\x16.wargapos.user.v1.UserR\x05value:\x028\x01\"\xb7\x01\n" +
 	"\x11UpdateUserRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12\x1b\n" +
 	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12*\n" +
-	"\x04role\x18\x04 \x01(\x0e2\x16.wargapos.user.v1.RoleR\x04role\x12\x1b\n" +
-	"\tis_active\x18\x05 \x01(\bR\bisActive\"@\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12/\n" +
+	"\x04role\x18\x04 \x01(\x0e2\x1b.wargapos.rolebased.v1.RoleR\x04role\x12\x1b\n" +
+	"\tis_active\x18\x05 \x01(\bR\bisActive:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"@\n" +
 	"\x12UpdateUserResponse\x12*\n" +
-	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\",\n" +
+	"\x04user\x18\x01 \x01(\v2\x16.wargapos.user.v1.UserR\x04user\"6\n" +
 	"\x11DeleteUserRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\"\x14\n" +
-	"\x12DeleteUserResponse\"C\n" +
+	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"\x14\n" +
+	"\x12DeleteUserResponse\"M\n" +
 	"\x10ListUsersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\"W\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"W\n" +
 	"\x11ListUsersResponse\x12,\n" +
 	"\x05users\x18\x01 \x03(\v2\x16.wargapos.user.v1.UserR\x05users\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\"w\n" +
 	"\x15ChangePasswordRequest\x122\n" +
 	"\x10current_password\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x0fcurrentPassword\x12*\n" +
 	"\fnew_password\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x06R\vnewPassword\"\x18\n" +
-	"\x16ChangePasswordResponse*P\n" +
-	"\x04Role\x12\x14\n" +
-	"\x10ROLE_UNSPECIFIED\x10\x00\x12\x0e\n" +
-	"\n" +
-	"ROLE_ADMIN\x10\x01\x12\x10\n" +
-	"\fROLE_CASHIER\x10\x02\x12\x10\n" +
-	"\fROLE_MANAGER\x10\x032\xad\x04\n" +
+	"\x16ChangePasswordResponse2\xa3\x04\n" +
 	"\vUserService\x12W\n" +
 	"\n" +
 	"CreateUser\x12#.wargapos.user.v1.CreateUserRequest\x1a$.wargapos.user.v1.CreateUserResponse\x12N\n" +
@@ -830,9 +776,8 @@ const file_wargapos_user_v1_user_proto_rawDesc = "" +
 	"\n" +
 	"UpdateUser\x12#.wargapos.user.v1.UpdateUserRequest\x1a$.wargapos.user.v1.UpdateUserResponse\x12W\n" +
 	"\n" +
-	"DeleteUser\x12#.wargapos.user.v1.DeleteUserRequest\x1a$.wargapos.user.v1.DeleteUserResponse\x12^\n" +
-	"\tListUsers\x12\".wargapos.user.v1.ListUsersRequest\x1a#.wargapos.user.v1.ListUsersResponse\"\b\x8a\xb5\x18\x04\n" +
-	"\x02\x01\x02\x12c\n" +
+	"DeleteUser\x12#.wargapos.user.v1.DeleteUserRequest\x1a$.wargapos.user.v1.DeleteUserResponse\x12T\n" +
+	"\tListUsers\x12\".wargapos.user.v1.ListUsersRequest\x1a#.wargapos.user.v1.ListUsersResponse\x12c\n" +
 	"\x0eChangePassword\x12'.wargapos.user.v1.ChangePasswordRequest\x1a(.wargapos.user.v1.ChangePasswordResponseB.Z,wargapos/backend/gen/wargapos/user/v1;userv1b\x06proto3"
 
 var (
@@ -847,46 +792,45 @@ func file_wargapos_user_v1_user_proto_rawDescGZIP() []byte {
 	return file_wargapos_user_v1_user_proto_rawDescData
 }
 
-var file_wargapos_user_v1_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wargapos_user_v1_user_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_wargapos_user_v1_user_proto_goTypes = []any{
-	(Role)(0),                      // 0: wargapos.user.v1.Role
-	(*User)(nil),                   // 1: wargapos.user.v1.User
-	(*CreateUserRequest)(nil),      // 2: wargapos.user.v1.CreateUserRequest
-	(*CreateUserResponse)(nil),     // 3: wargapos.user.v1.CreateUserResponse
-	(*GetUserRequest)(nil),         // 4: wargapos.user.v1.GetUserRequest
-	(*GetUserResponse)(nil),        // 5: wargapos.user.v1.GetUserResponse
-	(*UpdateUserRequest)(nil),      // 6: wargapos.user.v1.UpdateUserRequest
-	(*UpdateUserResponse)(nil),     // 7: wargapos.user.v1.UpdateUserResponse
-	(*DeleteUserRequest)(nil),      // 8: wargapos.user.v1.DeleteUserRequest
-	(*DeleteUserResponse)(nil),     // 9: wargapos.user.v1.DeleteUserResponse
-	(*ListUsersRequest)(nil),       // 10: wargapos.user.v1.ListUsersRequest
-	(*ListUsersResponse)(nil),      // 11: wargapos.user.v1.ListUsersResponse
-	(*ChangePasswordRequest)(nil),  // 12: wargapos.user.v1.ChangePasswordRequest
-	(*ChangePasswordResponse)(nil), // 13: wargapos.user.v1.ChangePasswordResponse
-	nil,                            // 14: wargapos.user.v1.GetUserResponse.UsersEntry
+	(*User)(nil),                   // 0: wargapos.user.v1.User
+	(*CreateUserRequest)(nil),      // 1: wargapos.user.v1.CreateUserRequest
+	(*CreateUserResponse)(nil),     // 2: wargapos.user.v1.CreateUserResponse
+	(*GetUserRequest)(nil),         // 3: wargapos.user.v1.GetUserRequest
+	(*GetUserResponse)(nil),        // 4: wargapos.user.v1.GetUserResponse
+	(*UpdateUserRequest)(nil),      // 5: wargapos.user.v1.UpdateUserRequest
+	(*UpdateUserResponse)(nil),     // 6: wargapos.user.v1.UpdateUserResponse
+	(*DeleteUserRequest)(nil),      // 7: wargapos.user.v1.DeleteUserRequest
+	(*DeleteUserResponse)(nil),     // 8: wargapos.user.v1.DeleteUserResponse
+	(*ListUsersRequest)(nil),       // 9: wargapos.user.v1.ListUsersRequest
+	(*ListUsersResponse)(nil),      // 10: wargapos.user.v1.ListUsersResponse
+	(*ChangePasswordRequest)(nil),  // 11: wargapos.user.v1.ChangePasswordRequest
+	(*ChangePasswordResponse)(nil), // 12: wargapos.user.v1.ChangePasswordResponse
+	nil,                            // 13: wargapos.user.v1.GetUserResponse.UsersEntry
+	(v1.Role)(0),                   // 14: wargapos.rolebased.v1.Role
 }
 var file_wargapos_user_v1_user_proto_depIdxs = []int32{
-	0,  // 0: wargapos.user.v1.User.role:type_name -> wargapos.user.v1.Role
-	0,  // 1: wargapos.user.v1.CreateUserRequest.role:type_name -> wargapos.user.v1.Role
-	1,  // 2: wargapos.user.v1.CreateUserResponse.user:type_name -> wargapos.user.v1.User
-	14, // 3: wargapos.user.v1.GetUserResponse.users:type_name -> wargapos.user.v1.GetUserResponse.UsersEntry
-	0,  // 4: wargapos.user.v1.UpdateUserRequest.role:type_name -> wargapos.user.v1.Role
-	1,  // 5: wargapos.user.v1.UpdateUserResponse.user:type_name -> wargapos.user.v1.User
-	1,  // 6: wargapos.user.v1.ListUsersResponse.users:type_name -> wargapos.user.v1.User
-	1,  // 7: wargapos.user.v1.GetUserResponse.UsersEntry.value:type_name -> wargapos.user.v1.User
-	2,  // 8: wargapos.user.v1.UserService.CreateUser:input_type -> wargapos.user.v1.CreateUserRequest
-	4,  // 9: wargapos.user.v1.UserService.GetUser:input_type -> wargapos.user.v1.GetUserRequest
-	6,  // 10: wargapos.user.v1.UserService.UpdateUser:input_type -> wargapos.user.v1.UpdateUserRequest
-	8,  // 11: wargapos.user.v1.UserService.DeleteUser:input_type -> wargapos.user.v1.DeleteUserRequest
-	10, // 12: wargapos.user.v1.UserService.ListUsers:input_type -> wargapos.user.v1.ListUsersRequest
-	12, // 13: wargapos.user.v1.UserService.ChangePassword:input_type -> wargapos.user.v1.ChangePasswordRequest
-	3,  // 14: wargapos.user.v1.UserService.CreateUser:output_type -> wargapos.user.v1.CreateUserResponse
-	5,  // 15: wargapos.user.v1.UserService.GetUser:output_type -> wargapos.user.v1.GetUserResponse
-	7,  // 16: wargapos.user.v1.UserService.UpdateUser:output_type -> wargapos.user.v1.UpdateUserResponse
-	9,  // 17: wargapos.user.v1.UserService.DeleteUser:output_type -> wargapos.user.v1.DeleteUserResponse
-	11, // 18: wargapos.user.v1.UserService.ListUsers:output_type -> wargapos.user.v1.ListUsersResponse
-	13, // 19: wargapos.user.v1.UserService.ChangePassword:output_type -> wargapos.user.v1.ChangePasswordResponse
+	14, // 0: wargapos.user.v1.User.role:type_name -> wargapos.rolebased.v1.Role
+	14, // 1: wargapos.user.v1.CreateUserRequest.role:type_name -> wargapos.rolebased.v1.Role
+	0,  // 2: wargapos.user.v1.CreateUserResponse.user:type_name -> wargapos.user.v1.User
+	13, // 3: wargapos.user.v1.GetUserResponse.users:type_name -> wargapos.user.v1.GetUserResponse.UsersEntry
+	14, // 4: wargapos.user.v1.UpdateUserRequest.role:type_name -> wargapos.rolebased.v1.Role
+	0,  // 5: wargapos.user.v1.UpdateUserResponse.user:type_name -> wargapos.user.v1.User
+	0,  // 6: wargapos.user.v1.ListUsersResponse.users:type_name -> wargapos.user.v1.User
+	0,  // 7: wargapos.user.v1.GetUserResponse.UsersEntry.value:type_name -> wargapos.user.v1.User
+	1,  // 8: wargapos.user.v1.UserService.CreateUser:input_type -> wargapos.user.v1.CreateUserRequest
+	3,  // 9: wargapos.user.v1.UserService.GetUser:input_type -> wargapos.user.v1.GetUserRequest
+	5,  // 10: wargapos.user.v1.UserService.UpdateUser:input_type -> wargapos.user.v1.UpdateUserRequest
+	7,  // 11: wargapos.user.v1.UserService.DeleteUser:input_type -> wargapos.user.v1.DeleteUserRequest
+	9,  // 12: wargapos.user.v1.UserService.ListUsers:input_type -> wargapos.user.v1.ListUsersRequest
+	11, // 13: wargapos.user.v1.UserService.ChangePassword:input_type -> wargapos.user.v1.ChangePasswordRequest
+	2,  // 14: wargapos.user.v1.UserService.CreateUser:output_type -> wargapos.user.v1.CreateUserResponse
+	4,  // 15: wargapos.user.v1.UserService.GetUser:output_type -> wargapos.user.v1.GetUserResponse
+	6,  // 16: wargapos.user.v1.UserService.UpdateUser:output_type -> wargapos.user.v1.UpdateUserResponse
+	8,  // 17: wargapos.user.v1.UserService.DeleteUser:output_type -> wargapos.user.v1.DeleteUserResponse
+	10, // 18: wargapos.user.v1.UserService.ListUsers:output_type -> wargapos.user.v1.ListUsersResponse
+	12, // 19: wargapos.user.v1.UserService.ChangePassword:output_type -> wargapos.user.v1.ChangePasswordResponse
 	14, // [14:20] is the sub-list for method output_type
 	8,  // [8:14] is the sub-list for method input_type
 	8,  // [8:8] is the sub-list for extension type_name
@@ -904,14 +848,13 @@ func file_wargapos_user_v1_user_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_user_v1_user_proto_rawDesc), len(file_wargapos_user_v1_user_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_wargapos_user_v1_user_proto_goTypes,
 		DependencyIndexes: file_wargapos_user_v1_user_proto_depIdxs,
-		EnumInfos:         file_wargapos_user_v1_user_proto_enumTypes,
 		MessageInfos:      file_wargapos_user_v1_user_proto_msgTypes,
 	}.Build()
 	File_wargapos_user_v1_user_proto = out.File

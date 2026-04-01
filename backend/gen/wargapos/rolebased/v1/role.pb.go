@@ -29,8 +29,9 @@ const (
 	Role_ROLE_ROOT             Role = 1
 	Role_ROLE_ADMIN            Role = 2
 	Role_ROLE_ACCOUNTANT       Role = 3
-	Role_ROLE_WAREHOUSE_ADMIN  Role = 4
-	Role_ROLE_WAREHOUSE_MEMBER Role = 5
+	Role_ROLE_CASHIER          Role = 4
+	Role_ROLE_WAREHOUSE_ADMIN  Role = 5
+	Role_ROLE_WAREHOUSE_MEMBER Role = 6
 )
 
 // Enum value maps for Role.
@@ -40,16 +41,18 @@ var (
 		1: "ROLE_ROOT",
 		2: "ROLE_ADMIN",
 		3: "ROLE_ACCOUNTANT",
-		4: "ROLE_WAREHOUSE_ADMIN",
-		5: "ROLE_WAREHOUSE_MEMBER",
+		4: "ROLE_CASHIER",
+		5: "ROLE_WAREHOUSE_ADMIN",
+		6: "ROLE_WAREHOUSE_MEMBER",
 	}
 	Role_value = map[string]int32{
 		"ROLE_UNSPECIFIED":      0,
 		"ROLE_ROOT":             1,
 		"ROLE_ADMIN":            2,
 		"ROLE_ACCOUNTANT":       3,
-		"ROLE_WAREHOUSE_ADMIN":  4,
-		"ROLE_WAREHOUSE_MEMBER": 5,
+		"ROLE_CASHIER":          4,
+		"ROLE_WAREHOUSE_ADMIN":  5,
+		"ROLE_WAREHOUSE_MEMBER": 6,
 	}
 )
 
@@ -80,16 +83,135 @@ func (Role) EnumDescriptor() ([]byte, []int) {
 	return file_wargapos_rolebased_v1_role_proto_rawDescGZIP(), []int{0}
 }
 
-type RequestPolicy struct {
+type IdentityType int32
+
+const (
+	IdentityType_IDENTITY_TYPE_UNSPECIFIED  IdentityType = 0
+	IdentityType_IDENTITY_TYPE_SYSTEM       IdentityType = 1
+	IdentityType_IDENTITY_TYPE_GENERAL_USER IdentityType = 2
+)
+
+// Enum value maps for IdentityType.
+var (
+	IdentityType_name = map[int32]string{
+		0: "IDENTITY_TYPE_UNSPECIFIED",
+		1: "IDENTITY_TYPE_SYSTEM",
+		2: "IDENTITY_TYPE_GENERAL_USER",
+	}
+	IdentityType_value = map[string]int32{
+		"IDENTITY_TYPE_UNSPECIFIED":  0,
+		"IDENTITY_TYPE_SYSTEM":       1,
+		"IDENTITY_TYPE_GENERAL_USER": 2,
+	}
+)
+
+func (x IdentityType) Enum() *IdentityType {
+	p := new(IdentityType)
+	*p = x
+	return p
+}
+
+func (x IdentityType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IdentityType) Descriptor() protoreflect.EnumDescriptor {
+	return file_wargapos_rolebased_v1_role_proto_enumTypes[1].Descriptor()
+}
+
+func (IdentityType) Type() protoreflect.EnumType {
+	return &file_wargapos_rolebased_v1_role_proto_enumTypes[1]
+}
+
+func (x IdentityType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use IdentityType.Descriptor instead.
+func (IdentityType) EnumDescriptor() ([]byte, []int) {
+	return file_wargapos_rolebased_v1_role_proto_rawDescGZIP(), []int{1}
+}
+
+type Identity struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Roles         []Role                 `protobuf:"varint,1,rep,packed,name=roles,proto3,enum=wargapos.rolebased.v1.Role" json:"roles,omitempty"`
+	IdentityId    uint32                 `protobuf:"varint,1,opt,name=identity_id,json=identityId,proto3" json:"identity_id,omitempty"`
+	Role          Role                   `protobuf:"varint,2,opt,name=role,proto3,enum=wargapos.rolebased.v1.Role" json:"role,omitempty"`
+	IdentityType  IdentityType           `protobuf:"varint,3,opt,name=identity_type,json=identityType,proto3,enum=wargapos.rolebased.v1.IdentityType" json:"identity_type,omitempty"`
+	Agent         string                 `protobuf:"bytes,4,opt,name=agent,proto3" json:"agent,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
+func (x *Identity) Reset() {
+	*x = Identity{}
+	mi := &file_wargapos_rolebased_v1_role_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Identity) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Identity) ProtoMessage() {}
+
+func (x *Identity) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_rolebased_v1_role_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Identity.ProtoReflect.Descriptor instead.
+func (*Identity) Descriptor() ([]byte, []int) {
+	return file_wargapos_rolebased_v1_role_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Identity) GetIdentityId() uint32 {
+	if x != nil {
+		return x.IdentityId
+	}
+	return 0
+}
+
+func (x *Identity) GetRole() Role {
+	if x != nil {
+		return x.Role
+	}
+	return Role_ROLE_UNSPECIFIED
+}
+
+func (x *Identity) GetIdentityType() IdentityType {
+	if x != nil {
+		return x.IdentityType
+	}
+	return IdentityType_IDENTITY_TYPE_UNSPECIFIED
+}
+
+func (x *Identity) GetAgent() string {
+	if x != nil {
+		return x.Agent
+	}
+	return ""
+}
+
+type RequestPolicy struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Roles              []Role                 `protobuf:"varint,1,rep,packed,name=roles,proto3,enum=wargapos.rolebased.v1.Role" json:"roles,omitempty"`
+	AllowAuthenticated bool                   `protobuf:"varint,2,opt,name=allow_authenticated,json=allowAuthenticated,proto3" json:"allow_authenticated,omitempty"`
+	AllowPublic        bool                   `protobuf:"varint,3,opt,name=allow_public,json=allowPublic,proto3" json:"allow_public,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
 func (x *RequestPolicy) Reset() {
 	*x = RequestPolicy{}
-	mi := &file_wargapos_rolebased_v1_role_proto_msgTypes[0]
+	mi := &file_wargapos_rolebased_v1_role_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -101,7 +223,7 @@ func (x *RequestPolicy) String() string {
 func (*RequestPolicy) ProtoMessage() {}
 
 func (x *RequestPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_rolebased_v1_role_proto_msgTypes[0]
+	mi := &file_wargapos_rolebased_v1_role_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -114,7 +236,7 @@ func (x *RequestPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RequestPolicy.ProtoReflect.Descriptor instead.
 func (*RequestPolicy) Descriptor() ([]byte, []int) {
-	return file_wargapos_rolebased_v1_role_proto_rawDescGZIP(), []int{0}
+	return file_wargapos_rolebased_v1_role_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *RequestPolicy) GetRoles() []Role {
@@ -124,59 +246,21 @@ func (x *RequestPolicy) GetRoles() []Role {
 	return nil
 }
 
-type MethodPolicy struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Roles         []Role                 `protobuf:"varint,1,rep,packed,name=roles,proto3,enum=wargapos.rolebased.v1.Role" json:"roles,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MethodPolicy) Reset() {
-	*x = MethodPolicy{}
-	mi := &file_wargapos_rolebased_v1_role_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MethodPolicy) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MethodPolicy) ProtoMessage() {}
-
-func (x *MethodPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_rolebased_v1_role_proto_msgTypes[1]
+func (x *RequestPolicy) GetAllowAuthenticated() bool {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.AllowAuthenticated
 	}
-	return mi.MessageOf(x)
+	return false
 }
 
-// Deprecated: Use MethodPolicy.ProtoReflect.Descriptor instead.
-func (*MethodPolicy) Descriptor() ([]byte, []int) {
-	return file_wargapos_rolebased_v1_role_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *MethodPolicy) GetRoles() []Role {
+func (x *RequestPolicy) GetAllowPublic() bool {
 	if x != nil {
-		return x.Roles
+		return x.AllowPublic
 	}
-	return nil
+	return false
 }
 
 var file_wargapos_rolebased_v1_role_proto_extTypes = []protoimpl.ExtensionInfo{
-	{
-		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
-		ExtensionType: (*MethodPolicy)(nil),
-		Field:         50001,
-		Name:          "wargapos.rolebased.v1.method_policy",
-		Tag:           "bytes,50001,opt,name=method_policy",
-		Filename:      "wargapos/rolebased/v1/role.proto",
-	},
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
 		ExtensionType: (*RequestPolicy)(nil),
@@ -187,36 +271,40 @@ var file_wargapos_rolebased_v1_role_proto_extTypes = []protoimpl.ExtensionInfo{
 	},
 }
 
-// Extension fields to descriptorpb.MethodOptions.
-var (
-	// optional wargapos.rolebased.v1.MethodPolicy method_policy = 50001;
-	E_MethodPolicy = &file_wargapos_rolebased_v1_role_proto_extTypes[0]
-)
-
 // Extension fields to descriptorpb.MessageOptions.
 var (
 	// optional wargapos.rolebased.v1.RequestPolicy request_policy = 50001;
-	E_RequestPolicy = &file_wargapos_rolebased_v1_role_proto_extTypes[1]
+	E_RequestPolicy = &file_wargapos_rolebased_v1_role_proto_extTypes[0]
 )
 
 var File_wargapos_rolebased_v1_role_proto protoreflect.FileDescriptor
 
 const file_wargapos_rolebased_v1_role_proto_rawDesc = "" +
 	"\n" +
-	" wargapos/rolebased/v1/role.proto\x12\x15wargapos.rolebased.v1\x1a google/protobuf/descriptor.proto\"B\n" +
+	" wargapos/rolebased/v1/role.proto\x12\x15wargapos.rolebased.v1\x1a google/protobuf/descriptor.proto\"\xbc\x01\n" +
+	"\bIdentity\x12\x1f\n" +
+	"\videntity_id\x18\x01 \x01(\rR\n" +
+	"identityId\x12/\n" +
+	"\x04role\x18\x02 \x01(\x0e2\x1b.wargapos.rolebased.v1.RoleR\x04role\x12H\n" +
+	"\ridentity_type\x18\x03 \x01(\x0e2#.wargapos.rolebased.v1.IdentityTypeR\fidentityType\x12\x14\n" +
+	"\x05agent\x18\x04 \x01(\tR\x05agent\"\x96\x01\n" +
 	"\rRequestPolicy\x121\n" +
-	"\x05roles\x18\x01 \x03(\x0e2\x1b.wargapos.rolebased.v1.RoleR\x05roles\"A\n" +
-	"\fMethodPolicy\x121\n" +
-	"\x05roles\x18\x01 \x03(\x0e2\x1b.wargapos.rolebased.v1.RoleR\x05roles*\x85\x01\n" +
+	"\x05roles\x18\x01 \x03(\x0e2\x1b.wargapos.rolebased.v1.RoleR\x05roles\x12/\n" +
+	"\x13allow_authenticated\x18\x02 \x01(\bR\x12allowAuthenticated\x12!\n" +
+	"\fallow_public\x18\x03 \x01(\bR\vallowPublic*\x97\x01\n" +
 	"\x04Role\x12\x14\n" +
 	"\x10ROLE_UNSPECIFIED\x10\x00\x12\r\n" +
 	"\tROLE_ROOT\x10\x01\x12\x0e\n" +
 	"\n" +
 	"ROLE_ADMIN\x10\x02\x12\x13\n" +
-	"\x0fROLE_ACCOUNTANT\x10\x03\x12\x18\n" +
-	"\x14ROLE_WAREHOUSE_ADMIN\x10\x04\x12\x19\n" +
-	"\x15ROLE_WAREHOUSE_MEMBER\x10\x05:j\n" +
-	"\rmethod_policy\x12\x1e.google.protobuf.MethodOptions\x18ц\x03 \x01(\v2#.wargapos.rolebased.v1.MethodPolicyR\fmethodPolicy:n\n" +
+	"\x0fROLE_ACCOUNTANT\x10\x03\x12\x10\n" +
+	"\fROLE_CASHIER\x10\x04\x12\x18\n" +
+	"\x14ROLE_WAREHOUSE_ADMIN\x10\x05\x12\x19\n" +
+	"\x15ROLE_WAREHOUSE_MEMBER\x10\x06*g\n" +
+	"\fIdentityType\x12\x1d\n" +
+	"\x19IDENTITY_TYPE_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14IDENTITY_TYPE_SYSTEM\x10\x01\x12\x1e\n" +
+	"\x1aIDENTITY_TYPE_GENERAL_USER\x10\x02:n\n" +
 	"\x0erequest_policy\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2$.wargapos.rolebased.v1.RequestPolicyR\rrequestPolicyB8Z6wargapos/backend/gen/wargapos/rolebased/v1;rolebasedv1b\x06proto3"
 
 var (
@@ -231,27 +319,26 @@ func file_wargapos_rolebased_v1_role_proto_rawDescGZIP() []byte {
 	return file_wargapos_rolebased_v1_role_proto_rawDescData
 }
 
-var file_wargapos_rolebased_v1_role_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_wargapos_rolebased_v1_role_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_wargapos_rolebased_v1_role_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wargapos_rolebased_v1_role_proto_goTypes = []any{
 	(Role)(0),                           // 0: wargapos.rolebased.v1.Role
-	(*RequestPolicy)(nil),               // 1: wargapos.rolebased.v1.RequestPolicy
-	(*MethodPolicy)(nil),                // 2: wargapos.rolebased.v1.MethodPolicy
-	(*descriptorpb.MethodOptions)(nil),  // 3: google.protobuf.MethodOptions
+	(IdentityType)(0),                   // 1: wargapos.rolebased.v1.IdentityType
+	(*Identity)(nil),                    // 2: wargapos.rolebased.v1.Identity
+	(*RequestPolicy)(nil),               // 3: wargapos.rolebased.v1.RequestPolicy
 	(*descriptorpb.MessageOptions)(nil), // 4: google.protobuf.MessageOptions
 }
 var file_wargapos_rolebased_v1_role_proto_depIdxs = []int32{
-	0, // 0: wargapos.rolebased.v1.RequestPolicy.roles:type_name -> wargapos.rolebased.v1.Role
-	0, // 1: wargapos.rolebased.v1.MethodPolicy.roles:type_name -> wargapos.rolebased.v1.Role
-	3, // 2: wargapos.rolebased.v1.method_policy:extendee -> google.protobuf.MethodOptions
+	0, // 0: wargapos.rolebased.v1.Identity.role:type_name -> wargapos.rolebased.v1.Role
+	1, // 1: wargapos.rolebased.v1.Identity.identity_type:type_name -> wargapos.rolebased.v1.IdentityType
+	0, // 2: wargapos.rolebased.v1.RequestPolicy.roles:type_name -> wargapos.rolebased.v1.Role
 	4, // 3: wargapos.rolebased.v1.request_policy:extendee -> google.protobuf.MessageOptions
-	2, // 4: wargapos.rolebased.v1.method_policy:type_name -> wargapos.rolebased.v1.MethodPolicy
-	1, // 5: wargapos.rolebased.v1.request_policy:type_name -> wargapos.rolebased.v1.RequestPolicy
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	4, // [4:6] is the sub-list for extension type_name
-	2, // [2:4] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 4: wargapos.rolebased.v1.request_policy:type_name -> wargapos.rolebased.v1.RequestPolicy
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	4, // [4:5] is the sub-list for extension type_name
+	3, // [3:4] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_rolebased_v1_role_proto_init() }
@@ -264,9 +351,9 @@ func file_wargapos_rolebased_v1_role_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_rolebased_v1_role_proto_rawDesc), len(file_wargapos_rolebased_v1_role_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      2,
 			NumMessages:   2,
-			NumExtensions: 2,
+			NumExtensions: 1,
 			NumServices:   0,
 		},
 		GoTypes:           file_wargapos_rolebased_v1_role_proto_goTypes,

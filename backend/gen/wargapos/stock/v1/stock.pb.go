@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -379,7 +380,7 @@ var File_wargapos_stock_v1_stock_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"\n" +
-	"\x1dwargapos/stock/v1/stock.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb4\x02\n" +
+	"\x1dwargapos/stock/v1/stock.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xb4\x02\n" +
 	"\vCostVersion\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12%\n" +
@@ -402,9 +403,11 @@ const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x125\n" +
 	"\blog_type\x18\t \x01(\x0e2\x1a.wargapos.stock.v1.LogTypeR\alogType\x12\x16\n" +
 	"\x06change\x18\n" +
-	" \x01(\x05R\x06change\"4\n" +
+	" \x01(\x05R\x06change\"@\n" +
 	"\x12ListCostSkuRequest\x12\x1e\n" +
-	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"K\n" +
+	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x05\x06\"K\n" +
 	"\x13ListCostSkuResponse\x124\n" +
 	"\x05costs\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.CostVersionR\x05costs*\xc2\x01\n" +
 	"\aLogType\x12\x18\n" +

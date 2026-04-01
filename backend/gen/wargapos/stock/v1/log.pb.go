@@ -13,6 +13,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -138,11 +139,13 @@ var File_wargapos_stock_v1_log_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_log_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/stock/v1/log.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1dwargapos/stock/v1/stock.proto\"i\n" +
+	"\x1bwargapos/stock/v1/log.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1dwargapos/stock/v1/stock.proto\x1a wargapos/rolebased/v1/role.proto\"u\n" +
 	"\x16ListStockLogSkuRequest\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12\x12\n" +
 	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\"`\n" +
+	"\tpage_size\x18\x03 \x01(\x05R\bpageSize:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x05\x06\"`\n" +
 	"\x17ListStockLogSkuResponse\x12/\n" +
 	"\x04logs\x18\x01 \x03(\v2\x1b.wargapos.stock.v1.StockLogR\x04logs\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05totalB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"

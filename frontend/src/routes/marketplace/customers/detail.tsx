@@ -1,13 +1,18 @@
-import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import {
-  Badge, Box, Button, Flex, Heading, HStack, Spinner, Table, Text, VStack,
+  Badge, Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
-import { ArrowLeft, Pencil } from 'lucide-react'
+import { ArrowLeft, Pencil, Plus, Trash2, X, Check } from 'lucide-react'
 import { marketplaceClient } from '../../../client'
 import { MarketplaceOrderStatus } from '../../../gen/wargapos/marketplace/v1/order_pb'
 import { formatPrice, formatDateTime } from '../../../lib/format'
+import { stripError } from '../../../lib/errors'
+import { toaster } from '../../../components/ui/toaster'
+import { ConfirmDialog } from '../../../components/shared/ConfirmDialog'
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
+import type { CustomerAddress } from '../../../gen/wargapos/marketplace/v1/customer_pb'
 
 function statusBadge(status: MarketplaceOrderStatus) {
   if (status === MarketplaceOrderStatus.PENDING)   return <Badge colorPalette="yellow" size="sm">Pending</Badge>
@@ -15,9 +20,150 @@ function statusBadge(status: MarketplaceOrderStatus) {
   return <Badge colorPalette="gray" size="sm">Unknown</Badge>
 }
 
+type AddrForm = { label: string; address: string; city: string; province: string; postalCode: string }
+const emptyAddrForm = (): AddrForm => ({ label: '', address: '', city: '', province: '', postalCode: '' })
+
+function AddrRow({
+  addr,
+  onUpdated,
+  onDeleted,
+}: {
+  addr: CustomerAddress
+  onUpdated: () => void
+  onDeleted: () => void
+}) {
+  const [editing, setEditing] = useState(false)
+  const [form, setForm] = useState<AddrForm>({
+    label: addr.label,
+    address: addr.address,
+    city: addr.city,
+    province: addr.province,
+    postalCode: addr.postalCode,
+  })
+  const [deleteOpen, setDeleteOpen] = useState(false)
+
+  const updateMutation = useMutation({
+    mutationFn: () =>
+      marketplaceClient.updateCustomerAddress({
+        id: addr.id,
+        label: form.label,
+        address: form.address,
+        city: form.city,
+        province: form.province,
+        postalCode: form.postalCode,
+      }),
+    onSuccess: () => {
+      setEditing(false)
+      onUpdated()
+    },
+    onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: () => marketplaceClient.deleteCustomerAddress({ id: addr.id }),
+    onSuccess: () => {
+      setDeleteOpen(false)
+      onDeleted()
+    },
+    onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
+  })
+
+  if (editing) {
+    return (
+      <Box borderWidth={1} borderColor="blue.200" borderRadius="md" p={3} bg="blue.50">
+        <VStack gap={2} align="stretch">
+          <Input
+            size="sm"
+            placeholder="Label (e.g. Home)"
+            value={form.label}
+            onChange={(e) => setForm({ ...form, label: e.target.value })}
+          />
+          <Input
+            size="sm"
+            placeholder="Address *"
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+          />
+          <HStack gap={2}>
+            <Input
+              size="sm"
+              placeholder="City"
+              value={form.city}
+              onChange={(e) => setForm({ ...form, city: e.target.value })}
+            />
+            <Input
+              size="sm"
+              placeholder="Province"
+              value={form.province}
+              onChange={(e) => setForm({ ...form, province: e.target.value })}
+            />
+          </HStack>
+          <Input
+            size="sm"
+            placeholder="Postal Code"
+            value={form.postalCode}
+            onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
+          />
+          <HStack gap={2} justify="flex-end">
+            <Button size="xs" variant="ghost" onClick={() => setEditing(false)} disabled={updateMutation.isPending}>
+              <X size={12} /> Cancel
+            </Button>
+            <Button
+              size="xs"
+              colorPalette="blue"
+              onClick={() => updateMutation.mutate()}
+              loading={updateMutation.isPending}
+              disabled={!form.address.trim()}
+            >
+              <Check size={12} /> Save
+            </Button>
+          </HStack>
+        </VStack>
+      </Box>
+    )
+  }
+
+  return (
+    <Box borderWidth={1} borderColor="gray.100" borderRadius="md" p={3}>
+      <HStack justify="space-between" align="flex-start">
+        <VStack align="stretch" gap={0} flex={1}>
+          {addr.label && <Text fontSize="xs" fontWeight="semibold" color="blue.600">{addr.label}</Text>}
+          <Text fontSize="sm">{addr.address}</Text>
+          {(addr.city || addr.province || addr.postalCode) && (
+            <Text fontSize="xs" color="gray.500">
+              {[addr.city, addr.province, addr.postalCode].filter(Boolean).join(', ')}
+            </Text>
+          )}
+        </VStack>
+        <HStack gap={1} flexShrink={0}>
+          <Button size="xs" variant="ghost" onClick={() => setEditing(true)}>
+            <Pencil size={12} />
+          </Button>
+          <Button size="xs" variant="ghost" colorPalette="red" onClick={() => setDeleteOpen(true)}>
+            <Trash2 size={12} />
+          </Button>
+        </HStack>
+      </HStack>
+      <ConfirmDialog
+        open={deleteOpen}
+        title="Delete Address"
+        description="Remove this address? This cannot be undone."
+        confirmLabel="Delete"
+        loading={deleteMutation.isPending}
+        onConfirm={() => deleteMutation.mutate()}
+        onCancel={() => setDeleteOpen(false)}
+      />
+    </Box>
+  )
+}
+
 export function MarketplaceCustomerDetailPage() {
   const { id } = useParams({ strict: false }) as { id: string }
   const navigate = useNavigate()
+  const qc = useQueryClient()
+
+  const [addAddrOpen, setAddAddrOpen] = useState(false)
+  const [addrForm, setAddrForm] = useState<AddrForm>(emptyAddrForm())
 
   const { data: customerData, isLoading: customerLoading } = useQuery({
     queryKey: ['marketplace-customer', id],
@@ -31,12 +177,38 @@ export function MarketplaceCustomerDetailPage() {
     enabled: !!id,
   })
 
+  const { data: addressesData, refetch: refetchAddresses } = useQuery({
+    queryKey: ['customer-addresses', id],
+    queryFn: () => marketplaceClient.listCustomerAddresses({ customerId: BigInt(id) }),
+    enabled: !!id,
+  })
+
+  const createAddrMutation = useMutation({
+    mutationFn: () =>
+      marketplaceClient.createCustomerAddress({
+        customerId: BigInt(id),
+        label: addrForm.label,
+        address: addrForm.address,
+        city: addrForm.city,
+        province: addrForm.province,
+        postalCode: addrForm.postalCode,
+      }),
+    onSuccess: async () => {
+      await refetchAddresses()
+      setAddrForm(emptyAddrForm())
+      setAddAddrOpen(false)
+      toaster.create({ title: 'Address added', type: 'success', duration: 2000 })
+    },
+    onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
+  })
+
   if (customerLoading) return <Flex justify="center" mt={12}><Spinner /></Flex>
 
   const c = customerData?.customer
   if (!c) return <Text p={6} color="gray.400">Customer not found.</Text>
 
   const orders = ordersData?.orders ?? []
+  const addresses = addressesData?.addresses ?? []
 
   return (
     <Box p={{ base: 3, md: 6 }}>
@@ -69,6 +241,90 @@ export function MarketplaceCustomerDetailPage() {
               <Text fontSize="sm" fontWeight="medium">{formatDateTime(c.updatedAt as Timestamp | undefined)}</Text>
             </Flex>
           </VStack>
+        </Box>
+
+        {/* Addresses card */}
+        <Box bg="white" borderRadius="lg" p={4} boxShadow="sm">
+          <HStack justify="space-between" mb={3}>
+            <Text fontWeight="medium" fontSize="sm">Addresses</Text>
+            <Button size="xs" variant="outline" onClick={() => setAddAddrOpen(true)}>
+              <Plus size={12} /> Add
+            </Button>
+          </HStack>
+
+          {/* Add address inline form */}
+          {addAddrOpen && (
+            <Box borderWidth={1} borderColor="blue.200" borderRadius="md" p={3} bg="blue.50" mb={3}>
+              <VStack gap={2} align="stretch">
+                <Input
+                  size="sm"
+                  placeholder="Label (e.g. Home)"
+                  value={addrForm.label}
+                  onChange={(e) => setAddrForm({ ...addrForm, label: e.target.value })}
+                />
+                <Input
+                  size="sm"
+                  placeholder="Address *"
+                  value={addrForm.address}
+                  onChange={(e) => setAddrForm({ ...addrForm, address: e.target.value })}
+                />
+                <HStack gap={2}>
+                  <Input
+                    size="sm"
+                    placeholder="City"
+                    value={addrForm.city}
+                    onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
+                  />
+                  <Input
+                    size="sm"
+                    placeholder="Province"
+                    value={addrForm.province}
+                    onChange={(e) => setAddrForm({ ...addrForm, province: e.target.value })}
+                  />
+                </HStack>
+                <Input
+                  size="sm"
+                  placeholder="Postal Code"
+                  value={addrForm.postalCode}
+                  onChange={(e) => setAddrForm({ ...addrForm, postalCode: e.target.value })}
+                />
+                <HStack gap={2} justify="flex-end">
+                  <Button
+                    size="xs"
+                    variant="ghost"
+                    onClick={() => { setAddAddrOpen(false); setAddrForm(emptyAddrForm()) }}
+                    disabled={createAddrMutation.isPending}
+                  >
+                    <X size={12} /> Cancel
+                  </Button>
+                  <Button
+                    size="xs"
+                    colorPalette="blue"
+                    onClick={() => createAddrMutation.mutate()}
+                    loading={createAddrMutation.isPending}
+                    disabled={!addrForm.address.trim()}
+                  >
+                    <Check size={12} /> Save
+                  </Button>
+                </HStack>
+              </VStack>
+            </Box>
+          )}
+
+          {addresses.length === 0 && !addAddrOpen ? (
+            <Text fontSize="sm" color="gray.400">No addresses yet.</Text>
+          ) : (
+            <VStack gap={2} align="stretch">
+              {addresses.map((addr) => (
+                <AddrRow
+                  key={String(addr.id)}
+                  addr={addr}
+                  onUpdated={() => qc.invalidateQueries({ queryKey: ['customer-addresses', id] })}
+                  onDeleted={() => qc.invalidateQueries({ queryKey: ['customer-addresses', id] })}
+                />
+              ))}
+            </VStack>
+          )}
         </Box>
 
         {/* Order history */}

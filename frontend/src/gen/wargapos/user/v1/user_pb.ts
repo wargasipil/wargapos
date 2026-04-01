@@ -2,9 +2,10 @@
 // @generated from file wargapos/user/v1/user.proto (package wargapos.user.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
-import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
+import type { Role } from "../../rolebased/v1/role_pb";
 import { file_wargapos_rolebased_v1_role } from "../../rolebased/v1/role_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/user/v1/user.proto.
  */
 export const file_wargapos_user_v1_user: GenFile = /*@__PURE__*/
-  fileDesc("Cht3YXJnYXBvcy91c2VyL3YxL3VzZXIucHJvdG8SEHdhcmdhcG9zLnVzZXIudjEikgEKBFVzZXISCgoCaWQYASABKA0SEAoIdXNlcm5hbWUYAiABKAkSEQoJZnVsbF9uYW1lGAMgASgJEg0KBWVtYWlsGAQgASgJEiQKBHJvbGUYBSABKA4yFi53YXJnYXBvcy51c2VyLnYxLlJvbGUSEQoJaXNfYWN0aXZlGAYgASgIEhEKCWltYWdlX3VybBgHIAEoCSKvAQoRQ3JlYXRlVXNlclJlcXVlc3QSGwoIdXNlcm5hbWUYASABKAlCCbpIBnIEEAMYMhIaCglmdWxsX25hbWUYAiABKAlCB7pIBHICEAESFgoFZW1haWwYAyABKAlCB7pIBHICYAESGQoIcGFzc3dvcmQYBCABKAlCB7pIBHICEAYSLgoEcm9sZRgFIAEoDjIWLndhcmdhcG9zLnVzZXIudjEuUm9sZUIIukgFggECIAAiOgoSQ3JlYXRlVXNlclJlc3BvbnNlEiQKBHVzZXIYASABKAsyFi53YXJnYXBvcy51c2VyLnYxLlVzZXIiJwoOR2V0VXNlclJlcXVlc3QSFQoDaWRzGAEgAygNQgi6SAWSAQIIASKUAQoPR2V0VXNlclJlc3BvbnNlEjsKBXVzZXJzGAEgAygLMiwud2FyZ2Fwb3MudXNlci52MS5HZXRVc2VyUmVzcG9uc2UuVXNlcnNFbnRyeRpECgpVc2Vyc0VudHJ5EgsKA2tleRgBIAEoDRIlCgV2YWx1ZRgCIAEoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlcjoCOAEigwEKEVVwZGF0ZVVzZXJSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAEhEKCWZ1bGxfbmFtZRgCIAEoCRINCgVlbWFpbBgDIAEoCRIkCgRyb2xlGAQgASgOMhYud2FyZ2Fwb3MudXNlci52MS5Sb2xlEhEKCWlzX2FjdGl2ZRgFIAEoCCI6ChJVcGRhdGVVc2VyUmVzcG9uc2USJAoEdXNlchgBIAEoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlciIoChFEZWxldGVVc2VyUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgACIUChJEZWxldGVVc2VyUmVzcG9uc2UiMwoQTGlzdFVzZXJzUmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBSJJChFMaXN0VXNlcnNSZXNwb25zZRIlCgV1c2VycxgBIAMoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlchINCgV0b3RhbBgCIAEoBSJZChVDaGFuZ2VQYXNzd29yZFJlcXVlc3QSIQoQY3VycmVudF9wYXNzd29yZBgBIAEoCUIHukgEcgIQARIdCgxuZXdfcGFzc3dvcmQYAiABKAlCB7pIBHICEAYiGAoWQ2hhbmdlUGFzc3dvcmRSZXNwb25zZSpQCgRSb2xlEhQKEFJPTEVfVU5TUEVDSUZJRUQQABIOCgpST0xFX0FETUlOEAESEAoMUk9MRV9DQVNISUVSEAISEAoMUk9MRV9NQU5BR0VSEAMyrQQKC1VzZXJTZXJ2aWNlElcKCkNyZWF0ZVVzZXISIy53YXJnYXBvcy51c2VyLnYxLkNyZWF0ZVVzZXJSZXF1ZXN0GiQud2FyZ2Fwb3MudXNlci52MS5DcmVhdGVVc2VyUmVzcG9uc2USTgoHR2V0VXNlchIgLndhcmdhcG9zLnVzZXIudjEuR2V0VXNlclJlcXVlc3QaIS53YXJnYXBvcy51c2VyLnYxLkdldFVzZXJSZXNwb25zZRJXCgpVcGRhdGVVc2VyEiMud2FyZ2Fwb3MudXNlci52MS5VcGRhdGVVc2VyUmVxdWVzdBokLndhcmdhcG9zLnVzZXIudjEuVXBkYXRlVXNlclJlc3BvbnNlElcKCkRlbGV0ZVVzZXISIy53YXJnYXBvcy51c2VyLnYxLkRlbGV0ZVVzZXJSZXF1ZXN0GiQud2FyZ2Fwb3MudXNlci52MS5EZWxldGVVc2VyUmVzcG9uc2USXgoJTGlzdFVzZXJzEiIud2FyZ2Fwb3MudXNlci52MS5MaXN0VXNlcnNSZXF1ZXN0GiMud2FyZ2Fwb3MudXNlci52MS5MaXN0VXNlcnNSZXNwb25zZSIIirUYBAoCAQISYwoOQ2hhbmdlUGFzc3dvcmQSJy53YXJnYXBvcy51c2VyLnYxLkNoYW5nZVBhc3N3b3JkUmVxdWVzdBooLndhcmdhcG9zLnVzZXIudjEuQ2hhbmdlUGFzc3dvcmRSZXNwb25zZUIuWix3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy91c2VyL3YxO3VzZXJ2MWIGcHJvdG8z", [file_buf_validate_validate, file_wargapos_rolebased_v1_role]);
+  fileDesc("Cht3YXJnYXBvcy91c2VyL3YxL3VzZXIucHJvdG8SEHdhcmdhcG9zLnVzZXIudjEilwEKBFVzZXISCgoCaWQYASABKA0SEAoIdXNlcm5hbWUYAiABKAkSEQoJZnVsbF9uYW1lGAMgASgJEg0KBWVtYWlsGAQgASgJEikKBHJvbGUYBSABKA4yGy53YXJnYXBvcy5yb2xlYmFzZWQudjEuUm9sZRIRCglpc19hY3RpdmUYBiABKAgSEQoJaW1hZ2VfdXJsGAcgASgJIr4BChFDcmVhdGVVc2VyUmVxdWVzdBIbCgh1c2VybmFtZRgBIAEoCUIJukgGcgQQAxgyEhoKCWZ1bGxfbmFtZRgCIAEoCUIHukgEcgIQARIWCgVlbWFpbBgDIAEoCUIHukgEcgJgARIZCghwYXNzd29yZBgEIAEoCUIHukgEcgIQBhIzCgRyb2xlGAUgASgOMhsud2FyZ2Fwb3Mucm9sZWJhc2VkLnYxLlJvbGVCCLpIBYIBAiAAOgiKtRgECgIBAiI6ChJDcmVhdGVVc2VyUmVzcG9uc2USJAoEdXNlchgBIAEoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlciIvCg5HZXRVc2VyUmVxdWVzdBIVCgNpZHMYASADKA1CCLpIBZIBAggBOgaKtRgCEAEilAEKD0dldFVzZXJSZXNwb25zZRI7CgV1c2VycxgBIAMoCzIsLndhcmdhcG9zLnVzZXIudjEuR2V0VXNlclJlc3BvbnNlLlVzZXJzRW50cnkaRAoKVXNlcnNFbnRyeRILCgNrZXkYASABKA0SJQoFdmFsdWUYAiABKAsyFi53YXJnYXBvcy51c2VyLnYxLlVzZXI6AjgBIpIBChFVcGRhdGVVc2VyUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIRCglmdWxsX25hbWUYAiABKAkSDQoFZW1haWwYAyABKAkSKQoEcm9sZRgEIAEoDjIbLndhcmdhcG9zLnJvbGViYXNlZC52MS5Sb2xlEhEKCWlzX2FjdGl2ZRgFIAEoCDoIirUYBAoCAQIiOgoSVXBkYXRlVXNlclJlc3BvbnNlEiQKBHVzZXIYASABKAsyFi53YXJnYXBvcy51c2VyLnYxLlVzZXIiMgoRRGVsZXRlVXNlclJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAA6CIq1GAQKAgECIhQKEkRlbGV0ZVVzZXJSZXNwb25zZSI9ChBMaXN0VXNlcnNSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFOgiKtRgECgIBAiJJChFMaXN0VXNlcnNSZXNwb25zZRIlCgV1c2VycxgBIAMoCzIWLndhcmdhcG9zLnVzZXIudjEuVXNlchINCgV0b3RhbBgCIAEoBSJZChVDaGFuZ2VQYXNzd29yZFJlcXVlc3QSIQoQY3VycmVudF9wYXNzd29yZBgBIAEoCUIHukgEcgIQARIdCgxuZXdfcGFzc3dvcmQYAiABKAlCB7pIBHICEAYiGAoWQ2hhbmdlUGFzc3dvcmRSZXNwb25zZTKjBAoLVXNlclNlcnZpY2USVwoKQ3JlYXRlVXNlchIjLndhcmdhcG9zLnVzZXIudjEuQ3JlYXRlVXNlclJlcXVlc3QaJC53YXJnYXBvcy51c2VyLnYxLkNyZWF0ZVVzZXJSZXNwb25zZRJOCgdHZXRVc2VyEiAud2FyZ2Fwb3MudXNlci52MS5HZXRVc2VyUmVxdWVzdBohLndhcmdhcG9zLnVzZXIudjEuR2V0VXNlclJlc3BvbnNlElcKClVwZGF0ZVVzZXISIy53YXJnYXBvcy51c2VyLnYxLlVwZGF0ZVVzZXJSZXF1ZXN0GiQud2FyZ2Fwb3MudXNlci52MS5VcGRhdGVVc2VyUmVzcG9uc2USVwoKRGVsZXRlVXNlchIjLndhcmdhcG9zLnVzZXIudjEuRGVsZXRlVXNlclJlcXVlc3QaJC53YXJnYXBvcy51c2VyLnYxLkRlbGV0ZVVzZXJSZXNwb25zZRJUCglMaXN0VXNlcnMSIi53YXJnYXBvcy51c2VyLnYxLkxpc3RVc2Vyc1JlcXVlc3QaIy53YXJnYXBvcy51c2VyLnYxLkxpc3RVc2Vyc1Jlc3BvbnNlEmMKDkNoYW5nZVBhc3N3b3JkEicud2FyZ2Fwb3MudXNlci52MS5DaGFuZ2VQYXNzd29yZFJlcXVlc3QaKC53YXJnYXBvcy51c2VyLnYxLkNoYW5nZVBhc3N3b3JkUmVzcG9uc2VCLlosd2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3MvdXNlci92MTt1c2VydjFiBnByb3RvMw", [file_buf_validate_validate, file_wargapos_rolebased_v1_role]);
 
 /**
  * @generated from message wargapos.user.v1.User
@@ -39,7 +40,7 @@ export type User = Message<"wargapos.user.v1.User"> & {
   email: string;
 
   /**
-   * @generated from field: wargapos.user.v1.Role role = 5;
+   * @generated from field: wargapos.rolebased.v1.Role role = 5;
    */
   role: Role;
 
@@ -86,7 +87,7 @@ export type CreateUserRequest = Message<"wargapos.user.v1.CreateUserRequest"> & 
   password: string;
 
   /**
-   * @generated from field: wargapos.user.v1.Role role = 5;
+   * @generated from field: wargapos.rolebased.v1.Role role = 5;
    */
   role: Role;
 };
@@ -169,7 +170,7 @@ export type UpdateUserRequest = Message<"wargapos.user.v1.UpdateUserRequest"> & 
   email: string;
 
   /**
-   * @generated from field: wargapos.user.v1.Role role = 4;
+   * @generated from field: wargapos.rolebased.v1.Role role = 4;
    */
   role: Role;
 
@@ -311,37 +312,6 @@ export type ChangePasswordResponse = Message<"wargapos.user.v1.ChangePasswordRes
  */
 export const ChangePasswordResponseSchema: GenMessage<ChangePasswordResponse> = /*@__PURE__*/
   messageDesc(file_wargapos_user_v1_user, 12);
-
-/**
- * @generated from enum wargapos.user.v1.Role
- */
-export enum Role {
-  /**
-   * @generated from enum value: ROLE_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: ROLE_ADMIN = 1;
-   */
-  ADMIN = 1,
-
-  /**
-   * @generated from enum value: ROLE_CASHIER = 2;
-   */
-  CASHIER = 2,
-
-  /**
-   * @generated from enum value: ROLE_MANAGER = 3;
-   */
-  MANAGER = 3,
-}
-
-/**
- * Describes the enum wargapos.user.v1.Role.
- */
-export const RoleSchema: GenEnum<Role> = /*@__PURE__*/
-  enumDesc(file_wargapos_user_v1_user, 0);
 
 /**
  * @generated from service wargapos.user.v1.UserService

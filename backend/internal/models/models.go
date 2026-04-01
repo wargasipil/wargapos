@@ -13,7 +13,7 @@ type User struct {
 	FullName     string  `gorm:"not null;size:255"`
 	Email        string  `gorm:"uniqueIndex;not null;size:255"`
 	PasswordHash string  `gorm:"not null;size:255"`
-	Role         string  `gorm:"not null;default:cashier;size:20"`
+	Role         string  `gorm:"not null;default:cashier;size:30"`
 	IsActive     bool    `gorm:"not null;default:true"`
 	ImageURL     *string `gorm:"column:image_url"`
 	CreatedAt    time.Time

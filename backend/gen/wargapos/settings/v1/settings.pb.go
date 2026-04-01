@@ -689,13 +689,14 @@ const file_wargapos_settings_v1_settings_proto_rawDesc = "" +
 	"\x0fretention_count\x18\x03 \x01(\x05R\x0eretentionCount\x12\x1d\n" +
 	"\n" +
 	"backup_dir\x18\x04 \x01(\tR\tbackupDir\x12@\n" +
-	"\x0elast_backup_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\flastBackupAt\"\xf7\x02\n" +
+	"\x0elast_backup_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\flastBackupAt\"\x81\x03\n" +
 	"\x15UpdateSettingsRequest\x12B\n" +
 	"\bmidtrans\x18\x01 \x01(\v2&.wargapos.settings.v1.MidtransSettingsR\bmidtrans\x12R\n" +
 	"\x0emanual_payment\x18\x02 \x01(\v2+.wargapos.settings.v1.ManualPaymentSettingsR\rmanualPayment\x12?\n" +
 	"\aprinter\x18\x03 \x01(\v2%.wargapos.settings.v1.PrinterSettingsR\aprinter\x12<\n" +
 	"\x06backup\x18\x04 \x01(\v2$.wargapos.settings.v1.BackupSettingsR\x06backup\x12G\n" +
-	"\rbusiness_type\x18\a \x01(\x0e2\".wargapos.settings.v1.BusinessTypeR\fbusinessType\"\x18\n" +
+	"\rbusiness_type\x18\a \x01(\x0e2\".wargapos.settings.v1.BusinessTypeR\fbusinessType:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"\x18\n" +
 	"\x16UpdateSettingsResponse*d\n" +
 	"\fBusinessType\x12\x1d\n" +
 	"\x19BUSINESS_TYPE_UNSPECIFIED\x10\x00\x12\x16\n" +

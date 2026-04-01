@@ -9,6 +9,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
+	rolebasedv1 "wargapos/backend/gen/wargapos/rolebased/v1"
 	"wargapos/backend/internal/auth"
 )
 
@@ -22,7 +23,7 @@ func (s *BackupService) ServeDownload(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
-	if claims.Role != "admin" {
+	if claims.Identity.Role != rolebasedv1.Role_ROLE_ROOT && claims.Identity.Role != rolebasedv1.Role_ROLE_ADMIN {
 		http.Error(w, "forbidden", http.StatusForbidden)
 		return
 	}

@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -381,7 +382,7 @@ func (*DeleteRackResponse) Descriptor() ([]byte, []int) {
 
 type ListRackFilter struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	WarehouseId   uint32                 `protobuf:"varint,3,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"` // filter by warehouse (0 = all)
+	WarehouseId   uint32                 `protobuf:"varint,3,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
 	Search        string                 `protobuf:"bytes,4,opt,name=search,proto3" json:"search,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -547,7 +548,7 @@ var File_wargapos_stock_v1_rack_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_rack_proto_rawDesc = "" +
 	"\n" +
-	"\x1cwargapos/stock/v1/rack.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xdd\x01\n" +
+	"\x1cwargapos/stock/v1/rack.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xdd\x01\n" +
 	"\x04Rack\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12!\n" +
 	"\fwarehouse_id\x18\x02 \x01(\rR\vwarehouseId\x129\n" +
@@ -556,29 +557,33 @@ const file_wargapos_stock_v1_rack_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x18\n" +
 	"\adeleted\x18\x05 \x01(\bR\adeleted\x12\x12\n" +
-	"\x04name\x18\x06 \x01(\tR\x04name\"_\n" +
+	"\x04name\x18\x06 \x01(\tR\x04name\"j\n" +
 	"\x11CreateRackRequest\x12*\n" +
 	"\fwarehouse_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\"A\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"A\n" +
 	"\x12CreateRackResponse\x12+\n" +
-	"\x04rack\x18\x01 \x01(\v2\x17.wargapos.stock.v1.RackR\x04rack\"L\n" +
+	"\x04rack\x18\x01 \x01(\v2\x17.wargapos.stock.v1.RackR\x04rack\"W\n" +
 	"\x11UpdateRackRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\"A\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"A\n" +
 	"\x12UpdateRackResponse\x12+\n" +
-	"\x04rack\x18\x01 \x01(\v2\x17.wargapos.stock.v1.RackR\x04rack\",\n" +
+	"\x04rack\x18\x01 \x01(\v2\x17.wargapos.stock.v1.RackR\x04rack\"7\n" +
 	"\x11DeleteRackRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\"\x14\n" +
+	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x14\n" +
 	"\x12DeleteRackResponse\"K\n" +
 	"\x0eListRackFilter\x12!\n" +
 	"\fwarehouse_id\x18\x03 \x01(\rR\vwarehouseId\x12\x16\n" +
-	"\x06search\x18\x04 \x01(\tR\x06search\"\x85\x01\n" +
+	"\x06search\x18\x04 \x01(\tR\x06search\"\x92\x01\n" +
 	"\x0fListRackRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12A\n" +
-	"\x06filter\x18\x03 \x01(\v2!.wargapos.stock.v1.ListRackFilterB\x06\xbaH\x03\xc8\x01\x01R\x06filter\"W\n" +
+	"\x06filter\x18\x03 \x01(\v2!.wargapos.stock.v1.ListRackFilterB\x06\xbaH\x03\xc8\x01\x01R\x06filter:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"W\n" +
 	"\x10ListRackResponse\x12-\n" +
 	"\x05racks\x18\x01 \x03(\v2\x17.wargapos.stock.v1.RackR\x05racks\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05totalB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"

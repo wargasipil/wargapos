@@ -11,6 +11,7 @@ import { useAuthStore } from '../store/auth'
 import { toaster } from '../components/ui/toaster'
 import { stripError } from '../lib/errors'
 import { PrintMode, BusinessType } from '../gen/wargapos/settings/v1/settings_pb'
+import { isRootOrAdmin } from '../lib/roles'
 
 // ── Nav definition ─────────────────────────────────────────────────────────────
 
@@ -35,7 +36,7 @@ const NAV_ITEMS: NavItem[] = [
 
 export function SettingsPage() {
   const { token, role, userId } = useAuthStore()
-  const isAdmin = role === 'admin'
+  const isAdmin = isRootOrAdmin(role)
   const [section, setSection] = useState('profile')
 
   const visibleItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin)

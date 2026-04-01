@@ -13,6 +13,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -419,9 +420,9 @@ type ListProductsRequest struct {
 	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	CategoryId    int64                  `protobuf:"varint,3,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
-	ActiveOnly    bool                   `protobuf:"varint,4,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`       // when true, only return is_active=true products
-	InactiveOnly  bool                   `protobuf:"varint,5,opt,name=inactive_only,json=inactiveOnly,proto3" json:"inactive_only,omitempty"` // when true, only return is_active=false products
-	Search        string                 `protobuf:"bytes,6,opt,name=search,proto3" json:"search,omitempty"`                                  // filter by name (case-insensitive, partial match)
+	ActiveOnly    bool                   `protobuf:"varint,4,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
+	InactiveOnly  bool                   `protobuf:"varint,5,opt,name=inactive_only,json=inactiveOnly,proto3" json:"inactive_only,omitempty"`
+	Search        string                 `protobuf:"bytes,6,opt,name=search,proto3" json:"search,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1130,7 +1131,7 @@ var File_wargapos_product_v1_product_proto protoreflect.FileDescriptor
 
 const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\n" +
-	"!wargapos/product/v1/product.proto\x12\x13wargapos.product.v1\x1a\x1bbuf/validate/validate.proto\".\n" +
+	"!wargapos/product/v1/product.proto\x12\x13wargapos.product.v1\x1a\x1bbuf/validate/validate.proto\x1a wargapos/rolebased/v1/role.proto\".\n" +
 	"\bCategory\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\"\x99\x02\n" +
@@ -1148,7 +1149,7 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\n" +
 	"cogs_cents\x18\t \x01(\x03R\tcogsCents\x12\x1b\n" +
 	"\tstock_qty\x18\n" +
-	" \x01(\x05R\bstockQty\"\x80\x02\n" +
+	" \x01(\x05R\bstockQty\"\x8b\x02\n" +
 	"\x14CreateProductRequest\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12(\n" +
@@ -1159,7 +1160,8 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\x03sku\x18\x05 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x03sku\x12\x1b\n" +
 	"\timage_url\x18\x06 \x01(\tR\bimageUrl\x12\x1d\n" +
 	"\n" +
-	"cogs_cents\x18\a \x01(\x03R\tcogsCents\"O\n" +
+	"cogs_cents\x18\a \x01(\x03R\tcogsCents:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"O\n" +
 	"\x15CreateProductResponse\x126\n" +
 	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\",\n" +
 	"\x11GetProductRequest\x12\x17\n" +
@@ -1177,7 +1179,7 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\x06search\x18\x06 \x01(\tR\x06search\"f\n" +
 	"\x14ListProductsResponse\x128\n" +
 	"\bproducts\x18\x01 \x03(\v2\x1c.wargapos.product.v1.ProductR\bproducts\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"\x92\x02\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\x9d\x02\n" +
 	"\x14UpdateProductRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1f\n" +
@@ -1190,23 +1192,28 @@ const file_wargapos_product_v1_product_proto_rawDesc = "" +
 	"\vcategory_id\x18\b \x01(\x03R\n" +
 	"categoryId\x12\x1d\n" +
 	"\n" +
-	"cogs_cents\x18\t \x01(\x03R\tcogsCents\"O\n" +
+	"cogs_cents\x18\t \x01(\x03R\tcogsCents:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"O\n" +
 	"\x15UpdateProductResponse\x126\n" +
-	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\"/\n" +
+	"\aproduct\x18\x01 \x01(\v2\x1c.wargapos.product.v1.ProductR\aproduct\":\n" +
 	"\x14DeleteProductRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"\x17\n" +
-	"\x15DeleteProductResponse\"4\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x17\n" +
+	"\x15DeleteProductResponse\"?\n" +
 	"\x15CreateCategoryRequest\x12\x1b\n" +
-	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"S\n" +
+	"\x04name\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"S\n" +
 	"\x16CreateCategoryResponse\x129\n" +
-	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\"M\n" +
+	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\"X\n" +
 	"\x15UpdateCategoryRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\x12\x1b\n" +
-	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"S\n" +
+	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"S\n" +
 	"\x16UpdateCategoryResponse\x129\n" +
-	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\"0\n" +
+	"\bcategory\x18\x01 \x01(\v2\x1d.wargapos.product.v1.CategoryR\bcategory\";\n" +
 	"\x15DeleteCategoryRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id\"\x18\n" +
+	"\x02id\x18\x01 \x01(\x03B\a\xbaH\x04\"\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x18\n" +
 	"\x16DeleteCategoryResponse\"\x17\n" +
 	"\x15ListCategoriesRequest\"W\n" +
 	"\x16ListCategoriesResponse\x12=\n" +

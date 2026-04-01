@@ -4,6 +4,7 @@ package wargapos.stock.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
@@ -24,7 +25,6 @@ message CostVersion {
   uint64 transaction_id = 3;
   google.protobuf.Timestamp created_at = 4;
   google.protobuf.Timestamp updated_at = 5;
-
   double unit_cost = 6;
   int32 stock_initiate = 7;
   int32 left_stock = 8;
@@ -42,8 +42,7 @@ message StockLog {
 }
 
 message ListCostSkuRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER] };
   uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
 }
-message ListCostSkuResponse {
-  repeated CostVersion costs = 1;
-}
+message ListCostSkuResponse { repeated CostVersion costs = 1; }

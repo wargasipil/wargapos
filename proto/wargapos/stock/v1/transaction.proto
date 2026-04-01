@@ -4,6 +4,7 @@ package wargapos.stock.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
@@ -21,46 +22,43 @@ message Transaction {
   google.protobuf.Timestamp created_at = 3;
   string note = 4;
   bool cancelled = 5;
-  repeated TransactionItem items = 6; // populated in DetailTransaction only
+  repeated TransactionItem items = 6;
   double total = 7;
 }
 
 message TransactionItem {
   uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
   int32 quantity = 2 [(buf.validate.field).int32.not_in = 0];
-  double total = 3; // required for STOCK_IN (sets PriceVersion)
-  uint32 rack_id = 4; // optional rack placement
+  double total = 3;
+  uint32 rack_id = 4;
 }
 
 message CreateTransactionRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   TransactionType transaction_type = 1 [(buf.validate.field).enum.defined_only = true];
   repeated TransactionItem items = 2 [(buf.validate.field).repeated.min_items = 1];
   string note = 3;
 }
-message CreateTransactionResponse {
-  Transaction transaction = 1;
-}
+message CreateTransactionResponse { Transaction transaction = 1; }
 
 message CancelTransactionRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint64 transaction_id = 1 [(buf.validate.field).uint64.gt = 0];
   string reason = 2;
 }
 message CancelTransactionResponse {}
 
 message ListTransactionRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   int32 page = 1;
   int32 page_size = 2;
-  TransactionType transaction_type = 3; // 0 = all
-  bool cancelled = 4; // filter cancelled only (ignored when false)
+  TransactionType transaction_type = 3;
+  bool cancelled = 4;
 }
-message ListTransactionResponse {
-  repeated Transaction transactions = 1;
-  int32 total = 2;
-}
+message ListTransactionResponse { repeated Transaction transactions = 1; int32 total = 2; }
 
 message DetailTransactionRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   uint64 id = 1 [(buf.validate.field).uint64.gt = 0];
 }
-message DetailTransactionResponse {
-  Transaction transaction = 1;
-}
+message DetailTransactionResponse { Transaction transaction = 1; }

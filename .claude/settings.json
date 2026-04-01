@@ -24,7 +24,9 @@
       "Bash(make migrate-up:*)",
       "Bash(make migrate-down:*)",
       "Bash(make migrate-status:*)",
-      "Bash(psql \"postgresql://postgres:NxLKwaqQIMThoZKvVodYDQjepdJpSBcc@centerbeam.proxy.rlwy.net:37834/railway\" -c \"\\\\d stock_logs\")"
+      "Bash(psql \"postgresql://postgres:NxLKwaqQIMThoZKvVodYDQjepdJpSBcc@centerbeam.proxy.rlwy.net:37834/railway\" -c \"\\\\d stock_logs\")",
+      "Bash(find /d/research/wargapos/proto/wargapos -name *rolebased* -o -name *role*)",
+      "Bash(echo \"EXIT:$?\")"
     ]
   }
 }

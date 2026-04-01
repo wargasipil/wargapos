@@ -22,7 +22,7 @@ func TestCreateTransaction(t *testing.T) {
 			database.NewTestDatabase(&db),
 		).
 		Run(func(t *testing.T) {
-			srv := stock_service.NewStockService(&db)
+			srv := stock_service.NewStockService(&db, nil)
 
 			t.Run("create sku", func(t *testing.T) {
 				createSku, err := srv.CreateSku(t.Context(), &connect.Request[stockv1.CreateSkuRequest]{

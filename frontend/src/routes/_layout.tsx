@@ -4,6 +4,7 @@ import { Outlet, Link, useNavigate, useRouterState } from '@tanstack/react-route
 import { Accordion, Box, Button, Flex, IconButton, Popover, Text, Tooltip, VStack, HStack } from '@chakra-ui/react'
 import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight, Warehouse, Barcode, ChevronDown, UtensilsCrossed, ArrowLeftRight, FlaskConical, ShoppingBag, Store, ClipboardList, type LucideIcon } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
+import { isRootOrAdmin, canManageMarketplace, canViewOrders, canViewStock } from '../lib/roles'
 import { settingsClient } from '../client'
 import { BusinessType } from '../gen/wargapos/settings/v1/settings_pb'
 import { Toaster } from '../components/ui/toaster'
@@ -77,8 +78,8 @@ function SidebarLeaf({ item, indent = false, collapsed = false }: { item: NavLea
 // --- Layout ---
 export function ProtectedLayout() {
   const { role, logout } = useAuthStore()
-  const isAdmin = role === 'admin'
-  const isAdminOrManager = role === 'admin' || role === 'manager'
+  const isAdmin = isRootOrAdmin(role)
+  const isAdminOrManager = canManageMarketplace(role) || canViewStock(role)
 
   const { data: settingsData } = useQuery({
     queryKey: ['settings'],
@@ -106,17 +107,17 @@ export function ProtectedLayout() {
         { label: 'Ingredients', to: '/cafe/ingredients', Icon: FlaskConical },
       ],
     }] : []),
-    ...(isAdminOrManager && showMarketplace ? [{
+    ...((canManageMarketplace(role) || canViewOrders(role)) && showMarketplace ? [{
       label: 'Marketplace',
       Icon: ShoppingBag,
       children: [
-        { label: 'Shop',     to: '/marketplace/shop',     Icon: Store },
-        { label: 'Products',  to: '/marketplace/products',  Icon: Package },
+        ...(canManageMarketplace(role) ? [{ label: 'Shop', to: '/marketplace/shop', Icon: Store }] : []),
+        ...(canManageMarketplace(role) ? [{ label: 'Products', to: '/marketplace/products', Icon: Package }] : []),
         { label: 'Orders',    to: '/marketplace/orders',    Icon: ClipboardList },
-        { label: 'Customers', to: '/marketplace/customers', Icon: Users },
+        ...(canManageMarketplace(role) ? [{ label: 'Customers', to: '/marketplace/customers', Icon: Users }] : []),
       ],
     }] : []),
-    ...(isAdminOrManager ? [{
+    ...(canViewStock(role) ? [{
       label: 'Stock',
       Icon: Warehouse,
       children: [

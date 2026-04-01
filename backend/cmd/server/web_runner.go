@@ -69,10 +69,9 @@ func NewWebRunnerFunc(
 	validator := validate.NewInterceptor()
 
 	interceptor := connect.WithInterceptors(
-		auth.NewAuthTokenInterceptor(),
-		validator,
-		auth.NewInterceptor([]byte(authCfg.JWTSecret)),
+		auth.NewAuthTokenInterceptor([]byte(authCfg.JWTSecret)),
 		auth.NewRoleInterceptor(),
+		validator,
 	)
 
 	mux := http.NewServeMux()

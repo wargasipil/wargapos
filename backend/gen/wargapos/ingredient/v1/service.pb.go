@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -708,7 +709,6 @@ func (*DeleteMaterialResponse) Descriptor() ([]byte, []int) {
 	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{10}
 }
 
-// RecipeItem is used in request payloads (material_id + qty per serving).
 type RecipeItemInput struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MaterialId    uint32                 `protobuf:"varint,1,opt,name=material_id,json=materialId,proto3" json:"material_id,omitempty"`
@@ -761,7 +761,6 @@ func (x *RecipeItemInput) GetQty() int32 {
 	return 0
 }
 
-// RecipeItem is returned in responses, with the full material embedded.
 type RecipeItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1406,7 +1405,7 @@ var File_wargapos_ingredient_v1_service_proto protoreflect.FileDescriptor
 
 const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"$wargapos/ingredient/v1/service.proto\x12\x16wargapos.ingredient.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa3\x02\n" +
+	"$wargapos/ingredient/v1/service.proto\x12\x16wargapos.ingredient.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xa3\x02\n" +
 	"\bMaterial\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x1b\n" +
 	"\tbranch_id\x18\x02 \x01(\rR\bbranchId\x129\n" +
@@ -1417,23 +1416,25 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\x04code\x18\x05 \x01(\tR\x04code\x12\x12\n" +
 	"\x04name\x18\x06 \x01(\tR\x04name\x12:\n" +
 	"\bqty_type\x18\a \x01(\x0e2\x1f.wargapos.ingredient.v1.QtyTypeR\aqtyType\x12\x10\n" +
-	"\x03qty\x18\b \x01(\x05R\x03qty\"\xb6\x01\n" +
+	"\x03qty\x18\b \x01(\x05R\x03qty\"\xc1\x01\n" +
 	"\x17AddMaterialStockRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12*\n" +
 	"\fwarehouse_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\x12\x19\n" +
 	"\x03qty\x18\x04 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\x03qty\x12\x1d\n" +
 	"\x05price\x18\x05 \x01(\x04B\a\xbaH\x042\x02 \x00R\x05price\x12\x1c\n" +
-	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x04note\"\x1a\n" +
-	"\x18AddMaterialStockResponse\"\xbb\x01\n" +
+	"\x04note\x18\x06 \x01(\tB\b\xbaH\x05r\x03\x18\xf4\x03R\x04note:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x1a\n" +
+	"\x18AddMaterialStockResponse\"\xc6\x01\n" +
 	"\x15CreateMaterialRequest\x12\x1d\n" +
 	"\x04code\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18dR\x04code\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12F\n" +
 	"\bqty_type\x18\x03 \x01(\x0e2\x1f.wargapos.ingredient.v1.QtyTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\aqtyType\x12\x1b\n" +
-	"\tbranch_id\x18\x05 \x01(\rR\bbranchId\"V\n" +
+	"\tbranch_id\x18\x05 \x01(\rR\bbranchId:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"V\n" +
 	"\x16CreateMaterialResponse\x12<\n" +
-	"\bmaterial\x18\x01 \x01(\v2 .wargapos.ingredient.v1.MaterialR\bmaterial\"\xc9\x01\n" +
+	"\bmaterial\x18\x01 \x01(\v2 .wargapos.ingredient.v1.MaterialR\bmaterial\"\xd4\x01\n" +
 	"\x15UpdateMaterialRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12\x1d\n" +
 	"\x04code\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18dR\x04code\x12\x1e\n" +
@@ -1441,18 +1442,21 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12F\n" +
 	"\bqty_type\x18\x04 \x01(\x0e2\x1f.wargapos.ingredient.v1.QtyTypeB\n" +
 	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\aqtyType\x12\x10\n" +
-	"\x03qty\x18\x05 \x01(\x05R\x03qty\"V\n" +
+	"\x03qty\x18\x05 \x01(\x05R\x03qty:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"V\n" +
 	"\x16UpdateMaterialResponse\x12<\n" +
-	"\bmaterial\x18\x01 \x01(\v2 .wargapos.ingredient.v1.MaterialR\bmaterial\"^\n" +
+	"\bmaterial\x18\x01 \x01(\v2 .wargapos.ingredient.v1.MaterialR\bmaterial\"k\n" +
 	"\x13ListMaterialRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x16\n" +
-	"\x06search\x18\x03 \x01(\tR\x06search\"l\n" +
+	"\x06search\x18\x03 \x01(\tR\x06search:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"l\n" +
 	"\x14ListMaterialResponse\x12>\n" +
 	"\tmaterials\x18\x01 \x03(\v2 .wargapos.ingredient.v1.MaterialR\tmaterials\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"0\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\";\n" +
 	"\x15DeleteMaterialRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\"\x18\n" +
+	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x18\n" +
 	"\x16DeleteMaterialResponse\"V\n" +
 	"\x0fRecipeItemInput\x12(\n" +
 	"\vmaterial_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\n" +
@@ -1474,36 +1478,41 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xa6\x01\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xb1\x01\n" +
 	"\x13CreateRecipeRequest\x12&\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\tproductId\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12G\n" +
-	"\x05items\x18\x03 \x03(\v2'.wargapos.ingredient.v1.RecipeItemInputB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items\"N\n" +
+	"\x05items\x18\x03 \x03(\v2'.wargapos.ingredient.v1.RecipeItemInputB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"N\n" +
 	"\x14CreateRecipeResponse\x126\n" +
-	"\x06recipe\x18\x01 \x01(\v2\x1e.wargapos.ingredient.v1.RecipeR\x06recipe\"\x97\x01\n" +
+	"\x06recipe\x18\x01 \x01(\v2\x1e.wargapos.ingredient.v1.RecipeR\x06recipe\"\xa2\x01\n" +
 	"\x13UpdateRecipeRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12G\n" +
-	"\x05items\x18\x03 \x03(\v2'.wargapos.ingredient.v1.RecipeItemInputB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items\"N\n" +
+	"\x05items\x18\x03 \x03(\v2'.wargapos.ingredient.v1.RecipeItemInputB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"N\n" +
 	"\x14UpdateRecipeResponse\x126\n" +
-	"\x06recipe\x18\x01 \x01(\v2\x1e.wargapos.ingredient.v1.RecipeR\x06recipe\":\n" +
+	"\x06recipe\x18\x01 \x01(\v2\x1e.wargapos.ingredient.v1.RecipeR\x06recipe\"G\n" +
 	"\x10GetRecipeRequest\x12&\n" +
 	"\n" +
-	"product_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\tproductId\"K\n" +
+	"product_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\tproductId:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"K\n" +
 	"\x11GetRecipeResponse\x126\n" +
-	"\x06recipe\x18\x01 \x01(\v2\x1e.wargapos.ingredient.v1.RecipeR\x06recipe\"\\\n" +
+	"\x06recipe\x18\x01 \x01(\v2\x1e.wargapos.ingredient.v1.RecipeR\x06recipe\"i\n" +
 	"\x11ListRecipeRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x16\n" +
-	"\x06search\x18\x03 \x01(\tR\x06search\"d\n" +
+	"\x06search\x18\x03 \x01(\tR\x06search:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"d\n" +
 	"\x12ListRecipeResponse\x128\n" +
 	"\arecipes\x18\x01 \x03(\v2\x1e.wargapos.ingredient.v1.RecipeR\arecipes\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\".\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"9\n" +
 	"\x13DeleteRecipeRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\"\x16\n" +
+	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x16\n" +
 	"\x14DeleteRecipeResponse*J\n" +
 	"\aQtyType\x12\x18\n" +
 	"\x14QTY_TYPE_UNSPECIFIED\x10\x00\x12\x12\n" +

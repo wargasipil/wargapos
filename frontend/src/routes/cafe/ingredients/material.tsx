@@ -13,6 +13,7 @@ import { ConfirmDialog } from '../../../components/shared/ConfirmDialog'
 import { toaster } from '../../../components/ui/toaster'
 import { stripError } from '../../../lib/errors'
 import { useAuthStore } from '../../../store/auth'
+import { canManageProducts } from '../../../lib/roles'
 
 function qtyLabel(qt: QtyType) {
   return qt === QtyType.GRAM ? 'Gram' : 'Piece'
@@ -25,7 +26,7 @@ function fmtQty(qty: number, qt: QtyType) {
 export function MaterialTab() {
   const qc = useQueryClient()
   const { role } = useAuthStore()
-  const isManager = role === 'admin' || role === 'manager'
+  const isManager = canManageProducts(role)
 
   const [search, setSearch] = useState('')
   const [dialogOpen, setDialogOpen] = useState(false)

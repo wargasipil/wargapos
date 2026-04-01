@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -712,8 +713,8 @@ type ListSkuRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	ProductId     uint32                 `protobuf:"varint,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"` // filter by product (0 = all)
-	Search        string                 `protobuf:"bytes,4,opt,name=search,proto3" json:"search,omitempty"`                         // filter by code
+	ProductId     uint32                 `protobuf:"varint,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	Search        string                 `protobuf:"bytes,4,opt,name=search,proto3" json:"search,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -966,7 +967,7 @@ var File_wargapos_stock_v1_sku_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_sku_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/stock/v1/sku.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cwargapos/stock/v1/rack.proto\"\x82\x01\n" +
+	"\x1bwargapos/stock/v1/sku.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cwargapos/stock/v1/rack.proto\x1a wargapos/rolebased/v1/role.proto\"\x82\x01\n" +
 	"\rRackPlacement\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12+\n" +
@@ -991,43 +992,49 @@ const file_wargapos_stock_v1_sku_proto_rawDesc = "" +
 	" \x01(\x05R\tleftStock\x12>\n" +
 	"\rlast_stock_in\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\vlastStockIn\x12C\n" +
 	"\x0flast_adjustment\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\x0elastAdjustment\x12@\n" +
-	"\x0elast_stock_out\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\flastStockOut\"9\n" +
+	"\x0elast_stock_out\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\flastStockOut\"F\n" +
 	"\x17ListSkuPlacementRequest\x12\x1e\n" +
-	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"\\\n" +
+	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"\\\n" +
 	"\x18ListSkuPlacementResponse\x12@\n" +
 	"\n" +
 	"placements\x18\x01 \x03(\v2 .wargapos.stock.v1.RackPlacementR\n" +
-	"placements\"\xa3\x01\n" +
+	"placements\"\xae\x01\n" +
 	"\x10CreateSkuRequest\x12\x1e\n" +
 	"\x04code\x18\x01 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x04code\x12&\n" +
 	"\n" +
 	"product_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\tproductId\x12\x1b\n" +
 	"\tbranch_id\x18\x03 \x01(\rR\bbranchId\x12*\n" +
-	"\fwarehouse_id\x18\x04 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\"=\n" +
+	"\fwarehouse_id\x18\x04 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"=\n" +
 	"\x11CreateSkuResponse\x12(\n" +
-	"\x03sku\x18\x01 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku\"K\n" +
+	"\x03sku\x18\x01 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku\"V\n" +
 	"\x10UpdateSkuRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12\x1e\n" +
 	"\x04code\x18\x02 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x04code\"=\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x04code:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"=\n" +
 	"\x11UpdateSkuResponse\x12(\n" +
-	"\x03sku\x18\x01 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku\"+\n" +
+	"\x03sku\x18\x01 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku\"6\n" +
 	"\x10DeleteSkuRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\"\x13\n" +
-	"\x11DeleteSkuResponse\"x\n" +
+	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x13\n" +
+	"\x11DeleteSkuResponse\"\x85\x01\n" +
 	"\x0eListSkuRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x03 \x01(\rR\tproductId\x12\x16\n" +
-	"\x06search\x18\x04 \x01(\tR\x06search\"S\n" +
+	"\x06search\x18\x04 \x01(\tR\x06search:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"S\n" +
 	"\x0fListSkuResponse\x12*\n" +
 	"\x04skus\x18\x01 \x03(\v2\x16.wargapos.stock.v1.SkuR\x04skus\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"E\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"R\n" +
 	"\rGetSkuRequest\x12\x10\n" +
 	"\x02id\x18\x01 \x01(\rH\x00R\x02id\x12\x14\n" +
-	"\x04code\x18\x02 \x01(\tH\x00R\x04codeB\f\n" +
+	"\x04code\x18\x02 \x01(\tH\x00R\x04code:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04B\f\n" +
 	"\n" +
 	"identifier\"r\n" +
 	"\x0eGetSkuResponse\x126\n" +

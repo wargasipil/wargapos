@@ -3,6 +3,7 @@ syntax = "proto3";
 package wargapos.product.v1;
 
 import "buf/validate/validate.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/product/v1;productv1";
 
@@ -25,6 +26,7 @@ message Product {
 }
 
 message CreateProductRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   string name        = 1 [(buf.validate.field).string.min_len = 1];
   string description = 2;
   int64  category_id = 3 [(buf.validate.field).int64.gt = 0];
@@ -33,7 +35,6 @@ message CreateProductRequest {
   string image_url   = 6;
   int64  cogs_cents  = 7;
 }
-
 message CreateProductResponse { Product product = 1; }
 
 message GetProductRequest  { int64 id = 1 [(buf.validate.field).int64.gt = 0]; }
@@ -43,17 +44,17 @@ message ListProductsRequest {
   int32  page          = 1;
   int32  page_size     = 2;
   int64  category_id   = 3;
-  bool   active_only   = 4; // when true, only return is_active=true products
-  bool   inactive_only = 5; // when true, only return is_active=false products
-  string search        = 6; // filter by name (case-insensitive, partial match)
+  bool   active_only   = 4;
+  bool   inactive_only = 5;
+  string search        = 6;
 }
-
 message ListProductsResponse {
   repeated Product products = 1;
   int32            total    = 2;
 }
 
 message UpdateProductRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   int64  id          = 1 [(buf.validate.field).int64.gt = 0];
   string name        = 2;
   int64  price_cents = 3;
@@ -64,22 +65,31 @@ message UpdateProductRequest {
   int64  category_id = 8;
   int64  cogs_cents  = 9;
 }
-
 message UpdateProductResponse { Product product = 1; }
 
-message DeleteProductRequest  { int64 id = 1 [(buf.validate.field).int64.gt = 0]; }
+message DeleteProductRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
+  int64 id = 1 [(buf.validate.field).int64.gt = 0];
+}
 message DeleteProductResponse {}
 
-message CreateCategoryRequest  { string name = 1 [(buf.validate.field).string.min_len = 1]; }
+message CreateCategoryRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
 message CreateCategoryResponse { Category category = 1; }
 
-message UpdateCategoryRequest  {
+message UpdateCategoryRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   int64  id   = 1 [(buf.validate.field).int64.gt = 0];
   string name = 2 [(buf.validate.field).string.min_len = 1];
 }
 message UpdateCategoryResponse { Category category = 1; }
 
-message DeleteCategoryRequest  { int64 id = 1 [(buf.validate.field).int64.gt = 0]; }
+message DeleteCategoryRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
+  int64 id = 1 [(buf.validate.field).int64.gt = 0];
+}
 message DeleteCategoryResponse {}
 
 message ListCategoriesRequest  {}

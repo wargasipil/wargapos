@@ -1,6 +1,7 @@
 import { createRouter, createRoute, createRootRoute, redirect, Outlet, useRouterState } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { useAuthStore } from './store/auth'
+import { isRootOrAdmin, canManageProducts, canViewStock, canManageMarketplace, canViewOrders, canViewTransactions } from './lib/roles'
 
 import { ProtectedLayout } from './routes/_layout'
 import { LoginPage } from './routes/login'
@@ -178,7 +179,7 @@ const usersRoute = createRoute({
   component: UsersPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin') throw redirect({ to: '/' })
+    if (!isRootOrAdmin(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -188,7 +189,7 @@ const stockRoute = createRoute({
   component: WarehousesPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canViewStock(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -198,7 +199,7 @@ const skuRoute = createRoute({
   component: SkusPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canViewStock(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -208,7 +209,7 @@ const transactionRoute = createRoute({
   component: TransactionsPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager' && role !== 'cashier') throw redirect({ to: '/' })
+    if (!canViewStock(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -236,7 +237,7 @@ const marketplaceShopRoute = createRoute({
   component: ShopListingPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!isRootOrAdmin(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -246,7 +247,7 @@ const marketplaceShopNewRoute = createRoute({
   component: ShopListingNewPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!isRootOrAdmin(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -256,7 +257,7 @@ const marketplaceShopEditRoute = createRoute({
   component: ShopListingEditPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!isRootOrAdmin(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -266,7 +267,7 @@ const marketplaceOrdersRoute = createRoute({
   component: MarketplaceOrdersPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager' && role !== 'cashier') throw redirect({ to: '/' })
+    if (!canViewOrders(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -276,7 +277,7 @@ const marketplaceOrderNewRoute = createRoute({
   component: MarketplaceOrderNewPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -286,7 +287,7 @@ const marketplaceOrderDetailRoute = createRoute({
   component: MarketplaceOrderDetailPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager' && role !== 'cashier') throw redirect({ to: '/' })
+    if (!canViewOrders(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -296,7 +297,7 @@ const marketplaceProductsRoute = createRoute({
   component: MarketplaceProductsPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -306,7 +307,7 @@ const marketplaceProductNewRoute = createRoute({
   component: MarketplaceProductNewPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -316,7 +317,7 @@ const marketplaceProductEditRoute = createRoute({
   component: MarketplaceProductEditPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -326,7 +327,7 @@ const marketplaceProductDetailRoute = createRoute({
   component: MarketplaceProductDetailPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -336,7 +337,7 @@ const marketplaceCustomersRoute = createRoute({
   component: MarketplaceCustomersPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -346,7 +347,7 @@ const marketplaceCustomerNewRoute = createRoute({
   component: MarketplaceCustomerNewPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -356,7 +357,7 @@ const marketplaceCustomerEditRoute = createRoute({
   component: MarketplaceCustomerEditPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 
@@ -366,7 +367,7 @@ const marketplaceCustomerDetailRoute = createRoute({
   component: MarketplaceCustomerDetailPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
-    if (role !== 'admin' && role !== 'manager') throw redirect({ to: '/' })
+    if (!canManageMarketplace(role)) throw redirect({ to: '/' })
   },
 })
 

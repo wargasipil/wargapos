@@ -4,6 +4,7 @@ package wargapos.stock.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
@@ -16,44 +17,40 @@ message Warehouse {
 }
 
 message CreateWarehouseRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   string name = 1 [(buf.validate.field).string = {
     min_len: 1
     max_len: 300
   }];
 }
-message CreateWarehouseResponse {
-  Warehouse warehouse = 1;
-}
+message CreateWarehouseResponse { Warehouse warehouse = 1; }
 
 message UpdateWarehouseRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
   string name = 2 [(buf.validate.field).string = {
     min_len: 1
     max_len: 300
   }];
 }
-message UpdateWarehouseResponse {
-  Warehouse warehouse = 1;
-}
+message UpdateWarehouseResponse { Warehouse warehouse = 1; }
 
 message DeleteWarehouseRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
 }
 message DeleteWarehouseResponse {}
 
 message ListWarehouseRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   int32 page = 1;
   int32 page_size = 2;
   string search = 3;
 }
-message ListWarehouseResponse {
-  repeated Warehouse warehouses = 1;
-  int32 total = 2;
-}
+message ListWarehouseResponse { repeated Warehouse warehouses = 1; int32 total = 2; }
 
 message GetWarehouseRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   repeated uint32 ids = 1 [(buf.validate.field).repeated.min_items = 1];
 }
-message GetWarehouseResponse {
-  map<uint32, Warehouse> warehouses = 1;
-}
+message GetWarehouseResponse { map<uint32, Warehouse> warehouses = 1; }

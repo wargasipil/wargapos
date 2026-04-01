@@ -7,13 +7,14 @@ import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import { file_wargapos_rolebased_v1_role } from "../../rolebased/v1/role_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/stock/v1/transaction.proto.
  */
 export const file_wargapos_stock_v1_transaction: GenFile = /*@__PURE__*/
-  fileDesc("CiN3YXJnYXBvcy9zdG9jay92MS90cmFuc2FjdGlvbi5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi6gEKC1RyYW5zYWN0aW9uEgoKAmlkGAEgASgEEjwKEHRyYW5zYWN0aW9uX3R5cGUYAiABKA4yIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvblR5cGUSLgoKY3JlYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEbm90ZRgEIAEoCRIRCgljYW5jZWxsZWQYBSABKAgSMQoFaXRlbXMYBiADKAsyIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbkl0ZW0SDQoFdG90YWwYByABKAEiZQoPVHJhbnNhY3Rpb25JdGVtEhcKBnNrdV9pZBgBIAEoDUIHukgEKgIgABIZCghxdWFudGl0eRgCIAEoBUIHukgEGgI4ABINCgV0b3RhbBgDIAEoARIPCgdyYWNrX2lkGAQgASgNIq0BChhDcmVhdGVUcmFuc2FjdGlvblJlcXVlc3QSRgoQdHJhbnNhY3Rpb25fdHlwZRgBIAEoDjIiLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uVHlwZUIIukgFggECEAESOwoFaXRlbXMYAiADKAsyIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbkl0ZW1CCLpIBZIBAggBEgwKBG5vdGUYAyABKAkiUAoZQ3JlYXRlVHJhbnNhY3Rpb25SZXNwb25zZRIzCgt0cmFuc2FjdGlvbhgBIAEoCzIeLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uIksKGENhbmNlbFRyYW5zYWN0aW9uUmVxdWVzdBIfCg50cmFuc2FjdGlvbl9pZBgBIAEoBEIHukgEMgIgABIOCgZyZWFzb24YAiABKAkiGwoZQ2FuY2VsVHJhbnNhY3Rpb25SZXNwb25zZSKKAQoWTGlzdFRyYW5zYWN0aW9uUmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBRI8ChB0cmFuc2FjdGlvbl90eXBlGAMgASgOMiIud2FyZ2Fwb3Muc3RvY2sudjEuVHJhbnNhY3Rpb25UeXBlEhEKCWNhbmNlbGxlZBgEIAEoCCJeChdMaXN0VHJhbnNhY3Rpb25SZXNwb25zZRI0Cgx0cmFuc2FjdGlvbnMYASADKAsyHi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbhINCgV0b3RhbBgCIAEoBSIvChhEZXRhaWxUcmFuc2FjdGlvblJlcXVlc3QSEwoCaWQYASABKARCB7pIBDICIAAiUAoZRGV0YWlsVHJhbnNhY3Rpb25SZXNwb25zZRIzCgt0cmFuc2FjdGlvbhgBIAEoCzIeLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uKq8BCg9UcmFuc2FjdGlvblR5cGUSIAocVFJBTlNBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEh0KGVRSQU5TQUNUSU9OX1RZUEVfU1RPQ0tfSU4QARIeChpUUkFOU0FDVElPTl9UWVBFX1NUT0NLX09VVBACEh8KG1RSQU5TQUNUSU9OX1RZUEVfQURKVVNUTUVOVBADEhoKFlRSQU5TQUNUSU9OX1RZUEVfT1JERVIQBEIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("CiN3YXJnYXBvcy9zdG9jay92MS90cmFuc2FjdGlvbi5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi6gEKC1RyYW5zYWN0aW9uEgoKAmlkGAEgASgEEjwKEHRyYW5zYWN0aW9uX3R5cGUYAiABKA4yIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvblR5cGUSLgoKY3JlYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEbm90ZRgEIAEoCRIRCgljYW5jZWxsZWQYBSABKAgSMQoFaXRlbXMYBiADKAsyIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbkl0ZW0SDQoFdG90YWwYByABKAEiZQoPVHJhbnNhY3Rpb25JdGVtEhcKBnNrdV9pZBgBIAEoDUIHukgEKgIgABIZCghxdWFudGl0eRgCIAEoBUIHukgEGgI4ABINCgV0b3RhbBgDIAEoARIPCgdyYWNrX2lkGAQgASgNIrgBChhDcmVhdGVUcmFuc2FjdGlvblJlcXVlc3QSRgoQdHJhbnNhY3Rpb25fdHlwZRgBIAEoDjIiLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uVHlwZUIIukgFggECEAESOwoFaXRlbXMYAiADKAsyIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbkl0ZW1CCLpIBZIBAggBEgwKBG5vdGUYAyABKAk6CYq1GAUKAwECBSJQChlDcmVhdGVUcmFuc2FjdGlvblJlc3BvbnNlEjMKC3RyYW5zYWN0aW9uGAEgASgLMh4ud2FyZ2Fwb3Muc3RvY2sudjEuVHJhbnNhY3Rpb24iVgoYQ2FuY2VsVHJhbnNhY3Rpb25SZXF1ZXN0Eh8KDnRyYW5zYWN0aW9uX2lkGAEgASgEQge6SAQyAiAAEg4KBnJlYXNvbhgCIAEoCToJirUYBQoDAQIFIhsKGUNhbmNlbFRyYW5zYWN0aW9uUmVzcG9uc2UilwEKFkxpc3RUcmFuc2FjdGlvblJlcXVlc3QSDAoEcGFnZRgBIAEoBRIRCglwYWdlX3NpemUYAiABKAUSPAoQdHJhbnNhY3Rpb25fdHlwZRgDIAEoDjIiLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uVHlwZRIRCgljYW5jZWxsZWQYBCABKAg6C4q1GAcKBQECBQYEIl4KF0xpc3RUcmFuc2FjdGlvblJlc3BvbnNlEjQKDHRyYW5zYWN0aW9ucxgBIAMoCzIeLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uEg0KBXRvdGFsGAIgASgFIjwKGERldGFpbFRyYW5zYWN0aW9uUmVxdWVzdBITCgJpZBgBIAEoBEIHukgEMgIgADoLirUYBwoFAQIFBgQiUAoZRGV0YWlsVHJhbnNhY3Rpb25SZXNwb25zZRIzCgt0cmFuc2FjdGlvbhgBIAEoCzIeLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uKq8BCg9UcmFuc2FjdGlvblR5cGUSIAocVFJBTlNBQ1RJT05fVFlQRV9VTlNQRUNJRklFRBAAEh0KGVRSQU5TQUNUSU9OX1RZUEVfU1RPQ0tfSU4QARIeChpUUkFOU0FDVElPTl9UWVBFX1NUT0NLX09VVBACEh8KG1RSQU5TQUNUSU9OX1RZUEVfQURKVVNUTUVOVBADEhoKFlRSQU5TQUNUSU9OX1RZUEVfT1JERVIQBEIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
 
 /**
  * @generated from message wargapos.stock.v1.Transaction
@@ -45,8 +46,6 @@ export type Transaction = Message<"wargapos.stock.v1.Transaction"> & {
   cancelled: boolean;
 
   /**
-   * populated in DetailTransaction only
-   *
    * @generated from field: repeated wargapos.stock.v1.TransactionItem items = 6;
    */
   items: TransactionItem[];
@@ -79,15 +78,11 @@ export type TransactionItem = Message<"wargapos.stock.v1.TransactionItem"> & {
   quantity: number;
 
   /**
-   * required for STOCK_IN (sets PriceVersion)
-   *
    * @generated from field: double total = 3;
    */
   total: number;
 
   /**
-   * optional rack placement
-   *
    * @generated from field: uint32 rack_id = 4;
    */
   rackId: number;
@@ -194,15 +189,11 @@ export type ListTransactionRequest = Message<"wargapos.stock.v1.ListTransactionR
   pageSize: number;
 
   /**
-   * 0 = all
-   *
    * @generated from field: wargapos.stock.v1.TransactionType transaction_type = 3;
    */
   transactionType: TransactionType;
 
   /**
-   * filter cancelled only (ignored when false)
-   *
    * @generated from field: bool cancelled = 4;
    */
   cancelled: boolean;

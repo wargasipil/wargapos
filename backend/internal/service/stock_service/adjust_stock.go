@@ -56,7 +56,7 @@ func (s *StockService) AdjustStock(
 		// Record the movement.
 		var createdBy *uint32
 		if claims != nil {
-			uid := claims.UserID
+			uid := claims.Identity.IdentityId
 			createdBy = &uid
 		}
 		mov := &models.StockMovement{

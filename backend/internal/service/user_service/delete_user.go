@@ -20,7 +20,7 @@ func (s *UserService) DeleteUser(
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
 	}
 
-	if claims := auth.ClaimsFromContext(ctx); claims != nil && claims.UserID == req.Msg.Id {
+	if claims := auth.ClaimsFromContext(ctx); claims != nil && claims.Identity.IdentityId == req.Msg.Id {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("cannot delete your own account"))
 	}
 

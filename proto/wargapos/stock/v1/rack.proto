@@ -4,6 +4,7 @@ package wargapos.stock.v1;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
@@ -13,48 +14,44 @@ message Rack {
   google.protobuf.Timestamp created_at = 3;
   google.protobuf.Timestamp updated_at = 4;
   bool deleted = 5;
-
   string name = 6;
 }
 
 message CreateRackRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 warehouse_id = 1 [(buf.validate.field).uint32.gt = 0];
   string name = 2 [(buf.validate.field).string = {
     min_len: 1
     max_len: 300
   }];
 }
-message CreateRackResponse {
-  Rack rack = 1;
-}
+message CreateRackResponse { Rack rack = 1; }
 
 message UpdateRackRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
   string name = 2 [(buf.validate.field).string = {
     min_len: 1
     max_len: 300
   }];
 }
-message UpdateRackResponse {
-  Rack rack = 1;
-}
+message UpdateRackResponse { Rack rack = 1; }
 
 message DeleteRackRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
 }
 message DeleteRackResponse {}
 
 message ListRackFilter {
-  uint32 warehouse_id = 3; // filter by warehouse (0 = all)
+  uint32 warehouse_id = 3;
   string search = 4;
 }
 
 message ListRackRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
   int32 page = 1;
   int32 page_size = 2;
   ListRackFilter filter = 3 [(buf.validate.field).required = true];
 }
-message ListRackResponse {
-  repeated Rack racks = 1;
-  int32 total = 2;
-}
+message ListRackResponse { repeated Rack racks = 1; int32 total = 2; }

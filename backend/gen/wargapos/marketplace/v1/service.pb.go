@@ -12,6 +12,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -2537,29 +2538,32 @@ var File_wargapos_marketplace_v1_service_proto protoreflect.FileDescriptor
 
 const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"%wargapos/marketplace/v1/service.proto\x12\x17wargapos.marketplace.v1\x1a\"wargapos/marketplace/v1/shop.proto\x1a#wargapos/marketplace/v1/order.proto\x1a%wargapos/marketplace/v1/product.proto\x1a&wargapos/marketplace/v1/customer.proto\"\x97\x01\n" +
+	"%wargapos/marketplace/v1/service.proto\x12\x17wargapos.marketplace.v1\x1a\"wargapos/marketplace/v1/shop.proto\x1a#wargapos/marketplace/v1/order.proto\x1a%wargapos/marketplace/v1/product.proto\x1a&wargapos/marketplace/v1/customer.proto\x1a wargapos/rolebased/v1/role.proto\"\xa1\x01\n" +
 	"\x11CreateShopRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12@\n" +
 	"\x04type\x18\x02 \x01(\x0e2,.wargapos.marketplace.v1.MarketplaceShopTypeR\x04type\x12\x1a\n" +
 	"\busername\x18\x03 \x01(\tR\busername\x12\x10\n" +
-	"\x03url\x18\x04 \x01(\tR\x03url\"R\n" +
+	"\x03url\x18\x04 \x01(\tR\x03url:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"R\n" +
 	"\x12CreateShopResponse\x12<\n" +
 	"\x04shop\x18\x01 \x01(\v2(.wargapos.marketplace.v1.MarketplaceShopR\x04shop\" \n" +
 	"\x0eGetShopRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\"O\n" +
 	"\x0fGetShopResponse\x12<\n" +
-	"\x04shop\x18\x01 \x01(\v2(.wargapos.marketplace.v1.MarketplaceShopR\x04shop\"\xc4\x01\n" +
+	"\x04shop\x18\x01 \x01(\v2(.wargapos.marketplace.v1.MarketplaceShopR\x04shop\"\xce\x01\n" +
 	"\x11UpdateShopRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12@\n" +
 	"\x04type\x18\x03 \x01(\x0e2,.wargapos.marketplace.v1.MarketplaceShopTypeR\x04type\x12\x1a\n" +
 	"\busername\x18\x04 \x01(\tR\busername\x12\x10\n" +
 	"\x03url\x18\x05 \x01(\tR\x03url\x12\x1b\n" +
-	"\tis_active\x18\x06 \x01(\bR\bisActive\"R\n" +
+	"\tis_active\x18\x06 \x01(\bR\bisActive:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"R\n" +
 	"\x12UpdateShopResponse\x12<\n" +
-	"\x04shop\x18\x01 \x01(\v2(.wargapos.marketplace.v1.MarketplaceShopR\x04shop\"#\n" +
+	"\x04shop\x18\x01 \x01(\v2(.wargapos.marketplace.v1.MarketplaceShopR\x04shop\"-\n" +
 	"\x11DeleteShopRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"\x14\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"\x14\n" +
 	"\x12DeleteShopResponse\"|\n" +
 	"\x10ListShopsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
@@ -2569,7 +2573,7 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"activeOnly\"i\n" +
 	"\x11ListShopsResponse\x12>\n" +
 	"\x05shops\x18\x01 \x03(\v2(.wargapos.marketplace.v1.MarketplaceShopR\x05shops\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"\x9d\x02\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\xa8\x02\n" +
 	"\x12CreateOrderRequest\x12\x17\n" +
 	"\ashop_id\x18\x01 \x01(\x04R\x06shopId\x12#\n" +
 	"\rcustomer_name\x18\x02 \x01(\tR\fcustomerName\x12!\n" +
@@ -2579,40 +2583,49 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\vcustomer_id\x18\x06 \x01(\x04R\n" +
 	"customerId\x12\x1d\n" +
 	"\n" +
-	"address_id\x18\a \x01(\x04R\taddressId\"V\n" +
+	"address_id\x18\a \x01(\x04R\taddressId:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"V\n" +
 	"\x13CreateOrderResponse\x12?\n" +
-	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"!\n" +
+	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"-\n" +
 	"\x0fGetOrderRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"S\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x03\x05\"S\n" +
 	"\x10GetOrderResponse\x12?\n" +
-	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"\xd4\x01\n" +
+	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"\xe0\x01\n" +
 	"\x11ListOrdersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12T\n" +
 	"\rstatus_filter\x18\x03 \x01(\x0e2/.wargapos.marketplace.v1.MarketplaceOrderStatusR\fstatusFilter\x12\x17\n" +
 	"\ashop_id\x18\x04 \x01(\x04R\x06shopId\x12\x1f\n" +
 	"\vcustomer_id\x18\x05 \x01(\x04R\n" +
-	"customerId\"m\n" +
+	"customerId:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x03\x05\"m\n" +
 	"\x12ListOrdersResponse\x12A\n" +
 	"\x06orders\x18\x01 \x03(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x06orders\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"s\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"~\n" +
 	"\x18UpdateOrderStatusRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12G\n" +
-	"\x06status\x18\x02 \x01(\x0e2/.wargapos.marketplace.v1.MarketplaceOrderStatusR\x06status\"\\\n" +
+	"\x06status\x18\x02 \x01(\x0e2/.wargapos.marketplace.v1.MarketplaceOrderStatusR\x06status:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\\\n" +
 	"\x19UpdateOrderStatusResponse\x12?\n" +
-	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"\x8a\x01\n" +
+	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"\x95\x01\n" +
 	"\x14CreateProductRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1f\n" +
 	"\vprice_cents\x18\x03 \x01(\x03R\n" +
 	"priceCents\x12\x1b\n" +
-	"\timage_url\x18\x04 \x01(\tR\bimageUrl\"^\n" +
+	"\timage_url\x18\x04 \x01(\tR\bimageUrl:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"^\n" +
 	"\x15CreateProductResponse\x12E\n" +
-	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"#\n" +
+	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"/\n" +
 	"\x11GetProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"[\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x03\x05\"[\n" +
 	"\x12GetProductResponse\x12E\n" +
-	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"\xb7\x01\n" +
+	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"\xc2\x01\n" +
 	"\x14UpdateProductRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -2620,53 +2633,65 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\vprice_cents\x18\x04 \x01(\x03R\n" +
 	"priceCents\x12\x1b\n" +
 	"\timage_url\x18\x05 \x01(\tR\bimageUrl\x12\x1b\n" +
-	"\tis_active\x18\x06 \x01(\bR\bisActive\"^\n" +
+	"\tis_active\x18\x06 \x01(\bR\bisActive:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"^\n" +
 	"\x15UpdateProductResponse\x12E\n" +
-	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"&\n" +
+	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"1\n" +
 	"\x14DeleteProductRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"\x17\n" +
-	"\x15DeleteProductResponse\"o\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x17\n" +
+	"\x15DeleteProductResponse\"z\n" +
 	"\x15RestockProductRequest\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\x04R\tproductId\x12!\n" +
 	"\fwarehouse_id\x18\x02 \x01(\rR\vwarehouseId\x12\x14\n" +
-	"\x05delta\x18\x03 \x01(\x05R\x05delta\"_\n" +
+	"\x05delta\x18\x03 \x01(\x05R\x05delta:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"_\n" +
 	"\x16RestockProductResponse\x12E\n" +
-	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"\x7f\n" +
+	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"\x8b\x01\n" +
 	"\x13ListProductsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x16\n" +
 	"\x06search\x18\x03 \x01(\tR\x06search\x12\x1f\n" +
 	"\vactive_only\x18\x04 \x01(\bR\n" +
-	"activeOnly\"u\n" +
+	"activeOnly:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x03\x05\"u\n" +
 	"\x14ListProductsResponse\x12G\n" +
 	"\bproducts\x18\x01 \x03(\v2+.wargapos.marketplace.v1.MarketplaceProductR\bproducts\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"N\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"Y\n" +
 	"\x15CreateCustomerRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12!\n" +
-	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber\"b\n" +
+	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"b\n" +
 	"\x16CreateCustomerResponse\x12H\n" +
-	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"$\n" +
+	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"0\n" +
 	"\x12GetCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"_\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x03\x05\"_\n" +
 	"\x13GetCustomerResponse\x12H\n" +
-	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"^\n" +
+	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"i\n" +
 	"\x15UpdateCustomerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fphone_number\x18\x03 \x01(\tR\vphoneNumber\"b\n" +
+	"\fphone_number\x18\x03 \x01(\tR\vphoneNumber:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"b\n" +
 	"\x16UpdateCustomerResponse\x12H\n" +
-	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"'\n" +
+	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"2\n" +
 	"\x15DeleteCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"\x18\n" +
-	"\x16DeleteCustomerResponse\"_\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x18\n" +
+	"\x16DeleteCustomerResponse\"k\n" +
 	"\x14ListCustomersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x16\n" +
-	"\x06search\x18\x03 \x01(\tR\x06search\"y\n" +
+	"\x06search\x18\x03 \x01(\tR\x06search:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x03\x05\"y\n" +
 	"\x15ListCustomersResponse\x12J\n" +
 	"\tcustomers\x18\x01 \x03(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\tcustomers\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"\xc0\x01\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\xcb\x01\n" +
 	"\x1cCreateCustomerAddressRequest\x12\x1f\n" +
 	"\vcustomer_id\x18\x01 \x01(\x04R\n" +
 	"customerId\x12\x14\n" +
@@ -2675,9 +2700,10 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\x04city\x18\x04 \x01(\tR\x04city\x12\x1a\n" +
 	"\bprovince\x18\x05 \x01(\tR\bprovince\x12\x1f\n" +
 	"\vpostal_code\x18\x06 \x01(\tR\n" +
-	"postalCode\"c\n" +
+	"postalCode:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"c\n" +
 	"\x1dCreateCustomerAddressResponse\x12B\n" +
-	"\aaddress\x18\x01 \x01(\v2(.wargapos.marketplace.v1.CustomerAddressR\aaddress\"\xaf\x01\n" +
+	"\aaddress\x18\x01 \x01(\v2(.wargapos.marketplace.v1.CustomerAddressR\aaddress\"\xba\x01\n" +
 	"\x1cUpdateCustomerAddressRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x14\n" +
 	"\x05label\x18\x02 \x01(\tR\x05label\x12\x18\n" +
@@ -2685,15 +2711,19 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\x04city\x18\x04 \x01(\tR\x04city\x12\x1a\n" +
 	"\bprovince\x18\x05 \x01(\tR\bprovince\x12\x1f\n" +
 	"\vpostal_code\x18\x06 \x01(\tR\n" +
-	"postalCode\"c\n" +
+	"postalCode:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"c\n" +
 	"\x1dUpdateCustomerAddressResponse\x12B\n" +
-	"\aaddress\x18\x01 \x01(\v2(.wargapos.marketplace.v1.CustomerAddressR\aaddress\".\n" +
+	"\aaddress\x18\x01 \x01(\v2(.wargapos.marketplace.v1.CustomerAddressR\aaddress\"9\n" +
 	"\x1cDeleteCustomerAddressRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\"\x1f\n" +
-	"\x1dDeleteCustomerAddressResponse\"?\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05\"\x1f\n" +
+	"\x1dDeleteCustomerAddressResponse\"K\n" +
 	"\x1cListCustomerAddressesRequest\x12\x1f\n" +
 	"\vcustomer_id\x18\x01 \x01(\x04R\n" +
-	"customerId\"g\n" +
+	"customerId:\n" +
+	"\x8a\xb5\x18\x06\n" +
+	"\x04\x01\x02\x03\x05\"g\n" +
 	"\x1dListCustomerAddressesResponse\x12F\n" +
 	"\taddresses\x18\x01 \x03(\v2(.wargapos.marketplace.v1.CustomerAddressR\taddresses2\xa7\x15\n" +
 	"\x12MarketplaceService\x12e\n" +

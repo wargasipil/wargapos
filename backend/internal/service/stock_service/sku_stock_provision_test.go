@@ -25,7 +25,7 @@ func TestSkuStockProvision(t *testing.T) {
 			database.NewTestDatabase(&db),
 		).
 		Run(func(t *testing.T) {
-			srv := stock_service.NewStockService(&db)
+			srv := stock_service.NewStockService(&db, nil)
 
 			createSku, err := srv.CreateSku(t.Context(), &connect.Request[stockv1.CreateSkuRequest]{
 				Msg: &stockv1.CreateSkuRequest{

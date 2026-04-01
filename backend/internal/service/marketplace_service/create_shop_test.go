@@ -19,7 +19,7 @@ func TestCreateShop(t *testing.T) {
 		wargatest.
 			NewScenario(t, database.NewTestDatabase(&db)).
 			Run(func(t *testing.T) {
-				srv := marketplace_service.NewMarketplaceService(&db)
+				srv := marketplace_service.NewMarketplaceService(nil, &db, nil)
 
 				res, err := srv.CreateShop(t.Context(), &connect.Request[marketplacev1.CreateShopRequest]{
 					Msg: &marketplacev1.CreateShopRequest{
@@ -46,7 +46,7 @@ func TestCreateShop(t *testing.T) {
 		wargatest.
 			NewScenario(t, database.NewTestDatabase(&db)).
 			Run(func(t *testing.T) {
-				srv := marketplace_service.NewMarketplaceService(&db)
+				srv := marketplace_service.NewMarketplaceService(nil, &db, nil)
 
 				res, err := srv.CreateShop(t.Context(), &connect.Request[marketplacev1.CreateShopRequest]{
 					Msg: &marketplacev1.CreateShopRequest{
@@ -66,7 +66,7 @@ func TestCreateShop(t *testing.T) {
 		wargatest.
 			NewScenario(t, database.NewTestDatabase(&db)).
 			Run(func(t *testing.T) {
-				srv := marketplace_service.NewMarketplaceService(&db)
+				srv := marketplace_service.NewMarketplaceService(nil, &db, nil)
 
 				res, err := srv.CreateShop(t.Context(), &connect.Request[marketplacev1.CreateShopRequest]{
 					Msg: &marketplacev1.CreateShopRequest{

@@ -7,13 +7,14 @@ import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
 import type { StockLog } from "./stock_pb";
 import { file_wargapos_stock_v1_stock } from "./stock_pb";
+import { file_wargapos_rolebased_v1_role } from "../../rolebased/v1/role_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/stock/v1/log.proto.
  */
 export const file_wargapos_stock_v1_log: GenFile = /*@__PURE__*/
-  fileDesc("Cht3YXJnYXBvcy9zdG9jay92MS9sb2cucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxIlIKFkxpc3RTdG9ja0xvZ1NrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAEgwKBHBhZ2UYAiABKAUSEQoJcGFnZV9zaXplGAMgASgFIlMKF0xpc3RTdG9ja0xvZ1NrdVJlc3BvbnNlEikKBGxvZ3MYASADKAsyGy53YXJnYXBvcy5zdG9jay52MS5TdG9ja0xvZxINCgV0b3RhbBgCIAEoBUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_wargapos_stock_v1_stock]);
+  fileDesc("Cht3YXJnYXBvcy9zdG9jay92MS9sb2cucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxIl4KFkxpc3RTdG9ja0xvZ1NrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAEgwKBHBhZ2UYAiABKAUSEQoJcGFnZV9zaXplGAMgASgFOgqKtRgGCgQBAgUGIlMKF0xpc3RTdG9ja0xvZ1NrdVJlc3BvbnNlEikKBGxvZ3MYASADKAsyGy53YXJnYXBvcy5zdG9jay52MS5TdG9ja0xvZxINCgV0b3RhbBgCIAEoBUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_wargapos_stock_v1_stock, file_wargapos_rolebased_v1_role]);
 
 /**
  * @generated from message wargapos.stock.v1.ListStockLogSkuRequest

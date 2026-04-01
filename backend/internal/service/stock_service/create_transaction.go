@@ -26,7 +26,7 @@ func (s *StockService) CreateTransaction(
 	claims := auth.ClaimsFromContext(ctx)
 	var userID uint32
 	if claims != nil {
-		userID = claims.UserID
+		userID = claims.Identity.IdentityId
 	}
 
 	var txRecord models.StockTransaction
@@ -143,6 +143,11 @@ func (s *StockService) CreateTransaction(
 	}
 
 	// sending to event
+	if s.eventClient == nil {
+		return connect.NewResponse(&stockv1.CreateTransactionResponse{
+			Transaction: toProtoTransaction(&txRecord),
+		}), nil
+	}
 	_, err = s.eventClient.Send(ctx, &connect.Request[eventv1.SendRequest]{
 		Msg: &eventv1.SendRequest{
 			PushId: "default",
