@@ -10,6 +10,7 @@ import { toaster } from '../../../components/ui/toaster'
 import { stripError } from '../../../lib/errors'
 import { ConfirmDialog } from '../../../components/shared/ConfirmDialog'
 import type { Sku } from '../../../gen/wargapos/stock/v1/sku_pb'
+import { ProductType } from '../../../gen/wargapos/stock/v1/sku_pb'
 import { SkuListItem } from '../components/SkuListItem'
 
 export function SkusPage() {
@@ -25,6 +26,7 @@ export function SkusPage() {
   const [productId, setProductId] = useState('')
   const [branchId, setBranchId] = useState('')
   const [warehouseId, setWarehouseId] = useState(0)
+  const [productType, setProductType] = useState<ProductType>(ProductType.UNSPECIFIED)
 
   const { data, isLoading } = useQuery({
     queryKey: ['skus', filterWarehouse, search],
@@ -37,6 +39,7 @@ export function SkusPage() {
       productId: Number(productId),
       branchId: Number(branchId),
       warehouseId,
+      productType,
     }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['skus'] })
@@ -68,7 +71,7 @@ export function SkusPage() {
 
   function openCreate() {
     setEditTarget(null)
-    setCode(''); setProductId(''); setBranchId(''); setWarehouseId(0)
+    setCode(''); setProductId(''); setBranchId(''); setWarehouseId(0); setProductType(ProductType.UNSPECIFIED)
     setDialogOpen(true)
   }
   function openEdit(s: Sku) {
@@ -146,6 +149,19 @@ export function SkusPage() {
 
                 {!editTarget && (
                   <>
+                    <Field.Root required>
+                      <Field.Label>Product Type</Field.Label>
+                      <select
+                        value={productType}
+                        onChange={(e) => setProductType(Number(e.target.value) as ProductType)}
+                        style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #e2e8f0', fontSize: '14px' }}
+                      >
+                        <option value={ProductType.UNSPECIFIED}>Unspecified</option>
+                        <option value={ProductType.MATERIAL}>Material</option>
+                        <option value={ProductType.CAFE_PRODUCT}>Cafe Product</option>
+                        <option value={ProductType.MARKETPLACE_PRODUCT}>Marketplace Product</option>
+                      </select>
+                    </Field.Root>
                     <Field.Root required>
                       <Field.Label>Warehouse</Field.Label>
                       <WarehouseSelect value={warehouseId} onChange={setWarehouseId} size="md" w="100%" />

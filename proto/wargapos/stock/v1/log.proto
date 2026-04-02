@@ -3,15 +3,38 @@ syntax = "proto3";
 package wargapos.stock.v1;
 
 import "buf/validate/validate.proto";
-import "wargapos/stock/v1/stock.proto";
+import "google/protobuf/timestamp.proto";
 import "wargapos/rolebased/v1/role.proto";
+import "wargapos/stock/v1/stock.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
 message ListStockLogSkuRequest {
-  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER] };
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN,
+      ROLE_WAREHOUSE_MEMBER
+    ]
+  };
   uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
   int32 page = 2;
   int32 page_size = 3;
 }
-message ListStockLogSkuResponse { repeated StockLog logs = 1; int32 total = 2; }
+
+message ListStockLogItem {
+  uint64 id = 1;
+  uint32 sku_id = 2;
+  uint64 transaction_id = 4;
+  uint32 actor_id = 5;
+  uint64 cost_version_id = 6;
+  google.protobuf.Timestamp created_at = 8;
+  LogType log_type = 9;
+  int32 change = 10;
+  double unit_cost = 11;
+}
+message ListStockLogSkuResponse {
+  repeated ListStockLogItem logs = 1;
+  int32 total = 2;
+}

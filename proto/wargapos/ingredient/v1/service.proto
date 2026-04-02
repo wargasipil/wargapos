@@ -12,6 +12,7 @@ service IngredientService {
   // untuk material
   rpc CreateMaterial(CreateMaterialRequest) returns (CreateMaterialResponse);
   rpc UpdateMaterial(UpdateMaterialRequest) returns (UpdateMaterialResponse);
+  rpc GetMaterial(GetMaterialRequest) returns (GetMaterialResponse);
   rpc ListMaterial(ListMaterialRequest) returns (ListMaterialResponse);
   rpc DeleteMaterial(DeleteMaterialRequest) returns (DeleteMaterialResponse);
   rpc AddMaterialStock(AddMaterialStockRequest) returns (AddMaterialStockResponse);
@@ -102,6 +103,14 @@ message ListMaterialRequest {
 message ListMaterialResponse {
   repeated Material materials = 1;
   int32 total = 2;
+}
+
+message GetMaterialRequest {
+  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
+  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message GetMaterialResponse {
+  Material material = 1;
 }
 
 message DeleteMaterialRequest {

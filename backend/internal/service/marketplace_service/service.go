@@ -35,13 +35,16 @@ func toShopProto(m models.MarketplaceShop) *marketplacev1.MarketplaceShop {
 
 func toProductProto(p models.MarketplaceProduct) *marketplacev1.MarketplaceProduct {
 	var leftStock int32
+	var stockValuation float64
 	whs := make([]*marketplacev1.WarehouseStock, 0, len(p.Stocks))
 	for _, s := range p.Stocks {
 		leftStock += s.LeftStock
+		stockValuation += s.StockValuation
 		whs = append(whs, &marketplacev1.WarehouseStock{
-			WarehouseId: s.WarehouseID,
-			SkuId:       s.SkuID,
-			LeftStock:   s.LeftStock,
+			WarehouseId:    s.WarehouseID,
+			SkuId:          s.SkuID,
+			LeftStock:      s.LeftStock,
+			StockValuation: s.StockValuation,
 		})
 	}
 	return &marketplacev1.MarketplaceProduct{
@@ -52,6 +55,7 @@ func toProductProto(p models.MarketplaceProduct) *marketplacev1.MarketplaceProdu
 		ImageUrl:       p.ImageURL,
 		IsActive:       p.IsActive,
 		LeftStock:      leftStock,
+		StockValuation: stockValuation,
 		WarehouseStock: whs,
 		CreatedAt:      timestamppb.New(p.CreatedAt),
 		UpdatedAt:      timestamppb.New(p.UpdatedAt),

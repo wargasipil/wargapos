@@ -62,6 +62,7 @@ func (s *IngredientService) AddMaterialStock(
 					ProductId:   material.ID,
 					BranchId:    branchId,
 					WarehouseId: pay.WarehouseId,
+					ProductType: stockv1.ProductType_PRODUCT_TYPE_MATERIAL,
 				},
 			})
 

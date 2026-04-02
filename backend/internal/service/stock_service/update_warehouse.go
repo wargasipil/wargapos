@@ -30,6 +30,8 @@ func (s *StockService) UpdateWarehouse(
 
 	if err := s.db.WithContext(ctx).Model(&w).Updates(map[string]any{
 		"name":       req.Msg.Name,
+		"address":    req.Msg.Address,
+		"contact":    req.Msg.Contact,
 		"updated_at": time.Now(),
 	}).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)

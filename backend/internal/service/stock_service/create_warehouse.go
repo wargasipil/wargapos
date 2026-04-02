@@ -18,7 +18,7 @@ func (s *StockService) CreateWarehouse(
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name is required"))
 	}
 
-	w := models.Warehouse{Name: req.Msg.Name}
+	w := models.Warehouse{Name: req.Msg.Name, Address: req.Msg.Address, Contact: req.Msg.Contact}
 	if err := s.db.WithContext(ctx).Create(&w).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

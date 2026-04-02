@@ -69,5 +69,12 @@ func (s *StockService) GetSku(
 		protoSku.LastStockOut = timestamppb.New(*ts.LastStockOut)
 	}
 
+	var valuation struct{ StockValuation float64 }
+	s.db.WithContext(ctx).Raw(
+		`SELECT COALESCE(SUM(unit_cost * left_stock), 0) AS stock_valuation FROM cost_versions WHERE sku_id = ? AND left_stock > 0`,
+		sku.ID,
+	).Scan(&valuation)
+	protoSku.StockValuation = valuation.StockValuation
+
 	return connect.NewResponse(&stockv1.GetSkuResponse{Sku: protoSku}), nil
 }

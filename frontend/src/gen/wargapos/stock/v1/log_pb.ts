@@ -5,16 +5,18 @@
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
-import type { StockLog } from "./stock_pb";
-import { file_wargapos_stock_v1_stock } from "./stock_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import { file_wargapos_rolebased_v1_role } from "../../rolebased/v1/role_pb";
+import type { LogType } from "./stock_pb";
+import { file_wargapos_stock_v1_stock } from "./stock_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/stock/v1/log.proto.
  */
 export const file_wargapos_stock_v1_log: GenFile = /*@__PURE__*/
-  fileDesc("Cht3YXJnYXBvcy9zdG9jay92MS9sb2cucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxIl4KFkxpc3RTdG9ja0xvZ1NrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAEgwKBHBhZ2UYAiABKAUSEQoJcGFnZV9zaXplGAMgASgFOgqKtRgGCgQBAgUGIlMKF0xpc3RTdG9ja0xvZ1NrdVJlc3BvbnNlEikKBGxvZ3MYASADKAsyGy53YXJnYXBvcy5zdG9jay52MS5TdG9ja0xvZxINCgV0b3RhbBgCIAEoBUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_wargapos_stock_v1_stock, file_wargapos_rolebased_v1_role]);
+  fileDesc("Cht3YXJnYXBvcy9zdG9jay92MS9sb2cucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxIl4KFkxpc3RTdG9ja0xvZ1NrdVJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAEgwKBHBhZ2UYAiABKAUSEQoJcGFnZV9zaXplGAMgASgFOgqKtRgGCgQBAgUGIvIBChBMaXN0U3RvY2tMb2dJdGVtEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgEIAEoBBIQCghhY3Rvcl9pZBgFIAEoDRIXCg9jb3N0X3ZlcnNpb25faWQYBiABKAQSLgoKY3JlYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLAoIbG9nX3R5cGUYCSABKA4yGi53YXJnYXBvcy5zdG9jay52MS5Mb2dUeXBlEg4KBmNoYW5nZRgKIAEoBRIRCgl1bml0X2Nvc3QYCyABKAEiWwoXTGlzdFN0b2NrTG9nU2t1UmVzcG9uc2USMQoEbG9ncxgBIAMoCzIjLndhcmdhcG9zLnN0b2NrLnYxLkxpc3RTdG9ja0xvZ0l0ZW0SDQoFdG90YWwYAiABKAVCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role, file_wargapos_stock_v1_stock]);
 
 /**
  * @generated from message wargapos.stock.v1.ListStockLogSkuRequest
@@ -44,13 +46,70 @@ export const ListStockLogSkuRequestSchema: GenMessage<ListStockLogSkuRequest> = 
   messageDesc(file_wargapos_stock_v1_log, 0);
 
 /**
+ * @generated from message wargapos.stock.v1.ListStockLogItem
+ */
+export type ListStockLogItem = Message<"wargapos.stock.v1.ListStockLogItem"> & {
+  /**
+   * @generated from field: uint64 id = 1;
+   */
+  id: bigint;
+
+  /**
+   * @generated from field: uint32 sku_id = 2;
+   */
+  skuId: number;
+
+  /**
+   * @generated from field: uint64 transaction_id = 4;
+   */
+  transactionId: bigint;
+
+  /**
+   * @generated from field: uint32 actor_id = 5;
+   */
+  actorId: number;
+
+  /**
+   * @generated from field: uint64 cost_version_id = 6;
+   */
+  costVersionId: bigint;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 8;
+   */
+  createdAt?: Timestamp;
+
+  /**
+   * @generated from field: wargapos.stock.v1.LogType log_type = 9;
+   */
+  logType: LogType;
+
+  /**
+   * @generated from field: int32 change = 10;
+   */
+  change: number;
+
+  /**
+   * @generated from field: double unit_cost = 11;
+   */
+  unitCost: number;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.ListStockLogItem.
+ * Use `create(ListStockLogItemSchema)` to create a new message.
+ */
+export const ListStockLogItemSchema: GenMessage<ListStockLogItem> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_log, 1);
+
+/**
  * @generated from message wargapos.stock.v1.ListStockLogSkuResponse
  */
 export type ListStockLogSkuResponse = Message<"wargapos.stock.v1.ListStockLogSkuResponse"> & {
   /**
-   * @generated from field: repeated wargapos.stock.v1.StockLog logs = 1;
+   * @generated from field: repeated wargapos.stock.v1.ListStockLogItem logs = 1;
    */
-  logs: StockLog[];
+  logs: ListStockLogItem[];
 
   /**
    * @generated from field: int32 total = 2;
@@ -63,5 +122,5 @@ export type ListStockLogSkuResponse = Message<"wargapos.stock.v1.ListStockLogSku
  * Use `create(ListStockLogSkuResponseSchema)` to create a new message.
  */
 export const ListStockLogSkuResponseSchema: GenMessage<ListStockLogSkuResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_log, 1);
+  messageDesc(file_wargapos_stock_v1_log, 2);
 

@@ -130,24 +130,27 @@ type AppSettings struct {
 type Warehouse struct {
 	ID        uint32 `gorm:"primaryKey;autoIncrement"`
 	Name      string `gorm:"not null;size:300"`
+	Address   string `gorm:"not null;default:''"`
+	Contact   string `gorm:"not null;size:200;default:''"`
 	Deleted   bool   `gorm:"not null;default:false"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 type Sku struct {
-	ID          uint32 `gorm:"primaryKey;autoIncrement"`
-	Code        string `gorm:"uniqueIndex;not null;size:255"`
-	ProductID   uint32 `gorm:"column:product_id;not null"`
-	BranchID    uint32 `gorm:"column:branch_id;not null"`
-	WarehouseID uint32              `gorm:"column:warehouse_id;not null"`
-	StockQty    int64               `gorm:"column:stock_qty;not null;default:0"`
-	Deleted     bool                `gorm:"not null;default:false"`
-	LastStockIn  *time.Time          `gorm:"column:last_stock_in"`
-	LastStockOut *time.Time          `gorm:"column:last_stock_out"`
-	CostingType  stockv1.CostingType `gorm:"column:costing_type;not null;default:0"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID           uint32               `gorm:"primaryKey;autoIncrement"`
+	Code         string               `gorm:"uniqueIndex;not null;size:255"`
+	ProductID    uint32               `gorm:"column:product_id;not null"`
+	BranchID     uint32               `gorm:"column:branch_id;not null"`
+	WarehouseID  uint32               `gorm:"column:warehouse_id;not null"`
+	ProductType  int32                `gorm:"column:product_type;not null;default:0"`
+	StockQty     int64                `gorm:"column:stock_qty;not null;default:0"`
+	Deleted      bool                 `gorm:"not null;default:false"`
+	LastStockIn  *time.Time           `gorm:"column:last_stock_in"`
+	LastStockOut *time.Time           `gorm:"column:last_stock_out"`
+	CostingType  stockv1.CostingType  `gorm:"column:costing_type;not null;default:0"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 type StockTransaction struct {
@@ -208,35 +211,35 @@ type RecipeItem struct {
 }
 
 type MarketplaceShop struct {
-	ID        uint64                           `gorm:"primaryKey;autoIncrement"`
-	Name      string                           `gorm:"not null;size:300"`
+	ID        uint64                            `gorm:"primaryKey;autoIncrement"`
+	Name      string                            `gorm:"not null;size:300"`
 	Type      marketplacev1.MarketplaceShopType `gorm:"not null;default:0"`
-	Username  string                           `gorm:"not null;default:''"`
-	URL       string                           `gorm:"column:url;not null;default:''"`
-	IsActive  bool                             `gorm:"column:is_active;not null;default:true"`
+	Username  string                            `gorm:"not null;default:''"`
+	URL       string                            `gorm:"column:url;not null;default:''"`
+	IsActive  bool                              `gorm:"column:is_active;not null;default:true"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 type MarketplaceOrder struct {
-	ID                uint64                               `gorm:"primaryKey;autoIncrement"`
-	ShopID            uint64                               `gorm:"column:shop_id;not null"`
-	Shop              MarketplaceShop                      `gorm:"foreignKey:ShopID"`
-	CustomerName      string                               `gorm:"column:customer_name;not null;default:''"`
-	PhoneNumber       string                               `gorm:"column:phone_number;not null;default:''"`
-	TotalCents        int64                                `gorm:"column:total_cents;not null;default:0"`
-	Status            marketplacev1.MarketplaceOrderStatus `gorm:"not null;default:0"`
-	WarehouseID       uint32                               `gorm:"column:warehouse_id;not null;default:0"`
-	CustomerID        uint64                               `gorm:"column:customer_id;not null;default:0"`
-	AddressID         uint64                               `gorm:"column:address_id;not null;default:0"`
-	ShippingLabel     string                               `gorm:"column:shipping_label;not null;default:''"`
-	ShippingAddress   string                               `gorm:"column:shipping_address;type:text;not null;default:''"`
-	ShippingCity      string                               `gorm:"column:shipping_city;not null;default:''"`
-	ShippingProvince  string                               `gorm:"column:shipping_province;not null;default:''"`
-	ShippingPostalCode string                              `gorm:"column:shipping_postal_code;not null;default:''"`
-	Items             []MarketplaceOrderItem               `gorm:"foreignKey:OrderID"`
-	CreatedAt         time.Time
-	UpdatedAt         time.Time
+	ID                 uint64                               `gorm:"primaryKey;autoIncrement"`
+	ShopID             uint64                               `gorm:"column:shop_id;not null"`
+	Shop               MarketplaceShop                      `gorm:"foreignKey:ShopID"`
+	CustomerName       string                               `gorm:"column:customer_name;not null;default:''"`
+	PhoneNumber        string                               `gorm:"column:phone_number;not null;default:''"`
+	TotalCents         int64                                `gorm:"column:total_cents;not null;default:0"`
+	Status             marketplacev1.MarketplaceOrderStatus `gorm:"not null;default:0"`
+	WarehouseID        uint32                               `gorm:"column:warehouse_id;not null;default:0"`
+	CustomerID         uint64                               `gorm:"column:customer_id;not null;default:0"`
+	AddressID          uint64                               `gorm:"column:address_id;not null;default:0"`
+	ShippingLabel      string                               `gorm:"column:shipping_label;not null;default:''"`
+	ShippingAddress    string                               `gorm:"column:shipping_address;type:text;not null;default:''"`
+	ShippingCity       string                               `gorm:"column:shipping_city;not null;default:''"`
+	ShippingProvince   string                               `gorm:"column:shipping_province;not null;default:''"`
+	ShippingPostalCode string                               `gorm:"column:shipping_postal_code;not null;default:''"`
+	Items              []MarketplaceOrderItem               `gorm:"foreignKey:OrderID"`
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
 }
 
 type MarketplaceCustomerAddress struct {
@@ -282,11 +285,12 @@ type MarketplaceProduct struct {
 }
 
 type MarketplaceProductStock struct {
-	ID                   uint64    `gorm:"primaryKey;autoIncrement"`
-	MarketplaceProductID uint64    `gorm:"column:marketplace_product_id;not null"`
-	WarehouseID          uint32    `gorm:"column:warehouse_id;not null"`
-	SkuID                uint32    `gorm:"column:sku_id;not null;default:0"`
-	LeftStock            int32     `gorm:"column:left_stock;not null;default:0"`
+	ID                   uint64  `gorm:"primaryKey;autoIncrement"`
+	MarketplaceProductID uint64  `gorm:"column:marketplace_product_id;not null"`
+	WarehouseID          uint32  `gorm:"column:warehouse_id;not null"`
+	SkuID                uint32  `gorm:"column:sku_id;not null;default:0"`
+	LeftStock            int32   `gorm:"column:left_stock;not null;default:0"`
+	StockValuation       float64 `gorm:"column:stock_valuation;not null;default:0"`
 	CreatedAt            time.Time
 	UpdatedAt            time.Time
 }

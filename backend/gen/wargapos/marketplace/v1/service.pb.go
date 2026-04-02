@@ -7,6 +7,7 @@
 package marketplacev1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1411,6 +1412,7 @@ type RestockProductRequest struct {
 	ProductId     uint64                 `protobuf:"varint,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	WarehouseId   uint32                 `protobuf:"varint,2,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
 	Delta         int32                  `protobuf:"varint,3,opt,name=delta,proto3" json:"delta,omitempty"`
+	Total         float64                `protobuf:"fixed64,4,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1462,6 +1464,13 @@ func (x *RestockProductRequest) GetWarehouseId() uint32 {
 func (x *RestockProductRequest) GetDelta() int32 {
 	if x != nil {
 		return x.Delta
+	}
+	return 0
+}
+
+func (x *RestockProductRequest) GetTotal() float64 {
+	if x != nil {
+		return x.Total
 	}
 	return 0
 }
@@ -2538,7 +2547,7 @@ var File_wargapos_marketplace_v1_service_proto protoreflect.FileDescriptor
 
 const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"%wargapos/marketplace/v1/service.proto\x12\x17wargapos.marketplace.v1\x1a\"wargapos/marketplace/v1/shop.proto\x1a#wargapos/marketplace/v1/order.proto\x1a%wargapos/marketplace/v1/product.proto\x1a&wargapos/marketplace/v1/customer.proto\x1a wargapos/rolebased/v1/role.proto\"\xa1\x01\n" +
+	"%wargapos/marketplace/v1/service.proto\x12\x17wargapos.marketplace.v1\x1a\x1bbuf/validate/validate.proto\x1a&wargapos/marketplace/v1/customer.proto\x1a#wargapos/marketplace/v1/order.proto\x1a%wargapos/marketplace/v1/product.proto\x1a\"wargapos/marketplace/v1/shop.proto\x1a wargapos/rolebased/v1/role.proto\"\xa1\x01\n" +
 	"\x11CreateShopRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12@\n" +
 	"\x04type\x18\x02 \x01(\x0e2,.wargapos.marketplace.v1.MarketplaceShopTypeR\x04type\x12\x1a\n" +
@@ -2640,12 +2649,13 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\x14DeleteProductRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"\x17\n" +
-	"\x15DeleteProductResponse\"z\n" +
+	"\x15DeleteProductResponse\"\xa0\x01\n" +
 	"\x15RestockProductRequest\x12\x1d\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\x04R\tproductId\x12!\n" +
 	"\fwarehouse_id\x18\x02 \x01(\rR\vwarehouseId\x12\x14\n" +
-	"\x05delta\x18\x03 \x01(\x05R\x05delta:\t\x8a\xb5\x18\x05\n" +
+	"\x05delta\x18\x03 \x01(\x05R\x05delta\x12$\n" +
+	"\x05total\x18\x04 \x01(\x01B\x0e\xbaH\v\x12\t!\x00\x00\x00\x00\x00\x00\x00\x00R\x05total:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"_\n" +
 	"\x16RestockProductResponse\x12E\n" +
 	"\aproduct\x18\x01 \x01(\v2+.wargapos.marketplace.v1.MarketplaceProductR\aproduct\"\x8b\x01\n" +
@@ -2914,10 +2924,10 @@ func file_wargapos_marketplace_v1_service_proto_init() {
 	if File_wargapos_marketplace_v1_service_proto != nil {
 		return
 	}
-	file_wargapos_marketplace_v1_shop_proto_init()
+	file_wargapos_marketplace_v1_customer_proto_init()
 	file_wargapos_marketplace_v1_order_proto_init()
 	file_wargapos_marketplace_v1_product_proto_init()
-	file_wargapos_marketplace_v1_customer_proto_init()
+	file_wargapos_marketplace_v1_shop_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

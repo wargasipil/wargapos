@@ -15,6 +15,7 @@ import { useAuthStore } from '../../store/auth'
 import { canManageStock } from '../../lib/roles'
 import { TransactionType } from '../../gen/wargapos/stock/v1/transaction_pb'
 import { SkuSelect } from '../../components/shared/SkuSelect'
+import type { Timestamp } from '@bufbuild/protobuf/wkt'
 
 const PAGE_SIZE = 20
 
@@ -54,6 +55,88 @@ const createTypeOptions = createListCollection({
   ],
 })
 
+function ItemDetailPopup({ txId, onClose }: { txId: string; onClose: () => void }) {
+  const { data: detail, isLoading: detailLoading } = useQuery({
+    queryKey: ['transaction-detail', txId],
+    queryFn: () => stockClient.detailTransaction({ id: BigInt(txId) }),
+    enabled: !!txId,
+  })
+
+  const { data: skuData } = useQuery({
+    queryKey: ['skus-all'],
+    queryFn: () => stockClient.listSku({ page: 1, pageSize: 500 }),
+  })
+
+  const { data: warehouseData } = useQuery({
+    queryKey: ['warehouses-all'],
+    queryFn: () => stockClient.listWarehouse({}),
+  })
+
+  const skuMap = new Map(skuData?.skus.map((s) => [s.id, s]) ?? [])
+  const warehouseMap = new Map(warehouseData?.warehouses.map((w) => [w.id, w]) ?? [])
+
+  const tx = detail?.transaction
+
+  return (
+    <Dialog.Root open onOpenChange={({ open }) => { if (!open) onClose() }} size="lg">
+      <Portal>
+        <Dialog.Backdrop />
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>
+                <HStack gap={2}>
+                  <Text fontFamily="mono" fontSize="sm" color="gray.500">#{txId}</Text>
+                  {tx && (
+                    <Badge colorPalette={TYPE_COLORS[tx.transactionType] ?? 'gray'} size="sm">
+                      {TYPE_LABELS[tx.transactionType] ?? 'Unknown'}
+                    </Badge>
+                  )}
+                </HStack>
+              </Dialog.Title>
+            </Dialog.Header>
+            <Dialog.Body>
+              {detailLoading ? (
+                <Flex justify="center" py={8}><Spinner /></Flex>
+              ) : !tx || tx.items.length === 0 ? (
+                <Text color="gray.400" fontSize="sm" textAlign="center" py={4}>No items.</Text>
+              ) : (
+                <Table.Root variant="outline" size="sm">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.ColumnHeader>SKU</Table.ColumnHeader>
+                      <Table.ColumnHeader>Warehouse</Table.ColumnHeader>
+                      <Table.ColumnHeader textAlign="right">Qty</Table.ColumnHeader>
+                      <Table.ColumnHeader textAlign="right">Total</Table.ColumnHeader>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {tx.items.map((item, i) => {
+                      const sku = skuMap.get(item.skuId)
+                      const warehouse = sku ? warehouseMap.get(sku.warehouseId) : undefined
+                      return (
+                        <Table.Row key={i}>
+                          <Table.Cell fontFamily="mono" fontSize="xs">{sku?.code ?? `SKU#${item.skuId}`}</Table.Cell>
+                          <Table.Cell fontSize="xs" color="gray.600">{warehouse?.name ?? (sku ? `#${sku.warehouseId}` : '—')}</Table.Cell>
+                          <Table.Cell textAlign="right" fontSize="xs">{item.quantity}</Table.Cell>
+                          <Table.Cell textAlign="right" fontSize="xs">{'Rp\u00a0' + Math.round(item.total).toLocaleString('id-ID')}</Table.Cell>
+                        </Table.Row>
+                      )
+                    })}
+                  </Table.Body>
+                </Table.Root>
+              )}
+            </Dialog.Body>
+            <Dialog.Footer>
+              <Button variant="outline" size="sm" onClick={onClose}>Close</Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Portal>
+    </Dialog.Root>
+  )
+}
+
 export function TransactionsPage() {
   const { role } = useAuthStore()
   const isAdminOrManager = canManageStock(role)
@@ -61,23 +144,30 @@ export function TransactionsPage() {
   const navigate = useNavigate()
 
   // List state from URL search params
-  const search = useSearch({ strict: false }) as { page?: number; type?: string; cancelled?: boolean }
-  const page         = Number(search.page ?? 1)
-  const filterType   = String(search.type ?? '0')
+  const search = useSearch({ strict: false }) as { page?: number; type?: string; cancelled?: boolean; dateFrom?: string; dateTo?: string }
+  const page          = Number(search.page ?? 1)
+  const filterType    = String(search.type ?? '0')
   const showCancelled = Boolean(search.cancelled ?? false)
+  const dateFrom      = search.dateFrom ?? ''
+  const dateTo        = search.dateTo ?? ''
 
-  function goToPage(newPage: number) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    navigate({ to: '/stock/transactions', search: { page: newPage, type: filterType, cancelled: showCancelled } as any, replace: true })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function updateSearch(patch: Record<string, unknown>) {
+    navigate({
+      to: '/stock/transactions',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      search: { page: 1, type: filterType, cancelled: showCancelled, dateFrom, dateTo, ...patch } as any,
+      replace: true,
+    })
   }
-  function changeType(newType: string) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    navigate({ to: '/stock/transactions', search: { page: 1, type: newType, cancelled: showCancelled } as any, replace: true })
-  }
-  function toggleCancelled() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    navigate({ to: '/stock/transactions', search: { page: 1, type: filterType, cancelled: !showCancelled } as any, replace: true })
-  }
+  function goToPage(newPage: number) { updateSearch({ page: newPage }) }
+  function changeType(newType: string) { updateSearch({ type: newType }) }
+  function toggleCancelled() { updateSearch({ cancelled: !showCancelled }) }
+  function changeDateFrom(v: string) { updateSearch({ dateFrom: v }) }
+  function changeDateTo(v: string) { updateSearch({ dateTo: v }) }
+
+  // Popup state
+  const [popupTxId, setPopupTxId] = useState<string | null>(null)
 
   // Create state
   const [createOpen, setCreateOpen] = useState(false)
@@ -101,13 +191,15 @@ export function TransactionsPage() {
 
   // Queries
   const { data, isLoading } = useQuery({
-    queryKey: ['transactions', page, filterType, showCancelled],
+    queryKey: ['transactions', page, filterType, showCancelled, dateFrom, dateTo],
     queryFn: () =>
       stockClient.listTransaction({
         page,
         pageSize: PAGE_SIZE,
         transactionType: Number(filterType) as TransactionType,
         cancelled: showCancelled,
+        dateFrom,
+        dateTo,
       }),
   })
 
@@ -183,6 +275,24 @@ export function TransactionsPage() {
             Cancelled
           </Button>
 
+          {/* Date range */}
+          <Input
+            size="sm"
+            type="date"
+            value={dateFrom}
+            onChange={(e) => changeDateFrom(e.target.value)}
+            maxW="150px"
+            placeholder="From"
+          />
+          <Input
+            size="sm"
+            type="date"
+            value={dateTo}
+            onChange={(e) => changeDateTo(e.target.value)}
+            maxW="150px"
+            placeholder="To"
+          />
+
           {isAdminOrManager && (
             <Button colorPalette="blue" size="sm" onClick={() => setCreateOpen(true)}>
               <Plus size={16} /> Add Transaction
@@ -199,8 +309,11 @@ export function TransactionsPage() {
             <Table.Row>
               <Table.ColumnHeader>#</Table.ColumnHeader>
               <Table.ColumnHeader>Type</Table.ColumnHeader>
-              <Table.ColumnHeader>Cancelled</Table.ColumnHeader>
+              <Table.ColumnHeader w="1px">Cancelled</Table.ColumnHeader>
               <Table.ColumnHeader>Note</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="right">Total</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">Products</Table.ColumnHeader>
+              <Table.ColumnHeader textAlign="center">Pieces</Table.ColumnHeader>
               <Table.ColumnHeader>Date</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
@@ -219,20 +332,43 @@ export function TransactionsPage() {
                     {TYPE_LABELS[tx.transactionType] ?? 'Unknown'}
                   </Badge>
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell w="1px" whiteSpace="nowrap">
                   {tx.cancelled && <Badge colorPalette="red" variant="outline" size="sm">Cancelled</Badge>}
                 </Table.Cell>
-                <Table.Cell fontSize="xs" color="gray.600" maxW="200px" overflow="hidden" style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                <Table.Cell fontSize="xs" color="gray.600" maxW="160px" overflow="hidden" style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
                   {tx.note || '—'}
                 </Table.Cell>
+                <Table.Cell textAlign="right" fontSize="xs" fontFamily="mono">
+                  {'Rp\u00a0' + Math.round(tx.total).toLocaleString('id-ID')}
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  <Button
+                    size="xs"
+                    variant="ghost"
+                    colorPalette="blue"
+                    onClick={(e) => { e.stopPropagation(); setPopupTxId(String(tx.id)) }}
+                  >
+                    {tx.productCount}
+                  </Button>
+                </Table.Cell>
+                <Table.Cell textAlign="center">
+                  <Button
+                    size="xs"
+                    variant="ghost"
+                    colorPalette="blue"
+                    onClick={(e) => { e.stopPropagation(); setPopupTxId(String(tx.id)) }}
+                  >
+                    {tx.piecesCount}
+                  </Button>
+                </Table.Cell>
                 <Table.Cell fontSize="xs" color="gray.500">
-                  {formatDateTime(tx.createdAt as import('@bufbuild/protobuf/wkt').Timestamp | undefined)}
+                  {formatDateTime(tx.createdAt as Timestamp | undefined)}
                 </Table.Cell>
               </Table.Row>
             ))}
             {transactions.length === 0 && (
               <Table.Row>
-                <Table.Cell colSpan={5}>
+                <Table.Cell colSpan={8}>
                   <Text color="gray.400" fontSize="sm" textAlign="center" py={4}>No transactions found.</Text>
                 </Table.Cell>
               </Table.Row>
@@ -252,6 +388,11 @@ export function TransactionsPage() {
             <ChevronRight size={16} />
           </Button>
         </HStack>
+      )}
+
+      {/* Item Detail Popup */}
+      {popupTxId && (
+        <ItemDetailPopup txId={popupTxId} onClose={() => setPopupTxId(null)} />
       )}
 
       {/* ── Create Transaction Dialog ─────────────────────────── */}

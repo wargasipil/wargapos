@@ -25,15 +25,17 @@ const (
 )
 
 type Rack struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	WarehouseId   uint32                 `protobuf:"varint,2,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Deleted       bool                   `protobuf:"varint,5,opt,name=deleted,proto3" json:"deleted,omitempty"`
-	Name          string                 `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	WarehouseId    uint32                 `protobuf:"varint,2,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Deleted        bool                   `protobuf:"varint,5,opt,name=deleted,proto3" json:"deleted,omitempty"`
+	Name           string                 `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
+	StockCount     int32                  `protobuf:"varint,7,opt,name=stock_count,json=stockCount,proto3" json:"stock_count,omitempty"`
+	StockValuation float64                `protobuf:"fixed64,8,opt,name=stock_valuation,json=stockValuation,proto3" json:"stock_valuation,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Rack) Reset() {
@@ -106,6 +108,20 @@ func (x *Rack) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *Rack) GetStockCount() int32 {
+	if x != nil {
+		return x.StockCount
+	}
+	return 0
+}
+
+func (x *Rack) GetStockValuation() float64 {
+	if x != nil {
+		return x.StockValuation
+	}
+	return 0
 }
 
 type CreateRackRequest struct {
@@ -548,7 +564,7 @@ var File_wargapos_stock_v1_rack_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_rack_proto_rawDesc = "" +
 	"\n" +
-	"\x1cwargapos/stock/v1/rack.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xdd\x01\n" +
+	"\x1cwargapos/stock/v1/rack.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xa7\x02\n" +
 	"\x04Rack\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12!\n" +
 	"\fwarehouse_id\x18\x02 \x01(\rR\vwarehouseId\x129\n" +
@@ -557,7 +573,10 @@ const file_wargapos_stock_v1_rack_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x18\n" +
 	"\adeleted\x18\x05 \x01(\bR\adeleted\x12\x12\n" +
-	"\x04name\x18\x06 \x01(\tR\x04name\"j\n" +
+	"\x04name\x18\x06 \x01(\tR\x04name\x12\x1f\n" +
+	"\vstock_count\x18\a \x01(\x05R\n" +
+	"stockCount\x12'\n" +
+	"\x0fstock_valuation\x18\b \x01(\x01R\x0estockValuation\"j\n" +
 	"\x11CreateRackRequest\x12*\n" +
 	"\fwarehouse_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +

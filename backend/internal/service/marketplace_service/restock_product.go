@@ -23,6 +23,7 @@ func (s *MarketplaceService) RestockProduct(
 	productID := req.Msg.ProductId
 	warehouseID := req.Msg.WarehouseId
 	delta := req.Msg.Delta
+	total := req.Msg.Total
 
 	var product models.MarketplaceProduct
 	var skuID uint32
@@ -62,6 +63,7 @@ func (s *MarketplaceService) RestockProduct(
 					ProductId:   uint32(productID),
 					WarehouseId: warehouseID,
 					BranchId:    0,
+					ProductType: stockv1.ProductType_PRODUCT_TYPE_MARKETPLACE_PRODUCT,
 				},
 			})
 			if err != nil {
@@ -95,7 +97,7 @@ func (s *MarketplaceService) RestockProduct(
 		Msg: &stockv1.CreateTransactionRequest{
 			TransactionType: stockv1.TransactionType_TRANSACTION_TYPE_STOCK_IN,
 			Items: []*stockv1.TransactionItem{
-				{SkuId: skuID, Quantity: delta, Total: 100},
+				{SkuId: skuID, Quantity: delta, Total: total},
 			},
 		},
 	})

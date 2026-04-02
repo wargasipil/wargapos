@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/stock.proto.
  */
 export const file_wargapos_stock_v1_stock: GenFile = /*@__PURE__*/
-  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi4AEKC0Nvc3RWZXJzaW9uEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgDIAEoBBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIRCgl1bml0X2Nvc3QYBiABKAESFgoOc3RvY2tfaW5pdGlhdGUYByABKAUSEgoKbGVmdF9zdG9jaxgIIAEoBSLXAQoIU3RvY2tMb2cSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAQgASgEEhAKCGFjdG9yX2lkGAUgASgNEhcKD2Nvc3RfdmVyc2lvbl9pZBgGIAEoBBIuCgpjcmVhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIsCghsb2dfdHlwZRgJIAEoDjIaLndhcmdhcG9zLnN0b2NrLnYxLkxvZ1R5cGUSDgoGY2hhbmdlGAogASgFIjkKEkxpc3RDb3N0U2t1UmVxdWVzdBIXCgZza3VfaWQYASABKA1CB7pIBCoCIAA6Coq1GAYKBAECBQYiRAoTTGlzdENvc3RTa3VSZXNwb25zZRItCgVjb3N0cxgBIAMoCzIeLndhcmdhcG9zLnN0b2NrLnYxLkNvc3RWZXJzaW9uKsIBCgdMb2dUeXBlEhgKFExPR19UWVBFX1VOU1BFQ0lGSUVEEAASGQoVTE9HX1RZUEVfU1RPQ0tfQ0FOQ0VMEAESFQoRTE9HX1RZUEVfU1RPQ0tfSU4QAhIWChJMT0dfVFlQRV9TVE9DS19PVVQQAxIXChNMT0dfVFlQRV9BREpVU1RNRU5UEAQSEgoOTE9HX1RZUEVfT1JERVIQBRITCg9MT0dfVFlQRV9CUk9LRU4QBhIRCg1MT0dfVFlQRV9MT1NUEAdCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
+  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9zdG9jay5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi4AEKC0Nvc3RWZXJzaW9uEgoKAmlkGAEgASgEEg4KBnNrdV9pZBgCIAEoDRIWCg50cmFuc2FjdGlvbl9pZBgDIAEoBBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIRCgl1bml0X2Nvc3QYBiABKAESFgoOc3RvY2tfaW5pdGlhdGUYByABKAUSEgoKbGVmdF9zdG9jaxgIIAEoBSLXAQoIU3RvY2tMb2cSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEhYKDnRyYW5zYWN0aW9uX2lkGAQgASgEEhAKCGFjdG9yX2lkGAUgASgNEhcKD2Nvc3RfdmVyc2lvbl9pZBgGIAEoBBIuCgpjcmVhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIsCghsb2dfdHlwZRgJIAEoDjIaLndhcmdhcG9zLnN0b2NrLnYxLkxvZ1R5cGUSDgoGY2hhbmdlGAogASgFIk4KEkxpc3RDb3N0U2t1UmVxdWVzdBIXCgZza3VfaWQYASABKA1CB7pIBCoCIAASEwoLb25seV9hY3RpdmUYAiABKAg6Coq1GAYKBAECBQYidAoPTGlzdENvc3RTa3VJdGVtEhEKCXVuaXRfY29zdBgBIAEoARIWCg5zdG9ja19pbml0aWF0ZRgCIAEoBRISCgpsZWZ0X3N0b2NrGAMgASgFEg0KBXRvdGFsGAQgASgBEhMKC2JhdGNoX2NvdW50GAUgASgFIkgKE0xpc3RDb3N0U2t1UmVzcG9uc2USMQoFY29zdHMYASADKAsyIi53YXJnYXBvcy5zdG9jay52MS5MaXN0Q29zdFNrdUl0ZW0qwgEKB0xvZ1R5cGUSGAoUTE9HX1RZUEVfVU5TUEVDSUZJRUQQABIZChVMT0dfVFlQRV9TVE9DS19DQU5DRUwQARIVChFMT0dfVFlQRV9TVE9DS19JThACEhYKEkxPR19UWVBFX1NUT0NLX09VVBADEhcKE0xPR19UWVBFX0FESlVTVE1FTlQQBBISCg5MT0dfVFlQRV9PUkRFUhAFEhMKD0xPR19UWVBFX0JST0tFThAGEhEKDUxPR19UWVBFX0xPU1QQB0IwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
 
 /**
  * @generated from message wargapos.stock.v1.CostVersion
@@ -128,6 +128,11 @@ export type ListCostSkuRequest = Message<"wargapos.stock.v1.ListCostSkuRequest">
    * @generated from field: uint32 sku_id = 1;
    */
   skuId: number;
+
+  /**
+   * @generated from field: bool only_active = 2;
+   */
+  onlyActive: boolean;
 };
 
 /**
@@ -138,13 +143,50 @@ export const ListCostSkuRequestSchema: GenMessage<ListCostSkuRequest> = /*@__PUR
   messageDesc(file_wargapos_stock_v1_stock, 2);
 
 /**
+ * @generated from message wargapos.stock.v1.ListCostSkuItem
+ */
+export type ListCostSkuItem = Message<"wargapos.stock.v1.ListCostSkuItem"> & {
+  /**
+   * @generated from field: double unit_cost = 1;
+   */
+  unitCost: number;
+
+  /**
+   * @generated from field: int32 stock_initiate = 2;
+   */
+  stockInitiate: number;
+
+  /**
+   * @generated from field: int32 left_stock = 3;
+   */
+  leftStock: number;
+
+  /**
+   * @generated from field: double total = 4;
+   */
+  total: number;
+
+  /**
+   * @generated from field: int32 batch_count = 5;
+   */
+  batchCount: number;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.ListCostSkuItem.
+ * Use `create(ListCostSkuItemSchema)` to create a new message.
+ */
+export const ListCostSkuItemSchema: GenMessage<ListCostSkuItem> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_stock, 3);
+
+/**
  * @generated from message wargapos.stock.v1.ListCostSkuResponse
  */
 export type ListCostSkuResponse = Message<"wargapos.stock.v1.ListCostSkuResponse"> & {
   /**
-   * @generated from field: repeated wargapos.stock.v1.CostVersion costs = 1;
+   * @generated from field: repeated wargapos.stock.v1.ListCostSkuItem costs = 1;
    */
-  costs: CostVersion[];
+  costs: ListCostSkuItem[];
 };
 
 /**
@@ -152,7 +194,7 @@ export type ListCostSkuResponse = Message<"wargapos.stock.v1.ListCostSkuResponse
  * Use `create(ListCostSkuResponseSchema)` to create a new message.
  */
 export const ListCostSkuResponseSchema: GenMessage<ListCostSkuResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_stock, 3);
+  messageDesc(file_wargapos_stock_v1_stock, 4);
 
 /**
  * @generated from enum wargapos.stock.v1.LogType

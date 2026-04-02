@@ -10,6 +10,7 @@ import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -83,9 +84,117 @@ func (x *ListStockLogSkuRequest) GetPageSize() int32 {
 	return 0
 }
 
+type ListStockLogItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
+	TransactionId uint64                 `protobuf:"varint,4,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	ActorId       uint32                 `protobuf:"varint,5,opt,name=actor_id,json=actorId,proto3" json:"actor_id,omitempty"`
+	CostVersionId uint64                 `protobuf:"varint,6,opt,name=cost_version_id,json=costVersionId,proto3" json:"cost_version_id,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	LogType       LogType                `protobuf:"varint,9,opt,name=log_type,json=logType,proto3,enum=wargapos.stock.v1.LogType" json:"log_type,omitempty"`
+	Change        int32                  `protobuf:"varint,10,opt,name=change,proto3" json:"change,omitempty"`
+	UnitCost      float64                `protobuf:"fixed64,11,opt,name=unit_cost,json=unitCost,proto3" json:"unit_cost,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListStockLogItem) Reset() {
+	*x = ListStockLogItem{}
+	mi := &file_wargapos_stock_v1_log_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListStockLogItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListStockLogItem) ProtoMessage() {}
+
+func (x *ListStockLogItem) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_log_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListStockLogItem.ProtoReflect.Descriptor instead.
+func (*ListStockLogItem) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_log_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ListStockLogItem) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *ListStockLogItem) GetSkuId() uint32 {
+	if x != nil {
+		return x.SkuId
+	}
+	return 0
+}
+
+func (x *ListStockLogItem) GetTransactionId() uint64 {
+	if x != nil {
+		return x.TransactionId
+	}
+	return 0
+}
+
+func (x *ListStockLogItem) GetActorId() uint32 {
+	if x != nil {
+		return x.ActorId
+	}
+	return 0
+}
+
+func (x *ListStockLogItem) GetCostVersionId() uint64 {
+	if x != nil {
+		return x.CostVersionId
+	}
+	return 0
+}
+
+func (x *ListStockLogItem) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *ListStockLogItem) GetLogType() LogType {
+	if x != nil {
+		return x.LogType
+	}
+	return LogType_LOG_TYPE_UNSPECIFIED
+}
+
+func (x *ListStockLogItem) GetChange() int32 {
+	if x != nil {
+		return x.Change
+	}
+	return 0
+}
+
+func (x *ListStockLogItem) GetUnitCost() float64 {
+	if x != nil {
+		return x.UnitCost
+	}
+	return 0
+}
+
 type ListStockLogSkuResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Logs          []*StockLog            `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	Logs          []*ListStockLogItem    `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
 	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -93,7 +202,7 @@ type ListStockLogSkuResponse struct {
 
 func (x *ListStockLogSkuResponse) Reset() {
 	*x = ListStockLogSkuResponse{}
-	mi := &file_wargapos_stock_v1_log_proto_msgTypes[1]
+	mi := &file_wargapos_stock_v1_log_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -105,7 +214,7 @@ func (x *ListStockLogSkuResponse) String() string {
 func (*ListStockLogSkuResponse) ProtoMessage() {}
 
 func (x *ListStockLogSkuResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_log_proto_msgTypes[1]
+	mi := &file_wargapos_stock_v1_log_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -118,10 +227,10 @@ func (x *ListStockLogSkuResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListStockLogSkuResponse.ProtoReflect.Descriptor instead.
 func (*ListStockLogSkuResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_log_proto_rawDescGZIP(), []int{1}
+	return file_wargapos_stock_v1_log_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListStockLogSkuResponse) GetLogs() []*StockLog {
+func (x *ListStockLogSkuResponse) GetLogs() []*ListStockLogItem {
 	if x != nil {
 		return x.Logs
 	}
@@ -139,15 +248,27 @@ var File_wargapos_stock_v1_log_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_log_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/stock/v1/log.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1dwargapos/stock/v1/stock.proto\x1a wargapos/rolebased/v1/role.proto\"u\n" +
+	"\x1bwargapos/stock/v1/log.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\x1a\x1dwargapos/stock/v1/stock.proto\"u\n" +
 	"\x16ListStockLogSkuRequest\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12\x12\n" +
 	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x03 \x01(\x05R\bpageSize:\n" +
 	"\x8a\xb5\x18\x06\n" +
-	"\x04\x01\x02\x05\x06\"`\n" +
-	"\x17ListStockLogSkuResponse\x12/\n" +
-	"\x04logs\x18\x01 \x03(\v2\x1b.wargapos.stock.v1.StockLogR\x04logs\x12\x14\n" +
+	"\x04\x01\x02\x05\x06\"\xca\x02\n" +
+	"\x10ListStockLogItem\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
+	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12%\n" +
+	"\x0etransaction_id\x18\x04 \x01(\x04R\rtransactionId\x12\x19\n" +
+	"\bactor_id\x18\x05 \x01(\rR\aactorId\x12&\n" +
+	"\x0fcost_version_id\x18\x06 \x01(\x04R\rcostVersionId\x129\n" +
+	"\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x125\n" +
+	"\blog_type\x18\t \x01(\x0e2\x1a.wargapos.stock.v1.LogTypeR\alogType\x12\x16\n" +
+	"\x06change\x18\n" +
+	" \x01(\x05R\x06change\x12\x1b\n" +
+	"\tunit_cost\x18\v \x01(\x01R\bunitCost\"h\n" +
+	"\x17ListStockLogSkuResponse\x127\n" +
+	"\x04logs\x18\x01 \x03(\v2#.wargapos.stock.v1.ListStockLogItemR\x04logs\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05totalB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
 
 var (
@@ -162,19 +283,23 @@ func file_wargapos_stock_v1_log_proto_rawDescGZIP() []byte {
 	return file_wargapos_stock_v1_log_proto_rawDescData
 }
 
-var file_wargapos_stock_v1_log_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_wargapos_stock_v1_log_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_wargapos_stock_v1_log_proto_goTypes = []any{
 	(*ListStockLogSkuRequest)(nil),  // 0: wargapos.stock.v1.ListStockLogSkuRequest
-	(*ListStockLogSkuResponse)(nil), // 1: wargapos.stock.v1.ListStockLogSkuResponse
-	(*StockLog)(nil),                // 2: wargapos.stock.v1.StockLog
+	(*ListStockLogItem)(nil),        // 1: wargapos.stock.v1.ListStockLogItem
+	(*ListStockLogSkuResponse)(nil), // 2: wargapos.stock.v1.ListStockLogSkuResponse
+	(*timestamppb.Timestamp)(nil),   // 3: google.protobuf.Timestamp
+	(LogType)(0),                    // 4: wargapos.stock.v1.LogType
 }
 var file_wargapos_stock_v1_log_proto_depIdxs = []int32{
-	2, // 0: wargapos.stock.v1.ListStockLogSkuResponse.logs:type_name -> wargapos.stock.v1.StockLog
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 0: wargapos.stock.v1.ListStockLogItem.created_at:type_name -> google.protobuf.Timestamp
+	4, // 1: wargapos.stock.v1.ListStockLogItem.log_type:type_name -> wargapos.stock.v1.LogType
+	1, // 2: wargapos.stock.v1.ListStockLogSkuResponse.logs:type_name -> wargapos.stock.v1.ListStockLogItem
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_log_proto_init() }
@@ -189,7 +314,7 @@ func file_wargapos_stock_v1_log_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_log_proto_rawDesc), len(file_wargapos_stock_v1_log_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

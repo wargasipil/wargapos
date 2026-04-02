@@ -8,6 +8,7 @@ import (
 	"wargapos/backend/internal/service/stock_service/stock_model"
 	"wargapos/backend/pkgs/runner"
 
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -21,9 +22,9 @@ type SkuStockAddPayload struct {
 	CreatedAt     time.Time
 }
 
-func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) ([]*stock_model.StockLog, error) {
+func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) ([]*stockv1.LogEvent, error) {
 	var err error
-	var stockLogs []*stock_model.StockLog = []*stock_model.StockLog{}
+	var stockLogs []*stockv1.LogEvent = []*stockv1.LogEvent{}
 
 	err = db.Transaction(func(tx *gorm.DB) error {
 		var sku models.Sku
@@ -89,7 +90,28 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) ([]*
 						return ctx, err
 					}
 
-					stockLogs = append(stockLogs, &stockLog)
+					stockLogs = append(stockLogs, &stockv1.LogEvent{
+						Log: &stockv1.StockLog{
+							Id:            stockLog.ID,
+							SkuId:         pay.SkuId,
+							TransactionId: pay.TransactionId,
+							ActorId:       pay.UserId,
+							CostVersionId: costVersion.ID,
+							CreatedAt:     timestamppb.New(pay.CreatedAt),
+							LogType:       stockv1.LogType_LOG_TYPE_STOCK_IN,
+							Change:        pay.Qty,
+						},
+						Cost: &stockv1.CostVersion{
+							Id:            costVersion.ID,
+							SkuId:         pay.SkuId,
+							TransactionId: pay.TransactionId,
+							CreatedAt:     timestamppb.New(costVersion.CreatedAt),
+							UpdatedAt:     timestamppb.New(costVersion.UpdatedAt),
+							UnitCost:      costVersion.UnitCost,
+							StockInitiate: costVersion.StockInitiate,
+							LeftStock:     costVersion.LeftStock,
+						},
+					})
 					return next(ctx)
 				}
 			},

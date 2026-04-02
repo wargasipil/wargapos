@@ -82,6 +82,7 @@ export function MarketplaceProductsPage() {
                   <Table.ColumnHeader>Name</Table.ColumnHeader>
                   <Table.ColumnHeader>Price</Table.ColumnHeader>
                   <Table.ColumnHeader>Stock</Table.ColumnHeader>
+                  <Table.ColumnHeader textAlign="right">Valuation</Table.ColumnHeader>
                   <Table.ColumnHeader>Status</Table.ColumnHeader>
                   <Table.ColumnHeader textAlign="right">Actions</Table.ColumnHeader>
                 </Table.Row>
@@ -101,6 +102,7 @@ export function MarketplaceProductsPage() {
                     </Table.Cell>
                     <Table.Cell>{formatPrice(BigInt(p.priceCents))}</Table.Cell>
                     <Table.Cell>{p.leftStock.toLocaleString('id-ID')}</Table.Cell>
+                    <Table.Cell textAlign="right">{p.stockValuation.toLocaleString('id-ID')}</Table.Cell>
                     <Table.Cell>
                       <Button
                         size="xs"
@@ -154,7 +156,8 @@ export function MarketplaceProductsPage() {
                 <Text fontSize="sm" color="blue.600" fontWeight="medium">
                   {formatPrice(BigInt(p.priceCents))}
                 </Text>
-                <Text fontSize="xs" color="gray.500" mb={3}>Stock: {p.leftStock.toLocaleString('id-ID')}</Text>
+                <Text fontSize="xs" color="gray.500">Stock: {p.leftStock.toLocaleString('id-ID')}</Text>
+                <Text fontSize="xs" color="gray.500" mb={3}>Valuation: {p.stockValuation.toLocaleString('id-ID')}</Text>
                 <Flex gap={2}>
                   <Button asChild size="xs" variant="outline" flex={1}>
                     <Link to="/marketplace/products/$id/edit" params={{ id: String(p.id) }}>

@@ -25,14 +25,18 @@ const (
 )
 
 type Warehouse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Deleted       bool                   `protobuf:"varint,5,opt,name=deleted,proto3" json:"deleted,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	Id                  uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	CreatedAt           *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt           *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Deleted             bool                   `protobuf:"varint,5,opt,name=deleted,proto3" json:"deleted,omitempty"`
+	TotalLeftStock      int32                  `protobuf:"varint,6,opt,name=total_left_stock,json=totalLeftStock,proto3" json:"total_left_stock,omitempty"`
+	TotalStockValuation float64                `protobuf:"fixed64,7,opt,name=total_stock_valuation,json=totalStockValuation,proto3" json:"total_stock_valuation,omitempty"`
+	Address             string                 `protobuf:"bytes,8,opt,name=address,proto3" json:"address,omitempty"`
+	Contact             string                 `protobuf:"bytes,9,opt,name=contact,proto3" json:"contact,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Warehouse) Reset() {
@@ -100,9 +104,39 @@ func (x *Warehouse) GetDeleted() bool {
 	return false
 }
 
+func (x *Warehouse) GetTotalLeftStock() int32 {
+	if x != nil {
+		return x.TotalLeftStock
+	}
+	return 0
+}
+
+func (x *Warehouse) GetTotalStockValuation() float64 {
+	if x != nil {
+		return x.TotalStockValuation
+	}
+	return 0
+}
+
+func (x *Warehouse) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *Warehouse) GetContact() string {
+	if x != nil {
+		return x.Contact
+	}
+	return ""
+}
+
 type CreateWarehouseRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Address       string                 `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	Contact       string                 `protobuf:"bytes,3,opt,name=contact,proto3" json:"contact,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -140,6 +174,20 @@ func (*CreateWarehouseRequest) Descriptor() ([]byte, []int) {
 func (x *CreateWarehouseRequest) GetName() string {
 	if x != nil {
 		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateWarehouseRequest) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *CreateWarehouseRequest) GetContact() string {
+	if x != nil {
+		return x.Contact
 	}
 	return ""
 }
@@ -192,6 +240,8 @@ type UpdateWarehouseRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Address       string                 `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
+	Contact       string                 `protobuf:"bytes,4,opt,name=contact,proto3" json:"contact,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -236,6 +286,20 @@ func (x *UpdateWarehouseRequest) GetId() uint32 {
 func (x *UpdateWarehouseRequest) GetName() string {
 	if x != nil {
 		return x.Name
+	}
+	return ""
+}
+
+func (x *UpdateWarehouseRequest) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *UpdateWarehouseRequest) GetContact() string {
+	if x != nil {
+		return x.Contact
 	}
 	return ""
 }
@@ -568,7 +632,7 @@ var File_wargapos_stock_v1_warehouse_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_warehouse_proto_rawDesc = "" +
 	"\n" +
-	"!wargapos/stock/v1/warehouse.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xbf\x01\n" +
+	"!wargapos/stock/v1/warehouse.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xd1\x02\n" +
 	"\tWarehouse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x129\n" +
@@ -576,17 +640,25 @@ const file_wargapos_stock_v1_warehouse_proto_rawDesc = "" +
 	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x18\n" +
-	"\adeleted\x18\x05 \x01(\bR\adeleted\"C\n" +
+	"\adeleted\x18\x05 \x01(\bR\adeleted\x12(\n" +
+	"\x10total_left_stock\x18\x06 \x01(\x05R\x0etotalLeftStock\x122\n" +
+	"\x15total_stock_valuation\x18\a \x01(\x01R\x13totalStockValuation\x12\x18\n" +
+	"\aaddress\x18\b \x01(\tR\aaddress\x12\x18\n" +
+	"\acontact\x18\t \x01(\tR\acontact\"w\n" +
 	"\x16CreateWarehouseRequest\x12\x1e\n" +
 	"\x04name\x18\x01 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name:\t\x8a\xb5\x18\x05\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12\x18\n" +
+	"\aaddress\x18\x02 \x01(\tR\aaddress\x12\x18\n" +
+	"\acontact\x18\x03 \x01(\tR\acontact:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"U\n" +
 	"\x17CreateWarehouseResponse\x12:\n" +
-	"\twarehouse\x18\x01 \x01(\v2\x1c.wargapos.stock.v1.WarehouseR\twarehouse\"\\\n" +
+	"\twarehouse\x18\x01 \x01(\v2\x1c.wargapos.stock.v1.WarehouseR\twarehouse\"\x90\x01\n" +
 	"\x16UpdateWarehouseRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name:\t\x8a\xb5\x18\x05\n" +
+	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12\x18\n" +
+	"\aaddress\x18\x03 \x01(\tR\aaddress\x12\x18\n" +
+	"\acontact\x18\x04 \x01(\tR\acontact:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"U\n" +
 	"\x17UpdateWarehouseResponse\x12:\n" +
 	"\twarehouse\x18\x01 \x01(\v2\x1c.wargapos.stock.v1.WarehouseR\twarehouse\"<\n" +

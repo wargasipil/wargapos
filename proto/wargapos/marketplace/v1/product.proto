@@ -10,6 +10,7 @@ message WarehouseStock {
   uint32 warehouse_id = 1;
   uint32 sku_id = 2;
   int32 left_stock = 3;
+  double stock_valuation = 4;
 }
 
 message MarketplaceProduct {
@@ -20,6 +21,7 @@ message MarketplaceProduct {
   string image_url = 5;
   bool is_active = 6;
   int32 left_stock = 9;
+  double stock_valuation = 11;
   repeated WarehouseStock warehouse_stock = 10;
   google.protobuf.Timestamp created_at = 7;
   google.protobuf.Timestamp updated_at = 8;

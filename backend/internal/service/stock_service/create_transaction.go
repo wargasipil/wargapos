@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	eventv1 "wargapos/backend/gen/wargapos/event/v1"
@@ -30,7 +29,7 @@ func (s *StockService) CreateTransaction(
 	}
 
 	var txRecord models.StockTransaction
-	var stockLogs []*stockv1.StockLog
+	var stockLogs []*stockv1.LogEvent
 
 	err = s.
 		db.
@@ -105,22 +104,14 @@ func (s *StockService) CreateTransaction(
 										UserId:        userID,
 										Total:         item.Total,
 										Qty:           item.Quantity,
+										CreatedAt:     txRecord.CreatedAt,
 									})
 									if err != nil {
 										return ctx, err
 									}
 
 									for _, log := range logs {
-										stockLogs = append(stockLogs, &stockv1.StockLog{
-											Id:            log.ID,
-											SkuId:         log.SkuID,
-											TransactionId: log.TransactionID,
-											ActorId:       log.ActorID,
-											CostVersionId: log.CostVersionID,
-											CreatedAt:     timestamppb.New(log.CreatedAt),
-											LogType:       log.LogType,
-											Change:        log.Change,
-										})
+										stockLogs = append(stockLogs, log)
 									}
 								}
 

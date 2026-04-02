@@ -13,6 +13,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -1034,7 +1035,7 @@ var File_wargapos_transaction_v1_transaction_proto protoreflect.FileDescriptor
 
 const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\n" +
-	")wargapos/transaction/v1/transaction.proto\x12\x17wargapos.transaction.v1\x1a\x1bbuf/validate/validate.proto\x1a*wargapos/transaction/v1/notification.proto\x1a#wargapos/transaction/v1/order.proto\"\xb8\x01\n" +
+	")wargapos/transaction/v1/transaction.proto\x12\x17wargapos.transaction.v1\x1a\x1bbuf/validate/validate.proto\x1a wargapos/rolebased/v1/role.proto\x1a*wargapos/transaction/v1/notification.proto\x1a#wargapos/transaction/v1/order.proto\"\xb8\x01\n" +
 	"\x10AddToCartRequest\x12&\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\tsessionId\x12&\n" +
@@ -1097,9 +1098,9 @@ const file_wargapos_transaction_v1_transaction_proto_rawDesc = "" +
 	"\x0emidtrans_cents\x18\x02 \x01(\x03R\rmidtransCents\x12*\n" +
 	"\x11manual_qris_cents\x18\x03 \x01(\x03R\x0fmanualQrisCents\x122\n" +
 	"\x15manual_transfer_cents\x18\x04 \x01(\x03R\x13manualTransferCents\x125\n" +
-	"\x17cash_change_total_cents\x18\x05 \x01(\x03R\x14cashChangeTotalCents\"\\\n" +
+	"\x17cash_change_total_cents\x18\x05 \x01(\x03R\x14cashChangeTotalCents\"d\n" +
 	"\x18GetDashboardStatsRequest\x12@\n" +
-	"\x06period\x18\x01 \x01(\x0e2(.wargapos.transaction.v1.DashboardPeriodR\x06period\"\x94\x03\n" +
+	"\x06period\x18\x01 \x01(\x0e2(.wargapos.transaction.v1.DashboardPeriodR\x06period:\x06\x8a\xb5\x18\x02\x10\x01\"\x94\x03\n" +
 	"\x19GetDashboardStatsResponse\x12.\n" +
 	"\x13total_revenue_cents\x18\x01 \x01(\x03R\x11totalRevenueCents\x12P\n" +
 	"\forder_counts\x18\x02 \x01(\v2-.wargapos.transaction.v1.DashboardOrderCountsR\vorderCounts\x12O\n" +

@@ -14,24 +14,32 @@ message Warehouse {
   google.protobuf.Timestamp created_at = 3;
   google.protobuf.Timestamp updated_at = 4;
   bool deleted = 5;
+  int32  total_left_stock      = 6;
+  double total_stock_valuation = 7;
+  string address               = 8;
+  string contact               = 9;
 }
 
 message CreateWarehouseRequest {
   option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
-  string name = 1 [(buf.validate.field).string = {
+  string name    = 1 [(buf.validate.field).string = {
     min_len: 1
     max_len: 300
   }];
+  string address = 2;
+  string contact = 3;
 }
 message CreateWarehouseResponse { Warehouse warehouse = 1; }
 
 message UpdateWarehouseRequest {
   option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
-  uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
-  string name = 2 [(buf.validate.field).string = {
+  uint32 id      = 1 [(buf.validate.field).uint32.gt = 0];
+  string name    = 2 [(buf.validate.field).string = {
     min_len: 1
     max_len: 300
   }];
+  string address = 3;
+  string contact = 4;
 }
 message UpdateWarehouseResponse { Warehouse warehouse = 1; }
 

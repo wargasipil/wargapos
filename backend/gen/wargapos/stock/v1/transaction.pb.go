@@ -88,6 +88,8 @@ type Transaction struct {
 	Cancelled       bool                   `protobuf:"varint,5,opt,name=cancelled,proto3" json:"cancelled,omitempty"`
 	Items           []*TransactionItem     `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`
 	Total           float64                `protobuf:"fixed64,7,opt,name=total,proto3" json:"total,omitempty"`
+	ProductCount    int32                  `protobuf:"varint,8,opt,name=product_count,json=productCount,proto3" json:"product_count,omitempty"`
+	PiecesCount     int32                  `protobuf:"varint,9,opt,name=pieces_count,json=piecesCount,proto3" json:"pieces_count,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -167,6 +169,20 @@ func (x *Transaction) GetItems() []*TransactionItem {
 func (x *Transaction) GetTotal() float64 {
 	if x != nil {
 		return x.Total
+	}
+	return 0
+}
+
+func (x *Transaction) GetProductCount() int32 {
+	if x != nil {
+		return x.ProductCount
+	}
+	return 0
+}
+
+func (x *Transaction) GetPiecesCount() int32 {
+	if x != nil {
+		return x.PiecesCount
 	}
 	return 0
 }
@@ -437,6 +453,8 @@ type ListTransactionRequest struct {
 	PageSize        int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	TransactionType TransactionType        `protobuf:"varint,3,opt,name=transaction_type,json=transactionType,proto3,enum=wargapos.stock.v1.TransactionType" json:"transaction_type,omitempty"`
 	Cancelled       bool                   `protobuf:"varint,4,opt,name=cancelled,proto3" json:"cancelled,omitempty"`
+	DateFrom        string                 `protobuf:"bytes,5,opt,name=date_from,json=dateFrom,proto3" json:"date_from,omitempty"`
+	DateTo          string                 `protobuf:"bytes,6,opt,name=date_to,json=dateTo,proto3" json:"date_to,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -497,6 +515,20 @@ func (x *ListTransactionRequest) GetCancelled() bool {
 		return x.Cancelled
 	}
 	return false
+}
+
+func (x *ListTransactionRequest) GetDateFrom() string {
+	if x != nil {
+		return x.DateFrom
+	}
+	return ""
+}
+
+func (x *ListTransactionRequest) GetDateTo() string {
+	if x != nil {
+		return x.DateTo
+	}
+	return ""
 }
 
 type ListTransactionResponse struct {
@@ -643,7 +675,7 @@ var File_wargapos_stock_v1_transaction_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\n" +
-	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xa9\x02\n" +
+	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xf1\x02\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12M\n" +
 	"\x10transaction_type\x18\x02 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x129\n" +
@@ -652,11 +684,13 @@ const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\x04note\x18\x04 \x01(\tR\x04note\x12\x1c\n" +
 	"\tcancelled\x18\x05 \x01(\bR\tcancelled\x128\n" +
 	"\x05items\x18\x06 \x03(\v2\".wargapos.stock.v1.TransactionItemR\x05items\x12\x14\n" +
-	"\x05total\x18\a \x01(\x01R\x05total\"\x85\x01\n" +
+	"\x05total\x18\a \x01(\x01R\x05total\x12#\n" +
+	"\rproduct_count\x18\b \x01(\x05R\fproductCount\x12!\n" +
+	"\fpieces_count\x18\t \x01(\x05R\vpiecesCount\"\x95\x01\n" +
 	"\x0fTransactionItem\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12#\n" +
-	"\bquantity\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\bquantity\x12\x14\n" +
-	"\x05total\x18\x03 \x01(\x01R\x05total\x12\x17\n" +
+	"\bquantity\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\bquantity\x12$\n" +
+	"\x05total\x18\x03 \x01(\x01B\x0e\xbaH\v\x12\t!\x00\x00\x00\x00\x00\x00\x00\x00R\x05total\x12\x17\n" +
 	"\arack_id\x18\x04 \x01(\rR\x06rackId\"\xd6\x01\n" +
 	"\x18CreateTransactionRequest\x12W\n" +
 	"\x10transaction_type\x18\x01 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x0ftransactionType\x12B\n" +
@@ -669,12 +703,14 @@ const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\x0etransaction_id\x18\x01 \x01(\x04B\a\xbaH\x042\x02 \x00R\rtransactionId\x12\x16\n" +
 	"\x06reason\x18\x02 \x01(\tR\x06reason:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"\x1b\n" +
-	"\x19CancelTransactionResponse\"\xc3\x01\n" +
+	"\x19CancelTransactionResponse\"\xf9\x01\n" +
 	"\x16ListTransactionRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12M\n" +
 	"\x10transaction_type\x18\x03 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x12\x1c\n" +
-	"\tcancelled\x18\x04 \x01(\bR\tcancelled:\v\x8a\xb5\x18\a\n" +
+	"\tcancelled\x18\x04 \x01(\bR\tcancelled\x12\x1b\n" +
+	"\tdate_from\x18\x05 \x01(\tR\bdateFrom\x12\x17\n" +
+	"\adate_to\x18\x06 \x01(\tR\x06dateTo:\v\x8a\xb5\x18\a\n" +
 	"\x05\x01\x02\x05\x06\x04\"s\n" +
 	"\x17ListTransactionResponse\x12B\n" +
 	"\ftransactions\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.TransactionR\ftransactions\x12\x14\n" +

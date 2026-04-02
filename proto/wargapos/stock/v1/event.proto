@@ -7,8 +7,13 @@ import "wargapos/stock/v1/stock.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
+message LogEvent {
+  StockLog log = 1;
+  CostVersion cost = 2;
+}
+
 message StockLogEvent {
-  repeated StockLog stock_log = 1;
+  repeated LogEvent stock_log = 1;
 }
 
 message StockEvent {

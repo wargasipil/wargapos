@@ -70,6 +70,58 @@ func (SkuError) EnumDescriptor() ([]byte, []int) {
 	return file_wargapos_stock_v1_sku_proto_rawDescGZIP(), []int{0}
 }
 
+type ProductType int32
+
+const (
+	ProductType_PRODUCT_TYPE_UNSPECIFIED         ProductType = 0
+	ProductType_PRODUCT_TYPE_MATERIAL            ProductType = 1
+	ProductType_PRODUCT_TYPE_CAFE_PRODUCT        ProductType = 2
+	ProductType_PRODUCT_TYPE_MARKETPLACE_PRODUCT ProductType = 3
+)
+
+// Enum value maps for ProductType.
+var (
+	ProductType_name = map[int32]string{
+		0: "PRODUCT_TYPE_UNSPECIFIED",
+		1: "PRODUCT_TYPE_MATERIAL",
+		2: "PRODUCT_TYPE_CAFE_PRODUCT",
+		3: "PRODUCT_TYPE_MARKETPLACE_PRODUCT",
+	}
+	ProductType_value = map[string]int32{
+		"PRODUCT_TYPE_UNSPECIFIED":         0,
+		"PRODUCT_TYPE_MATERIAL":            1,
+		"PRODUCT_TYPE_CAFE_PRODUCT":        2,
+		"PRODUCT_TYPE_MARKETPLACE_PRODUCT": 3,
+	}
+)
+
+func (x ProductType) Enum() *ProductType {
+	p := new(ProductType)
+	*p = x
+	return p
+}
+
+func (x ProductType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ProductType) Descriptor() protoreflect.EnumDescriptor {
+	return file_wargapos_stock_v1_sku_proto_enumTypes[1].Descriptor()
+}
+
+func (ProductType) Type() protoreflect.EnumType {
+	return &file_wargapos_stock_v1_sku_proto_enumTypes[1]
+}
+
+func (x ProductType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ProductType.Descriptor instead.
+func (ProductType) EnumDescriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_sku_proto_rawDescGZIP(), []int{1}
+}
+
 type CostingType int32
 
 const (
@@ -109,11 +161,11 @@ func (x CostingType) String() string {
 }
 
 func (CostingType) Descriptor() protoreflect.EnumDescriptor {
-	return file_wargapos_stock_v1_sku_proto_enumTypes[1].Descriptor()
+	return file_wargapos_stock_v1_sku_proto_enumTypes[2].Descriptor()
 }
 
 func (CostingType) Type() protoreflect.EnumType {
-	return &file_wargapos_stock_v1_sku_proto_enumTypes[1]
+	return &file_wargapos_stock_v1_sku_proto_enumTypes[2]
 }
 
 func (x CostingType) Number() protoreflect.EnumNumber {
@@ -122,7 +174,7 @@ func (x CostingType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CostingType.Descriptor instead.
 func (CostingType) EnumDescriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_sku_proto_rawDescGZIP(), []int{1}
+	return file_wargapos_stock_v1_sku_proto_rawDescGZIP(), []int{2}
 }
 
 type RackPlacement struct {
@@ -200,6 +252,7 @@ type Sku struct {
 	ProductId      uint32                 `protobuf:"varint,3,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	BranchId       uint32                 `protobuf:"varint,4,opt,name=branch_id,json=branchId,proto3" json:"branch_id,omitempty"`
 	WarehouseId    uint32                 `protobuf:"varint,5,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	ProductType    ProductType            `protobuf:"varint,14,opt,name=product_type,json=productType,proto3,enum=wargapos.stock.v1.ProductType" json:"product_type,omitempty"`
 	CostingType    CostingType            `protobuf:"varint,6,opt,name=costing_type,json=costingType,proto3,enum=wargapos.stock.v1.CostingType" json:"costing_type,omitempty"`
 	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
@@ -208,6 +261,7 @@ type Sku struct {
 	LastStockIn    *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=last_stock_in,json=lastStockIn,proto3" json:"last_stock_in,omitempty"`
 	LastAdjustment *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=last_adjustment,json=lastAdjustment,proto3" json:"last_adjustment,omitempty"`
 	LastStockOut   *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=last_stock_out,json=lastStockOut,proto3" json:"last_stock_out,omitempty"`
+	StockValuation float64                `protobuf:"fixed64,15,opt,name=stock_valuation,json=stockValuation,proto3" json:"stock_valuation,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -277,6 +331,13 @@ func (x *Sku) GetWarehouseId() uint32 {
 	return 0
 }
 
+func (x *Sku) GetProductType() ProductType {
+	if x != nil {
+		return x.ProductType
+	}
+	return ProductType_PRODUCT_TYPE_UNSPECIFIED
+}
+
 func (x *Sku) GetCostingType() CostingType {
 	if x != nil {
 		return x.CostingType
@@ -331,6 +392,13 @@ func (x *Sku) GetLastStockOut() *timestamppb.Timestamp {
 		return x.LastStockOut
 	}
 	return nil
+}
+
+func (x *Sku) GetStockValuation() float64 {
+	if x != nil {
+		return x.StockValuation
+	}
+	return 0
 }
 
 type ListSkuPlacementRequest struct {
@@ -427,6 +495,7 @@ type CreateSkuRequest struct {
 	ProductId     uint32                 `protobuf:"varint,2,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	BranchId      uint32                 `protobuf:"varint,3,opt,name=branch_id,json=branchId,proto3" json:"branch_id,omitempty"`
 	WarehouseId   uint32                 `protobuf:"varint,4,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	ProductType   ProductType            `protobuf:"varint,5,opt,name=product_type,json=productType,proto3,enum=wargapos.stock.v1.ProductType" json:"product_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -487,6 +556,13 @@ func (x *CreateSkuRequest) GetWarehouseId() uint32 {
 		return x.WarehouseId
 	}
 	return 0
+}
+
+func (x *CreateSkuRequest) GetProductType() ProductType {
+	if x != nil {
+		return x.ProductType
+	}
+	return ProductType_PRODUCT_TYPE_UNSPECIFIED
 }
 
 type CreateSkuResponse struct {
@@ -967,13 +1043,13 @@ var File_wargapos_stock_v1_sku_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_sku_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/stock/v1/sku.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cwargapos/stock/v1/rack.proto\x1a wargapos/rolebased/v1/role.proto\"\x82\x01\n" +
+	"\x1bwargapos/stock/v1/sku.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\x1a\x1cwargapos/stock/v1/rack.proto\"\x82\x01\n" +
 	"\rRackPlacement\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12+\n" +
 	"\x04rack\x18\x03 \x01(\v2\x17.wargapos.stock.v1.RackR\x04rack\x12\x1d\n" +
 	"\n" +
-	"left_stock\x18\x04 \x01(\x05R\tleftStock\"\xc1\x04\n" +
+	"left_stock\x18\x04 \x01(\x05R\tleftStock\"\xad\x05\n" +
 	"\x03Sku\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x1d\n" +
@@ -981,6 +1057,7 @@ const file_wargapos_stock_v1_sku_proto_rawDesc = "" +
 	"product_id\x18\x03 \x01(\rR\tproductId\x12\x1b\n" +
 	"\tbranch_id\x18\x04 \x01(\rR\bbranchId\x12!\n" +
 	"\fwarehouse_id\x18\x05 \x01(\rR\vwarehouseId\x12A\n" +
+	"\fproduct_type\x18\x0e \x01(\x0e2\x1e.wargapos.stock.v1.ProductTypeR\vproductType\x12A\n" +
 	"\fcosting_type\x18\x06 \x01(\x0e2\x1e.wargapos.stock.v1.CostingTypeR\vcostingType\x129\n" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -992,21 +1069,23 @@ const file_wargapos_stock_v1_sku_proto_rawDesc = "" +
 	" \x01(\x05R\tleftStock\x12>\n" +
 	"\rlast_stock_in\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\vlastStockIn\x12C\n" +
 	"\x0flast_adjustment\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\x0elastAdjustment\x12@\n" +
-	"\x0elast_stock_out\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\flastStockOut\"F\n" +
+	"\x0elast_stock_out\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\flastStockOut\x12'\n" +
+	"\x0fstock_valuation\x18\x0f \x01(\x01R\x0estockValuation\"F\n" +
 	"\x17ListSkuPlacementRequest\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId:\v\x8a\xb5\x18\a\n" +
 	"\x05\x01\x02\x05\x06\x04\"\\\n" +
 	"\x18ListSkuPlacementResponse\x12@\n" +
 	"\n" +
 	"placements\x18\x01 \x03(\v2 .wargapos.stock.v1.RackPlacementR\n" +
-	"placements\"\xae\x01\n" +
+	"placements\"\xf1\x01\n" +
 	"\x10CreateSkuRequest\x12\x1e\n" +
 	"\x04code\x18\x01 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xff\x01R\x04code\x12&\n" +
 	"\n" +
 	"product_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\tproductId\x12\x1b\n" +
 	"\tbranch_id\x18\x03 \x01(\rR\bbranchId\x12*\n" +
-	"\fwarehouse_id\x18\x04 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId:\t\x8a\xb5\x18\x05\n" +
+	"\fwarehouse_id\x18\x04 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\x12A\n" +
+	"\fproduct_type\x18\x05 \x01(\x0e2\x1e.wargapos.stock.v1.ProductTypeR\vproductType:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"=\n" +
 	"\x11CreateSkuResponse\x12(\n" +
 	"\x03sku\x18\x01 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku\"V\n" +
@@ -1042,7 +1121,12 @@ const file_wargapos_stock_v1_sku_proto_rawDesc = "" +
 	"\x03sku\x18\x02 \x01(\v2\x16.wargapos.stock.v1.SkuR\x03sku*=\n" +
 	"\bSkuError\x12\x19\n" +
 	"\x15SKU_ERROR_UNSPECIFIED\x10\x00\x12\x16\n" +
-	"\x12SKU_ERROR_NOTFOUND\x10\x01*\x91\x01\n" +
+	"\x12SKU_ERROR_NOTFOUND\x10\x01*\x8b\x01\n" +
+	"\vProductType\x12\x1c\n" +
+	"\x18PRODUCT_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15PRODUCT_TYPE_MATERIAL\x10\x01\x12\x1d\n" +
+	"\x19PRODUCT_TYPE_CAFE_PRODUCT\x10\x02\x12$\n" +
+	" PRODUCT_TYPE_MARKETPLACE_PRODUCT\x10\x03*\x91\x01\n" +
 	"\vCostingType\x12\x1c\n" +
 	"\x18COSTING_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11COSTING_TYPE_LIFO\x10\x01\x12\x15\n" +
@@ -1062,47 +1146,50 @@ func file_wargapos_stock_v1_sku_proto_rawDescGZIP() []byte {
 	return file_wargapos_stock_v1_sku_proto_rawDescData
 }
 
-var file_wargapos_stock_v1_sku_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_wargapos_stock_v1_sku_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_wargapos_stock_v1_sku_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_wargapos_stock_v1_sku_proto_goTypes = []any{
 	(SkuError)(0),                    // 0: wargapos.stock.v1.SkuError
-	(CostingType)(0),                 // 1: wargapos.stock.v1.CostingType
-	(*RackPlacement)(nil),            // 2: wargapos.stock.v1.RackPlacement
-	(*Sku)(nil),                      // 3: wargapos.stock.v1.Sku
-	(*ListSkuPlacementRequest)(nil),  // 4: wargapos.stock.v1.ListSkuPlacementRequest
-	(*ListSkuPlacementResponse)(nil), // 5: wargapos.stock.v1.ListSkuPlacementResponse
-	(*CreateSkuRequest)(nil),         // 6: wargapos.stock.v1.CreateSkuRequest
-	(*CreateSkuResponse)(nil),        // 7: wargapos.stock.v1.CreateSkuResponse
-	(*UpdateSkuRequest)(nil),         // 8: wargapos.stock.v1.UpdateSkuRequest
-	(*UpdateSkuResponse)(nil),        // 9: wargapos.stock.v1.UpdateSkuResponse
-	(*DeleteSkuRequest)(nil),         // 10: wargapos.stock.v1.DeleteSkuRequest
-	(*DeleteSkuResponse)(nil),        // 11: wargapos.stock.v1.DeleteSkuResponse
-	(*ListSkuRequest)(nil),           // 12: wargapos.stock.v1.ListSkuRequest
-	(*ListSkuResponse)(nil),          // 13: wargapos.stock.v1.ListSkuResponse
-	(*GetSkuRequest)(nil),            // 14: wargapos.stock.v1.GetSkuRequest
-	(*GetSkuResponse)(nil),           // 15: wargapos.stock.v1.GetSkuResponse
-	(*Rack)(nil),                     // 16: wargapos.stock.v1.Rack
-	(*timestamppb.Timestamp)(nil),    // 17: google.protobuf.Timestamp
+	(ProductType)(0),                 // 1: wargapos.stock.v1.ProductType
+	(CostingType)(0),                 // 2: wargapos.stock.v1.CostingType
+	(*RackPlacement)(nil),            // 3: wargapos.stock.v1.RackPlacement
+	(*Sku)(nil),                      // 4: wargapos.stock.v1.Sku
+	(*ListSkuPlacementRequest)(nil),  // 5: wargapos.stock.v1.ListSkuPlacementRequest
+	(*ListSkuPlacementResponse)(nil), // 6: wargapos.stock.v1.ListSkuPlacementResponse
+	(*CreateSkuRequest)(nil),         // 7: wargapos.stock.v1.CreateSkuRequest
+	(*CreateSkuResponse)(nil),        // 8: wargapos.stock.v1.CreateSkuResponse
+	(*UpdateSkuRequest)(nil),         // 9: wargapos.stock.v1.UpdateSkuRequest
+	(*UpdateSkuResponse)(nil),        // 10: wargapos.stock.v1.UpdateSkuResponse
+	(*DeleteSkuRequest)(nil),         // 11: wargapos.stock.v1.DeleteSkuRequest
+	(*DeleteSkuResponse)(nil),        // 12: wargapos.stock.v1.DeleteSkuResponse
+	(*ListSkuRequest)(nil),           // 13: wargapos.stock.v1.ListSkuRequest
+	(*ListSkuResponse)(nil),          // 14: wargapos.stock.v1.ListSkuResponse
+	(*GetSkuRequest)(nil),            // 15: wargapos.stock.v1.GetSkuRequest
+	(*GetSkuResponse)(nil),           // 16: wargapos.stock.v1.GetSkuResponse
+	(*Rack)(nil),                     // 17: wargapos.stock.v1.Rack
+	(*timestamppb.Timestamp)(nil),    // 18: google.protobuf.Timestamp
 }
 var file_wargapos_stock_v1_sku_proto_depIdxs = []int32{
-	16, // 0: wargapos.stock.v1.RackPlacement.rack:type_name -> wargapos.stock.v1.Rack
-	1,  // 1: wargapos.stock.v1.Sku.costing_type:type_name -> wargapos.stock.v1.CostingType
-	17, // 2: wargapos.stock.v1.Sku.created_at:type_name -> google.protobuf.Timestamp
-	17, // 3: wargapos.stock.v1.Sku.updated_at:type_name -> google.protobuf.Timestamp
-	17, // 4: wargapos.stock.v1.Sku.last_stock_in:type_name -> google.protobuf.Timestamp
-	17, // 5: wargapos.stock.v1.Sku.last_adjustment:type_name -> google.protobuf.Timestamp
-	17, // 6: wargapos.stock.v1.Sku.last_stock_out:type_name -> google.protobuf.Timestamp
-	2,  // 7: wargapos.stock.v1.ListSkuPlacementResponse.placements:type_name -> wargapos.stock.v1.RackPlacement
-	3,  // 8: wargapos.stock.v1.CreateSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
-	3,  // 9: wargapos.stock.v1.UpdateSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
-	3,  // 10: wargapos.stock.v1.ListSkuResponse.skus:type_name -> wargapos.stock.v1.Sku
-	0,  // 11: wargapos.stock.v1.GetSkuResponse.err_code:type_name -> wargapos.stock.v1.SkuError
-	3,  // 12: wargapos.stock.v1.GetSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	17, // 0: wargapos.stock.v1.RackPlacement.rack:type_name -> wargapos.stock.v1.Rack
+	1,  // 1: wargapos.stock.v1.Sku.product_type:type_name -> wargapos.stock.v1.ProductType
+	2,  // 2: wargapos.stock.v1.Sku.costing_type:type_name -> wargapos.stock.v1.CostingType
+	18, // 3: wargapos.stock.v1.Sku.created_at:type_name -> google.protobuf.Timestamp
+	18, // 4: wargapos.stock.v1.Sku.updated_at:type_name -> google.protobuf.Timestamp
+	18, // 5: wargapos.stock.v1.Sku.last_stock_in:type_name -> google.protobuf.Timestamp
+	18, // 6: wargapos.stock.v1.Sku.last_adjustment:type_name -> google.protobuf.Timestamp
+	18, // 7: wargapos.stock.v1.Sku.last_stock_out:type_name -> google.protobuf.Timestamp
+	3,  // 8: wargapos.stock.v1.ListSkuPlacementResponse.placements:type_name -> wargapos.stock.v1.RackPlacement
+	1,  // 9: wargapos.stock.v1.CreateSkuRequest.product_type:type_name -> wargapos.stock.v1.ProductType
+	4,  // 10: wargapos.stock.v1.CreateSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
+	4,  // 11: wargapos.stock.v1.UpdateSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
+	4,  // 12: wargapos.stock.v1.ListSkuResponse.skus:type_name -> wargapos.stock.v1.Sku
+	0,  // 13: wargapos.stock.v1.GetSkuResponse.err_code:type_name -> wargapos.stock.v1.SkuError
+	4,  // 14: wargapos.stock.v1.GetSkuResponse.sku:type_name -> wargapos.stock.v1.Sku
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_sku_proto_init() }
@@ -1120,7 +1207,7 @@ func file_wargapos_stock_v1_sku_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_sku_proto_rawDesc), len(file_wargapos_stock_v1_sku_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      3,
 			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   0,

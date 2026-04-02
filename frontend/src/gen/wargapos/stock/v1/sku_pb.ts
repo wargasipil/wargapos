@@ -7,16 +7,16 @@ import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import { file_wargapos_rolebased_v1_role } from "../../rolebased/v1/role_pb";
 import type { Rack } from "./rack_pb";
 import { file_wargapos_stock_v1_rack } from "./rack_pb";
-import { file_wargapos_rolebased_v1_role } from "../../rolebased/v1/role_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/stock/v1/sku.proto.
  */
 export const file_wargapos_stock_v1_sku: GenFile = /*@__PURE__*/
-  fileDesc("Cht3YXJnYXBvcy9zdG9jay92MS9za3UucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxImYKDVJhY2tQbGFjZW1lbnQSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEiUKBHJhY2sYAyABKAsyFy53YXJnYXBvcy5zdG9jay52MS5SYWNrEhIKCmxlZnRfc3RvY2sYBCABKAUiswMKA1NrdRIKCgJpZBgBIAEoDRIMCgRjb2RlGAIgASgJEhIKCnByb2R1Y3RfaWQYAyABKA0SEQoJYnJhbmNoX2lkGAQgASgNEhQKDHdhcmVob3VzZV9pZBgFIAEoDRI0Cgxjb3N0aW5nX3R5cGUYBiABKA4yHi53YXJnYXBvcy5zdG9jay52MS5Db3N0aW5nVHlwZRIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIPCgdkZWxldGVkGAkgASgIEhIKCmxlZnRfc3RvY2sYCiABKAUSMQoNbGFzdF9zdG9ja19pbhgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMwoPbGFzdF9hZGp1c3RtZW50GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5sYXN0X3N0b2NrX291dBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiPwoXTGlzdFNrdVBsYWNlbWVudFJlcXVlc3QSFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAOguKtRgHCgUBAgUGBCJQChhMaXN0U2t1UGxhY2VtZW50UmVzcG9uc2USNAoKcGxhY2VtZW50cxgBIAMoCzIgLndhcmdhcG9zLnN0b2NrLnYxLlJhY2tQbGFjZW1lbnQihgEKEENyZWF0ZVNrdVJlcXVlc3QSGAoEY29kZRgBIAEoCUIKukgHcgUQARj/ARIbCgpwcm9kdWN0X2lkGAIgASgNQge6SAQqAiAAEhEKCWJyYW5jaF9pZBgDIAEoDRIdCgx3YXJlaG91c2VfaWQYBCABKA1CB7pIBCoCIAA6CYq1GAUKAwECBSI4ChFDcmVhdGVTa3VSZXNwb25zZRIjCgNza3UYASABKAsyFi53YXJnYXBvcy5zdG9jay52MS5Ta3UiTAoQVXBkYXRlU2t1UmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIYCgRjb2RlGAIgASgJQgq6SAdyBRABGP8BOgmKtRgFCgMBAgUiOAoRVXBkYXRlU2t1UmVzcG9uc2USIwoDc2t1GAEgASgLMhYud2FyZ2Fwb3Muc3RvY2sudjEuU2t1IjIKEERlbGV0ZVNrdVJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAA6CYq1GAUKAwECBSITChFEZWxldGVTa3VSZXNwb25zZSJiCg5MaXN0U2t1UmVxdWVzdBIMCgRwYWdlGAEgASgFEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwcm9kdWN0X2lkGAMgASgNEg4KBnNlYXJjaBgEIAEoCToLirUYBwoFAQIFBgQiRgoPTGlzdFNrdVJlc3BvbnNlEiQKBHNrdXMYASADKAsyFi53YXJnYXBvcy5zdG9jay52MS5Ta3USDQoFdG90YWwYAiABKAUiSAoNR2V0U2t1UmVxdWVzdBIMCgJpZBgBIAEoDUgAEg4KBGNvZGUYAiABKAlIADoLirUYBwoFAQIFBgRCDAoKaWRlbnRpZmllciJkCg5HZXRTa3VSZXNwb25zZRItCghlcnJfY29kZRgBIAEoDjIbLndhcmdhcG9zLnN0b2NrLnYxLlNrdUVycm9yEiMKA3NrdRgCIAEoCzIWLndhcmdhcG9zLnN0b2NrLnYxLlNrdSo9CghTa3VFcnJvchIZChVTS1VfRVJST1JfVU5TUEVDSUZJRUQQABIWChJTS1VfRVJST1JfTk9URk9VTkQQASqRAQoLQ29zdGluZ1R5cGUSHAoYQ09TVElOR19UWVBFX1VOU1BFQ0lGSUVEEAASFQoRQ09TVElOR19UWVBFX0xJRk8QARIVChFDT1NUSU5HX1RZUEVfRklGTxACEhoKFkNPU1RJTkdfVFlQRV9NQVhfUFJJQ0UQBBIaChZDT1NUSU5HX1RZUEVfTUlOX1BSSUNFEAVCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_stock_v1_rack, file_wargapos_rolebased_v1_role]);
+  fileDesc("Cht3YXJnYXBvcy9zdG9jay92MS9za3UucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxImYKDVJhY2tQbGFjZW1lbnQSCgoCaWQYASABKAQSDgoGc2t1X2lkGAIgASgNEiUKBHJhY2sYAyABKAsyFy53YXJnYXBvcy5zdG9jay52MS5SYWNrEhIKCmxlZnRfc3RvY2sYBCABKAUiggQKA1NrdRIKCgJpZBgBIAEoDRIMCgRjb2RlGAIgASgJEhIKCnByb2R1Y3RfaWQYAyABKA0SEQoJYnJhbmNoX2lkGAQgASgNEhQKDHdhcmVob3VzZV9pZBgFIAEoDRI0Cgxwcm9kdWN0X3R5cGUYDiABKA4yHi53YXJnYXBvcy5zdG9jay52MS5Qcm9kdWN0VHlwZRI0Cgxjb3N0aW5nX3R5cGUYBiABKA4yHi53YXJnYXBvcy5zdG9jay52MS5Db3N0aW5nVHlwZRIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIPCgdkZWxldGVkGAkgASgIEhIKCmxlZnRfc3RvY2sYCiABKAUSMQoNbGFzdF9zdG9ja19pbhgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMwoPbGFzdF9hZGp1c3RtZW50GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5sYXN0X3N0b2NrX291dBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASFwoPc3RvY2tfdmFsdWF0aW9uGA8gASgBIj8KF0xpc3RTa3VQbGFjZW1lbnRSZXF1ZXN0EhcKBnNrdV9pZBgBIAEoDUIHukgEKgIgADoLirUYBwoFAQIFBgQiUAoYTGlzdFNrdVBsYWNlbWVudFJlc3BvbnNlEjQKCnBsYWNlbWVudHMYASADKAsyIC53YXJnYXBvcy5zdG9jay52MS5SYWNrUGxhY2VtZW50IrwBChBDcmVhdGVTa3VSZXF1ZXN0EhgKBGNvZGUYASABKAlCCrpIB3IFEAEY/wESGwoKcHJvZHVjdF9pZBgCIAEoDUIHukgEKgIgABIRCglicmFuY2hfaWQYAyABKA0SHQoMd2FyZWhvdXNlX2lkGAQgASgNQge6SAQqAiAAEjQKDHByb2R1Y3RfdHlwZRgFIAEoDjIeLndhcmdhcG9zLnN0b2NrLnYxLlByb2R1Y3RUeXBlOgmKtRgFCgMBAgUiOAoRQ3JlYXRlU2t1UmVzcG9uc2USIwoDc2t1GAEgASgLMhYud2FyZ2Fwb3Muc3RvY2sudjEuU2t1IkwKEFVwZGF0ZVNrdVJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAASGAoEY29kZRgCIAEoCUIKukgHcgUQARj/AToJirUYBQoDAQIFIjgKEVVwZGF0ZVNrdVJlc3BvbnNlEiMKA3NrdRgBIAEoCzIWLndhcmdhcG9zLnN0b2NrLnYxLlNrdSIyChBEZWxldGVTa3VSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAOgmKtRgFCgMBAgUiEwoRRGVsZXRlU2t1UmVzcG9uc2UiYgoOTGlzdFNrdVJlcXVlc3QSDAoEcGFnZRgBIAEoBRIRCglwYWdlX3NpemUYAiABKAUSEgoKcHJvZHVjdF9pZBgDIAEoDRIOCgZzZWFyY2gYBCABKAk6C4q1GAcKBQECBQYEIkYKD0xpc3RTa3VSZXNwb25zZRIkCgRza3VzGAEgAygLMhYud2FyZ2Fwb3Muc3RvY2sudjEuU2t1Eg0KBXRvdGFsGAIgASgFIkgKDUdldFNrdVJlcXVlc3QSDAoCaWQYASABKA1IABIOCgRjb2RlGAIgASgJSAA6C4q1GAcKBQECBQYEQgwKCmlkZW50aWZpZXIiZAoOR2V0U2t1UmVzcG9uc2USLQoIZXJyX2NvZGUYASABKA4yGy53YXJnYXBvcy5zdG9jay52MS5Ta3VFcnJvchIjCgNza3UYAiABKAsyFi53YXJnYXBvcy5zdG9jay52MS5Ta3UqPQoIU2t1RXJyb3ISGQoVU0tVX0VSUk9SX1VOU1BFQ0lGSUVEEAASFgoSU0tVX0VSUk9SX05PVEZPVU5EEAEqiwEKC1Byb2R1Y3RUeXBlEhwKGFBST0RVQ1RfVFlQRV9VTlNQRUNJRklFRBAAEhkKFVBST0RVQ1RfVFlQRV9NQVRFUklBTBABEh0KGVBST0RVQ1RfVFlQRV9DQUZFX1BST0RVQ1QQAhIkCiBQUk9EVUNUX1RZUEVfTUFSS0VUUExBQ0VfUFJPRFVDVBADKpEBCgtDb3N0aW5nVHlwZRIcChhDT1NUSU5HX1RZUEVfVU5TUEVDSUZJRUQQABIVChFDT1NUSU5HX1RZUEVfTElGTxABEhUKEUNPU1RJTkdfVFlQRV9GSUZPEAISGgoWQ09TVElOR19UWVBFX01BWF9QUklDRRAEEhoKFkNPU1RJTkdfVFlQRV9NSU5fUFJJQ0UQBUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role, file_wargapos_stock_v1_rack]);
 
 /**
  * @generated from message wargapos.stock.v1.RackPlacement
@@ -80,6 +80,11 @@ export type Sku = Message<"wargapos.stock.v1.Sku"> & {
   warehouseId: number;
 
   /**
+   * @generated from field: wargapos.stock.v1.ProductType product_type = 14;
+   */
+  productType: ProductType;
+
+  /**
    * @generated from field: wargapos.stock.v1.CostingType costing_type = 6;
    */
   costingType: CostingType;
@@ -118,6 +123,11 @@ export type Sku = Message<"wargapos.stock.v1.Sku"> & {
    * @generated from field: google.protobuf.Timestamp last_stock_out = 13;
    */
   lastStockOut?: Timestamp;
+
+  /**
+   * @generated from field: double stock_valuation = 15;
+   */
+  stockValuation: number;
 };
 
 /**
@@ -184,6 +194,11 @@ export type CreateSkuRequest = Message<"wargapos.stock.v1.CreateSkuRequest"> & {
    * @generated from field: uint32 warehouse_id = 4;
    */
   warehouseId: number;
+
+  /**
+   * @generated from field: wargapos.stock.v1.ProductType product_type = 5;
+   */
+  productType: ProductType;
 };
 
 /**
@@ -406,6 +421,37 @@ export const SkuErrorSchema: GenEnum<SkuError> = /*@__PURE__*/
   enumDesc(file_wargapos_stock_v1_sku, 0);
 
 /**
+ * @generated from enum wargapos.stock.v1.ProductType
+ */
+export enum ProductType {
+  /**
+   * @generated from enum value: PRODUCT_TYPE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: PRODUCT_TYPE_MATERIAL = 1;
+   */
+  MATERIAL = 1,
+
+  /**
+   * @generated from enum value: PRODUCT_TYPE_CAFE_PRODUCT = 2;
+   */
+  CAFE_PRODUCT = 2,
+
+  /**
+   * @generated from enum value: PRODUCT_TYPE_MARKETPLACE_PRODUCT = 3;
+   */
+  MARKETPLACE_PRODUCT = 3,
+}
+
+/**
+ * Describes the enum wargapos.stock.v1.ProductType.
+ */
+export const ProductTypeSchema: GenEnum<ProductType> = /*@__PURE__*/
+  enumDesc(file_wargapos_stock_v1_sku, 1);
+
+/**
  * @generated from enum wargapos.stock.v1.CostingType
  */
 export enum CostingType {
@@ -439,5 +485,5 @@ export enum CostingType {
  * Describes the enum wargapos.stock.v1.CostingType.
  */
 export const CostingTypeSchema: GenEnum<CostingType> = /*@__PURE__*/
-  enumDesc(file_wargapos_stock_v1_sku, 1);
+  enumDesc(file_wargapos_stock_v1_sku, 2);
 

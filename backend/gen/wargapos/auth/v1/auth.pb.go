@@ -13,6 +13,7 @@ import (
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+	_ "wargapos/backend/gen/wargapos/rolebased/v1"
 )
 
 const (
@@ -426,10 +427,10 @@ var File_wargapos_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_wargapos_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x1bwargapos/auth/v1/auth.proto\x12\x10wargapos.auth.v1\x1a\x1bbuf/validate/validate.proto\"X\n" +
+	"\x1bwargapos/auth/v1/auth.proto\x12\x10wargapos.auth.v1\x1a\x1bbuf/validate/validate.proto\x1a wargapos/rolebased/v1/role.proto\"`\n" +
 	"\fLoginRequest\x12#\n" +
 	"\busername\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\busername\x12#\n" +
-	"\bpassword\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bpassword\"v\n" +
+	"\bpassword\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\bpassword:\x06\x8a\xb5\x18\x02\x18\x01\"v\n" +
 	"\rLoginResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x1d\n" +
@@ -437,15 +438,15 @@ const file_wargapos_auth_v1_auth_proto_rawDesc = "" +
 	"expires_at\x18\x03 \x01(\x03R\texpiresAt\";\n" +
 	"\rLogoutRequest\x12*\n" +
 	"\faccess_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\vaccessToken\"\x10\n" +
-	"\x0eLogoutResponse\"5\n" +
+	"\x0eLogoutResponse\"=\n" +
 	"\x14ValidateTokenRequest\x12\x1d\n" +
-	"\x05token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x05token\"Z\n" +
+	"\x05token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x05token:\x06\x8a\xb5\x18\x02\x18\x01\"Z\n" +
 	"\x15ValidateTokenResponse\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\rR\x06userId\x12\x12\n" +
-	"\x04role\x18\x03 \x01(\tR\x04role\"C\n" +
+	"\x04role\x18\x03 \x01(\tR\x04role\"K\n" +
 	"\x13RefreshTokenRequest\x12,\n" +
-	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken\"}\n" +
+	"\rrefresh_token\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\frefreshToken:\x06\x8a\xb5\x18\x02\x18\x01\"}\n" +
 	"\x14RefreshTokenResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x1d\n" +

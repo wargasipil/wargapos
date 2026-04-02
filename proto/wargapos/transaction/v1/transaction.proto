@@ -3,6 +3,7 @@ syntax = "proto3";
 package wargapos.transaction.v1;
 
 import "buf/validate/validate.proto";
+import "wargapos/rolebased/v1/role.proto";
 // import "google/protobuf/timestamp.proto";
 import "wargapos/transaction/v1/notification.proto";
 import "wargapos/transaction/v1/order.proto";
@@ -98,6 +99,7 @@ message DashboardPaymentBreakdown {
 }
 
 message GetDashboardStatsRequest {
+  option (wargapos.rolebased.v1.request_policy) = {allow_authenticated: true};
   DashboardPeriod period = 1;
 }
 message GetDashboardStatsResponse {

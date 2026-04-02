@@ -21,16 +21,68 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type LogEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Log           *StockLog              `protobuf:"bytes,1,opt,name=log,proto3" json:"log,omitempty"`
+	Cost          *CostVersion           `protobuf:"bytes,2,opt,name=cost,proto3" json:"cost,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LogEvent) Reset() {
+	*x = LogEvent{}
+	mi := &file_wargapos_stock_v1_event_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LogEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LogEvent) ProtoMessage() {}
+
+func (x *LogEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_event_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LogEvent.ProtoReflect.Descriptor instead.
+func (*LogEvent) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_event_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *LogEvent) GetLog() *StockLog {
+	if x != nil {
+		return x.Log
+	}
+	return nil
+}
+
+func (x *LogEvent) GetCost() *CostVersion {
+	if x != nil {
+		return x.Cost
+	}
+	return nil
+}
+
 type StockLogEvent struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	StockLog      []*StockLog            `protobuf:"bytes,1,rep,name=stock_log,json=stockLog,proto3" json:"stock_log,omitempty"`
+	StockLog      []*LogEvent            `protobuf:"bytes,1,rep,name=stock_log,json=stockLog,proto3" json:"stock_log,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *StockLogEvent) Reset() {
 	*x = StockLogEvent{}
-	mi := &file_wargapos_stock_v1_event_proto_msgTypes[0]
+	mi := &file_wargapos_stock_v1_event_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +94,7 @@ func (x *StockLogEvent) String() string {
 func (*StockLogEvent) ProtoMessage() {}
 
 func (x *StockLogEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_event_proto_msgTypes[0]
+	mi := &file_wargapos_stock_v1_event_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,10 +107,10 @@ func (x *StockLogEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StockLogEvent.ProtoReflect.Descriptor instead.
 func (*StockLogEvent) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_event_proto_rawDescGZIP(), []int{0}
+	return file_wargapos_stock_v1_event_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *StockLogEvent) GetStockLog() []*StockLog {
+func (x *StockLogEvent) GetStockLog() []*LogEvent {
 	if x != nil {
 		return x.StockLog
 	}
@@ -77,7 +129,7 @@ type StockEvent struct {
 
 func (x *StockEvent) Reset() {
 	*x = StockEvent{}
-	mi := &file_wargapos_stock_v1_event_proto_msgTypes[1]
+	mi := &file_wargapos_stock_v1_event_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -89,7 +141,7 @@ func (x *StockEvent) String() string {
 func (*StockEvent) ProtoMessage() {}
 
 func (x *StockEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_event_proto_msgTypes[1]
+	mi := &file_wargapos_stock_v1_event_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -102,7 +154,7 @@ func (x *StockEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StockEvent.ProtoReflect.Descriptor instead.
 func (*StockEvent) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_event_proto_rawDescGZIP(), []int{1}
+	return file_wargapos_stock_v1_event_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *StockEvent) GetEvent() isStockEvent_Event {
@@ -135,9 +187,12 @@ var File_wargapos_stock_v1_event_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_event_proto_rawDesc = "" +
 	"\n" +
-	"\x1dwargapos/stock/v1/event.proto\x12\x11wargapos.stock.v1\x1a\x1dwargapos/stock/v1/stock.proto\"I\n" +
+	"\x1dwargapos/stock/v1/event.proto\x12\x11wargapos.stock.v1\x1a\x1dwargapos/stock/v1/stock.proto\"m\n" +
+	"\bLogEvent\x12-\n" +
+	"\x03log\x18\x01 \x01(\v2\x1b.wargapos.stock.v1.StockLogR\x03log\x122\n" +
+	"\x04cost\x18\x02 \x01(\v2\x1e.wargapos.stock.v1.CostVersionR\x04cost\"I\n" +
 	"\rStockLogEvent\x128\n" +
-	"\tstock_log\x18\x01 \x03(\v2\x1b.wargapos.stock.v1.StockLogR\bstockLog\"M\n" +
+	"\tstock_log\x18\x01 \x03(\v2\x1b.wargapos.stock.v1.LogEventR\bstockLog\"M\n" +
 	"\n" +
 	"StockEvent\x126\n" +
 	"\x04logs\x18\x01 \x01(\v2 .wargapos.stock.v1.StockLogEventH\x00R\x04logsB\a\n" +
@@ -155,20 +210,24 @@ func file_wargapos_stock_v1_event_proto_rawDescGZIP() []byte {
 	return file_wargapos_stock_v1_event_proto_rawDescData
 }
 
-var file_wargapos_stock_v1_event_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_wargapos_stock_v1_event_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_wargapos_stock_v1_event_proto_goTypes = []any{
-	(*StockLogEvent)(nil), // 0: wargapos.stock.v1.StockLogEvent
-	(*StockEvent)(nil),    // 1: wargapos.stock.v1.StockEvent
-	(*StockLog)(nil),      // 2: wargapos.stock.v1.StockLog
+	(*LogEvent)(nil),      // 0: wargapos.stock.v1.LogEvent
+	(*StockLogEvent)(nil), // 1: wargapos.stock.v1.StockLogEvent
+	(*StockEvent)(nil),    // 2: wargapos.stock.v1.StockEvent
+	(*StockLog)(nil),      // 3: wargapos.stock.v1.StockLog
+	(*CostVersion)(nil),   // 4: wargapos.stock.v1.CostVersion
 }
 var file_wargapos_stock_v1_event_proto_depIdxs = []int32{
-	2, // 0: wargapos.stock.v1.StockLogEvent.stock_log:type_name -> wargapos.stock.v1.StockLog
-	0, // 1: wargapos.stock.v1.StockEvent.logs:type_name -> wargapos.stock.v1.StockLogEvent
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 0: wargapos.stock.v1.LogEvent.log:type_name -> wargapos.stock.v1.StockLog
+	4, // 1: wargapos.stock.v1.LogEvent.cost:type_name -> wargapos.stock.v1.CostVersion
+	0, // 2: wargapos.stock.v1.StockLogEvent.stock_log:type_name -> wargapos.stock.v1.LogEvent
+	1, // 3: wargapos.stock.v1.StockEvent.logs:type_name -> wargapos.stock.v1.StockLogEvent
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_event_proto_init() }
@@ -177,7 +236,7 @@ func file_wargapos_stock_v1_event_proto_init() {
 		return
 	}
 	file_wargapos_stock_v1_stock_proto_init()
-	file_wargapos_stock_v1_event_proto_msgTypes[1].OneofWrappers = []any{
+	file_wargapos_stock_v1_event_proto_msgTypes[2].OneofWrappers = []any{
 		(*StockEvent_Logs)(nil),
 	}
 	type x struct{}
@@ -186,7 +245,7 @@ func file_wargapos_stock_v1_event_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_event_proto_rawDesc), len(file_wargapos_stock_v1_event_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

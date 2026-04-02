@@ -4,7 +4,7 @@ import {
   Badge, Box, Button, Dialog, Field, Flex, Heading, HStack, Input, Portal, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
 import { Link, useParams } from '@tanstack/react-router'
-import { ArrowLeft, Pencil, PackagePlus } from 'lucide-react'
+import { ArrowLeft, Pencil, PackagePlus, RefreshCw } from 'lucide-react'
 import { marketplaceClient, stockClient } from '../../../client'
 import { formatPrice, formatDateTime } from '../../../lib/format'
 import { stripError } from '../../../lib/errors'
@@ -28,6 +28,7 @@ export function MarketplaceProductDetailPage() {
   const [restockOpen, setRestockOpen] = useState(false)
   const [warehouseId, setWarehouseId] = useState(0)
   const [qty, setQty] = useState('')
+  const [price, setPrice] = useState('')
 
   const { data, isLoading } = useQuery({
     queryKey: ['marketplace-product', id],
@@ -52,12 +53,14 @@ export function MarketplaceProductDetailPage() {
         productId: BigInt(id),
         warehouseId,
         delta: parseInt(qty, 10),
+        total: parseInt(price, 10),
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['marketplace-product', id] })
       toaster.create({ title: 'Restocked successfully', type: 'success', duration: 2000 })
       setRestockOpen(false)
       setQty('')
+      setPrice('')
       setWarehouseId(0)
     },
     onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
@@ -98,6 +101,7 @@ export function MarketplaceProductDetailPage() {
             <VStack gap={2} align="stretch">
               <DetailRow label="Price" value={formatPrice(BigInt(p.priceCents))} />
               <DetailRow label="Total Stock" value={p.leftStock.toLocaleString('id-ID')} />
+              <DetailRow label="Total Stock Valuation" value={p.stockValuation.toLocaleString('id-ID')} />
               <DetailRow label="Status" value={
                 <Badge colorPalette={p.isActive ? 'green' : 'gray'} size="sm">
                   {p.isActive ? 'Active' : 'Inactive'}
@@ -116,7 +120,12 @@ export function MarketplaceProductDetailPage() {
 
           {/* Warehouse stock card */}
           <Box bg="white" borderRadius="lg" p={4} boxShadow="sm" flex={{ base: 'none', md: 7 }} w={{ base: 'full', md: 'auto' }}>
-            <Text fontWeight="medium" fontSize="sm" mb={3}>Warehouse Stock</Text>
+            <Flex justify="space-between" align="center" mb={3}>
+              <Text fontWeight="medium" fontSize="sm">Warehouse Stock</Text>
+              <Button size="2xs" variant="ghost" onClick={() => qc.invalidateQueries({ queryKey: ['marketplace-product', id] })}>
+                <RefreshCw size={12} />
+              </Button>
+            </Flex>
             {p.warehouseStock.length === 0 ? (
               <Text fontSize="sm" color="gray.400">No stock records yet.</Text>
             ) : (
@@ -125,6 +134,7 @@ export function MarketplaceProductDetailPage() {
                   <Table.Row>
                     <Table.ColumnHeader>Warehouse</Table.ColumnHeader>
                     <Table.ColumnHeader textAlign="right">Stock</Table.ColumnHeader>
+                    <Table.ColumnHeader textAlign="right">Stock Valuation</Table.ColumnHeader>
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -142,6 +152,7 @@ export function MarketplaceProductDetailPage() {
                         )}
                       </Table.Cell>
                       <Table.Cell textAlign="right">{ws.leftStock.toLocaleString('id-ID')}</Table.Cell>
+                      <Table.Cell textAlign="right">{ws.stockValuation.toLocaleString('id-ID')}</Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>
@@ -178,6 +189,18 @@ export function MarketplaceProductDetailPage() {
                       value={qty}
                       onChange={(e) => setQty(e.target.value)}
                       placeholder="e.g. 50"
+                      autoFocus
+                    />
+                  </Field.Root>
+                  <Field.Root required>
+                    <Field.Label fontSize="sm">Total</Field.Label>
+                    <Input
+                      type="number"
+                      min={1}
+                      size="sm"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      placeholder="Rp. 12000"
                       autoFocus
                     />
                   </Field.Root>

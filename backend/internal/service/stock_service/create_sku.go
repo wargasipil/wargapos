@@ -20,6 +20,7 @@ func (s *StockService) CreateSku(
 		ProductID:   req.Msg.ProductId,
 		BranchID:    req.Msg.BranchId,
 		WarehouseID: req.Msg.WarehouseId,
+		ProductType: int32(req.Msg.ProductType),
 	}
 	if err := s.db.WithContext(ctx).Create(&sku).Error; err != nil {
 		if strings.Contains(err.Error(), "unique") || strings.Contains(err.Error(), "duplicate") {

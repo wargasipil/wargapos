@@ -26,7 +26,10 @@
       "Bash(make migrate-status:*)",
       "Bash(psql \"postgresql://postgres:NxLKwaqQIMThoZKvVodYDQjepdJpSBcc@centerbeam.proxy.rlwy.net:37834/railway\" -c \"\\\\d stock_logs\")",
       "Bash(find /d/research/wargapos/proto/wargapos -name *rolebased* -o -name *role*)",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "Read(//c/Users/heris/AppData/Local/Temp/claude/d--research-wargapos/903970cf-c52c-4d83-98e2-a7a197d848a0/tasks/**)",
+      "Bash(find /d/research/wargapos -name *.db -o -name *.sqlite -o -name *.sqlite3)",
+      "Bash(find /d/research/wargapos -name *warehouse*.proto)"
     ]
   }
 }

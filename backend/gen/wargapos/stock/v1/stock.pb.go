@@ -291,6 +291,7 @@ func (x *StockLog) GetChange() int32 {
 type ListCostSkuRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SkuId         uint32                 `protobuf:"varint,1,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
+	OnlyActive    bool                   `protobuf:"varint,2,opt,name=only_active,json=onlyActive,proto3" json:"only_active,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -332,16 +333,99 @@ func (x *ListCostSkuRequest) GetSkuId() uint32 {
 	return 0
 }
 
+func (x *ListCostSkuRequest) GetOnlyActive() bool {
+	if x != nil {
+		return x.OnlyActive
+	}
+	return false
+}
+
+type ListCostSkuItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UnitCost      float64                `protobuf:"fixed64,1,opt,name=unit_cost,json=unitCost,proto3" json:"unit_cost,omitempty"`
+	StockInitiate int32                  `protobuf:"varint,2,opt,name=stock_initiate,json=stockInitiate,proto3" json:"stock_initiate,omitempty"`
+	LeftStock     int32                  `protobuf:"varint,3,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
+	Total         float64                `protobuf:"fixed64,4,opt,name=total,proto3" json:"total,omitempty"`
+	BatchCount    int32                  `protobuf:"varint,5,opt,name=batch_count,json=batchCount,proto3" json:"batch_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListCostSkuItem) Reset() {
+	*x = ListCostSkuItem{}
+	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListCostSkuItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListCostSkuItem) ProtoMessage() {}
+
+func (x *ListCostSkuItem) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListCostSkuItem.ProtoReflect.Descriptor instead.
+func (*ListCostSkuItem) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_stock_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListCostSkuItem) GetUnitCost() float64 {
+	if x != nil {
+		return x.UnitCost
+	}
+	return 0
+}
+
+func (x *ListCostSkuItem) GetStockInitiate() int32 {
+	if x != nil {
+		return x.StockInitiate
+	}
+	return 0
+}
+
+func (x *ListCostSkuItem) GetLeftStock() int32 {
+	if x != nil {
+		return x.LeftStock
+	}
+	return 0
+}
+
+func (x *ListCostSkuItem) GetTotal() float64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListCostSkuItem) GetBatchCount() int32 {
+	if x != nil {
+		return x.BatchCount
+	}
+	return 0
+}
+
 type ListCostSkuResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Costs         []*CostVersion         `protobuf:"bytes,1,rep,name=costs,proto3" json:"costs,omitempty"`
+	Costs         []*ListCostSkuItem     `protobuf:"bytes,1,rep,name=costs,proto3" json:"costs,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListCostSkuResponse) Reset() {
 	*x = ListCostSkuResponse{}
-	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[3]
+	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -353,7 +437,7 @@ func (x *ListCostSkuResponse) String() string {
 func (*ListCostSkuResponse) ProtoMessage() {}
 
 func (x *ListCostSkuResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[3]
+	mi := &file_wargapos_stock_v1_stock_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -366,10 +450,10 @@ func (x *ListCostSkuResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCostSkuResponse.ProtoReflect.Descriptor instead.
 func (*ListCostSkuResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_stock_proto_rawDescGZIP(), []int{3}
+	return file_wargapos_stock_v1_stock_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ListCostSkuResponse) GetCosts() []*CostVersion {
+func (x *ListCostSkuResponse) GetCosts() []*ListCostSkuItem {
 	if x != nil {
 		return x.Costs
 	}
@@ -403,13 +487,23 @@ const file_wargapos_stock_v1_stock_proto_rawDesc = "" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x125\n" +
 	"\blog_type\x18\t \x01(\x0e2\x1a.wargapos.stock.v1.LogTypeR\alogType\x12\x16\n" +
 	"\x06change\x18\n" +
-	" \x01(\x05R\x06change\"@\n" +
+	" \x01(\x05R\x06change\"a\n" +
 	"\x12ListCostSkuRequest\x12\x1e\n" +
-	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId:\n" +
+	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12\x1f\n" +
+	"\vonly_active\x18\x02 \x01(\bR\n" +
+	"onlyActive:\n" +
 	"\x8a\xb5\x18\x06\n" +
-	"\x04\x01\x02\x05\x06\"K\n" +
-	"\x13ListCostSkuResponse\x124\n" +
-	"\x05costs\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.CostVersionR\x05costs*\xc2\x01\n" +
+	"\x04\x01\x02\x05\x06\"\xab\x01\n" +
+	"\x0fListCostSkuItem\x12\x1b\n" +
+	"\tunit_cost\x18\x01 \x01(\x01R\bunitCost\x12%\n" +
+	"\x0estock_initiate\x18\x02 \x01(\x05R\rstockInitiate\x12\x1d\n" +
+	"\n" +
+	"left_stock\x18\x03 \x01(\x05R\tleftStock\x12\x14\n" +
+	"\x05total\x18\x04 \x01(\x01R\x05total\x12\x1f\n" +
+	"\vbatch_count\x18\x05 \x01(\x05R\n" +
+	"batchCount\"O\n" +
+	"\x13ListCostSkuResponse\x128\n" +
+	"\x05costs\x18\x01 \x03(\v2\".wargapos.stock.v1.ListCostSkuItemR\x05costs*\xc2\x01\n" +
 	"\aLogType\x12\x18\n" +
 	"\x14LOG_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15LOG_TYPE_STOCK_CANCEL\x10\x01\x12\x15\n" +
@@ -433,21 +527,22 @@ func file_wargapos_stock_v1_stock_proto_rawDescGZIP() []byte {
 }
 
 var file_wargapos_stock_v1_stock_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_wargapos_stock_v1_stock_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_wargapos_stock_v1_stock_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_wargapos_stock_v1_stock_proto_goTypes = []any{
 	(LogType)(0),                  // 0: wargapos.stock.v1.LogType
 	(*CostVersion)(nil),           // 1: wargapos.stock.v1.CostVersion
 	(*StockLog)(nil),              // 2: wargapos.stock.v1.StockLog
 	(*ListCostSkuRequest)(nil),    // 3: wargapos.stock.v1.ListCostSkuRequest
-	(*ListCostSkuResponse)(nil),   // 4: wargapos.stock.v1.ListCostSkuResponse
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*ListCostSkuItem)(nil),       // 4: wargapos.stock.v1.ListCostSkuItem
+	(*ListCostSkuResponse)(nil),   // 5: wargapos.stock.v1.ListCostSkuResponse
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
 }
 var file_wargapos_stock_v1_stock_proto_depIdxs = []int32{
-	5, // 0: wargapos.stock.v1.CostVersion.created_at:type_name -> google.protobuf.Timestamp
-	5, // 1: wargapos.stock.v1.CostVersion.updated_at:type_name -> google.protobuf.Timestamp
-	5, // 2: wargapos.stock.v1.StockLog.created_at:type_name -> google.protobuf.Timestamp
+	6, // 0: wargapos.stock.v1.CostVersion.created_at:type_name -> google.protobuf.Timestamp
+	6, // 1: wargapos.stock.v1.CostVersion.updated_at:type_name -> google.protobuf.Timestamp
+	6, // 2: wargapos.stock.v1.StockLog.created_at:type_name -> google.protobuf.Timestamp
 	0, // 3: wargapos.stock.v1.StockLog.log_type:type_name -> wargapos.stock.v1.LogType
-	1, // 4: wargapos.stock.v1.ListCostSkuResponse.costs:type_name -> wargapos.stock.v1.CostVersion
+	4, // 4: wargapos.stock.v1.ListCostSkuResponse.costs:type_name -> wargapos.stock.v1.ListCostSkuItem
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
@@ -466,7 +561,7 @@ func file_wargapos_stock_v1_stock_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_stock_proto_rawDesc), len(file_wargapos_stock_v1_stock_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

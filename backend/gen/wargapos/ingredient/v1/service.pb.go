@@ -629,6 +629,94 @@ func (x *ListMaterialResponse) GetTotal() int32 {
 	return 0
 }
 
+type GetMaterialRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMaterialRequest) Reset() {
+	*x = GetMaterialRequest{}
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMaterialRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMaterialRequest) ProtoMessage() {}
+
+func (x *GetMaterialRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMaterialRequest.ProtoReflect.Descriptor instead.
+func (*GetMaterialRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *GetMaterialRequest) GetId() uint32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+type GetMaterialResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Material      *Material              `protobuf:"bytes,1,opt,name=material,proto3" json:"material,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMaterialResponse) Reset() {
+	*x = GetMaterialResponse{}
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMaterialResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMaterialResponse) ProtoMessage() {}
+
+func (x *GetMaterialResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMaterialResponse.ProtoReflect.Descriptor instead.
+func (*GetMaterialResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetMaterialResponse) GetMaterial() *Material {
+	if x != nil {
+		return x.Material
+	}
+	return nil
+}
+
 type DeleteMaterialRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint32                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -638,7 +726,7 @@ type DeleteMaterialRequest struct {
 
 func (x *DeleteMaterialRequest) Reset() {
 	*x = DeleteMaterialRequest{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[9]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -650,7 +738,7 @@ func (x *DeleteMaterialRequest) String() string {
 func (*DeleteMaterialRequest) ProtoMessage() {}
 
 func (x *DeleteMaterialRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[9]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -663,7 +751,7 @@ func (x *DeleteMaterialRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMaterialRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMaterialRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{9}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *DeleteMaterialRequest) GetId() uint32 {
@@ -681,7 +769,7 @@ type DeleteMaterialResponse struct {
 
 func (x *DeleteMaterialResponse) Reset() {
 	*x = DeleteMaterialResponse{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[10]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -693,7 +781,7 @@ func (x *DeleteMaterialResponse) String() string {
 func (*DeleteMaterialResponse) ProtoMessage() {}
 
 func (x *DeleteMaterialResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[10]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -706,7 +794,7 @@ func (x *DeleteMaterialResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMaterialResponse.ProtoReflect.Descriptor instead.
 func (*DeleteMaterialResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{10}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{12}
 }
 
 type RecipeItemInput struct {
@@ -719,7 +807,7 @@ type RecipeItemInput struct {
 
 func (x *RecipeItemInput) Reset() {
 	*x = RecipeItemInput{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[11]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -731,7 +819,7 @@ func (x *RecipeItemInput) String() string {
 func (*RecipeItemInput) ProtoMessage() {}
 
 func (x *RecipeItemInput) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[11]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -744,7 +832,7 @@ func (x *RecipeItemInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecipeItemInput.ProtoReflect.Descriptor instead.
 func (*RecipeItemInput) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{11}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *RecipeItemInput) GetMaterialId() uint32 {
@@ -773,7 +861,7 @@ type RecipeItem struct {
 
 func (x *RecipeItem) Reset() {
 	*x = RecipeItem{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[12]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -785,7 +873,7 @@ func (x *RecipeItem) String() string {
 func (*RecipeItem) ProtoMessage() {}
 
 func (x *RecipeItem) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[12]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -798,7 +886,7 @@ func (x *RecipeItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecipeItem.ProtoReflect.Descriptor instead.
 func (*RecipeItem) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{12}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *RecipeItem) GetId() uint32 {
@@ -843,7 +931,7 @@ type Recipe struct {
 
 func (x *Recipe) Reset() {
 	*x = Recipe{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[13]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -855,7 +943,7 @@ func (x *Recipe) String() string {
 func (*Recipe) ProtoMessage() {}
 
 func (x *Recipe) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[13]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -868,7 +956,7 @@ func (x *Recipe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Recipe.ProtoReflect.Descriptor instead.
 func (*Recipe) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{13}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Recipe) GetId() uint32 {
@@ -924,7 +1012,7 @@ type CreateRecipeRequest struct {
 
 func (x *CreateRecipeRequest) Reset() {
 	*x = CreateRecipeRequest{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[14]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -936,7 +1024,7 @@ func (x *CreateRecipeRequest) String() string {
 func (*CreateRecipeRequest) ProtoMessage() {}
 
 func (x *CreateRecipeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[14]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -949,7 +1037,7 @@ func (x *CreateRecipeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRecipeRequest.ProtoReflect.Descriptor instead.
 func (*CreateRecipeRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{14}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *CreateRecipeRequest) GetProductId() uint32 {
@@ -982,7 +1070,7 @@ type CreateRecipeResponse struct {
 
 func (x *CreateRecipeResponse) Reset() {
 	*x = CreateRecipeResponse{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[15]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -994,7 +1082,7 @@ func (x *CreateRecipeResponse) String() string {
 func (*CreateRecipeResponse) ProtoMessage() {}
 
 func (x *CreateRecipeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[15]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1007,7 +1095,7 @@ func (x *CreateRecipeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRecipeResponse.ProtoReflect.Descriptor instead.
 func (*CreateRecipeResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{15}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *CreateRecipeResponse) GetRecipe() *Recipe {
@@ -1028,7 +1116,7 @@ type UpdateRecipeRequest struct {
 
 func (x *UpdateRecipeRequest) Reset() {
 	*x = UpdateRecipeRequest{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[16]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1040,7 +1128,7 @@ func (x *UpdateRecipeRequest) String() string {
 func (*UpdateRecipeRequest) ProtoMessage() {}
 
 func (x *UpdateRecipeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[16]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1053,7 +1141,7 @@ func (x *UpdateRecipeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRecipeRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRecipeRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{16}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *UpdateRecipeRequest) GetId() uint32 {
@@ -1086,7 +1174,7 @@ type UpdateRecipeResponse struct {
 
 func (x *UpdateRecipeResponse) Reset() {
 	*x = UpdateRecipeResponse{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[17]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1098,7 +1186,7 @@ func (x *UpdateRecipeResponse) String() string {
 func (*UpdateRecipeResponse) ProtoMessage() {}
 
 func (x *UpdateRecipeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[17]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1111,7 +1199,7 @@ func (x *UpdateRecipeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRecipeResponse.ProtoReflect.Descriptor instead.
 func (*UpdateRecipeResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{17}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *UpdateRecipeResponse) GetRecipe() *Recipe {
@@ -1130,7 +1218,7 @@ type GetRecipeRequest struct {
 
 func (x *GetRecipeRequest) Reset() {
 	*x = GetRecipeRequest{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[18]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1142,7 +1230,7 @@ func (x *GetRecipeRequest) String() string {
 func (*GetRecipeRequest) ProtoMessage() {}
 
 func (x *GetRecipeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[18]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1155,7 +1243,7 @@ func (x *GetRecipeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRecipeRequest.ProtoReflect.Descriptor instead.
 func (*GetRecipeRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{18}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetRecipeRequest) GetProductId() uint32 {
@@ -1174,7 +1262,7 @@ type GetRecipeResponse struct {
 
 func (x *GetRecipeResponse) Reset() {
 	*x = GetRecipeResponse{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[19]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1186,7 +1274,7 @@ func (x *GetRecipeResponse) String() string {
 func (*GetRecipeResponse) ProtoMessage() {}
 
 func (x *GetRecipeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[19]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1199,7 +1287,7 @@ func (x *GetRecipeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRecipeResponse.ProtoReflect.Descriptor instead.
 func (*GetRecipeResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{19}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GetRecipeResponse) GetRecipe() *Recipe {
@@ -1220,7 +1308,7 @@ type ListRecipeRequest struct {
 
 func (x *ListRecipeRequest) Reset() {
 	*x = ListRecipeRequest{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[20]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1232,7 +1320,7 @@ func (x *ListRecipeRequest) String() string {
 func (*ListRecipeRequest) ProtoMessage() {}
 
 func (x *ListRecipeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[20]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1245,7 +1333,7 @@ func (x *ListRecipeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRecipeRequest.ProtoReflect.Descriptor instead.
 func (*ListRecipeRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{20}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListRecipeRequest) GetPage() int32 {
@@ -1279,7 +1367,7 @@ type ListRecipeResponse struct {
 
 func (x *ListRecipeResponse) Reset() {
 	*x = ListRecipeResponse{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[21]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1291,7 +1379,7 @@ func (x *ListRecipeResponse) String() string {
 func (*ListRecipeResponse) ProtoMessage() {}
 
 func (x *ListRecipeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[21]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1304,7 +1392,7 @@ func (x *ListRecipeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRecipeResponse.ProtoReflect.Descriptor instead.
 func (*ListRecipeResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{21}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ListRecipeResponse) GetRecipes() []*Recipe {
@@ -1330,7 +1418,7 @@ type DeleteRecipeRequest struct {
 
 func (x *DeleteRecipeRequest) Reset() {
 	*x = DeleteRecipeRequest{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[22]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1342,7 +1430,7 @@ func (x *DeleteRecipeRequest) String() string {
 func (*DeleteRecipeRequest) ProtoMessage() {}
 
 func (x *DeleteRecipeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[22]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1355,7 +1443,7 @@ func (x *DeleteRecipeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRecipeRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRecipeRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{22}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *DeleteRecipeRequest) GetId() uint32 {
@@ -1373,7 +1461,7 @@ type DeleteRecipeResponse struct {
 
 func (x *DeleteRecipeResponse) Reset() {
 	*x = DeleteRecipeResponse{}
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[23]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1385,7 +1473,7 @@ func (x *DeleteRecipeResponse) String() string {
 func (*DeleteRecipeResponse) ProtoMessage() {}
 
 func (x *DeleteRecipeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[23]
+	mi := &file_wargapos_ingredient_v1_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1398,7 +1486,7 @@ func (x *DeleteRecipeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRecipeResponse.ProtoReflect.Descriptor instead.
 func (*DeleteRecipeResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{23}
+	return file_wargapos_ingredient_v1_service_proto_rawDescGZIP(), []int{25}
 }
 
 var File_wargapos_ingredient_v1_service_proto protoreflect.FileDescriptor
@@ -1453,7 +1541,12 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\x05\x01\x02\x05\x06\x04\"l\n" +
 	"\x14ListMaterialResponse\x12>\n" +
 	"\tmaterials\x18\x01 \x03(\v2 .wargapos.ingredient.v1.MaterialR\tmaterials\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\";\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\":\n" +
+	"\x12GetMaterialRequest\x12\x17\n" +
+	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04\"S\n" +
+	"\x13GetMaterialResponse\x12<\n" +
+	"\bmaterial\x18\x01 \x01(\v2 .wargapos.ingredient.v1.MaterialR\bmaterial\";\n" +
 	"\x15DeleteMaterialRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"\x18\n" +
@@ -1517,10 +1610,11 @@ const file_wargapos_ingredient_v1_service_proto_rawDesc = "" +
 	"\aQtyType\x12\x18\n" +
 	"\x14QTY_TYPE_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eQTY_TYPE_PIECE\x10\x01\x12\x11\n" +
-	"\rQTY_TYPE_GRAM\x10\x022\xd0\b\n" +
+	"\rQTY_TYPE_GRAM\x10\x022\xb8\t\n" +
 	"\x11IngredientService\x12o\n" +
 	"\x0eCreateMaterial\x12-.wargapos.ingredient.v1.CreateMaterialRequest\x1a..wargapos.ingredient.v1.CreateMaterialResponse\x12o\n" +
-	"\x0eUpdateMaterial\x12-.wargapos.ingredient.v1.UpdateMaterialRequest\x1a..wargapos.ingredient.v1.UpdateMaterialResponse\x12i\n" +
+	"\x0eUpdateMaterial\x12-.wargapos.ingredient.v1.UpdateMaterialRequest\x1a..wargapos.ingredient.v1.UpdateMaterialResponse\x12f\n" +
+	"\vGetMaterial\x12*.wargapos.ingredient.v1.GetMaterialRequest\x1a+.wargapos.ingredient.v1.GetMaterialResponse\x12i\n" +
 	"\fListMaterial\x12+.wargapos.ingredient.v1.ListMaterialRequest\x1a,.wargapos.ingredient.v1.ListMaterialResponse\x12o\n" +
 	"\x0eDeleteMaterial\x12-.wargapos.ingredient.v1.DeleteMaterialRequest\x1a..wargapos.ingredient.v1.DeleteMaterialResponse\x12u\n" +
 	"\x10AddMaterialStock\x12/.wargapos.ingredient.v1.AddMaterialStockRequest\x1a0.wargapos.ingredient.v1.AddMaterialStockResponse\x12i\n" +
@@ -1544,7 +1638,7 @@ func file_wargapos_ingredient_v1_service_proto_rawDescGZIP() []byte {
 }
 
 var file_wargapos_ingredient_v1_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_wargapos_ingredient_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_wargapos_ingredient_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_wargapos_ingredient_v1_service_proto_goTypes = []any{
 	(QtyType)(0),                     // 0: wargapos.ingredient.v1.QtyType
 	(*Material)(nil),                 // 1: wargapos.ingredient.v1.Material
@@ -1556,67 +1650,72 @@ var file_wargapos_ingredient_v1_service_proto_goTypes = []any{
 	(*UpdateMaterialResponse)(nil),   // 7: wargapos.ingredient.v1.UpdateMaterialResponse
 	(*ListMaterialRequest)(nil),      // 8: wargapos.ingredient.v1.ListMaterialRequest
 	(*ListMaterialResponse)(nil),     // 9: wargapos.ingredient.v1.ListMaterialResponse
-	(*DeleteMaterialRequest)(nil),    // 10: wargapos.ingredient.v1.DeleteMaterialRequest
-	(*DeleteMaterialResponse)(nil),   // 11: wargapos.ingredient.v1.DeleteMaterialResponse
-	(*RecipeItemInput)(nil),          // 12: wargapos.ingredient.v1.RecipeItemInput
-	(*RecipeItem)(nil),               // 13: wargapos.ingredient.v1.RecipeItem
-	(*Recipe)(nil),                   // 14: wargapos.ingredient.v1.Recipe
-	(*CreateRecipeRequest)(nil),      // 15: wargapos.ingredient.v1.CreateRecipeRequest
-	(*CreateRecipeResponse)(nil),     // 16: wargapos.ingredient.v1.CreateRecipeResponse
-	(*UpdateRecipeRequest)(nil),      // 17: wargapos.ingredient.v1.UpdateRecipeRequest
-	(*UpdateRecipeResponse)(nil),     // 18: wargapos.ingredient.v1.UpdateRecipeResponse
-	(*GetRecipeRequest)(nil),         // 19: wargapos.ingredient.v1.GetRecipeRequest
-	(*GetRecipeResponse)(nil),        // 20: wargapos.ingredient.v1.GetRecipeResponse
-	(*ListRecipeRequest)(nil),        // 21: wargapos.ingredient.v1.ListRecipeRequest
-	(*ListRecipeResponse)(nil),       // 22: wargapos.ingredient.v1.ListRecipeResponse
-	(*DeleteRecipeRequest)(nil),      // 23: wargapos.ingredient.v1.DeleteRecipeRequest
-	(*DeleteRecipeResponse)(nil),     // 24: wargapos.ingredient.v1.DeleteRecipeResponse
-	(*timestamppb.Timestamp)(nil),    // 25: google.protobuf.Timestamp
+	(*GetMaterialRequest)(nil),       // 10: wargapos.ingredient.v1.GetMaterialRequest
+	(*GetMaterialResponse)(nil),      // 11: wargapos.ingredient.v1.GetMaterialResponse
+	(*DeleteMaterialRequest)(nil),    // 12: wargapos.ingredient.v1.DeleteMaterialRequest
+	(*DeleteMaterialResponse)(nil),   // 13: wargapos.ingredient.v1.DeleteMaterialResponse
+	(*RecipeItemInput)(nil),          // 14: wargapos.ingredient.v1.RecipeItemInput
+	(*RecipeItem)(nil),               // 15: wargapos.ingredient.v1.RecipeItem
+	(*Recipe)(nil),                   // 16: wargapos.ingredient.v1.Recipe
+	(*CreateRecipeRequest)(nil),      // 17: wargapos.ingredient.v1.CreateRecipeRequest
+	(*CreateRecipeResponse)(nil),     // 18: wargapos.ingredient.v1.CreateRecipeResponse
+	(*UpdateRecipeRequest)(nil),      // 19: wargapos.ingredient.v1.UpdateRecipeRequest
+	(*UpdateRecipeResponse)(nil),     // 20: wargapos.ingredient.v1.UpdateRecipeResponse
+	(*GetRecipeRequest)(nil),         // 21: wargapos.ingredient.v1.GetRecipeRequest
+	(*GetRecipeResponse)(nil),        // 22: wargapos.ingredient.v1.GetRecipeResponse
+	(*ListRecipeRequest)(nil),        // 23: wargapos.ingredient.v1.ListRecipeRequest
+	(*ListRecipeResponse)(nil),       // 24: wargapos.ingredient.v1.ListRecipeResponse
+	(*DeleteRecipeRequest)(nil),      // 25: wargapos.ingredient.v1.DeleteRecipeRequest
+	(*DeleteRecipeResponse)(nil),     // 26: wargapos.ingredient.v1.DeleteRecipeResponse
+	(*timestamppb.Timestamp)(nil),    // 27: google.protobuf.Timestamp
 }
 var file_wargapos_ingredient_v1_service_proto_depIdxs = []int32{
-	25, // 0: wargapos.ingredient.v1.Material.created_at:type_name -> google.protobuf.Timestamp
-	25, // 1: wargapos.ingredient.v1.Material.updated_at:type_name -> google.protobuf.Timestamp
+	27, // 0: wargapos.ingredient.v1.Material.created_at:type_name -> google.protobuf.Timestamp
+	27, // 1: wargapos.ingredient.v1.Material.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: wargapos.ingredient.v1.Material.qty_type:type_name -> wargapos.ingredient.v1.QtyType
 	0,  // 3: wargapos.ingredient.v1.CreateMaterialRequest.qty_type:type_name -> wargapos.ingredient.v1.QtyType
 	1,  // 4: wargapos.ingredient.v1.CreateMaterialResponse.material:type_name -> wargapos.ingredient.v1.Material
 	0,  // 5: wargapos.ingredient.v1.UpdateMaterialRequest.qty_type:type_name -> wargapos.ingredient.v1.QtyType
 	1,  // 6: wargapos.ingredient.v1.UpdateMaterialResponse.material:type_name -> wargapos.ingredient.v1.Material
 	1,  // 7: wargapos.ingredient.v1.ListMaterialResponse.materials:type_name -> wargapos.ingredient.v1.Material
-	1,  // 8: wargapos.ingredient.v1.RecipeItem.material:type_name -> wargapos.ingredient.v1.Material
-	13, // 9: wargapos.ingredient.v1.Recipe.items:type_name -> wargapos.ingredient.v1.RecipeItem
-	25, // 10: wargapos.ingredient.v1.Recipe.created_at:type_name -> google.protobuf.Timestamp
-	25, // 11: wargapos.ingredient.v1.Recipe.updated_at:type_name -> google.protobuf.Timestamp
-	12, // 12: wargapos.ingredient.v1.CreateRecipeRequest.items:type_name -> wargapos.ingredient.v1.RecipeItemInput
-	14, // 13: wargapos.ingredient.v1.CreateRecipeResponse.recipe:type_name -> wargapos.ingredient.v1.Recipe
-	12, // 14: wargapos.ingredient.v1.UpdateRecipeRequest.items:type_name -> wargapos.ingredient.v1.RecipeItemInput
-	14, // 15: wargapos.ingredient.v1.UpdateRecipeResponse.recipe:type_name -> wargapos.ingredient.v1.Recipe
-	14, // 16: wargapos.ingredient.v1.GetRecipeResponse.recipe:type_name -> wargapos.ingredient.v1.Recipe
-	14, // 17: wargapos.ingredient.v1.ListRecipeResponse.recipes:type_name -> wargapos.ingredient.v1.Recipe
-	4,  // 18: wargapos.ingredient.v1.IngredientService.CreateMaterial:input_type -> wargapos.ingredient.v1.CreateMaterialRequest
-	6,  // 19: wargapos.ingredient.v1.IngredientService.UpdateMaterial:input_type -> wargapos.ingredient.v1.UpdateMaterialRequest
-	8,  // 20: wargapos.ingredient.v1.IngredientService.ListMaterial:input_type -> wargapos.ingredient.v1.ListMaterialRequest
-	10, // 21: wargapos.ingredient.v1.IngredientService.DeleteMaterial:input_type -> wargapos.ingredient.v1.DeleteMaterialRequest
-	2,  // 22: wargapos.ingredient.v1.IngredientService.AddMaterialStock:input_type -> wargapos.ingredient.v1.AddMaterialStockRequest
-	15, // 23: wargapos.ingredient.v1.IngredientService.CreateRecipe:input_type -> wargapos.ingredient.v1.CreateRecipeRequest
-	17, // 24: wargapos.ingredient.v1.IngredientService.UpdateRecipe:input_type -> wargapos.ingredient.v1.UpdateRecipeRequest
-	19, // 25: wargapos.ingredient.v1.IngredientService.GetRecipe:input_type -> wargapos.ingredient.v1.GetRecipeRequest
-	21, // 26: wargapos.ingredient.v1.IngredientService.ListRecipe:input_type -> wargapos.ingredient.v1.ListRecipeRequest
-	23, // 27: wargapos.ingredient.v1.IngredientService.DeleteRecipe:input_type -> wargapos.ingredient.v1.DeleteRecipeRequest
-	5,  // 28: wargapos.ingredient.v1.IngredientService.CreateMaterial:output_type -> wargapos.ingredient.v1.CreateMaterialResponse
-	7,  // 29: wargapos.ingredient.v1.IngredientService.UpdateMaterial:output_type -> wargapos.ingredient.v1.UpdateMaterialResponse
-	9,  // 30: wargapos.ingredient.v1.IngredientService.ListMaterial:output_type -> wargapos.ingredient.v1.ListMaterialResponse
-	11, // 31: wargapos.ingredient.v1.IngredientService.DeleteMaterial:output_type -> wargapos.ingredient.v1.DeleteMaterialResponse
-	3,  // 32: wargapos.ingredient.v1.IngredientService.AddMaterialStock:output_type -> wargapos.ingredient.v1.AddMaterialStockResponse
-	16, // 33: wargapos.ingredient.v1.IngredientService.CreateRecipe:output_type -> wargapos.ingredient.v1.CreateRecipeResponse
-	18, // 34: wargapos.ingredient.v1.IngredientService.UpdateRecipe:output_type -> wargapos.ingredient.v1.UpdateRecipeResponse
-	20, // 35: wargapos.ingredient.v1.IngredientService.GetRecipe:output_type -> wargapos.ingredient.v1.GetRecipeResponse
-	22, // 36: wargapos.ingredient.v1.IngredientService.ListRecipe:output_type -> wargapos.ingredient.v1.ListRecipeResponse
-	24, // 37: wargapos.ingredient.v1.IngredientService.DeleteRecipe:output_type -> wargapos.ingredient.v1.DeleteRecipeResponse
-	28, // [28:38] is the sub-list for method output_type
-	18, // [18:28] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	1,  // 8: wargapos.ingredient.v1.GetMaterialResponse.material:type_name -> wargapos.ingredient.v1.Material
+	1,  // 9: wargapos.ingredient.v1.RecipeItem.material:type_name -> wargapos.ingredient.v1.Material
+	15, // 10: wargapos.ingredient.v1.Recipe.items:type_name -> wargapos.ingredient.v1.RecipeItem
+	27, // 11: wargapos.ingredient.v1.Recipe.created_at:type_name -> google.protobuf.Timestamp
+	27, // 12: wargapos.ingredient.v1.Recipe.updated_at:type_name -> google.protobuf.Timestamp
+	14, // 13: wargapos.ingredient.v1.CreateRecipeRequest.items:type_name -> wargapos.ingredient.v1.RecipeItemInput
+	16, // 14: wargapos.ingredient.v1.CreateRecipeResponse.recipe:type_name -> wargapos.ingredient.v1.Recipe
+	14, // 15: wargapos.ingredient.v1.UpdateRecipeRequest.items:type_name -> wargapos.ingredient.v1.RecipeItemInput
+	16, // 16: wargapos.ingredient.v1.UpdateRecipeResponse.recipe:type_name -> wargapos.ingredient.v1.Recipe
+	16, // 17: wargapos.ingredient.v1.GetRecipeResponse.recipe:type_name -> wargapos.ingredient.v1.Recipe
+	16, // 18: wargapos.ingredient.v1.ListRecipeResponse.recipes:type_name -> wargapos.ingredient.v1.Recipe
+	4,  // 19: wargapos.ingredient.v1.IngredientService.CreateMaterial:input_type -> wargapos.ingredient.v1.CreateMaterialRequest
+	6,  // 20: wargapos.ingredient.v1.IngredientService.UpdateMaterial:input_type -> wargapos.ingredient.v1.UpdateMaterialRequest
+	10, // 21: wargapos.ingredient.v1.IngredientService.GetMaterial:input_type -> wargapos.ingredient.v1.GetMaterialRequest
+	8,  // 22: wargapos.ingredient.v1.IngredientService.ListMaterial:input_type -> wargapos.ingredient.v1.ListMaterialRequest
+	12, // 23: wargapos.ingredient.v1.IngredientService.DeleteMaterial:input_type -> wargapos.ingredient.v1.DeleteMaterialRequest
+	2,  // 24: wargapos.ingredient.v1.IngredientService.AddMaterialStock:input_type -> wargapos.ingredient.v1.AddMaterialStockRequest
+	17, // 25: wargapos.ingredient.v1.IngredientService.CreateRecipe:input_type -> wargapos.ingredient.v1.CreateRecipeRequest
+	19, // 26: wargapos.ingredient.v1.IngredientService.UpdateRecipe:input_type -> wargapos.ingredient.v1.UpdateRecipeRequest
+	21, // 27: wargapos.ingredient.v1.IngredientService.GetRecipe:input_type -> wargapos.ingredient.v1.GetRecipeRequest
+	23, // 28: wargapos.ingredient.v1.IngredientService.ListRecipe:input_type -> wargapos.ingredient.v1.ListRecipeRequest
+	25, // 29: wargapos.ingredient.v1.IngredientService.DeleteRecipe:input_type -> wargapos.ingredient.v1.DeleteRecipeRequest
+	5,  // 30: wargapos.ingredient.v1.IngredientService.CreateMaterial:output_type -> wargapos.ingredient.v1.CreateMaterialResponse
+	7,  // 31: wargapos.ingredient.v1.IngredientService.UpdateMaterial:output_type -> wargapos.ingredient.v1.UpdateMaterialResponse
+	11, // 32: wargapos.ingredient.v1.IngredientService.GetMaterial:output_type -> wargapos.ingredient.v1.GetMaterialResponse
+	9,  // 33: wargapos.ingredient.v1.IngredientService.ListMaterial:output_type -> wargapos.ingredient.v1.ListMaterialResponse
+	13, // 34: wargapos.ingredient.v1.IngredientService.DeleteMaterial:output_type -> wargapos.ingredient.v1.DeleteMaterialResponse
+	3,  // 35: wargapos.ingredient.v1.IngredientService.AddMaterialStock:output_type -> wargapos.ingredient.v1.AddMaterialStockResponse
+	18, // 36: wargapos.ingredient.v1.IngredientService.CreateRecipe:output_type -> wargapos.ingredient.v1.CreateRecipeResponse
+	20, // 37: wargapos.ingredient.v1.IngredientService.UpdateRecipe:output_type -> wargapos.ingredient.v1.UpdateRecipeResponse
+	22, // 38: wargapos.ingredient.v1.IngredientService.GetRecipe:output_type -> wargapos.ingredient.v1.GetRecipeResponse
+	24, // 39: wargapos.ingredient.v1.IngredientService.ListRecipe:output_type -> wargapos.ingredient.v1.ListRecipeResponse
+	26, // 40: wargapos.ingredient.v1.IngredientService.DeleteRecipe:output_type -> wargapos.ingredient.v1.DeleteRecipeResponse
+	30, // [30:41] is the sub-list for method output_type
+	19, // [19:30] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_ingredient_v1_service_proto_init() }
@@ -1630,7 +1729,7 @@ func file_wargapos_ingredient_v1_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_ingredient_v1_service_proto_rawDesc), len(file_wargapos_ingredient_v1_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   24,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

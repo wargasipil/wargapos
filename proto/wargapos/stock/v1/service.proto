@@ -25,7 +25,13 @@ message StockMovement {
 }
 
 message AdjustStockRequest {
-  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
   int64 product_id = 1 [(buf.validate.field).int64.gt = 0];
   int32 delta = 2 [(buf.validate.field).int32 = {
     not_in: [0]
@@ -87,4 +93,8 @@ service StockService {
 
   rpc AdjustStock(AdjustStockRequest) returns (AdjustStockResponse);
   rpc ListStockMovements(ListStockMovementsRequest) returns (ListStockMovementsResponse);
+
+  // bagian placement
+  // rpc TransactionPlacement()
+  // rpc
 }

@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/ingredient/v1/service.proto.
  */
 export const file_wargapos_ingredient_v1_service: GenFile = /*@__PURE__*/
-  fileDesc("CiR3YXJnYXBvcy9pbmdyZWRpZW50L3YxL3NlcnZpY2UucHJvdG8SFndhcmdhcG9zLmluZ3JlZGllbnQudjEi5QEKCE1hdGVyaWFsEgoKAmlkGAEgASgNEhEKCWJyYW5jaF9pZBgCIAEoDRIuCgpjcmVhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIMCgRjb2RlGAUgASgJEgwKBG5hbWUYBiABKAkSMQoIcXR5X3R5cGUYByABKA4yHy53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlF0eVR5cGUSCwoDcXR5GAggASgFIp4BChdBZGRNYXRlcmlhbFN0b2NrUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIdCgx3YXJlaG91c2VfaWQYAiABKA1CB7pIBCoCIAASFAoDcXR5GAQgASgFQge6SAQaAjgAEhYKBXByaWNlGAUgASgEQge6SAQyAiAAEhYKBG5vdGUYBiABKAlCCLpIBXIDGPQDOgmKtRgFCgMBAgUiGgoYQWRkTWF0ZXJpYWxTdG9ja1Jlc3BvbnNlIqcBChVDcmVhdGVNYXRlcmlhbFJlcXVlc3QSFwoEY29kZRgBIAEoCUIJukgGcgQQARhkEhgKBG5hbWUYAiABKAlCCrpIB3IFEAEYrAISPQoIcXR5X3R5cGUYAyABKA4yHy53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlF0eVR5cGVCCrpIB4IBBBABIAASEQoJYnJhbmNoX2lkGAUgASgNOgmKtRgFCgMBAgUiTAoWQ3JlYXRlTWF0ZXJpYWxSZXNwb25zZRIyCghtYXRlcmlhbBgBIAEoCzIgLndhcmdhcG9zLmluZ3JlZGllbnQudjEuTWF0ZXJpYWwitgEKFVVwZGF0ZU1hdGVyaWFsUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIXCgRjb2RlGAIgASgJQgm6SAZyBBABGGQSGAoEbmFtZRgDIAEoCUIKukgHcgUQARisAhI9CghxdHlfdHlwZRgEIAEoDjIfLndhcmdhcG9zLmluZ3JlZGllbnQudjEuUXR5VHlwZUIKukgHggEEEAEgABILCgNxdHkYBSABKAU6CYq1GAUKAwECBSJMChZVcGRhdGVNYXRlcmlhbFJlc3BvbnNlEjIKCG1hdGVyaWFsGAEgASgLMiAud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5NYXRlcmlhbCJTChNMaXN0TWF0ZXJpYWxSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCToLirUYBwoFAQIFBgQiWgoUTGlzdE1hdGVyaWFsUmVzcG9uc2USMwoJbWF0ZXJpYWxzGAEgAygLMiAud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5NYXRlcmlhbBINCgV0b3RhbBgCIAEoBSI3ChVEZWxldGVNYXRlcmlhbFJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAA6CYq1GAUKAwECBSIYChZEZWxldGVNYXRlcmlhbFJlc3BvbnNlIkUKD1JlY2lwZUl0ZW1JbnB1dBIcCgttYXRlcmlhbF9pZBgBIAEoDUIHukgEKgIgABIUCgNxdHkYAiABKAVCB7pIBBoCIAAibgoKUmVjaXBlSXRlbRIKCgJpZBgBIAEoDRITCgttYXRlcmlhbF9pZBgCIAEoDRIyCghtYXRlcmlhbBgDIAEoCzIgLndhcmdhcG9zLmluZ3JlZGllbnQudjEuTWF0ZXJpYWwSCwoDcXR5GAQgASgFIskBCgZSZWNpcGUSCgoCaWQYASABKA0SEgoKcHJvZHVjdF9pZBgCIAEoDRIMCgRuYW1lGAMgASgJEjEKBWl0ZW1zGAQgAygLMiIud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5SZWNpcGVJdGVtEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIpkBChNDcmVhdGVSZWNpcGVSZXF1ZXN0EhsKCnByb2R1Y3RfaWQYASABKA1CB7pIBCoCIAASGAoEbmFtZRgCIAEoCUIKukgHcgUQARisAhJACgVpdGVtcxgDIAMoCzInLndhcmdhcG9zLmluZ3JlZGllbnQudjEuUmVjaXBlSXRlbUlucHV0Qgi6SAWSAQIIAToJirUYBQoDAQIFIkYKFENyZWF0ZVJlY2lwZVJlc3BvbnNlEi4KBnJlY2lwZRgBIAEoCzIeLndhcmdhcG9zLmluZ3JlZGllbnQudjEuUmVjaXBlIpEBChNVcGRhdGVSZWNpcGVSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAEhgKBG5hbWUYAiABKAlCCrpIB3IFEAEYrAISQAoFaXRlbXMYAyADKAsyJy53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlJlY2lwZUl0ZW1JbnB1dEIIukgFkgECCAE6CYq1GAUKAwECBSJGChRVcGRhdGVSZWNpcGVSZXNwb25zZRIuCgZyZWNpcGUYASABKAsyHi53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlJlY2lwZSI8ChBHZXRSZWNpcGVSZXF1ZXN0EhsKCnByb2R1Y3RfaWQYASABKA1CB7pIBCoCIAA6C4q1GAcKBQECBQYEIkMKEUdldFJlY2lwZVJlc3BvbnNlEi4KBnJlY2lwZRgBIAEoCzIeLndhcmdhcG9zLmluZ3JlZGllbnQudjEuUmVjaXBlIlEKEUxpc3RSZWNpcGVSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCToLirUYBwoFAQIFBgQiVAoSTGlzdFJlY2lwZVJlc3BvbnNlEi8KB3JlY2lwZXMYASADKAsyHi53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlJlY2lwZRINCgV0b3RhbBgCIAEoBSI1ChNEZWxldGVSZWNpcGVSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAOgmKtRgFCgMBAgUiFgoURGVsZXRlUmVjaXBlUmVzcG9uc2UqSgoHUXR5VHlwZRIYChRRVFlfVFlQRV9VTlNQRUNJRklFRBAAEhIKDlFUWV9UWVBFX1BJRUNFEAESEQoNUVRZX1RZUEVfR1JBTRACMtAIChFJbmdyZWRpZW50U2VydmljZRJvCg5DcmVhdGVNYXRlcmlhbBItLndhcmdhcG9zLmluZ3JlZGllbnQudjEuQ3JlYXRlTWF0ZXJpYWxSZXF1ZXN0Gi4ud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5DcmVhdGVNYXRlcmlhbFJlc3BvbnNlEm8KDlVwZGF0ZU1hdGVyaWFsEi0ud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5VcGRhdGVNYXRlcmlhbFJlcXVlc3QaLi53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlVwZGF0ZU1hdGVyaWFsUmVzcG9uc2USaQoMTGlzdE1hdGVyaWFsEisud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5MaXN0TWF0ZXJpYWxSZXF1ZXN0Giwud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5MaXN0TWF0ZXJpYWxSZXNwb25zZRJvCg5EZWxldGVNYXRlcmlhbBItLndhcmdhcG9zLmluZ3JlZGllbnQudjEuRGVsZXRlTWF0ZXJpYWxSZXF1ZXN0Gi4ud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5EZWxldGVNYXRlcmlhbFJlc3BvbnNlEnUKEEFkZE1hdGVyaWFsU3RvY2sSLy53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkFkZE1hdGVyaWFsU3RvY2tSZXF1ZXN0GjAud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5BZGRNYXRlcmlhbFN0b2NrUmVzcG9uc2USaQoMQ3JlYXRlUmVjaXBlEisud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5DcmVhdGVSZWNpcGVSZXF1ZXN0Giwud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5DcmVhdGVSZWNpcGVSZXNwb25zZRJpCgxVcGRhdGVSZWNpcGUSKy53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlVwZGF0ZVJlY2lwZVJlcXVlc3QaLC53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlVwZGF0ZVJlY2lwZVJlc3BvbnNlEmAKCUdldFJlY2lwZRIoLndhcmdhcG9zLmluZ3JlZGllbnQudjEuR2V0UmVjaXBlUmVxdWVzdBopLndhcmdhcG9zLmluZ3JlZGllbnQudjEuR2V0UmVjaXBlUmVzcG9uc2USYwoKTGlzdFJlY2lwZRIpLndhcmdhcG9zLmluZ3JlZGllbnQudjEuTGlzdFJlY2lwZVJlcXVlc3QaKi53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkxpc3RSZWNpcGVSZXNwb25zZRJpCgxEZWxldGVSZWNpcGUSKy53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkRlbGV0ZVJlY2lwZVJlcXVlc3QaLC53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkRlbGV0ZVJlY2lwZVJlc3BvbnNlQjpaOHdhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL2luZ3JlZGllbnQvdjE7aW5ncmVkaWVudHYxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
+  fileDesc("CiR3YXJnYXBvcy9pbmdyZWRpZW50L3YxL3NlcnZpY2UucHJvdG8SFndhcmdhcG9zLmluZ3JlZGllbnQudjEi5QEKCE1hdGVyaWFsEgoKAmlkGAEgASgNEhEKCWJyYW5jaF9pZBgCIAEoDRIuCgpjcmVhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIMCgRjb2RlGAUgASgJEgwKBG5hbWUYBiABKAkSMQoIcXR5X3R5cGUYByABKA4yHy53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlF0eVR5cGUSCwoDcXR5GAggASgFIp4BChdBZGRNYXRlcmlhbFN0b2NrUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIdCgx3YXJlaG91c2VfaWQYAiABKA1CB7pIBCoCIAASFAoDcXR5GAQgASgFQge6SAQaAjgAEhYKBXByaWNlGAUgASgEQge6SAQyAiAAEhYKBG5vdGUYBiABKAlCCLpIBXIDGPQDOgmKtRgFCgMBAgUiGgoYQWRkTWF0ZXJpYWxTdG9ja1Jlc3BvbnNlIqcBChVDcmVhdGVNYXRlcmlhbFJlcXVlc3QSFwoEY29kZRgBIAEoCUIJukgGcgQQARhkEhgKBG5hbWUYAiABKAlCCrpIB3IFEAEYrAISPQoIcXR5X3R5cGUYAyABKA4yHy53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlF0eVR5cGVCCrpIB4IBBBABIAASEQoJYnJhbmNoX2lkGAUgASgNOgmKtRgFCgMBAgUiTAoWQ3JlYXRlTWF0ZXJpYWxSZXNwb25zZRIyCghtYXRlcmlhbBgBIAEoCzIgLndhcmdhcG9zLmluZ3JlZGllbnQudjEuTWF0ZXJpYWwitgEKFVVwZGF0ZU1hdGVyaWFsUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIXCgRjb2RlGAIgASgJQgm6SAZyBBABGGQSGAoEbmFtZRgDIAEoCUIKukgHcgUQARisAhI9CghxdHlfdHlwZRgEIAEoDjIfLndhcmdhcG9zLmluZ3JlZGllbnQudjEuUXR5VHlwZUIKukgHggEEEAEgABILCgNxdHkYBSABKAU6CYq1GAUKAwECBSJMChZVcGRhdGVNYXRlcmlhbFJlc3BvbnNlEjIKCG1hdGVyaWFsGAEgASgLMiAud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5NYXRlcmlhbCJTChNMaXN0TWF0ZXJpYWxSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCToLirUYBwoFAQIFBgQiWgoUTGlzdE1hdGVyaWFsUmVzcG9uc2USMwoJbWF0ZXJpYWxzGAEgAygLMiAud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5NYXRlcmlhbBINCgV0b3RhbBgCIAEoBSI2ChJHZXRNYXRlcmlhbFJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAA6C4q1GAcKBQECBQYEIkkKE0dldE1hdGVyaWFsUmVzcG9uc2USMgoIbWF0ZXJpYWwYASABKAsyIC53YXJnYXBvcy5pbmdyZWRpZW50LnYxLk1hdGVyaWFsIjcKFURlbGV0ZU1hdGVyaWFsUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgADoJirUYBQoDAQIFIhgKFkRlbGV0ZU1hdGVyaWFsUmVzcG9uc2UiRQoPUmVjaXBlSXRlbUlucHV0EhwKC21hdGVyaWFsX2lkGAEgASgNQge6SAQqAiAAEhQKA3F0eRgCIAEoBUIHukgEGgIgACJuCgpSZWNpcGVJdGVtEgoKAmlkGAEgASgNEhMKC21hdGVyaWFsX2lkGAIgASgNEjIKCG1hdGVyaWFsGAMgASgLMiAud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5NYXRlcmlhbBILCgNxdHkYBCABKAUiyQEKBlJlY2lwZRIKCgJpZBgBIAEoDRISCgpwcm9kdWN0X2lkGAIgASgNEgwKBG5hbWUYAyABKAkSMQoFaXRlbXMYBCADKAsyIi53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlJlY2lwZUl0ZW0SLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAimQEKE0NyZWF0ZVJlY2lwZVJlcXVlc3QSGwoKcHJvZHVjdF9pZBgBIAEoDUIHukgEKgIgABIYCgRuYW1lGAIgASgJQgq6SAdyBRABGKwCEkAKBWl0ZW1zGAMgAygLMicud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5SZWNpcGVJdGVtSW5wdXRCCLpIBZIBAggBOgmKtRgFCgMBAgUiRgoUQ3JlYXRlUmVjaXBlUmVzcG9uc2USLgoGcmVjaXBlGAEgASgLMh4ud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5SZWNpcGUikQEKE1VwZGF0ZVJlY2lwZVJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAASGAoEbmFtZRgCIAEoCUIKukgHcgUQARisAhJACgVpdGVtcxgDIAMoCzInLndhcmdhcG9zLmluZ3JlZGllbnQudjEuUmVjaXBlSXRlbUlucHV0Qgi6SAWSAQIIAToJirUYBQoDAQIFIkYKFFVwZGF0ZVJlY2lwZVJlc3BvbnNlEi4KBnJlY2lwZRgBIAEoCzIeLndhcmdhcG9zLmluZ3JlZGllbnQudjEuUmVjaXBlIjwKEEdldFJlY2lwZVJlcXVlc3QSGwoKcHJvZHVjdF9pZBgBIAEoDUIHukgEKgIgADoLirUYBwoFAQIFBgQiQwoRR2V0UmVjaXBlUmVzcG9uc2USLgoGcmVjaXBlGAEgASgLMh4ud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5SZWNpcGUiUQoRTGlzdFJlY2lwZVJlcXVlc3QSDAoEcGFnZRgBIAEoBRIRCglwYWdlX3NpemUYAiABKAUSDgoGc2VhcmNoGAMgASgJOguKtRgHCgUBAgUGBCJUChJMaXN0UmVjaXBlUmVzcG9uc2USLwoHcmVjaXBlcxgBIAMoCzIeLndhcmdhcG9zLmluZ3JlZGllbnQudjEuUmVjaXBlEg0KBXRvdGFsGAIgASgFIjUKE0RlbGV0ZVJlY2lwZVJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAA6CYq1GAUKAwECBSIWChREZWxldGVSZWNpcGVSZXNwb25zZSpKCgdRdHlUeXBlEhgKFFFUWV9UWVBFX1VOU1BFQ0lGSUVEEAASEgoOUVRZX1RZUEVfUElFQ0UQARIRCg1RVFlfVFlQRV9HUkFNEAIyuAkKEUluZ3JlZGllbnRTZXJ2aWNlEm8KDkNyZWF0ZU1hdGVyaWFsEi0ud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5DcmVhdGVNYXRlcmlhbFJlcXVlc3QaLi53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkNyZWF0ZU1hdGVyaWFsUmVzcG9uc2USbwoOVXBkYXRlTWF0ZXJpYWwSLS53YXJnYXBvcy5pbmdyZWRpZW50LnYxLlVwZGF0ZU1hdGVyaWFsUmVxdWVzdBouLndhcmdhcG9zLmluZ3JlZGllbnQudjEuVXBkYXRlTWF0ZXJpYWxSZXNwb25zZRJmCgtHZXRNYXRlcmlhbBIqLndhcmdhcG9zLmluZ3JlZGllbnQudjEuR2V0TWF0ZXJpYWxSZXF1ZXN0Gisud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5HZXRNYXRlcmlhbFJlc3BvbnNlEmkKDExpc3RNYXRlcmlhbBIrLndhcmdhcG9zLmluZ3JlZGllbnQudjEuTGlzdE1hdGVyaWFsUmVxdWVzdBosLndhcmdhcG9zLmluZ3JlZGllbnQudjEuTGlzdE1hdGVyaWFsUmVzcG9uc2USbwoORGVsZXRlTWF0ZXJpYWwSLS53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkRlbGV0ZU1hdGVyaWFsUmVxdWVzdBouLndhcmdhcG9zLmluZ3JlZGllbnQudjEuRGVsZXRlTWF0ZXJpYWxSZXNwb25zZRJ1ChBBZGRNYXRlcmlhbFN0b2NrEi8ud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5BZGRNYXRlcmlhbFN0b2NrUmVxdWVzdBowLndhcmdhcG9zLmluZ3JlZGllbnQudjEuQWRkTWF0ZXJpYWxTdG9ja1Jlc3BvbnNlEmkKDENyZWF0ZVJlY2lwZRIrLndhcmdhcG9zLmluZ3JlZGllbnQudjEuQ3JlYXRlUmVjaXBlUmVxdWVzdBosLndhcmdhcG9zLmluZ3JlZGllbnQudjEuQ3JlYXRlUmVjaXBlUmVzcG9uc2USaQoMVXBkYXRlUmVjaXBlEisud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5VcGRhdGVSZWNpcGVSZXF1ZXN0Giwud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5VcGRhdGVSZWNpcGVSZXNwb25zZRJgCglHZXRSZWNpcGUSKC53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkdldFJlY2lwZVJlcXVlc3QaKS53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkdldFJlY2lwZVJlc3BvbnNlEmMKCkxpc3RSZWNpcGUSKS53YXJnYXBvcy5pbmdyZWRpZW50LnYxLkxpc3RSZWNpcGVSZXF1ZXN0Gioud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5MaXN0UmVjaXBlUmVzcG9uc2USaQoMRGVsZXRlUmVjaXBlEisud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5EZWxldGVSZWNpcGVSZXF1ZXN0Giwud2FyZ2Fwb3MuaW5ncmVkaWVudC52MS5EZWxldGVSZWNpcGVSZXNwb25zZUI6Wjh3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9pbmdyZWRpZW50L3YxO2luZ3JlZGllbnR2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
 
 /**
  * @generated from message wargapos.ingredient.v1.Material
@@ -271,6 +271,40 @@ export const ListMaterialResponseSchema: GenMessage<ListMaterialResponse> = /*@_
   messageDesc(file_wargapos_ingredient_v1_service, 8);
 
 /**
+ * @generated from message wargapos.ingredient.v1.GetMaterialRequest
+ */
+export type GetMaterialRequest = Message<"wargapos.ingredient.v1.GetMaterialRequest"> & {
+  /**
+   * @generated from field: uint32 id = 1;
+   */
+  id: number;
+};
+
+/**
+ * Describes the message wargapos.ingredient.v1.GetMaterialRequest.
+ * Use `create(GetMaterialRequestSchema)` to create a new message.
+ */
+export const GetMaterialRequestSchema: GenMessage<GetMaterialRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_ingredient_v1_service, 9);
+
+/**
+ * @generated from message wargapos.ingredient.v1.GetMaterialResponse
+ */
+export type GetMaterialResponse = Message<"wargapos.ingredient.v1.GetMaterialResponse"> & {
+  /**
+   * @generated from field: wargapos.ingredient.v1.Material material = 1;
+   */
+  material?: Material;
+};
+
+/**
+ * Describes the message wargapos.ingredient.v1.GetMaterialResponse.
+ * Use `create(GetMaterialResponseSchema)` to create a new message.
+ */
+export const GetMaterialResponseSchema: GenMessage<GetMaterialResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_ingredient_v1_service, 10);
+
+/**
  * @generated from message wargapos.ingredient.v1.DeleteMaterialRequest
  */
 export type DeleteMaterialRequest = Message<"wargapos.ingredient.v1.DeleteMaterialRequest"> & {
@@ -285,7 +319,7 @@ export type DeleteMaterialRequest = Message<"wargapos.ingredient.v1.DeleteMateri
  * Use `create(DeleteMaterialRequestSchema)` to create a new message.
  */
 export const DeleteMaterialRequestSchema: GenMessage<DeleteMaterialRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 9);
+  messageDesc(file_wargapos_ingredient_v1_service, 11);
 
 /**
  * @generated from message wargapos.ingredient.v1.DeleteMaterialResponse
@@ -298,7 +332,7 @@ export type DeleteMaterialResponse = Message<"wargapos.ingredient.v1.DeleteMater
  * Use `create(DeleteMaterialResponseSchema)` to create a new message.
  */
 export const DeleteMaterialResponseSchema: GenMessage<DeleteMaterialResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 10);
+  messageDesc(file_wargapos_ingredient_v1_service, 12);
 
 /**
  * @generated from message wargapos.ingredient.v1.RecipeItemInput
@@ -320,7 +354,7 @@ export type RecipeItemInput = Message<"wargapos.ingredient.v1.RecipeItemInput"> 
  * Use `create(RecipeItemInputSchema)` to create a new message.
  */
 export const RecipeItemInputSchema: GenMessage<RecipeItemInput> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 11);
+  messageDesc(file_wargapos_ingredient_v1_service, 13);
 
 /**
  * @generated from message wargapos.ingredient.v1.RecipeItem
@@ -352,7 +386,7 @@ export type RecipeItem = Message<"wargapos.ingredient.v1.RecipeItem"> & {
  * Use `create(RecipeItemSchema)` to create a new message.
  */
 export const RecipeItemSchema: GenMessage<RecipeItem> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 12);
+  messageDesc(file_wargapos_ingredient_v1_service, 14);
 
 /**
  * @generated from message wargapos.ingredient.v1.Recipe
@@ -394,7 +428,7 @@ export type Recipe = Message<"wargapos.ingredient.v1.Recipe"> & {
  * Use `create(RecipeSchema)` to create a new message.
  */
 export const RecipeSchema: GenMessage<Recipe> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 13);
+  messageDesc(file_wargapos_ingredient_v1_service, 15);
 
 /**
  * @generated from message wargapos.ingredient.v1.CreateRecipeRequest
@@ -421,7 +455,7 @@ export type CreateRecipeRequest = Message<"wargapos.ingredient.v1.CreateRecipeRe
  * Use `create(CreateRecipeRequestSchema)` to create a new message.
  */
 export const CreateRecipeRequestSchema: GenMessage<CreateRecipeRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 14);
+  messageDesc(file_wargapos_ingredient_v1_service, 16);
 
 /**
  * @generated from message wargapos.ingredient.v1.CreateRecipeResponse
@@ -438,7 +472,7 @@ export type CreateRecipeResponse = Message<"wargapos.ingredient.v1.CreateRecipeR
  * Use `create(CreateRecipeResponseSchema)` to create a new message.
  */
 export const CreateRecipeResponseSchema: GenMessage<CreateRecipeResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 15);
+  messageDesc(file_wargapos_ingredient_v1_service, 17);
 
 /**
  * @generated from message wargapos.ingredient.v1.UpdateRecipeRequest
@@ -465,7 +499,7 @@ export type UpdateRecipeRequest = Message<"wargapos.ingredient.v1.UpdateRecipeRe
  * Use `create(UpdateRecipeRequestSchema)` to create a new message.
  */
 export const UpdateRecipeRequestSchema: GenMessage<UpdateRecipeRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 16);
+  messageDesc(file_wargapos_ingredient_v1_service, 18);
 
 /**
  * @generated from message wargapos.ingredient.v1.UpdateRecipeResponse
@@ -482,7 +516,7 @@ export type UpdateRecipeResponse = Message<"wargapos.ingredient.v1.UpdateRecipeR
  * Use `create(UpdateRecipeResponseSchema)` to create a new message.
  */
 export const UpdateRecipeResponseSchema: GenMessage<UpdateRecipeResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 17);
+  messageDesc(file_wargapos_ingredient_v1_service, 19);
 
 /**
  * @generated from message wargapos.ingredient.v1.GetRecipeRequest
@@ -499,7 +533,7 @@ export type GetRecipeRequest = Message<"wargapos.ingredient.v1.GetRecipeRequest"
  * Use `create(GetRecipeRequestSchema)` to create a new message.
  */
 export const GetRecipeRequestSchema: GenMessage<GetRecipeRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 18);
+  messageDesc(file_wargapos_ingredient_v1_service, 20);
 
 /**
  * @generated from message wargapos.ingredient.v1.GetRecipeResponse
@@ -516,7 +550,7 @@ export type GetRecipeResponse = Message<"wargapos.ingredient.v1.GetRecipeRespons
  * Use `create(GetRecipeResponseSchema)` to create a new message.
  */
 export const GetRecipeResponseSchema: GenMessage<GetRecipeResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 19);
+  messageDesc(file_wargapos_ingredient_v1_service, 21);
 
 /**
  * @generated from message wargapos.ingredient.v1.ListRecipeRequest
@@ -543,7 +577,7 @@ export type ListRecipeRequest = Message<"wargapos.ingredient.v1.ListRecipeReques
  * Use `create(ListRecipeRequestSchema)` to create a new message.
  */
 export const ListRecipeRequestSchema: GenMessage<ListRecipeRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 20);
+  messageDesc(file_wargapos_ingredient_v1_service, 22);
 
 /**
  * @generated from message wargapos.ingredient.v1.ListRecipeResponse
@@ -565,7 +599,7 @@ export type ListRecipeResponse = Message<"wargapos.ingredient.v1.ListRecipeRespo
  * Use `create(ListRecipeResponseSchema)` to create a new message.
  */
 export const ListRecipeResponseSchema: GenMessage<ListRecipeResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 21);
+  messageDesc(file_wargapos_ingredient_v1_service, 23);
 
 /**
  * @generated from message wargapos.ingredient.v1.DeleteRecipeRequest
@@ -582,7 +616,7 @@ export type DeleteRecipeRequest = Message<"wargapos.ingredient.v1.DeleteRecipeRe
  * Use `create(DeleteRecipeRequestSchema)` to create a new message.
  */
 export const DeleteRecipeRequestSchema: GenMessage<DeleteRecipeRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 22);
+  messageDesc(file_wargapos_ingredient_v1_service, 24);
 
 /**
  * @generated from message wargapos.ingredient.v1.DeleteRecipeResponse
@@ -595,7 +629,7 @@ export type DeleteRecipeResponse = Message<"wargapos.ingredient.v1.DeleteRecipeR
  * Use `create(DeleteRecipeResponseSchema)` to create a new message.
  */
 export const DeleteRecipeResponseSchema: GenMessage<DeleteRecipeResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_ingredient_v1_service, 23);
+  messageDesc(file_wargapos_ingredient_v1_service, 25);
 
 /**
  * @generated from enum wargapos.ingredient.v1.QtyType
@@ -644,6 +678,14 @@ export const IngredientService: GenService<{
     methodKind: "unary";
     input: typeof UpdateMaterialRequestSchema;
     output: typeof UpdateMaterialResponseSchema;
+  },
+  /**
+   * @generated from rpc wargapos.ingredient.v1.IngredientService.GetMaterial
+   */
+  getMaterial: {
+    methodKind: "unary";
+    input: typeof GetMaterialRequestSchema;
+    output: typeof GetMaterialResponseSchema;
   },
   /**
    * @generated from rpc wargapos.ingredient.v1.IngredientService.ListMaterial

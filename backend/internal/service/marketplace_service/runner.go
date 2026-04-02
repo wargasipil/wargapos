@@ -71,13 +71,16 @@ func (e *MarketplaceService) handleEventStock(ctx context.Context, evt *eventv1.
 	switch msg := evt.StockEvent.Event.(type) {
 	case *stockv1.StockEvent_Logs:
 		for _, item := range msg.Logs.StockLog {
+			change := item.Log.Change
+			total := item.Cost.UnitCost * float64(change)
 			err = db.Transaction(func(tx *gorm.DB) error {
 				err = tx.
 					Model(models.MarketplaceProductStock{}).
-					Where("sku_id = ?", item.SkuId).
+					Where("sku_id = ?", item.Log.SkuId).
 					Updates(map[string]interface{}{
-						"updated_at": time.Now(),
-						"left_stock": gorm.Expr("left_stock + ?", item.Change),
+						"updated_at":      time.Now(),
+						"left_stock":      gorm.Expr("left_stock + ?", change),
+						"stock_valuation": gorm.Expr("stock_valuation + ?", total),
 					}).
 					Error
 

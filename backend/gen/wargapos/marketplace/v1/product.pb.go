@@ -23,12 +23,13 @@ const (
 )
 
 type WarehouseStock struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	WarehouseId   uint32                 `protobuf:"varint,1,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
-	LeftStock     int32                  `protobuf:"varint,3,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	WarehouseId    uint32                 `protobuf:"varint,1,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	SkuId          uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
+	LeftStock      int32                  `protobuf:"varint,3,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
+	StockValuation float64                `protobuf:"fixed64,4,opt,name=stock_valuation,json=stockValuation,proto3" json:"stock_valuation,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *WarehouseStock) Reset() {
@@ -82,6 +83,13 @@ func (x *WarehouseStock) GetLeftStock() int32 {
 	return 0
 }
 
+func (x *WarehouseStock) GetStockValuation() float64 {
+	if x != nil {
+		return x.StockValuation
+	}
+	return 0
+}
+
 type MarketplaceProduct struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Id             uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -91,6 +99,7 @@ type MarketplaceProduct struct {
 	ImageUrl       string                 `protobuf:"bytes,5,opt,name=image_url,json=imageUrl,proto3" json:"image_url,omitempty"`
 	IsActive       bool                   `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	LeftStock      int32                  `protobuf:"varint,9,opt,name=left_stock,json=leftStock,proto3" json:"left_stock,omitempty"`
+	StockValuation float64                `protobuf:"fixed64,11,opt,name=stock_valuation,json=stockValuation,proto3" json:"stock_valuation,omitempty"`
 	WarehouseStock []*WarehouseStock      `protobuf:"bytes,10,rep,name=warehouse_stock,json=warehouseStock,proto3" json:"warehouse_stock,omitempty"`
 	CreatedAt      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt      *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
@@ -177,6 +186,13 @@ func (x *MarketplaceProduct) GetLeftStock() int32 {
 	return 0
 }
 
+func (x *MarketplaceProduct) GetStockValuation() float64 {
+	if x != nil {
+		return x.StockValuation
+	}
+	return 0
+}
+
 func (x *MarketplaceProduct) GetWarehouseStock() []*WarehouseStock {
 	if x != nil {
 		return x.WarehouseStock
@@ -202,12 +218,13 @@ var File_wargapos_marketplace_v1_product_proto protoreflect.FileDescriptor
 
 const file_wargapos_marketplace_v1_product_proto_rawDesc = "" +
 	"\n" +
-	"%wargapos/marketplace/v1/product.proto\x12\x17wargapos.marketplace.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"i\n" +
+	"%wargapos/marketplace/v1/product.proto\x12\x17wargapos.marketplace.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x92\x01\n" +
 	"\x0eWarehouseStock\x12!\n" +
 	"\fwarehouse_id\x18\x01 \x01(\rR\vwarehouseId\x12\x15\n" +
 	"\x06sku_id\x18\x02 \x01(\rR\x05skuId\x12\x1d\n" +
 	"\n" +
-	"left_stock\x18\x03 \x01(\x05R\tleftStock\"\x9c\x03\n" +
+	"left_stock\x18\x03 \x01(\x05R\tleftStock\x12'\n" +
+	"\x0fstock_valuation\x18\x04 \x01(\x01R\x0estockValuation\"\xc5\x03\n" +
 	"\x12MarketplaceProduct\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -217,7 +234,8 @@ const file_wargapos_marketplace_v1_product_proto_rawDesc = "" +
 	"\timage_url\x18\x05 \x01(\tR\bimageUrl\x12\x1b\n" +
 	"\tis_active\x18\x06 \x01(\bR\bisActive\x12\x1d\n" +
 	"\n" +
-	"left_stock\x18\t \x01(\x05R\tleftStock\x12P\n" +
+	"left_stock\x18\t \x01(\x05R\tleftStock\x12'\n" +
+	"\x0fstock_valuation\x18\v \x01(\x01R\x0estockValuation\x12P\n" +
 	"\x0fwarehouse_stock\x18\n" +
 	" \x03(\v2'.wargapos.marketplace.v1.WarehouseStockR\x0ewarehouseStock\x129\n" +
 	"\n" +

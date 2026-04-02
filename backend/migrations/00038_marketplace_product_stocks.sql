@@ -4,6 +4,7 @@ CREATE TABLE marketplace_product_stocks (
     marketplace_product_id BIGINT NOT NULL REFERENCES marketplace_products(id) ON DELETE CASCADE,
     warehouse_id           INT NOT NULL,
     left_stock             INT NOT NULL DEFAULT 0,
+    stock_valuation        DOUBLE PRECISION NOT NULL DEFAULT 0,
     created_at             TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at             TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE (marketplace_product_id, warehouse_id)

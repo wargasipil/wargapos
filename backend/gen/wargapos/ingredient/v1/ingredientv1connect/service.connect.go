@@ -39,6 +39,9 @@ const (
 	// IngredientServiceUpdateMaterialProcedure is the fully-qualified name of the IngredientService's
 	// UpdateMaterial RPC.
 	IngredientServiceUpdateMaterialProcedure = "/wargapos.ingredient.v1.IngredientService/UpdateMaterial"
+	// IngredientServiceGetMaterialProcedure is the fully-qualified name of the IngredientService's
+	// GetMaterial RPC.
+	IngredientServiceGetMaterialProcedure = "/wargapos.ingredient.v1.IngredientService/GetMaterial"
 	// IngredientServiceListMaterialProcedure is the fully-qualified name of the IngredientService's
 	// ListMaterial RPC.
 	IngredientServiceListMaterialProcedure = "/wargapos.ingredient.v1.IngredientService/ListMaterial"
@@ -70,6 +73,7 @@ type IngredientServiceClient interface {
 	// untuk material
 	CreateMaterial(context.Context, *connect.Request[v1.CreateMaterialRequest]) (*connect.Response[v1.CreateMaterialResponse], error)
 	UpdateMaterial(context.Context, *connect.Request[v1.UpdateMaterialRequest]) (*connect.Response[v1.UpdateMaterialResponse], error)
+	GetMaterial(context.Context, *connect.Request[v1.GetMaterialRequest]) (*connect.Response[v1.GetMaterialResponse], error)
 	ListMaterial(context.Context, *connect.Request[v1.ListMaterialRequest]) (*connect.Response[v1.ListMaterialResponse], error)
 	DeleteMaterial(context.Context, *connect.Request[v1.DeleteMaterialRequest]) (*connect.Response[v1.DeleteMaterialResponse], error)
 	AddMaterialStock(context.Context, *connect.Request[v1.AddMaterialStockRequest]) (*connect.Response[v1.AddMaterialStockResponse], error)
@@ -102,6 +106,12 @@ func NewIngredientServiceClient(httpClient connect.HTTPClient, baseURL string, o
 			httpClient,
 			baseURL+IngredientServiceUpdateMaterialProcedure,
 			connect.WithSchema(ingredientServiceMethods.ByName("UpdateMaterial")),
+			connect.WithClientOptions(opts...),
+		),
+		getMaterial: connect.NewClient[v1.GetMaterialRequest, v1.GetMaterialResponse](
+			httpClient,
+			baseURL+IngredientServiceGetMaterialProcedure,
+			connect.WithSchema(ingredientServiceMethods.ByName("GetMaterial")),
 			connect.WithClientOptions(opts...),
 		),
 		listMaterial: connect.NewClient[v1.ListMaterialRequest, v1.ListMaterialResponse](
@@ -159,6 +169,7 @@ func NewIngredientServiceClient(httpClient connect.HTTPClient, baseURL string, o
 type ingredientServiceClient struct {
 	createMaterial   *connect.Client[v1.CreateMaterialRequest, v1.CreateMaterialResponse]
 	updateMaterial   *connect.Client[v1.UpdateMaterialRequest, v1.UpdateMaterialResponse]
+	getMaterial      *connect.Client[v1.GetMaterialRequest, v1.GetMaterialResponse]
 	listMaterial     *connect.Client[v1.ListMaterialRequest, v1.ListMaterialResponse]
 	deleteMaterial   *connect.Client[v1.DeleteMaterialRequest, v1.DeleteMaterialResponse]
 	addMaterialStock *connect.Client[v1.AddMaterialStockRequest, v1.AddMaterialStockResponse]
@@ -177,6 +188,11 @@ func (c *ingredientServiceClient) CreateMaterial(ctx context.Context, req *conne
 // UpdateMaterial calls wargapos.ingredient.v1.IngredientService.UpdateMaterial.
 func (c *ingredientServiceClient) UpdateMaterial(ctx context.Context, req *connect.Request[v1.UpdateMaterialRequest]) (*connect.Response[v1.UpdateMaterialResponse], error) {
 	return c.updateMaterial.CallUnary(ctx, req)
+}
+
+// GetMaterial calls wargapos.ingredient.v1.IngredientService.GetMaterial.
+func (c *ingredientServiceClient) GetMaterial(ctx context.Context, req *connect.Request[v1.GetMaterialRequest]) (*connect.Response[v1.GetMaterialResponse], error) {
+	return c.getMaterial.CallUnary(ctx, req)
 }
 
 // ListMaterial calls wargapos.ingredient.v1.IngredientService.ListMaterial.
@@ -225,6 +241,7 @@ type IngredientServiceHandler interface {
 	// untuk material
 	CreateMaterial(context.Context, *connect.Request[v1.CreateMaterialRequest]) (*connect.Response[v1.CreateMaterialResponse], error)
 	UpdateMaterial(context.Context, *connect.Request[v1.UpdateMaterialRequest]) (*connect.Response[v1.UpdateMaterialResponse], error)
+	GetMaterial(context.Context, *connect.Request[v1.GetMaterialRequest]) (*connect.Response[v1.GetMaterialResponse], error)
 	ListMaterial(context.Context, *connect.Request[v1.ListMaterialRequest]) (*connect.Response[v1.ListMaterialResponse], error)
 	DeleteMaterial(context.Context, *connect.Request[v1.DeleteMaterialRequest]) (*connect.Response[v1.DeleteMaterialResponse], error)
 	AddMaterialStock(context.Context, *connect.Request[v1.AddMaterialStockRequest]) (*connect.Response[v1.AddMaterialStockResponse], error)
@@ -253,6 +270,12 @@ func NewIngredientServiceHandler(svc IngredientServiceHandler, opts ...connect.H
 		IngredientServiceUpdateMaterialProcedure,
 		svc.UpdateMaterial,
 		connect.WithSchema(ingredientServiceMethods.ByName("UpdateMaterial")),
+		connect.WithHandlerOptions(opts...),
+	)
+	ingredientServiceGetMaterialHandler := connect.NewUnaryHandler(
+		IngredientServiceGetMaterialProcedure,
+		svc.GetMaterial,
+		connect.WithSchema(ingredientServiceMethods.ByName("GetMaterial")),
 		connect.WithHandlerOptions(opts...),
 	)
 	ingredientServiceListMaterialHandler := connect.NewUnaryHandler(
@@ -309,6 +332,8 @@ func NewIngredientServiceHandler(svc IngredientServiceHandler, opts ...connect.H
 			ingredientServiceCreateMaterialHandler.ServeHTTP(w, r)
 		case IngredientServiceUpdateMaterialProcedure:
 			ingredientServiceUpdateMaterialHandler.ServeHTTP(w, r)
+		case IngredientServiceGetMaterialProcedure:
+			ingredientServiceGetMaterialHandler.ServeHTTP(w, r)
 		case IngredientServiceListMaterialProcedure:
 			ingredientServiceListMaterialHandler.ServeHTTP(w, r)
 		case IngredientServiceDeleteMaterialProcedure:
@@ -340,6 +365,10 @@ func (UnimplementedIngredientServiceHandler) CreateMaterial(context.Context, *co
 
 func (UnimplementedIngredientServiceHandler) UpdateMaterial(context.Context, *connect.Request[v1.UpdateMaterialRequest]) (*connect.Response[v1.UpdateMaterialResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.ingredient.v1.IngredientService.UpdateMaterial is not implemented"))
+}
+
+func (UnimplementedIngredientServiceHandler) GetMaterial(context.Context, *connect.Request[v1.GetMaterialRequest]) (*connect.Response[v1.GetMaterialResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.ingredient.v1.IngredientService.GetMaterial is not implemented"))
 }
 
 func (UnimplementedIngredientServiceHandler) ListMaterial(context.Context, *connect.Request[v1.ListMaterialRequest]) (*connect.Response[v1.ListMaterialResponse], error) {

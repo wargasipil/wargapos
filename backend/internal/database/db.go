@@ -6,7 +6,6 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 
 	"wargapos/backend/internal/config"
 )
@@ -37,12 +36,12 @@ func Connect(cfg *config.Config) {
 	}
 
 	var err error
-	DB, err = gorm.Open(postgres.Open(cfg.Database.URL), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Error),
-	})
+	DB, err = gorm.Open(postgres.Open(cfg.Database.URL))
 	if err != nil {
 		log.Fatalf("database: failed to connect: %v", err)
 	}
+
+	DB = DB.Debug()
 
 	sqlDB, err := DB.DB()
 	if err != nil {

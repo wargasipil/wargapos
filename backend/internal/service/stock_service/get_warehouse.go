@@ -25,5 +25,28 @@ func (s *StockService) GetWarehouse(
 		result[warehouses[i].ID] = toProtoWarehouse(&warehouses[i])
 	}
 
+	type warehouseStat struct {
+		WarehouseID         uint32
+		TotalLeftStock      int32
+		TotalStockValuation float64
+	}
+	var stats []warehouseStat
+	s.db.WithContext(ctx).Raw(`
+		SELECT s.warehouse_id,
+		       COALESCE(SUM(s.stock_qty), 0)                    AS total_left_stock,
+		       COALESCE(SUM(cv.unit_cost * cv.left_stock), 0)   AS total_stock_valuation
+		FROM skus s
+		LEFT JOIN cost_versions cv ON cv.sku_id = s.id AND cv.left_stock > 0
+		WHERE s.warehouse_id IN ? AND s.deleted = false
+		GROUP BY s.warehouse_id
+	`, req.Msg.Ids).Scan(&stats)
+
+	for _, st := range stats {
+		if w, ok := result[st.WarehouseID]; ok {
+			w.TotalLeftStock = st.TotalLeftStock
+			w.TotalStockValuation = st.TotalStockValuation
+		}
+	}
+
 	return connect.NewResponse(&stockv1.GetWarehouseResponse{Warehouses: result}), nil
 }

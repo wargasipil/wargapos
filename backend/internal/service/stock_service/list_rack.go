@@ -43,9 +43,42 @@ func (s *StockService) ListRack(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
+	// collect rack IDs for stats query
+	rackIDs := make([]uint32, len(racks))
+	for i, r := range racks {
+		rackIDs[i] = r.ID
+	}
+
+	type rackStats struct {
+		RackID         uint32
+		StockCount     int32
+		StockValuation float64
+	}
+	statsMap := make(map[uint32]rackStats)
+	if len(rackIDs) > 0 {
+		var stats []rackStats
+		s.db.WithContext(ctx).Raw(`
+			SELECT rp.rack_id,
+			       COALESCE(SUM(rp.left_stock), 0)               AS stock_count,
+			       COALESCE(SUM(cv.unit_cost * cv.left_stock), 0) AS stock_valuation
+			FROM rack_placements rp
+			LEFT JOIN cost_versions cv ON cv.sku_id = rp.sku_id AND cv.left_stock > 0
+			WHERE rp.rack_id IN ?
+			GROUP BY rp.rack_id
+		`, rackIDs).Scan(&stats)
+		for _, st := range stats {
+			statsMap[st.RackID] = st
+		}
+	}
+
 	proto := make([]*stockv1.Rack, len(racks))
 	for i := range racks {
-		proto[i] = toProtoRack(&racks[i])
+		p := toProtoRack(&racks[i])
+		if st, ok := statsMap[racks[i].ID]; ok {
+			p.StockCount     = st.StockCount
+			p.StockValuation = st.StockValuation
+		}
+		proto[i] = p
 	}
 
 	return connect.NewResponse(&stockv1.ListRackResponse{

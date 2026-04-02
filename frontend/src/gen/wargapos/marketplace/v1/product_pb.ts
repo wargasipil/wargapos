@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/marketplace/v1/product.proto.
  */
 export const file_wargapos_marketplace_v1_product: GenFile = /*@__PURE__*/
-  fileDesc("CiV3YXJnYXBvcy9tYXJrZXRwbGFjZS92MS9wcm9kdWN0LnByb3RvEhd3YXJnYXBvcy5tYXJrZXRwbGFjZS52MSJKCg5XYXJlaG91c2VTdG9jaxIUCgx3YXJlaG91c2VfaWQYASABKA0SDgoGc2t1X2lkGAIgASgNEhIKCmxlZnRfc3RvY2sYAyABKAUitAIKEk1hcmtldHBsYWNlUHJvZHVjdBIKCgJpZBgBIAEoBBIMCgRuYW1lGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhMKC3ByaWNlX2NlbnRzGAQgASgDEhEKCWltYWdlX3VybBgFIAEoCRIRCglpc19hY3RpdmUYBiABKAgSEgoKbGVmdF9zdG9jaxgJIAEoBRJACg93YXJlaG91c2Vfc3RvY2sYCiADKAsyJy53YXJnYXBvcy5tYXJrZXRwbGFjZS52MS5XYXJlaG91c2VTdG9jaxIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEI8Wjp3YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9tYXJrZXRwbGFjZS92MTttYXJrZXRwbGFjZXYxYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("CiV3YXJnYXBvcy9tYXJrZXRwbGFjZS92MS9wcm9kdWN0LnByb3RvEhd3YXJnYXBvcy5tYXJrZXRwbGFjZS52MSJjCg5XYXJlaG91c2VTdG9jaxIUCgx3YXJlaG91c2VfaWQYASABKA0SDgoGc2t1X2lkGAIgASgNEhIKCmxlZnRfc3RvY2sYAyABKAUSFwoPc3RvY2tfdmFsdWF0aW9uGAQgASgBIs0CChJNYXJrZXRwbGFjZVByb2R1Y3QSCgoCaWQYASABKAQSDAoEbmFtZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRITCgtwcmljZV9jZW50cxgEIAEoAxIRCglpbWFnZV91cmwYBSABKAkSEQoJaXNfYWN0aXZlGAYgASgIEhIKCmxlZnRfc3RvY2sYCSABKAUSFwoPc3RvY2tfdmFsdWF0aW9uGAsgASgBEkAKD3dhcmVob3VzZV9zdG9jaxgKIAMoCzInLndhcmdhcG9zLm1hcmtldHBsYWNlLnYxLldhcmVob3VzZVN0b2NrEi4KCmNyZWF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQjxaOndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL21hcmtldHBsYWNlL3YxO21hcmtldHBsYWNldjFiBnByb3RvMw", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message wargapos.marketplace.v1.WarehouseStock
@@ -32,6 +32,11 @@ export type WarehouseStock = Message<"wargapos.marketplace.v1.WarehouseStock"> &
    * @generated from field: int32 left_stock = 3;
    */
   leftStock: number;
+
+  /**
+   * @generated from field: double stock_valuation = 4;
+   */
+  stockValuation: number;
 };
 
 /**
@@ -79,6 +84,11 @@ export type MarketplaceProduct = Message<"wargapos.marketplace.v1.MarketplacePro
    * @generated from field: int32 left_stock = 9;
    */
   leftStock: number;
+
+  /**
+   * @generated from field: double stock_valuation = 11;
+   */
+  stockValuation: number;
 
   /**
    * @generated from field: repeated wargapos.marketplace.v1.WarehouseStock warehouse_stock = 10;

@@ -24,6 +24,7 @@ import { PrintPage } from './routes/print'
 import { WarehousesPage } from './routes/stock/index'
 import { SkusPage } from './routes/stock/skus/index'
 import { SkuDetail } from './routes/stock/skus/Detail'
+import { WarehouseDetailPage } from './routes/stock/warehouses/Detail'
 import { TransactionsPage } from './routes/stock/transactions'
 import { TransactionDetailPage } from './routes/stock/transactions/Detail'
 import { IngredientsPage } from './routes/cafe/ingredients/index'
@@ -207,6 +208,16 @@ const transactionRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/stock/transactions',
   component: TransactionsPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (!canViewStock(role)) throw redirect({ to: '/' })
+  },
+})
+
+const warehouseDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock/warehouses/$id',
+  component: WarehouseDetailPage,
   beforeLoad: () => {
     const { role } = useAuthStore.getState()
     if (!canViewStock(role)) throw redirect({ to: '/' })
@@ -397,6 +408,7 @@ const routeTree = rootRoute.addChildren([
     settingsRoute,
     usersRoute,
     stockRoute,
+    warehouseDetailRoute,
     skuRoute,
     skuDetailRoute,
     transactionRoute,

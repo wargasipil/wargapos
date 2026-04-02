@@ -1,0 +1,9 @@
+-- +goose Up
+ALTER TABLE warehouses
+  ADD COLUMN IF NOT EXISTS address TEXT NOT NULL DEFAULT '',
+  ADD COLUMN IF NOT EXISTS contact VARCHAR(200) NOT NULL DEFAULT '';
+
+-- +goose Down
+ALTER TABLE warehouses
+  DROP COLUMN IF EXISTS address,
+  DROP COLUMN IF EXISTS contact;

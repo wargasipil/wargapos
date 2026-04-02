@@ -4,7 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
-import type { StockLog } from "./stock_pb";
+import type { CostVersion, StockLog } from "./stock_pb";
 import { file_wargapos_stock_v1_stock } from "./stock_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -12,16 +12,38 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/event.proto.
  */
 export const file_wargapos_stock_v1_event: GenFile = /*@__PURE__*/
-  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9ldmVudC5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEiPwoNU3RvY2tMb2dFdmVudBIuCglzdG9ja19sb2cYASADKAsyGy53YXJnYXBvcy5zdG9jay52MS5TdG9ja0xvZyJHCgpTdG9ja0V2ZW50EjAKBGxvZ3MYASABKAsyIC53YXJnYXBvcy5zdG9jay52MS5TdG9ja0xvZ0V2ZW50SABCBwoFZXZlbnRCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_wargapos_stock_v1_stock]);
+  fileDesc("Ch13YXJnYXBvcy9zdG9jay92MS9ldmVudC5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEiYgoITG9nRXZlbnQSKAoDbG9nGAEgASgLMhsud2FyZ2Fwb3Muc3RvY2sudjEuU3RvY2tMb2cSLAoEY29zdBgCIAEoCzIeLndhcmdhcG9zLnN0b2NrLnYxLkNvc3RWZXJzaW9uIj8KDVN0b2NrTG9nRXZlbnQSLgoJc3RvY2tfbG9nGAEgAygLMhsud2FyZ2Fwb3Muc3RvY2sudjEuTG9nRXZlbnQiRwoKU3RvY2tFdmVudBIwCgRsb2dzGAEgASgLMiAud2FyZ2Fwb3Muc3RvY2sudjEuU3RvY2tMb2dFdmVudEgAQgcKBWV2ZW50QjBaLndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3N0b2NrL3YxO3N0b2NrdjFiBnByb3RvMw", [file_wargapos_stock_v1_stock]);
+
+/**
+ * @generated from message wargapos.stock.v1.LogEvent
+ */
+export type LogEvent = Message<"wargapos.stock.v1.LogEvent"> & {
+  /**
+   * @generated from field: wargapos.stock.v1.StockLog log = 1;
+   */
+  log?: StockLog;
+
+  /**
+   * @generated from field: wargapos.stock.v1.CostVersion cost = 2;
+   */
+  cost?: CostVersion;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.LogEvent.
+ * Use `create(LogEventSchema)` to create a new message.
+ */
+export const LogEventSchema: GenMessage<LogEvent> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_event, 0);
 
 /**
  * @generated from message wargapos.stock.v1.StockLogEvent
  */
 export type StockLogEvent = Message<"wargapos.stock.v1.StockLogEvent"> & {
   /**
-   * @generated from field: repeated wargapos.stock.v1.StockLog stock_log = 1;
+   * @generated from field: repeated wargapos.stock.v1.LogEvent stock_log = 1;
    */
-  stockLog: StockLog[];
+  stockLog: LogEvent[];
 };
 
 /**
@@ -29,7 +51,7 @@ export type StockLogEvent = Message<"wargapos.stock.v1.StockLogEvent"> & {
  * Use `create(StockLogEventSchema)` to create a new message.
  */
 export const StockLogEventSchema: GenMessage<StockLogEvent> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_event, 0);
+  messageDesc(file_wargapos_stock_v1_event, 1);
 
 /**
  * @generated from message wargapos.stock.v1.StockEvent
@@ -52,5 +74,5 @@ export type StockEvent = Message<"wargapos.stock.v1.StockEvent"> & {
  * Use `create(StockEventSchema)` to create a new message.
  */
 export const StockEventSchema: GenMessage<StockEvent> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_event, 1);
+  messageDesc(file_wargapos_stock_v1_event, 2);
 

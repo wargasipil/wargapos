@@ -3,7 +3,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Box, Button, Field, Flex, Heading, HStack, Input, Spinner, Text, VStack, Dialog,
 } from '@chakra-ui/react'
-import { Warehouse, Plus, Pencil, Trash2 } from 'lucide-react'
+import { Warehouse, Plus, Pencil, Trash2, Eye } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 import { stockClient } from '../../client'
 import { toaster } from '../../components/ui/toaster'
 import { stripError } from '../../lib/errors'
@@ -15,6 +16,8 @@ export function WarehousesPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editTarget, setEditTarget] = useState<WarehouseType | null>(null)
   const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
+  const [contact, setContact] = useState('')
   const [deleteTarget, setDeleteTarget] = useState<WarehouseType | null>(null)
   const [search, setSearch] = useState('')
 
@@ -24,7 +27,7 @@ export function WarehousesPage() {
   })
 
   const createMutation = useMutation({
-    mutationFn: () => stockClient.createWarehouse({ name }),
+    mutationFn: () => stockClient.createWarehouse({ name, address, contact }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['warehouses'] })
       closeDialog()
@@ -34,7 +37,7 @@ export function WarehousesPage() {
   })
 
   const updateMutation = useMutation({
-    mutationFn: () => stockClient.updateWarehouse({ id: editTarget!.id, name }),
+    mutationFn: () => stockClient.updateWarehouse({ id: editTarget!.id, name, address, contact }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['warehouses'] })
       closeDialog()
@@ -53,9 +56,9 @@ export function WarehousesPage() {
     onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
 
-  function openCreate() { setEditTarget(null); setName(''); setDialogOpen(true) }
-  function openEdit(w: WarehouseType) { setEditTarget(w); setName(w.name); setDialogOpen(true) }
-  function closeDialog() { setDialogOpen(false); setEditTarget(null); setName('') }
+  function openCreate() { setEditTarget(null); setName(''); setAddress(''); setContact(''); setDialogOpen(true) }
+  function openEdit(w: WarehouseType) { setEditTarget(w); setName(w.name); setAddress(w.address); setContact(w.contact); setDialogOpen(true) }
+  function closeDialog() { setDialogOpen(false); setEditTarget(null); setName(''); setAddress(''); setContact('') }
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (editTarget) updateMutation.mutate()
@@ -92,8 +95,16 @@ export function WarehousesPage() {
           {warehouses.map((w) => (
             <Box key={w.id} bg="white" borderRadius="lg" p={4} boxShadow="sm">
               <Flex align="center" justify="space-between">
-                <Text fontWeight="semibold">{w.name}</Text>
+                <Box>
+                  <Text fontWeight="semibold">{w.name}</Text>
+                  {w.address && <Text fontSize="xs" color="gray.500" mt={0.5}>{w.address}</Text>}
+                </Box>
                 <HStack gap={2}>
+                  <Button size="xs" variant="outline" colorPalette="gray" asChild>
+                    <Link to="/stock/warehouses/$id" params={{ id: String(w.id) }}>
+                      <Eye size={12} /> Detail
+                    </Link>
+                  </Button>
                   <Button size="xs" variant="outline" onClick={() => openEdit(w)}>
                     <Pencil size={12} /> Rename
                   </Button>
@@ -128,6 +139,22 @@ export function WarehousesPage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     autoFocus
+                  />
+                </Field.Root>
+                <Field.Root>
+                  <Field.Label>Address</Field.Label>
+                  <Input
+                    placeholder="e.g. Jl. Sudirman No. 10, Jakarta"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </Field.Root>
+                <Field.Root>
+                  <Field.Label>Contact</Field.Label>
+                  <Input
+                    placeholder="+62 812-3456-7890"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
                   />
                 </Field.Root>
               </VStack>

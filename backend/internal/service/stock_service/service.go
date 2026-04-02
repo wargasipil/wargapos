@@ -55,6 +55,7 @@ func toProtoSku(s *models.Sku) *stockv1.Sku {
 		ProductId:   s.ProductID,
 		BranchId:    s.BranchID,
 		WarehouseId: s.WarehouseID,
+		ProductType: stockv1.ProductType(s.ProductType),
 		Deleted:     s.Deleted,
 		LeftStock:   int32(s.StockQty),
 		CreatedAt:   timestamppb.New(s.CreatedAt),
@@ -77,6 +78,8 @@ func toProtoWarehouse(w *models.Warehouse) *stockv1.Warehouse {
 	return &stockv1.Warehouse{
 		Id:        w.ID,
 		Name:      w.Name,
+		Address:   w.Address,
+		Contact:   w.Contact,
 		Deleted:   w.Deleted,
 		CreatedAt: timestamppb.New(w.CreatedAt),
 		UpdatedAt: timestamppb.New(w.UpdatedAt),

@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/warehouse.proto.
  */
 export const file_wargapos_stock_v1_warehouse: GenFile = /*@__PURE__*/
-  fileDesc("CiF3YXJnYXBvcy9zdG9jay92MS93YXJlaG91c2UucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxIpYBCglXYXJlaG91c2USCgoCaWQYASABKA0SDAoEbmFtZRgCIAEoCRIuCgpjcmVhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIPCgdkZWxldGVkGAUgASgIIj0KFkNyZWF0ZVdhcmVob3VzZVJlcXVlc3QSGAoEbmFtZRgBIAEoCUIKukgHcgUQARisAjoJirUYBQoDAQIFIkoKF0NyZWF0ZVdhcmVob3VzZVJlc3BvbnNlEi8KCXdhcmVob3VzZRgBIAEoCzIcLndhcmdhcG9zLnN0b2NrLnYxLldhcmVob3VzZSJSChZVcGRhdGVXYXJlaG91c2VSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAEhgKBG5hbWUYAiABKAlCCrpIB3IFEAEYrAI6CYq1GAUKAwECBSJKChdVcGRhdGVXYXJlaG91c2VSZXNwb25zZRIvCgl3YXJlaG91c2UYASABKAsyHC53YXJnYXBvcy5zdG9jay52MS5XYXJlaG91c2UiOAoWRGVsZXRlV2FyZWhvdXNlUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgADoJirUYBQoDAQIFIhkKF0RlbGV0ZVdhcmVob3VzZVJlc3BvbnNlIlQKFExpc3RXYXJlaG91c2VSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCToLirUYBwoFAQIFBgQiWAoVTGlzdFdhcmVob3VzZVJlc3BvbnNlEjAKCndhcmVob3VzZXMYASADKAsyHC53YXJnYXBvcy5zdG9jay52MS5XYXJlaG91c2USDQoFdG90YWwYAiABKAUiOQoTR2V0V2FyZWhvdXNlUmVxdWVzdBIVCgNpZHMYASADKA1CCLpIBZIBAggBOguKtRgHCgUBAgUGBCK0AQoUR2V0V2FyZWhvdXNlUmVzcG9uc2USSwoKd2FyZWhvdXNlcxgBIAMoCzI3LndhcmdhcG9zLnN0b2NrLnYxLkdldFdhcmVob3VzZVJlc3BvbnNlLldhcmVob3VzZXNFbnRyeRpPCg9XYXJlaG91c2VzRW50cnkSCwoDa2V5GAEgASgNEisKBXZhbHVlGAIgASgLMhwud2FyZ2Fwb3Muc3RvY2sudjEuV2FyZWhvdXNlOgI4AUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
+  fileDesc("CiF3YXJnYXBvcy9zdG9jay92MS93YXJlaG91c2UucHJvdG8SEXdhcmdhcG9zLnN0b2NrLnYxIvEBCglXYXJlaG91c2USCgoCaWQYASABKA0SDAoEbmFtZRgCIAEoCRIuCgpjcmVhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIPCgdkZWxldGVkGAUgASgIEhgKEHRvdGFsX2xlZnRfc3RvY2sYBiABKAUSHQoVdG90YWxfc3RvY2tfdmFsdWF0aW9uGAcgASgBEg8KB2FkZHJlc3MYCCABKAkSDwoHY29udGFjdBgJIAEoCSJfChZDcmVhdGVXYXJlaG91c2VSZXF1ZXN0EhgKBG5hbWUYASABKAlCCrpIB3IFEAEYrAISDwoHYWRkcmVzcxgCIAEoCRIPCgdjb250YWN0GAMgASgJOgmKtRgFCgMBAgUiSgoXQ3JlYXRlV2FyZWhvdXNlUmVzcG9uc2USLwoJd2FyZWhvdXNlGAEgASgLMhwud2FyZ2Fwb3Muc3RvY2sudjEuV2FyZWhvdXNlInQKFlVwZGF0ZVdhcmVob3VzZVJlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAASGAoEbmFtZRgCIAEoCUIKukgHcgUQARisAhIPCgdhZGRyZXNzGAMgASgJEg8KB2NvbnRhY3QYBCABKAk6CYq1GAUKAwECBSJKChdVcGRhdGVXYXJlaG91c2VSZXNwb25zZRIvCgl3YXJlaG91c2UYASABKAsyHC53YXJnYXBvcy5zdG9jay52MS5XYXJlaG91c2UiOAoWRGVsZXRlV2FyZWhvdXNlUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgADoJirUYBQoDAQIFIhkKF0RlbGV0ZVdhcmVob3VzZVJlc3BvbnNlIlQKFExpc3RXYXJlaG91c2VSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEg4KBnNlYXJjaBgDIAEoCToLirUYBwoFAQIFBgQiWAoVTGlzdFdhcmVob3VzZVJlc3BvbnNlEjAKCndhcmVob3VzZXMYASADKAsyHC53YXJnYXBvcy5zdG9jay52MS5XYXJlaG91c2USDQoFdG90YWwYAiABKAUiOQoTR2V0V2FyZWhvdXNlUmVxdWVzdBIVCgNpZHMYASADKA1CCLpIBZIBAggBOguKtRgHCgUBAgUGBCK0AQoUR2V0V2FyZWhvdXNlUmVzcG9uc2USSwoKd2FyZWhvdXNlcxgBIAMoCzI3LndhcmdhcG9zLnN0b2NrLnYxLkdldFdhcmVob3VzZVJlc3BvbnNlLldhcmVob3VzZXNFbnRyeRpPCg9XYXJlaG91c2VzRW50cnkSCwoDa2V5GAEgASgNEisKBXZhbHVlGAIgASgLMhwud2FyZ2Fwb3Muc3RvY2sudjEuV2FyZWhvdXNlOgI4AUIwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
 
 /**
  * @generated from message wargapos.stock.v1.Warehouse
@@ -44,6 +44,26 @@ export type Warehouse = Message<"wargapos.stock.v1.Warehouse"> & {
    * @generated from field: bool deleted = 5;
    */
   deleted: boolean;
+
+  /**
+   * @generated from field: int32 total_left_stock = 6;
+   */
+  totalLeftStock: number;
+
+  /**
+   * @generated from field: double total_stock_valuation = 7;
+   */
+  totalStockValuation: number;
+
+  /**
+   * @generated from field: string address = 8;
+   */
+  address: string;
+
+  /**
+   * @generated from field: string contact = 9;
+   */
+  contact: string;
 };
 
 /**
@@ -61,6 +81,16 @@ export type CreateWarehouseRequest = Message<"wargapos.stock.v1.CreateWarehouseR
    * @generated from field: string name = 1;
    */
   name: string;
+
+  /**
+   * @generated from field: string address = 2;
+   */
+  address: string;
+
+  /**
+   * @generated from field: string contact = 3;
+   */
+  contact: string;
 };
 
 /**
@@ -100,6 +130,16 @@ export type UpdateWarehouseRequest = Message<"wargapos.stock.v1.UpdateWarehouseR
    * @generated from field: string name = 2;
    */
   name: string;
+
+  /**
+   * @generated from field: string address = 3;
+   */
+  address: string;
+
+  /**
+   * @generated from field: string contact = 4;
+   */
+  contact: string;
 };
 
 /**
