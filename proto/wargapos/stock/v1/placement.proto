@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package wargapos.stock.v1;
+
+// import "buf/validate/validate.proto";
+// import "google/protobuf/timestamp.proto";
+// import "wargapos/rolebased/v1/role.proto";
+// import "wargapos/stock/v1/stock.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
+
+message Placement {
+  uint32 id = 1;
+  uint32 warehouse_id = 2;
+  uint32 rack_id = 3;
+  uint32 sku_id = 4;
+  int32 left_stock = 5;
+}
+
+message PlacementLog {
+  uint64 id = 1;
+  uint32 sku_id = 2;
+  uint32 from_rack_id = 3;
+  uint32 to_rack_id = 4;
+  uint64 transaction_id = 5;
+  int32 change = 6;
+}
