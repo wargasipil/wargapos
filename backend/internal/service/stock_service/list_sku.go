@@ -37,7 +37,7 @@ func (s *StockService) ListSku(
 	}
 
 	var skus []models.Sku
-	if err := q.Order("id asc").Limit(pageSize).Offset(offset).Find(&skus).Error; err != nil {
+	if err := q.Order("id desc").Limit(pageSize).Offset(offset).Find(&skus).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 

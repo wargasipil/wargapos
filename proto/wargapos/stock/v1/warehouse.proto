@@ -18,6 +18,7 @@ message Warehouse {
   double total_stock_valuation = 7;
   string address               = 8;
   string contact               = 9;
+  int32  total_sku_count       = 10;
 }
 
 message CreateWarehouseRequest {

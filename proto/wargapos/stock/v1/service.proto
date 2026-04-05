@@ -5,6 +5,7 @@ package wargapos.stock.v1;
 import "buf/validate/validate.proto";
 import "wargapos/rolebased/v1/role.proto";
 import "wargapos/stock/v1/log.proto";
+import "wargapos/stock/v1/placement.proto";
 import "wargapos/stock/v1/rack.proto";
 import "wargapos/stock/v1/sku.proto";
 import "wargapos/stock/v1/stock.proto";
@@ -74,6 +75,7 @@ service StockService {
   rpc UpdateRack(UpdateRackRequest) returns (UpdateRackResponse);
   rpc DeleteRack(DeleteRackRequest) returns (DeleteRackResponse);
   rpc ListRack(ListRackRequest) returns (ListRackResponse);
+  rpc GetRack(GetRackRequest) returns (GetRackResponse);
 
   // bagian sku
   rpc CreateSku(CreateSkuRequest) returns (CreateSkuResponse);
@@ -95,6 +97,8 @@ service StockService {
   rpc ListStockMovements(ListStockMovementsRequest) returns (ListStockMovementsResponse);
 
   // bagian placement
-  // rpc TransactionPlacement()
-  // rpc
+  rpc ListRackPlacement(ListRackPlacementRequest) returns (ListRackPlacementResponse);
+  rpc ListPlacementLog(ListPlacementLogRequest) returns (ListPlacementLogResponse);
+  rpc AdjustPlacement(AdjustPlacementRequest) returns (AdjustPlacementResponse);
+  rpc MovePlacement(MovePlacementRequest) returns (MovePlacementResponse);
 }

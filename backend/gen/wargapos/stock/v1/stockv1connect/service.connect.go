@@ -56,6 +56,8 @@ const (
 	StockServiceDeleteRackProcedure = "/wargapos.stock.v1.StockService/DeleteRack"
 	// StockServiceListRackProcedure is the fully-qualified name of the StockService's ListRack RPC.
 	StockServiceListRackProcedure = "/wargapos.stock.v1.StockService/ListRack"
+	// StockServiceGetRackProcedure is the fully-qualified name of the StockService's GetRack RPC.
+	StockServiceGetRackProcedure = "/wargapos.stock.v1.StockService/GetRack"
 	// StockServiceCreateSkuProcedure is the fully-qualified name of the StockService's CreateSku RPC.
 	StockServiceCreateSkuProcedure = "/wargapos.stock.v1.StockService/CreateSku"
 	// StockServiceGetSkuProcedure is the fully-qualified name of the StockService's GetSku RPC.
@@ -93,6 +95,18 @@ const (
 	// StockServiceListStockMovementsProcedure is the fully-qualified name of the StockService's
 	// ListStockMovements RPC.
 	StockServiceListStockMovementsProcedure = "/wargapos.stock.v1.StockService/ListStockMovements"
+	// StockServiceListRackPlacementProcedure is the fully-qualified name of the StockService's
+	// ListRackPlacement RPC.
+	StockServiceListRackPlacementProcedure = "/wargapos.stock.v1.StockService/ListRackPlacement"
+	// StockServiceListPlacementLogProcedure is the fully-qualified name of the StockService's
+	// ListPlacementLog RPC.
+	StockServiceListPlacementLogProcedure = "/wargapos.stock.v1.StockService/ListPlacementLog"
+	// StockServiceAdjustPlacementProcedure is the fully-qualified name of the StockService's
+	// AdjustPlacement RPC.
+	StockServiceAdjustPlacementProcedure = "/wargapos.stock.v1.StockService/AdjustPlacement"
+	// StockServiceMovePlacementProcedure is the fully-qualified name of the StockService's
+	// MovePlacement RPC.
+	StockServiceMovePlacementProcedure = "/wargapos.stock.v1.StockService/MovePlacement"
 )
 
 // StockServiceClient is a client for the wargapos.stock.v1.StockService service.
@@ -108,6 +122,7 @@ type StockServiceClient interface {
 	UpdateRack(context.Context, *connect.Request[v1.UpdateRackRequest]) (*connect.Response[v1.UpdateRackResponse], error)
 	DeleteRack(context.Context, *connect.Request[v1.DeleteRackRequest]) (*connect.Response[v1.DeleteRackResponse], error)
 	ListRack(context.Context, *connect.Request[v1.ListRackRequest]) (*connect.Response[v1.ListRackResponse], error)
+	GetRack(context.Context, *connect.Request[v1.GetRackRequest]) (*connect.Response[v1.GetRackResponse], error)
 	// bagian sku
 	CreateSku(context.Context, *connect.Request[v1.CreateSkuRequest]) (*connect.Response[v1.CreateSkuResponse], error)
 	GetSku(context.Context, *connect.Request[v1.GetSkuRequest]) (*connect.Response[v1.GetSkuResponse], error)
@@ -124,6 +139,11 @@ type StockServiceClient interface {
 	CancelTransaction(context.Context, *connect.Request[v1.CancelTransactionRequest]) (*connect.Response[v1.CancelTransactionResponse], error)
 	AdjustStock(context.Context, *connect.Request[v1.AdjustStockRequest]) (*connect.Response[v1.AdjustStockResponse], error)
 	ListStockMovements(context.Context, *connect.Request[v1.ListStockMovementsRequest]) (*connect.Response[v1.ListStockMovementsResponse], error)
+	// bagian placement
+	ListRackPlacement(context.Context, *connect.Request[v1.ListRackPlacementRequest]) (*connect.Response[v1.ListRackPlacementResponse], error)
+	ListPlacementLog(context.Context, *connect.Request[v1.ListPlacementLogRequest]) (*connect.Response[v1.ListPlacementLogResponse], error)
+	AdjustPlacement(context.Context, *connect.Request[v1.AdjustPlacementRequest]) (*connect.Response[v1.AdjustPlacementResponse], error)
+	MovePlacement(context.Context, *connect.Request[v1.MovePlacementRequest]) (*connect.Response[v1.MovePlacementResponse], error)
 }
 
 // NewStockServiceClient constructs a client for the wargapos.stock.v1.StockService service. By
@@ -189,6 +209,12 @@ func NewStockServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			httpClient,
 			baseURL+StockServiceListRackProcedure,
 			connect.WithSchema(stockServiceMethods.ByName("ListRack")),
+			connect.WithClientOptions(opts...),
+		),
+		getRack: connect.NewClient[v1.GetRackRequest, v1.GetRackResponse](
+			httpClient,
+			baseURL+StockServiceGetRackProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("GetRack")),
 			connect.WithClientOptions(opts...),
 		),
 		createSku: connect.NewClient[v1.CreateSkuRequest, v1.CreateSkuResponse](
@@ -275,6 +301,30 @@ func NewStockServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(stockServiceMethods.ByName("ListStockMovements")),
 			connect.WithClientOptions(opts...),
 		),
+		listRackPlacement: connect.NewClient[v1.ListRackPlacementRequest, v1.ListRackPlacementResponse](
+			httpClient,
+			baseURL+StockServiceListRackPlacementProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("ListRackPlacement")),
+			connect.WithClientOptions(opts...),
+		),
+		listPlacementLog: connect.NewClient[v1.ListPlacementLogRequest, v1.ListPlacementLogResponse](
+			httpClient,
+			baseURL+StockServiceListPlacementLogProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("ListPlacementLog")),
+			connect.WithClientOptions(opts...),
+		),
+		adjustPlacement: connect.NewClient[v1.AdjustPlacementRequest, v1.AdjustPlacementResponse](
+			httpClient,
+			baseURL+StockServiceAdjustPlacementProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("AdjustPlacement")),
+			connect.WithClientOptions(opts...),
+		),
+		movePlacement: connect.NewClient[v1.MovePlacementRequest, v1.MovePlacementResponse](
+			httpClient,
+			baseURL+StockServiceMovePlacementProcedure,
+			connect.WithSchema(stockServiceMethods.ByName("MovePlacement")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -289,6 +339,7 @@ type stockServiceClient struct {
 	updateRack         *connect.Client[v1.UpdateRackRequest, v1.UpdateRackResponse]
 	deleteRack         *connect.Client[v1.DeleteRackRequest, v1.DeleteRackResponse]
 	listRack           *connect.Client[v1.ListRackRequest, v1.ListRackResponse]
+	getRack            *connect.Client[v1.GetRackRequest, v1.GetRackResponse]
 	createSku          *connect.Client[v1.CreateSkuRequest, v1.CreateSkuResponse]
 	getSku             *connect.Client[v1.GetSkuRequest, v1.GetSkuResponse]
 	updateSku          *connect.Client[v1.UpdateSkuRequest, v1.UpdateSkuResponse]
@@ -303,6 +354,10 @@ type stockServiceClient struct {
 	cancelTransaction  *connect.Client[v1.CancelTransactionRequest, v1.CancelTransactionResponse]
 	adjustStock        *connect.Client[v1.AdjustStockRequest, v1.AdjustStockResponse]
 	listStockMovements *connect.Client[v1.ListStockMovementsRequest, v1.ListStockMovementsResponse]
+	listRackPlacement  *connect.Client[v1.ListRackPlacementRequest, v1.ListRackPlacementResponse]
+	listPlacementLog   *connect.Client[v1.ListPlacementLogRequest, v1.ListPlacementLogResponse]
+	adjustPlacement    *connect.Client[v1.AdjustPlacementRequest, v1.AdjustPlacementResponse]
+	movePlacement      *connect.Client[v1.MovePlacementRequest, v1.MovePlacementResponse]
 }
 
 // CreateWarehouse calls wargapos.stock.v1.StockService.CreateWarehouse.
@@ -348,6 +403,11 @@ func (c *stockServiceClient) DeleteRack(ctx context.Context, req *connect.Reques
 // ListRack calls wargapos.stock.v1.StockService.ListRack.
 func (c *stockServiceClient) ListRack(ctx context.Context, req *connect.Request[v1.ListRackRequest]) (*connect.Response[v1.ListRackResponse], error) {
 	return c.listRack.CallUnary(ctx, req)
+}
+
+// GetRack calls wargapos.stock.v1.StockService.GetRack.
+func (c *stockServiceClient) GetRack(ctx context.Context, req *connect.Request[v1.GetRackRequest]) (*connect.Response[v1.GetRackResponse], error) {
+	return c.getRack.CallUnary(ctx, req)
 }
 
 // CreateSku calls wargapos.stock.v1.StockService.CreateSku.
@@ -420,6 +480,26 @@ func (c *stockServiceClient) ListStockMovements(ctx context.Context, req *connec
 	return c.listStockMovements.CallUnary(ctx, req)
 }
 
+// ListRackPlacement calls wargapos.stock.v1.StockService.ListRackPlacement.
+func (c *stockServiceClient) ListRackPlacement(ctx context.Context, req *connect.Request[v1.ListRackPlacementRequest]) (*connect.Response[v1.ListRackPlacementResponse], error) {
+	return c.listRackPlacement.CallUnary(ctx, req)
+}
+
+// ListPlacementLog calls wargapos.stock.v1.StockService.ListPlacementLog.
+func (c *stockServiceClient) ListPlacementLog(ctx context.Context, req *connect.Request[v1.ListPlacementLogRequest]) (*connect.Response[v1.ListPlacementLogResponse], error) {
+	return c.listPlacementLog.CallUnary(ctx, req)
+}
+
+// AdjustPlacement calls wargapos.stock.v1.StockService.AdjustPlacement.
+func (c *stockServiceClient) AdjustPlacement(ctx context.Context, req *connect.Request[v1.AdjustPlacementRequest]) (*connect.Response[v1.AdjustPlacementResponse], error) {
+	return c.adjustPlacement.CallUnary(ctx, req)
+}
+
+// MovePlacement calls wargapos.stock.v1.StockService.MovePlacement.
+func (c *stockServiceClient) MovePlacement(ctx context.Context, req *connect.Request[v1.MovePlacementRequest]) (*connect.Response[v1.MovePlacementResponse], error) {
+	return c.movePlacement.CallUnary(ctx, req)
+}
+
 // StockServiceHandler is an implementation of the wargapos.stock.v1.StockService service.
 type StockServiceHandler interface {
 	// bagian warehouse
@@ -433,6 +513,7 @@ type StockServiceHandler interface {
 	UpdateRack(context.Context, *connect.Request[v1.UpdateRackRequest]) (*connect.Response[v1.UpdateRackResponse], error)
 	DeleteRack(context.Context, *connect.Request[v1.DeleteRackRequest]) (*connect.Response[v1.DeleteRackResponse], error)
 	ListRack(context.Context, *connect.Request[v1.ListRackRequest]) (*connect.Response[v1.ListRackResponse], error)
+	GetRack(context.Context, *connect.Request[v1.GetRackRequest]) (*connect.Response[v1.GetRackResponse], error)
 	// bagian sku
 	CreateSku(context.Context, *connect.Request[v1.CreateSkuRequest]) (*connect.Response[v1.CreateSkuResponse], error)
 	GetSku(context.Context, *connect.Request[v1.GetSkuRequest]) (*connect.Response[v1.GetSkuResponse], error)
@@ -449,6 +530,11 @@ type StockServiceHandler interface {
 	CancelTransaction(context.Context, *connect.Request[v1.CancelTransactionRequest]) (*connect.Response[v1.CancelTransactionResponse], error)
 	AdjustStock(context.Context, *connect.Request[v1.AdjustStockRequest]) (*connect.Response[v1.AdjustStockResponse], error)
 	ListStockMovements(context.Context, *connect.Request[v1.ListStockMovementsRequest]) (*connect.Response[v1.ListStockMovementsResponse], error)
+	// bagian placement
+	ListRackPlacement(context.Context, *connect.Request[v1.ListRackPlacementRequest]) (*connect.Response[v1.ListRackPlacementResponse], error)
+	ListPlacementLog(context.Context, *connect.Request[v1.ListPlacementLogRequest]) (*connect.Response[v1.ListPlacementLogResponse], error)
+	AdjustPlacement(context.Context, *connect.Request[v1.AdjustPlacementRequest]) (*connect.Response[v1.AdjustPlacementResponse], error)
+	MovePlacement(context.Context, *connect.Request[v1.MovePlacementRequest]) (*connect.Response[v1.MovePlacementResponse], error)
 }
 
 // NewStockServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -510,6 +596,12 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 		StockServiceListRackProcedure,
 		svc.ListRack,
 		connect.WithSchema(stockServiceMethods.ByName("ListRack")),
+		connect.WithHandlerOptions(opts...),
+	)
+	stockServiceGetRackHandler := connect.NewUnaryHandler(
+		StockServiceGetRackProcedure,
+		svc.GetRack,
+		connect.WithSchema(stockServiceMethods.ByName("GetRack")),
 		connect.WithHandlerOptions(opts...),
 	)
 	stockServiceCreateSkuHandler := connect.NewUnaryHandler(
@@ -596,6 +688,30 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(stockServiceMethods.ByName("ListStockMovements")),
 		connect.WithHandlerOptions(opts...),
 	)
+	stockServiceListRackPlacementHandler := connect.NewUnaryHandler(
+		StockServiceListRackPlacementProcedure,
+		svc.ListRackPlacement,
+		connect.WithSchema(stockServiceMethods.ByName("ListRackPlacement")),
+		connect.WithHandlerOptions(opts...),
+	)
+	stockServiceListPlacementLogHandler := connect.NewUnaryHandler(
+		StockServiceListPlacementLogProcedure,
+		svc.ListPlacementLog,
+		connect.WithSchema(stockServiceMethods.ByName("ListPlacementLog")),
+		connect.WithHandlerOptions(opts...),
+	)
+	stockServiceAdjustPlacementHandler := connect.NewUnaryHandler(
+		StockServiceAdjustPlacementProcedure,
+		svc.AdjustPlacement,
+		connect.WithSchema(stockServiceMethods.ByName("AdjustPlacement")),
+		connect.WithHandlerOptions(opts...),
+	)
+	stockServiceMovePlacementHandler := connect.NewUnaryHandler(
+		StockServiceMovePlacementProcedure,
+		svc.MovePlacement,
+		connect.WithSchema(stockServiceMethods.ByName("MovePlacement")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/wargapos.stock.v1.StockService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case StockServiceCreateWarehouseProcedure:
@@ -616,6 +732,8 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 			stockServiceDeleteRackHandler.ServeHTTP(w, r)
 		case StockServiceListRackProcedure:
 			stockServiceListRackHandler.ServeHTTP(w, r)
+		case StockServiceGetRackProcedure:
+			stockServiceGetRackHandler.ServeHTTP(w, r)
 		case StockServiceCreateSkuProcedure:
 			stockServiceCreateSkuHandler.ServeHTTP(w, r)
 		case StockServiceGetSkuProcedure:
@@ -644,6 +762,14 @@ func NewStockServiceHandler(svc StockServiceHandler, opts ...connect.HandlerOpti
 			stockServiceAdjustStockHandler.ServeHTTP(w, r)
 		case StockServiceListStockMovementsProcedure:
 			stockServiceListStockMovementsHandler.ServeHTTP(w, r)
+		case StockServiceListRackPlacementProcedure:
+			stockServiceListRackPlacementHandler.ServeHTTP(w, r)
+		case StockServiceListPlacementLogProcedure:
+			stockServiceListPlacementLogHandler.ServeHTTP(w, r)
+		case StockServiceAdjustPlacementProcedure:
+			stockServiceAdjustPlacementHandler.ServeHTTP(w, r)
+		case StockServiceMovePlacementProcedure:
+			stockServiceMovePlacementHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -687,6 +813,10 @@ func (UnimplementedStockServiceHandler) DeleteRack(context.Context, *connect.Req
 
 func (UnimplementedStockServiceHandler) ListRack(context.Context, *connect.Request[v1.ListRackRequest]) (*connect.Response[v1.ListRackResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListRack is not implemented"))
+}
+
+func (UnimplementedStockServiceHandler) GetRack(context.Context, *connect.Request[v1.GetRackRequest]) (*connect.Response[v1.GetRackResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.GetRack is not implemented"))
 }
 
 func (UnimplementedStockServiceHandler) CreateSku(context.Context, *connect.Request[v1.CreateSkuRequest]) (*connect.Response[v1.CreateSkuResponse], error) {
@@ -743,4 +873,20 @@ func (UnimplementedStockServiceHandler) AdjustStock(context.Context, *connect.Re
 
 func (UnimplementedStockServiceHandler) ListStockMovements(context.Context, *connect.Request[v1.ListStockMovementsRequest]) (*connect.Response[v1.ListStockMovementsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListStockMovements is not implemented"))
+}
+
+func (UnimplementedStockServiceHandler) ListRackPlacement(context.Context, *connect.Request[v1.ListRackPlacementRequest]) (*connect.Response[v1.ListRackPlacementResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListRackPlacement is not implemented"))
+}
+
+func (UnimplementedStockServiceHandler) ListPlacementLog(context.Context, *connect.Request[v1.ListPlacementLogRequest]) (*connect.Response[v1.ListPlacementLogResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.ListPlacementLog is not implemented"))
+}
+
+func (UnimplementedStockServiceHandler) AdjustPlacement(context.Context, *connect.Request[v1.AdjustPlacementRequest]) (*connect.Response[v1.AdjustPlacementResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.AdjustPlacement is not implemented"))
+}
+
+func (UnimplementedStockServiceHandler) MovePlacement(context.Context, *connect.Request[v1.MovePlacementRequest]) (*connect.Response[v1.MovePlacementResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("wargapos.stock.v1.StockService.MovePlacement is not implemented"))
 }

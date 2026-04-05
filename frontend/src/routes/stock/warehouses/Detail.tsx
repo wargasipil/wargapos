@@ -151,6 +151,7 @@ export function WarehouseDetailPage() {
           <VStack gap={2} align="stretch">
             {warehouse.address && <DetailRow label="Address" value={warehouse.address} />}
             {warehouse.contact && <DetailRow label="Contact" value={warehouse.contact} />}
+            <DetailRow label="SKU Count" value={String(warehouse.totalSkuCount)} />
             <DetailRow label="Left Stock" value={warehouse.totalLeftStock.toLocaleString('id-ID')} />
             <DetailRow label="Stock Valuation" value={'Rp\u00a0' + Math.round(warehouse.totalStockValuation).toLocaleString('id-ID')} />
             <DetailRow label="Created" value={formatDateTime(warehouse.createdAt as Timestamp | undefined)} />

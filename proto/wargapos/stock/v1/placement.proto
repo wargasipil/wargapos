@@ -2,10 +2,9 @@ syntax = "proto3";
 
 package wargapos.stock.v1;
 
-// import "buf/validate/validate.proto";
-// import "google/protobuf/timestamp.proto";
-// import "wargapos/rolebased/v1/role.proto";
-// import "wargapos/stock/v1/stock.proto";
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "wargapos/rolebased/v1/role.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
@@ -17,11 +16,95 @@ message Placement {
   int32 left_stock = 5;
 }
 
+enum PlacementType {
+  PLACEMENT_TYPE_UNSPECIFIED = 0;
+  PLACEMENT_TYPE_MOVE = 1;
+  PLACEMENT_TYPE_OUT = 2;
+  PLACEMENT_TYPE_IN = 3;
+  PLACEMENT_TYPE_BROKEN = 4;
+  PLACEMENT_TYPE_LOST = 5;
+}
+
 message PlacementLog {
   uint64 id = 1;
   uint32 sku_id = 2;
   uint32 from_rack_id = 3;
   uint32 to_rack_id = 4;
-  uint64 transaction_id = 5;
-  int32 change = 6;
+  PlacementType placement_type = 5;
+  uint64 transaction_id = 6;
+  uint32 actor_id = 7;
+  int32 change = 8;
+  google.protobuf.Timestamp created_at = 9;
+  string sku_code = 10;
+  string from_rack_name = 11;
+  string to_rack_name = 12;
+  string actor_name = 13;
+  string note       = 14;
 }
+
+message ListRackPlacementRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN,
+      ROLE_WAREHOUSE_MEMBER,
+      ROLE_CASHIER
+    ]
+  };
+  uint32 rack_id = 1 [(buf.validate.field).uint32.gt = 0];
+}
+message RackPlacementItem {
+  uint32 sku_id = 1;
+  string sku_code = 2;
+  int32 left_stock = 3;
+  double valuation = 4;
+}
+message ListRackPlacementResponse {
+  repeated RackPlacementItem items = 1;
+}
+
+message ListPlacementLogRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN,
+      ROLE_WAREHOUSE_MEMBER,
+      ROLE_CASHIER
+    ]
+  };
+  uint32 rack_id = 1 [(buf.validate.field).uint32.gt = 0];
+  int32 page = 2;
+  int32 page_size = 3;
+  string date_from = 4;
+  string date_to = 5;
+}
+message ListPlacementLogResponse {
+  repeated PlacementLog logs = 1;
+  int32 total = 2;
+}
+
+message AdjustPlacementRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN]
+  };
+  uint32 rack_id       = 1 [(buf.validate.field).uint32.gt = 0];
+  uint32 sku_id        = 2 [(buf.validate.field).uint32.gt = 0];
+  int32  change        = 3 [(buf.validate.field).int32.not_in = 0];
+  PlacementType placement_type = 4;
+  string note          = 5;
+}
+message AdjustPlacementResponse {}
+
+message MovePlacementRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN]
+  };
+  uint32 from_rack_id = 1 [(buf.validate.field).uint32.gt = 0];
+  uint32 to_rack_id   = 2 [(buf.validate.field).uint32.gt = 0];
+  uint32 sku_id       = 3 [(buf.validate.field).uint32.gt = 0];
+  int32  qty          = 4 [(buf.validate.field).int32.gt = 0];
+  string note         = 5;
+}
+message MovePlacementResponse {}

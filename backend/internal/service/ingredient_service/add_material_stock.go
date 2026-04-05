@@ -75,31 +75,29 @@ func (s *IngredientService) AddMaterialStock(
 			sku = getSku.Msg.Sku
 		}
 
-		var transactionType stockv1.TransactionType
 		if pay.Qty > 0 {
-			transactionType = stockv1.TransactionType_TRANSACTION_TYPE_STOCK_IN
-		}
-
-		if pay.Qty < 0 {
-			transactionType = stockv1.TransactionType_TRANSACTION_TYPE_ADJUSTMENT
-		}
-
-		_, err = s.stockSrv.CreateTransaction(ctx, &connect.Request[stockv1.CreateTransactionRequest]{
-			Msg: &stockv1.CreateTransactionRequest{
-				Note:            pay.Note,
-				TransactionType: transactionType,
-				Items: []*stockv1.TransactionItem{
-					{
-						SkuId:    sku.Id,
-						Quantity: pay.Qty,
-						Total:    float64(pay.Price),
+			// Stock addition: create STOCK_IN transaction (no rack placement for ingredients)
+			_, err = s.stockSrv.CreateTransaction(ctx, &connect.Request[stockv1.CreateTransactionRequest]{
+				Msg: &stockv1.CreateTransactionRequest{
+					Kind: &stockv1.CreateTransactionRequest_StockIn{
+						StockIn: &stockv1.StockInCreate{},
+					},
+					Note: pay.Note,
+					Items: []*stockv1.TransactionItem{
+						{SkuId: sku.Id, Quantity: pay.Qty, Total: float64(pay.Price)},
 					},
 				},
-			},
-		})
-
-		if err != nil {
-			return err
+			})
+			if err != nil {
+				return err
+			}
+		} else if pay.Qty < 0 {
+			// Stock reduction: adjust sku.stock_qty directly (no rack context for ingredients)
+			if err := tx.Model(&models.Sku{}).
+				Where("id = ?", sku.Id).
+				Update("stock_qty", gorm.Expr("stock_qty + ?", pay.Qty)).Error; err != nil {
+				return err
+			}
 		}
 
 		// adjust stock material

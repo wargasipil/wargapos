@@ -30,17 +30,12 @@ func toProtoTransaction(t *models.StockTransaction) *stockv1.Transaction {
 			SkuId:    it.SkuID,
 			Quantity: int32(it.Quantity),
 			Total:    float64(it.Price),
-			RackId: func() uint32 {
-				if it.RackID != nil {
-					return *it.RackID
-				}
-				return 0
-			}(),
 		}
 	}
 	return &stockv1.Transaction{
 		Id:              t.ID,
 		TransactionType: t.TransactionType,
+		PlacementStatus: stockv1.PlacementStatus(t.PlacementStatus),
 		Note:            t.Note,
 		Cancelled:       t.Cancelled,
 		CreatedAt:       timestamppb.New(t.CreatedAt),

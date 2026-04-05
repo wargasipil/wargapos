@@ -15,34 +15,39 @@ import { useAuthStore } from '../../store/auth'
 import { canManageStock } from '../../lib/roles'
 import { TransactionType } from '../../gen/wargapos/stock/v1/transaction_pb'
 import { SkuSelect } from '../../components/shared/SkuSelect'
+import { WarehouseSelect } from '../../components/shared/WarehouseSelect'
+import { RackSelect } from '../../components/shared/RackSelect'
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
 
 const PAGE_SIZE = 20
 
-type ItemRow = { skuId: number; quantity: string; price: string; rackId: string }
-function emptyItem(): ItemRow { return { skuId: 0, quantity: '', price: '', rackId: '' } }
+type ItemRow = { skuId: number; quantity: string; price: string }
+function emptyItem(): ItemRow { return { skuId: 0, quantity: '', price: '' } }
 
 const TYPE_LABELS: Record<number, string> = {
-  [TransactionType.STOCK_IN]:   'Stock In',
-  [TransactionType.STOCK_OUT]:  'Stock Out',
-  [TransactionType.ADJUSTMENT]: 'Adjustment',
-  [TransactionType.ORDER]:      'Order',
+  [TransactionType.STOCK_IN]:        'Stock In',
+  [TransactionType.STOCK_OUT]:       'Stock Out',
+  [TransactionType.PLACE_ADJUSTMENT]:'Placement',
+  [TransactionType.PROBLEM]:         'Problem',
+  [TransactionType.ORDER]:           'Order',
 }
 
 const TYPE_COLORS: Record<number, string> = {
-  [TransactionType.STOCK_IN]:   'green',
-  [TransactionType.STOCK_OUT]:  'red',
-  [TransactionType.ADJUSTMENT]: 'orange',
-  [TransactionType.ORDER]:      'blue',
+  [TransactionType.STOCK_IN]:        'green',
+  [TransactionType.STOCK_OUT]:       'red',
+  [TransactionType.PLACE_ADJUSTMENT]:'blue',
+  [TransactionType.PROBLEM]:         'orange',
+  [TransactionType.ORDER]:           'purple',
 }
 
 const typeOptions = createListCollection({
   items: [
-    { label: 'All Types', value: '0' },
-    { label: 'Stock In',  value: String(TransactionType.STOCK_IN) },
-    { label: 'Stock Out', value: String(TransactionType.STOCK_OUT) },
-    { label: 'Adjustment', value: String(TransactionType.ADJUSTMENT) },
-    { label: 'Order',     value: String(TransactionType.ORDER) },
+    { label: 'All Types',  value: '0' },
+    { label: 'Stock In',   value: String(TransactionType.STOCK_IN) },
+    { label: 'Stock Out',  value: String(TransactionType.STOCK_OUT) },
+    { label: 'Placement',  value: String(TransactionType.PLACE_ADJUSTMENT) },
+    { label: 'Problem',    value: String(TransactionType.PROBLEM) },
+    { label: 'Order',      value: String(TransactionType.ORDER) },
   ],
 })
 
@@ -50,7 +55,6 @@ const createTypeOptions = createListCollection({
   items: [
     { label: 'Stock In',  value: String(TransactionType.STOCK_IN) },
     { label: 'Stock Out', value: String(TransactionType.STOCK_OUT) },
-    { label: 'Adjustment', value: String(TransactionType.ADJUSTMENT) },
     { label: 'Order',     value: String(TransactionType.ORDER) },
   ],
 })
@@ -174,6 +178,8 @@ export function TransactionsPage() {
   const [txType, setTxType]         = useState(String(TransactionType.STOCK_IN))
   const [note, setNote]             = useState('')
   const [items, setItems]           = useState<ItemRow[]>([emptyItem()])
+  const [warehouseId, setWarehouseId] = useState(0)
+  const [rackId, setRackId]           = useState(0)
 
   const isStockIn = Number(txType) === TransactionType.STOCK_IN
 
@@ -181,6 +187,8 @@ export function TransactionsPage() {
     setTxType(String(TransactionType.STOCK_IN))
     setNote('')
     setItems([emptyItem()])
+    setWarehouseId(0)
+    setRackId(0)
   }
 
   function updateItem(index: number, patch: Partial<ItemRow>) {
@@ -212,14 +220,23 @@ export function TransactionsPage() {
         if (!r.quantity || r.quantity === '0') throw new Error('Quantity must not be zero')
         if (isStockIn && (!r.price || r.price === '0')) throw new Error('Price is required for Stock In')
       }
+      if (isStockIn && !rackId) throw new Error('Rack is required for Stock In')
       return stockClient.createTransaction({
-        transactionType: Number(txType) as TransactionType,
+        kind: {
+          case: 'stockIn',
+          value: {
+            placement: items.map((r) => ({
+              rackId,
+              skuId: r.skuId,
+              count: Number(r.quantity || '0'),
+            })),
+          },
+        },
         note,
         items: items.map((r) => ({
           skuId: r.skuId,
           quantity: Number(r.quantity || '0'),
           total:    Number(r.price   || '0'),
-          rackId:   Number(r.rackId) || 0,
         })),
       })
     },
@@ -443,6 +460,30 @@ export function TransactionsPage() {
                     />
                   </Field.Root>
 
+                  {/* Warehouse + Rack (Stock In only) */}
+                  {isStockIn && (
+                    <>
+                      <Field.Root required>
+                        <Field.Label fontSize="sm">Warehouse</Field.Label>
+                        <WarehouseSelect
+                          value={warehouseId}
+                          onChange={(id) => { setWarehouseId(id); setRackId(0) }}
+                          w="100%"
+                        />
+                      </Field.Root>
+
+                      <Field.Root required>
+                        <Field.Label fontSize="sm">Destination Rack</Field.Label>
+                        <RackSelect
+                          value={rackId}
+                          onChange={setRackId}
+                          warehouseId={warehouseId}
+                          w="100%"
+                        />
+                      </Field.Root>
+                    </>
+                  )}
+
                   {/* Items */}
                   <Box>
                     <Text fontSize="sm" fontWeight="medium" mb={2}>Items</Text>
@@ -503,16 +544,6 @@ export function TransactionsPage() {
                                 </Field.Root>
                               )}
 
-                              <Field.Root flex={1}>
-                                <Field.Label fontSize="xs">Rack ID (opt.)</Field.Label>
-                                <Input
-                                  size="sm"
-                                  type="number"
-                                  placeholder="0"
-                                  value={row.rackId}
-                                  onChange={(e) => updateItem(i, { rackId: e.target.value })}
-                                />
-                              </Field.Root>
                             </HStack>
                           </VStack>
                         </Box>

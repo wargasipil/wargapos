@@ -5,6 +5,7 @@ package wargapos.stock.v1;
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 import "wargapos/rolebased/v1/role.proto";
+import "wargapos/stock/v1/placement.proto";
 
 option go_package = "wargapos/backend/gen/wargapos/stock/v1;stockv1";
 
@@ -12,27 +13,116 @@ enum TransactionType {
   TRANSACTION_TYPE_UNSPECIFIED = 0;
   TRANSACTION_TYPE_STOCK_IN = 1;
   TRANSACTION_TYPE_STOCK_OUT = 2;
-  TRANSACTION_TYPE_ADJUSTMENT = 3;
-  TRANSACTION_TYPE_ORDER = 4;
+  TRANSACTION_TYPE_PLACE_ADJUSTMENT = 3;
+  TRANSACTION_TYPE_PROBLEM = 4;
+  TRANSACTION_TYPE_ORDER = 5;
+}
+
+enum PlacementStatus {
+  PLACEMENT_STATUS_UNSPECIFIED = 0;
+  PLACEMENT_STATUS_REVIEW = 1;
+  PLACEMENT_STATUS_SET = 2;
 }
 
 message Transaction {
   uint64 id = 1;
   TransactionType transaction_type = 2;
+  PlacementStatus placement_status = 10;
   google.protobuf.Timestamp created_at = 3;
   string note = 4;
   bool cancelled = 5;
   repeated TransactionItem items = 6;
   double total = 7;
-  int32  product_count = 8;
-  int32  pieces_count  = 9;
+  int32 product_count = 8;
+  int32 pieces_count = 9;
 }
 
 message TransactionItem {
   uint32 sku_id = 1 [(buf.validate.field).uint32.gt = 0];
   int32 quantity = 2 [(buf.validate.field).int32.not_in = 0];
   double total = 3 [(buf.validate.field).double.gt = 0];
-  uint32 rack_id = 4;
+}
+
+message StockInPlacementPayload {
+  uint32 rack_id = 1 [(buf.validate.field).uint32 = {gt: 0}];
+  uint32 sku_id = 2 [(buf.validate.field).uint32 = {gt: 0}];
+  int32 count = 3 [(buf.validate.field).int32 = {
+    gt: 0 // stock-in must be positive
+  }];
+}
+
+message StockInCreate { // TRANSACTION_TYPE_STOCK_IN
+  repeated StockInPlacementPayload placement = 1 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 100
+  }];
+}
+
+message MovePayload {
+  uint32 from_rack_id = 1 [(buf.validate.field).uint32 = {
+    gt: 0 // must be valid source rack
+  }];
+
+  uint32 to_rack_id = 2 [(buf.validate.field).uint32 = {
+    gt: 0 // must be valid destination rack
+  }];
+
+  int32 change = 3 [(buf.validate.field).int32 = {
+    gt: 0 // movement amount must be positive
+  }];
+}
+
+message MoveCreate {
+  repeated MovePayload move = 1 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 100
+  }];
+}
+
+message ProblemPayload {
+  uint32 rack_id = 1 [(buf.validate.field).uint32 = {
+    gt: 0 // must be a valid rack id
+  }];
+
+  int32 count = 2 [(buf.validate.field).int32 = {
+    not_in: [0] /* cannot be zero */
+    // optionally:
+    // gt: 0   // if only positive allowed
+    // lt: 0   // if only negative allowed (e.g. deduction)
+  }];
+
+  PlacementType type = 3 [(buf.validate.field).enum = {
+    defined_only: true // must be valid enum value
+    // optionally exclude UNKNOWN = 0:
+    // not_in: [0]
+  }];
+
+  string reason = 4 [(buf.validate.field).string = {
+    min_len: 3
+    max_len: 255
+    // optional: avoid empty/whitespace-only
+    pattern: ".*\\S.*"
+  }];
+}
+
+message ProblemCreate {
+  repeated ProblemPayload problem = 1 [(buf.validate.field).repeated = {
+    min_items: 1 // at least one problem required
+    max_items: 100 // prevent abuse / payload explosion
+    unique: false // set true if you later define uniqueness rule
+  }];
+}
+
+message OrderCreate {
+  string receipt = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 100
+  }];
+
+  string receipt_file = 2 [(buf.validate.field).string = {
+    min_len: 1
+    pattern: "^(https?://.+|/.*|\\.?\\.?/.*)$"
+  }];
 }
 
 message CreateTransactionRequest {
@@ -43,10 +133,17 @@ message CreateTransactionRequest {
       ROLE_WAREHOUSE_ADMIN
     ]
   };
-  TransactionType transaction_type = 1 [(buf.validate.field).enum.defined_only = true];
-  repeated TransactionItem items = 2 [(buf.validate.field).repeated.min_items = 1];
-  string note = 3;
+
+  oneof kind {
+    StockInCreate stock_in = 1;
+    MoveCreate move = 2;
+    ProblemCreate problem = 3;
+  }
+
+  repeated TransactionItem items = 4 [(buf.validate.field).repeated.min_items = 1];
+  string note = 5;
 }
+
 message CreateTransactionResponse {
   Transaction transaction = 1;
 }
@@ -79,7 +176,7 @@ message ListTransactionRequest {
   TransactionType transaction_type = 3;
   bool cancelled = 4;
   string date_from = 5;
-  string date_to   = 6;
+  string date_to = 6;
 }
 message ListTransactionResponse {
   repeated Transaction transactions = 1;

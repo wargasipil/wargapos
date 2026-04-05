@@ -92,10 +92,33 @@ func (s *MarketplaceService) RestockProduct(
 		return nil
 	})
 
-	// 3. Create STOCK_IN transaction
+	// 3. Get or create the "Preview" rack for this warehouse
+	rackResp, err := s.stockSrv.GetRack(ctx, &connect.Request[stockv1.GetRackRequest]{
+		Msg: &stockv1.GetRackRequest{
+			By: &stockv1.GetRackRequest_Name{
+				Name: &stockv1.GetRackByName{
+					WarehouseId: warehouseID,
+					Name:        "Preview",
+				},
+			},
+			CreateIfNotFound: true,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	rackID := rackResp.Msg.Rack.Id
+
+	// 4. Create STOCK_IN transaction with Preview rack placement
 	_, err = s.stockSrv.CreateTransaction(ctx, &connect.Request[stockv1.CreateTransactionRequest]{
 		Msg: &stockv1.CreateTransactionRequest{
-			TransactionType: stockv1.TransactionType_TRANSACTION_TYPE_STOCK_IN,
+			Kind: &stockv1.CreateTransactionRequest_StockIn{
+				StockIn: &stockv1.StockInCreate{
+					Placement: []*stockv1.StockInPlacementPayload{
+						{RackId: rackID, SkuId: skuID, Count: delta},
+					},
+				},
+			},
 			Items: []*stockv1.TransactionItem{
 				{SkuId: skuID, Quantity: delta, Total: total},
 			},

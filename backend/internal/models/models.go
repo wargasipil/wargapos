@@ -156,6 +156,7 @@ type Sku struct {
 type StockTransaction struct {
 	ID              uint64                  `gorm:"primaryKey;autoIncrement"`
 	TransactionType stockv1.TransactionType `gorm:"column:transaction_type;not null"`
+	PlacementStatus int16                   `gorm:"column:placement_status;not null;default:0"`
 	Note            string                  `gorm:"size:500"`
 	Cancelled       bool                    `gorm:"not null;default:false"`
 	CreatedAt       time.Time
@@ -169,7 +170,6 @@ type StockTransactionItem struct {
 	SkuID         uint32  `gorm:"column:sku_id;not null"`
 	Quantity      int32   `gorm:"not null"`
 	Price         float64 `gorm:"not null;default:0"`
-	RackID        *uint32 `gorm:"column:rack_id"`
 }
 
 type Rack struct {

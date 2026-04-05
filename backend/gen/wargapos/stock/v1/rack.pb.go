@@ -34,6 +34,7 @@ type Rack struct {
 	Name           string                 `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
 	StockCount     int32                  `protobuf:"varint,7,opt,name=stock_count,json=stockCount,proto3" json:"stock_count,omitempty"`
 	StockValuation float64                `protobuf:"fixed64,8,opt,name=stock_valuation,json=stockValuation,proto3" json:"stock_valuation,omitempty"`
+	SkuCount       int32                  `protobuf:"varint,9,opt,name=sku_count,json=skuCount,proto3" json:"sku_count,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -120,6 +121,13 @@ func (x *Rack) GetStockCount() int32 {
 func (x *Rack) GetStockValuation() float64 {
 	if x != nil {
 		return x.StockValuation
+	}
+	return 0
+}
+
+func (x *Rack) GetSkuCount() int32 {
+	if x != nil {
+		return x.SkuCount
 	}
 	return 0
 }
@@ -400,6 +408,7 @@ type ListRackFilter struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	WarehouseId   uint32                 `protobuf:"varint,3,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
 	Search        string                 `protobuf:"bytes,4,opt,name=search,proto3" json:"search,omitempty"`
+	SkuId         uint32                 `protobuf:"varint,5,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -446,6 +455,13 @@ func (x *ListRackFilter) GetSearch() string {
 		return x.Search
 	}
 	return ""
+}
+
+func (x *ListRackFilter) GetSkuId() uint32 {
+	if x != nil {
+		return x.SkuId
+	}
+	return 0
 }
 
 type ListRackRequest struct {
@@ -560,11 +576,197 @@ func (x *ListRackResponse) GetTotal() int32 {
 	return 0
 }
 
+type GetRackByName struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WarehouseId   uint32                 `protobuf:"varint,1,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetRackByName) Reset() {
+	*x = GetRackByName{}
+	mi := &file_wargapos_stock_v1_rack_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRackByName) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRackByName) ProtoMessage() {}
+
+func (x *GetRackByName) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_rack_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRackByName.ProtoReflect.Descriptor instead.
+func (*GetRackByName) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_rack_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetRackByName) GetWarehouseId() uint32 {
+	if x != nil {
+		return x.WarehouseId
+	}
+	return 0
+}
+
+func (x *GetRackByName) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetRackRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to By:
+	//
+	//	*GetRackRequest_Id
+	//	*GetRackRequest_Name
+	By               isGetRackRequest_By `protobuf_oneof:"by"`
+	CreateIfNotFound bool                `protobuf:"varint,3,opt,name=create_if_not_found,json=createIfNotFound,proto3" json:"create_if_not_found,omitempty"` // only applies when using name
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *GetRackRequest) Reset() {
+	*x = GetRackRequest{}
+	mi := &file_wargapos_stock_v1_rack_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRackRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRackRequest) ProtoMessage() {}
+
+func (x *GetRackRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_rack_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRackRequest.ProtoReflect.Descriptor instead.
+func (*GetRackRequest) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_rack_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetRackRequest) GetBy() isGetRackRequest_By {
+	if x != nil {
+		return x.By
+	}
+	return nil
+}
+
+func (x *GetRackRequest) GetId() uint32 {
+	if x != nil {
+		if x, ok := x.By.(*GetRackRequest_Id); ok {
+			return x.Id
+		}
+	}
+	return 0
+}
+
+func (x *GetRackRequest) GetName() *GetRackByName {
+	if x != nil {
+		if x, ok := x.By.(*GetRackRequest_Name); ok {
+			return x.Name
+		}
+	}
+	return nil
+}
+
+func (x *GetRackRequest) GetCreateIfNotFound() bool {
+	if x != nil {
+		return x.CreateIfNotFound
+	}
+	return false
+}
+
+type isGetRackRequest_By interface {
+	isGetRackRequest_By()
+}
+
+type GetRackRequest_Id struct {
+	Id uint32 `protobuf:"varint,1,opt,name=id,proto3,oneof"`
+}
+
+type GetRackRequest_Name struct {
+	Name *GetRackByName `protobuf:"bytes,2,opt,name=name,proto3,oneof"`
+}
+
+func (*GetRackRequest_Id) isGetRackRequest_By() {}
+
+func (*GetRackRequest_Name) isGetRackRequest_By() {}
+
+type GetRackResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Rack          *Rack                  `protobuf:"bytes,1,opt,name=rack,proto3" json:"rack,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetRackResponse) Reset() {
+	*x = GetRackResponse{}
+	mi := &file_wargapos_stock_v1_rack_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRackResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRackResponse) ProtoMessage() {}
+
+func (x *GetRackResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_rack_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRackResponse.ProtoReflect.Descriptor instead.
+func (*GetRackResponse) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_rack_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *GetRackResponse) GetRack() *Rack {
+	if x != nil {
+		return x.Rack
+	}
+	return nil
+}
+
 var File_wargapos_stock_v1_rack_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_rack_proto_rawDesc = "" +
 	"\n" +
-	"\x1cwargapos/stock/v1/rack.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xa7\x02\n" +
+	"\x1cwargapos/stock/v1/rack.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xc4\x02\n" +
 	"\x04Rack\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12!\n" +
 	"\fwarehouse_id\x18\x02 \x01(\rR\vwarehouseId\x129\n" +
@@ -576,7 +778,8 @@ const file_wargapos_stock_v1_rack_proto_rawDesc = "" +
 	"\x04name\x18\x06 \x01(\tR\x04name\x12\x1f\n" +
 	"\vstock_count\x18\a \x01(\x05R\n" +
 	"stockCount\x12'\n" +
-	"\x0fstock_valuation\x18\b \x01(\x01R\x0estockValuation\"j\n" +
+	"\x0fstock_valuation\x18\b \x01(\x01R\x0estockValuation\x12\x1b\n" +
+	"\tsku_count\x18\t \x01(\x05R\bskuCount\"j\n" +
 	"\x11CreateRackRequest\x12*\n" +
 	"\fwarehouse_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\x12\x1e\n" +
 	"\x04name\x18\x02 \x01(\tB\n" +
@@ -594,10 +797,11 @@ const file_wargapos_stock_v1_rack_proto_rawDesc = "" +
 	"\x11DeleteRackRequest\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x02id:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"\x14\n" +
-	"\x12DeleteRackResponse\"K\n" +
+	"\x12DeleteRackResponse\"b\n" +
 	"\x0eListRackFilter\x12!\n" +
 	"\fwarehouse_id\x18\x03 \x01(\rR\vwarehouseId\x12\x16\n" +
-	"\x06search\x18\x04 \x01(\tR\x06search\"\x92\x01\n" +
+	"\x06search\x18\x04 \x01(\tR\x06search\x12\x15\n" +
+	"\x06sku_id\x18\x05 \x01(\rR\x05skuId\"\x92\x01\n" +
 	"\x0fListRackRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12A\n" +
@@ -605,7 +809,18 @@ const file_wargapos_stock_v1_rack_proto_rawDesc = "" +
 	"\x05\x01\x02\x05\x06\x04\"W\n" +
 	"\x10ListRackResponse\x12-\n" +
 	"\x05racks\x18\x01 \x03(\v2\x17.wargapos.stock.v1.RackR\x05racks\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05totalB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
+	"\x05total\x18\x02 \x01(\x05R\x05total\"X\n" +
+	"\rGetRackByName\x12*\n" +
+	"\fwarehouse_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\vwarehouseId\x12\x1b\n" +
+	"\x04name\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\"\x9c\x01\n" +
+	"\x0eGetRackRequest\x12\x10\n" +
+	"\x02id\x18\x01 \x01(\rH\x00R\x02id\x126\n" +
+	"\x04name\x18\x02 \x01(\v2 .wargapos.stock.v1.GetRackByNameH\x00R\x04name\x12-\n" +
+	"\x13create_if_not_found\x18\x03 \x01(\bR\x10createIfNotFound:\v\x8a\xb5\x18\a\n" +
+	"\x05\x01\x02\x05\x06\x04B\x04\n" +
+	"\x02by\">\n" +
+	"\x0fGetRackResponse\x12+\n" +
+	"\x04rack\x18\x01 \x01(\v2\x17.wargapos.stock.v1.RackR\x04rackB0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
 
 var (
 	file_wargapos_stock_v1_rack_proto_rawDescOnce sync.Once
@@ -619,7 +834,7 @@ func file_wargapos_stock_v1_rack_proto_rawDescGZIP() []byte {
 	return file_wargapos_stock_v1_rack_proto_rawDescData
 }
 
-var file_wargapos_stock_v1_rack_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_wargapos_stock_v1_rack_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_wargapos_stock_v1_rack_proto_goTypes = []any{
 	(*Rack)(nil),                  // 0: wargapos.stock.v1.Rack
 	(*CreateRackRequest)(nil),     // 1: wargapos.stock.v1.CreateRackRequest
@@ -631,20 +846,25 @@ var file_wargapos_stock_v1_rack_proto_goTypes = []any{
 	(*ListRackFilter)(nil),        // 7: wargapos.stock.v1.ListRackFilter
 	(*ListRackRequest)(nil),       // 8: wargapos.stock.v1.ListRackRequest
 	(*ListRackResponse)(nil),      // 9: wargapos.stock.v1.ListRackResponse
-	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
+	(*GetRackByName)(nil),         // 10: wargapos.stock.v1.GetRackByName
+	(*GetRackRequest)(nil),        // 11: wargapos.stock.v1.GetRackRequest
+	(*GetRackResponse)(nil),       // 12: wargapos.stock.v1.GetRackResponse
+	(*timestamppb.Timestamp)(nil), // 13: google.protobuf.Timestamp
 }
 var file_wargapos_stock_v1_rack_proto_depIdxs = []int32{
-	10, // 0: wargapos.stock.v1.Rack.created_at:type_name -> google.protobuf.Timestamp
-	10, // 1: wargapos.stock.v1.Rack.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 0: wargapos.stock.v1.Rack.created_at:type_name -> google.protobuf.Timestamp
+	13, // 1: wargapos.stock.v1.Rack.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: wargapos.stock.v1.CreateRackResponse.rack:type_name -> wargapos.stock.v1.Rack
 	0,  // 3: wargapos.stock.v1.UpdateRackResponse.rack:type_name -> wargapos.stock.v1.Rack
 	7,  // 4: wargapos.stock.v1.ListRackRequest.filter:type_name -> wargapos.stock.v1.ListRackFilter
 	0,  // 5: wargapos.stock.v1.ListRackResponse.racks:type_name -> wargapos.stock.v1.Rack
-	6,  // [6:6] is the sub-list for method output_type
-	6,  // [6:6] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	10, // 6: wargapos.stock.v1.GetRackRequest.name:type_name -> wargapos.stock.v1.GetRackByName
+	0,  // 7: wargapos.stock.v1.GetRackResponse.rack:type_name -> wargapos.stock.v1.Rack
+	8,  // [8:8] is the sub-list for method output_type
+	8,  // [8:8] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_rack_proto_init() }
@@ -652,13 +872,17 @@ func file_wargapos_stock_v1_rack_proto_init() {
 	if File_wargapos_stock_v1_rack_proto != nil {
 		return
 	}
+	file_wargapos_stock_v1_rack_proto_msgTypes[11].OneofWrappers = []any{
+		(*GetRackRequest_Id)(nil),
+		(*GetRackRequest_Name)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_rack_proto_rawDesc), len(file_wargapos_stock_v1_rack_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

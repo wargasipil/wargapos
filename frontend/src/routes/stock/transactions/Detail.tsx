@@ -15,17 +15,19 @@ import { TransactionType } from '../../../gen/wargapos/stock/v1/transaction_pb'
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
 
 const TYPE_LABELS: Record<number, string> = {
-  [TransactionType.STOCK_IN]:   'Stock In',
-  [TransactionType.STOCK_OUT]:  'Stock Out',
-  [TransactionType.ADJUSTMENT]: 'Adjustment',
-  [TransactionType.ORDER]:      'Order',
+  [TransactionType.STOCK_IN]:        'Stock In',
+  [TransactionType.STOCK_OUT]:       'Stock Out',
+  [TransactionType.PLACE_ADJUSTMENT]:'Placement',
+  [TransactionType.PROBLEM]:         'Problem',
+  [TransactionType.ORDER]:           'Order',
 }
 
 const TYPE_COLORS: Record<number, string> = {
-  [TransactionType.STOCK_IN]:   'green',
-  [TransactionType.STOCK_OUT]:  'red',
-  [TransactionType.ADJUSTMENT]: 'orange',
-  [TransactionType.ORDER]:      'blue',
+  [TransactionType.STOCK_IN]:        'green',
+  [TransactionType.STOCK_OUT]:       'red',
+  [TransactionType.PLACE_ADJUSTMENT]:'blue',
+  [TransactionType.PROBLEM]:         'orange',
+  [TransactionType.ORDER]:           'purple',
 }
 
 function formatIDR(cents: bigint) {
@@ -114,8 +116,7 @@ export function TransactionDetailPage() {
                 <Box as="tr" borderBottom="2px solid" borderColor="gray.200">
                   <Box as="th" textAlign="left" py={2} pr={4} color="gray.600" fontWeight="medium">SKU</Box>
                   <Box as="th" textAlign="right" py={2} pr={4} color="gray.600" fontWeight="medium">Qty</Box>
-                  <Box as="th" textAlign="right" py={2} pr={4} color="gray.600" fontWeight="medium">Price (IDR)</Box>
-                  <Box as="th" textAlign="right" py={2} color="gray.600" fontWeight="medium">Rack</Box>
+                  <Box as="th" textAlign="right" py={2} color="gray.600" fontWeight="medium">Price (IDR)</Box>
                 </Box>
               </Box>
               <Box as="tbody">
@@ -127,17 +128,14 @@ export function TransactionDetailPage() {
                     <Box as="td" py={2} pr={4} textAlign="right">
                       {Number(item.quantity).toLocaleString('id-ID')}
                     </Box>
-                    <Box as="td" py={2} pr={4} textAlign="right">
+                    <Box as="td" py={2} textAlign="right">
                       {formatIDR(BigInt(Math.round(item.total)))}
-                    </Box>
-                    <Box as="td" py={2} textAlign="right" color="gray.500">
-                      {item.rackId || '—'}
                     </Box>
                   </Box>
                 ))}
                 {detail.items.length === 0 && (
                   <Box as="tr">
-                    <Box as="td" py={4} textAlign="center" color="gray.400" {...{ colSpan: 4 }}>No items</Box>
+                    <Box as="td" py={4} textAlign="center" color="gray.400" {...{ colSpan: 3 }}>No items</Box>
                   </Box>
                 )}
               </Box>

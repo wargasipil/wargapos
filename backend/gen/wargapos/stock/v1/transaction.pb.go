@@ -27,11 +27,12 @@ const (
 type TransactionType int32
 
 const (
-	TransactionType_TRANSACTION_TYPE_UNSPECIFIED TransactionType = 0
-	TransactionType_TRANSACTION_TYPE_STOCK_IN    TransactionType = 1
-	TransactionType_TRANSACTION_TYPE_STOCK_OUT   TransactionType = 2
-	TransactionType_TRANSACTION_TYPE_ADJUSTMENT  TransactionType = 3
-	TransactionType_TRANSACTION_TYPE_ORDER       TransactionType = 4
+	TransactionType_TRANSACTION_TYPE_UNSPECIFIED      TransactionType = 0
+	TransactionType_TRANSACTION_TYPE_STOCK_IN         TransactionType = 1
+	TransactionType_TRANSACTION_TYPE_STOCK_OUT        TransactionType = 2
+	TransactionType_TRANSACTION_TYPE_PLACE_ADJUSTMENT TransactionType = 3
+	TransactionType_TRANSACTION_TYPE_PROBLEM          TransactionType = 4
+	TransactionType_TRANSACTION_TYPE_ORDER            TransactionType = 5
 )
 
 // Enum value maps for TransactionType.
@@ -40,15 +41,17 @@ var (
 		0: "TRANSACTION_TYPE_UNSPECIFIED",
 		1: "TRANSACTION_TYPE_STOCK_IN",
 		2: "TRANSACTION_TYPE_STOCK_OUT",
-		3: "TRANSACTION_TYPE_ADJUSTMENT",
-		4: "TRANSACTION_TYPE_ORDER",
+		3: "TRANSACTION_TYPE_PLACE_ADJUSTMENT",
+		4: "TRANSACTION_TYPE_PROBLEM",
+		5: "TRANSACTION_TYPE_ORDER",
 	}
 	TransactionType_value = map[string]int32{
-		"TRANSACTION_TYPE_UNSPECIFIED": 0,
-		"TRANSACTION_TYPE_STOCK_IN":    1,
-		"TRANSACTION_TYPE_STOCK_OUT":   2,
-		"TRANSACTION_TYPE_ADJUSTMENT":  3,
-		"TRANSACTION_TYPE_ORDER":       4,
+		"TRANSACTION_TYPE_UNSPECIFIED":      0,
+		"TRANSACTION_TYPE_STOCK_IN":         1,
+		"TRANSACTION_TYPE_STOCK_OUT":        2,
+		"TRANSACTION_TYPE_PLACE_ADJUSTMENT": 3,
+		"TRANSACTION_TYPE_PROBLEM":          4,
+		"TRANSACTION_TYPE_ORDER":            5,
 	}
 )
 
@@ -79,10 +82,60 @@ func (TransactionType) EnumDescriptor() ([]byte, []int) {
 	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{0}
 }
 
+type PlacementStatus int32
+
+const (
+	PlacementStatus_PLACEMENT_STATUS_UNSPECIFIED PlacementStatus = 0
+	PlacementStatus_PLACEMENT_STATUS_REVIEW      PlacementStatus = 1
+	PlacementStatus_PLACEMENT_STATUS_SET         PlacementStatus = 2
+)
+
+// Enum value maps for PlacementStatus.
+var (
+	PlacementStatus_name = map[int32]string{
+		0: "PLACEMENT_STATUS_UNSPECIFIED",
+		1: "PLACEMENT_STATUS_REVIEW",
+		2: "PLACEMENT_STATUS_SET",
+	}
+	PlacementStatus_value = map[string]int32{
+		"PLACEMENT_STATUS_UNSPECIFIED": 0,
+		"PLACEMENT_STATUS_REVIEW":      1,
+		"PLACEMENT_STATUS_SET":         2,
+	}
+)
+
+func (x PlacementStatus) Enum() *PlacementStatus {
+	p := new(PlacementStatus)
+	*p = x
+	return p
+}
+
+func (x PlacementStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PlacementStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_wargapos_stock_v1_transaction_proto_enumTypes[1].Descriptor()
+}
+
+func (PlacementStatus) Type() protoreflect.EnumType {
+	return &file_wargapos_stock_v1_transaction_proto_enumTypes[1]
+}
+
+func (x PlacementStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PlacementStatus.Descriptor instead.
+func (PlacementStatus) EnumDescriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{1}
+}
+
 type Transaction struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Id              uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	TransactionType TransactionType        `protobuf:"varint,2,opt,name=transaction_type,json=transactionType,proto3,enum=wargapos.stock.v1.TransactionType" json:"transaction_type,omitempty"`
+	PlacementStatus PlacementStatus        `protobuf:"varint,10,opt,name=placement_status,json=placementStatus,proto3,enum=wargapos.stock.v1.PlacementStatus" json:"placement_status,omitempty"`
 	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	Note            string                 `protobuf:"bytes,4,opt,name=note,proto3" json:"note,omitempty"`
 	Cancelled       bool                   `protobuf:"varint,5,opt,name=cancelled,proto3" json:"cancelled,omitempty"`
@@ -136,6 +189,13 @@ func (x *Transaction) GetTransactionType() TransactionType {
 		return x.TransactionType
 	}
 	return TransactionType_TRANSACTION_TYPE_UNSPECIFIED
+}
+
+func (x *Transaction) GetPlacementStatus() PlacementStatus {
+	if x != nil {
+		return x.PlacementStatus
+	}
+	return PlacementStatus_PLACEMENT_STATUS_UNSPECIFIED
 }
 
 func (x *Transaction) GetCreatedAt() *timestamppb.Timestamp {
@@ -192,7 +252,6 @@ type TransactionItem struct {
 	SkuId         uint32                 `protobuf:"varint,1,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
 	Total         float64                `protobuf:"fixed64,3,opt,name=total,proto3" json:"total,omitempty"`
-	RackId        uint32                 `protobuf:"varint,4,opt,name=rack_id,json=rackId,proto3" json:"rack_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -248,25 +307,395 @@ func (x *TransactionItem) GetTotal() float64 {
 	return 0
 }
 
-func (x *TransactionItem) GetRackId() uint32 {
+type StockInPlacementPayload struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RackId        uint32                 `protobuf:"varint,1,opt,name=rack_id,json=rackId,proto3" json:"rack_id,omitempty"`
+	SkuId         uint32                 `protobuf:"varint,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
+	Count         int32                  `protobuf:"varint,3,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StockInPlacementPayload) Reset() {
+	*x = StockInPlacementPayload{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StockInPlacementPayload) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StockInPlacementPayload) ProtoMessage() {}
+
+func (x *StockInPlacementPayload) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StockInPlacementPayload.ProtoReflect.Descriptor instead.
+func (*StockInPlacementPayload) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *StockInPlacementPayload) GetRackId() uint32 {
 	if x != nil {
 		return x.RackId
 	}
 	return 0
 }
 
+func (x *StockInPlacementPayload) GetSkuId() uint32 {
+	if x != nil {
+		return x.SkuId
+	}
+	return 0
+}
+
+func (x *StockInPlacementPayload) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+type StockInCreate struct {
+	state         protoimpl.MessageState     `protogen:"open.v1"`
+	Placement     []*StockInPlacementPayload `protobuf:"bytes,1,rep,name=placement,proto3" json:"placement,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StockInCreate) Reset() {
+	*x = StockInCreate{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StockInCreate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StockInCreate) ProtoMessage() {}
+
+func (x *StockInCreate) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StockInCreate.ProtoReflect.Descriptor instead.
+func (*StockInCreate) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *StockInCreate) GetPlacement() []*StockInPlacementPayload {
+	if x != nil {
+		return x.Placement
+	}
+	return nil
+}
+
+type MovePayload struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FromRackId    uint32                 `protobuf:"varint,1,opt,name=from_rack_id,json=fromRackId,proto3" json:"from_rack_id,omitempty"`
+	ToRackId      uint32                 `protobuf:"varint,2,opt,name=to_rack_id,json=toRackId,proto3" json:"to_rack_id,omitempty"`
+	Change        int32                  `protobuf:"varint,3,opt,name=change,proto3" json:"change,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MovePayload) Reset() {
+	*x = MovePayload{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MovePayload) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MovePayload) ProtoMessage() {}
+
+func (x *MovePayload) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MovePayload.ProtoReflect.Descriptor instead.
+func (*MovePayload) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *MovePayload) GetFromRackId() uint32 {
+	if x != nil {
+		return x.FromRackId
+	}
+	return 0
+}
+
+func (x *MovePayload) GetToRackId() uint32 {
+	if x != nil {
+		return x.ToRackId
+	}
+	return 0
+}
+
+func (x *MovePayload) GetChange() int32 {
+	if x != nil {
+		return x.Change
+	}
+	return 0
+}
+
+type MoveCreate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Move          []*MovePayload         `protobuf:"bytes,1,rep,name=move,proto3" json:"move,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MoveCreate) Reset() {
+	*x = MoveCreate{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MoveCreate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MoveCreate) ProtoMessage() {}
+
+func (x *MoveCreate) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MoveCreate.ProtoReflect.Descriptor instead.
+func (*MoveCreate) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *MoveCreate) GetMove() []*MovePayload {
+	if x != nil {
+		return x.Move
+	}
+	return nil
+}
+
+type ProblemPayload struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RackId        uint32                 `protobuf:"varint,1,opt,name=rack_id,json=rackId,proto3" json:"rack_id,omitempty"`
+	Count         int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	Type          PlacementType          `protobuf:"varint,3,opt,name=type,proto3,enum=wargapos.stock.v1.PlacementType" json:"type,omitempty"`
+	Reason        string                 `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProblemPayload) Reset() {
+	*x = ProblemPayload{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProblemPayload) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProblemPayload) ProtoMessage() {}
+
+func (x *ProblemPayload) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProblemPayload.ProtoReflect.Descriptor instead.
+func (*ProblemPayload) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ProblemPayload) GetRackId() uint32 {
+	if x != nil {
+		return x.RackId
+	}
+	return 0
+}
+
+func (x *ProblemPayload) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *ProblemPayload) GetType() PlacementType {
+	if x != nil {
+		return x.Type
+	}
+	return PlacementType_PLACEMENT_TYPE_UNSPECIFIED
+}
+
+func (x *ProblemPayload) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+type ProblemCreate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Problem       []*ProblemPayload      `protobuf:"bytes,1,rep,name=problem,proto3" json:"problem,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProblemCreate) Reset() {
+	*x = ProblemCreate{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProblemCreate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProblemCreate) ProtoMessage() {}
+
+func (x *ProblemCreate) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProblemCreate.ProtoReflect.Descriptor instead.
+func (*ProblemCreate) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ProblemCreate) GetProblem() []*ProblemPayload {
+	if x != nil {
+		return x.Problem
+	}
+	return nil
+}
+
+type OrderCreate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Receipt       string                 `protobuf:"bytes,1,opt,name=receipt,proto3" json:"receipt,omitempty"`
+	ReceiptFile   string                 `protobuf:"bytes,2,opt,name=receipt_file,json=receiptFile,proto3" json:"receipt_file,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrderCreate) Reset() {
+	*x = OrderCreate{}
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrderCreate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrderCreate) ProtoMessage() {}
+
+func (x *OrderCreate) ProtoReflect() protoreflect.Message {
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrderCreate.ProtoReflect.Descriptor instead.
+func (*OrderCreate) Descriptor() ([]byte, []int) {
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *OrderCreate) GetReceipt() string {
+	if x != nil {
+		return x.Receipt
+	}
+	return ""
+}
+
+func (x *OrderCreate) GetReceiptFile() string {
+	if x != nil {
+		return x.ReceiptFile
+	}
+	return ""
+}
+
 type CreateTransactionRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	TransactionType TransactionType        `protobuf:"varint,1,opt,name=transaction_type,json=transactionType,proto3,enum=wargapos.stock.v1.TransactionType" json:"transaction_type,omitempty"`
-	Items           []*TransactionItem     `protobuf:"bytes,2,rep,name=items,proto3" json:"items,omitempty"`
-	Note            string                 `protobuf:"bytes,3,opt,name=note,proto3" json:"note,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Kind:
+	//
+	//	*CreateTransactionRequest_StockIn
+	//	*CreateTransactionRequest_Move
+	//	*CreateTransactionRequest_Problem
+	Kind          isCreateTransactionRequest_Kind `protobuf_oneof:"kind"`
+	Items         []*TransactionItem              `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"`
+	Note          string                          `protobuf:"bytes,5,opt,name=note,proto3" json:"note,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateTransactionRequest) Reset() {
 	*x = CreateTransactionRequest{}
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[2]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -278,7 +707,7 @@ func (x *CreateTransactionRequest) String() string {
 func (*CreateTransactionRequest) ProtoMessage() {}
 
 func (x *CreateTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[2]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -291,14 +720,41 @@ func (x *CreateTransactionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTransactionRequest.ProtoReflect.Descriptor instead.
 func (*CreateTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{2}
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *CreateTransactionRequest) GetTransactionType() TransactionType {
+func (x *CreateTransactionRequest) GetKind() isCreateTransactionRequest_Kind {
 	if x != nil {
-		return x.TransactionType
+		return x.Kind
 	}
-	return TransactionType_TRANSACTION_TYPE_UNSPECIFIED
+	return nil
+}
+
+func (x *CreateTransactionRequest) GetStockIn() *StockInCreate {
+	if x != nil {
+		if x, ok := x.Kind.(*CreateTransactionRequest_StockIn); ok {
+			return x.StockIn
+		}
+	}
+	return nil
+}
+
+func (x *CreateTransactionRequest) GetMove() *MoveCreate {
+	if x != nil {
+		if x, ok := x.Kind.(*CreateTransactionRequest_Move); ok {
+			return x.Move
+		}
+	}
+	return nil
+}
+
+func (x *CreateTransactionRequest) GetProblem() *ProblemCreate {
+	if x != nil {
+		if x, ok := x.Kind.(*CreateTransactionRequest_Problem); ok {
+			return x.Problem
+		}
+	}
+	return nil
 }
 
 func (x *CreateTransactionRequest) GetItems() []*TransactionItem {
@@ -315,6 +771,28 @@ func (x *CreateTransactionRequest) GetNote() string {
 	return ""
 }
 
+type isCreateTransactionRequest_Kind interface {
+	isCreateTransactionRequest_Kind()
+}
+
+type CreateTransactionRequest_StockIn struct {
+	StockIn *StockInCreate `protobuf:"bytes,1,opt,name=stock_in,json=stockIn,proto3,oneof"`
+}
+
+type CreateTransactionRequest_Move struct {
+	Move *MoveCreate `protobuf:"bytes,2,opt,name=move,proto3,oneof"`
+}
+
+type CreateTransactionRequest_Problem struct {
+	Problem *ProblemCreate `protobuf:"bytes,3,opt,name=problem,proto3,oneof"`
+}
+
+func (*CreateTransactionRequest_StockIn) isCreateTransactionRequest_Kind() {}
+
+func (*CreateTransactionRequest_Move) isCreateTransactionRequest_Kind() {}
+
+func (*CreateTransactionRequest_Problem) isCreateTransactionRequest_Kind() {}
+
 type CreateTransactionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Transaction   *Transaction           `protobuf:"bytes,1,opt,name=transaction,proto3" json:"transaction,omitempty"`
@@ -324,7 +802,7 @@ type CreateTransactionResponse struct {
 
 func (x *CreateTransactionResponse) Reset() {
 	*x = CreateTransactionResponse{}
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[3]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -336,7 +814,7 @@ func (x *CreateTransactionResponse) String() string {
 func (*CreateTransactionResponse) ProtoMessage() {}
 
 func (x *CreateTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[3]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -349,7 +827,7 @@ func (x *CreateTransactionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTransactionResponse.ProtoReflect.Descriptor instead.
 func (*CreateTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{3}
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CreateTransactionResponse) GetTransaction() *Transaction {
@@ -369,7 +847,7 @@ type CancelTransactionRequest struct {
 
 func (x *CancelTransactionRequest) Reset() {
 	*x = CancelTransactionRequest{}
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[4]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -381,7 +859,7 @@ func (x *CancelTransactionRequest) String() string {
 func (*CancelTransactionRequest) ProtoMessage() {}
 
 func (x *CancelTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[4]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -394,7 +872,7 @@ func (x *CancelTransactionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTransactionRequest.ProtoReflect.Descriptor instead.
 func (*CancelTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{4}
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CancelTransactionRequest) GetTransactionId() uint64 {
@@ -419,7 +897,7 @@ type CancelTransactionResponse struct {
 
 func (x *CancelTransactionResponse) Reset() {
 	*x = CancelTransactionResponse{}
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[5]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +909,7 @@ func (x *CancelTransactionResponse) String() string {
 func (*CancelTransactionResponse) ProtoMessage() {}
 
 func (x *CancelTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[5]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +922,7 @@ func (x *CancelTransactionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTransactionResponse.ProtoReflect.Descriptor instead.
 func (*CancelTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{5}
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{12}
 }
 
 type ListTransactionRequest struct {
@@ -461,7 +939,7 @@ type ListTransactionRequest struct {
 
 func (x *ListTransactionRequest) Reset() {
 	*x = ListTransactionRequest{}
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[6]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -473,7 +951,7 @@ func (x *ListTransactionRequest) String() string {
 func (*ListTransactionRequest) ProtoMessage() {}
 
 func (x *ListTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[6]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -486,7 +964,7 @@ func (x *ListTransactionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTransactionRequest.ProtoReflect.Descriptor instead.
 func (*ListTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{6}
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListTransactionRequest) GetPage() int32 {
@@ -541,7 +1019,7 @@ type ListTransactionResponse struct {
 
 func (x *ListTransactionResponse) Reset() {
 	*x = ListTransactionResponse{}
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[7]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -553,7 +1031,7 @@ func (x *ListTransactionResponse) String() string {
 func (*ListTransactionResponse) ProtoMessage() {}
 
 func (x *ListTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[7]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -566,7 +1044,7 @@ func (x *ListTransactionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTransactionResponse.ProtoReflect.Descriptor instead.
 func (*ListTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{7}
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListTransactionResponse) GetTransactions() []*Transaction {
@@ -592,7 +1070,7 @@ type DetailTransactionRequest struct {
 
 func (x *DetailTransactionRequest) Reset() {
 	*x = DetailTransactionRequest{}
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[8]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -604,7 +1082,7 @@ func (x *DetailTransactionRequest) String() string {
 func (*DetailTransactionRequest) ProtoMessage() {}
 
 func (x *DetailTransactionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[8]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -617,7 +1095,7 @@ func (x *DetailTransactionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DetailTransactionRequest.ProtoReflect.Descriptor instead.
 func (*DetailTransactionRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{8}
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *DetailTransactionRequest) GetId() uint64 {
@@ -636,7 +1114,7 @@ type DetailTransactionResponse struct {
 
 func (x *DetailTransactionResponse) Reset() {
 	*x = DetailTransactionResponse{}
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[9]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -648,7 +1126,7 @@ func (x *DetailTransactionResponse) String() string {
 func (*DetailTransactionResponse) ProtoMessage() {}
 
 func (x *DetailTransactionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[9]
+	mi := &file_wargapos_stock_v1_transaction_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -661,7 +1139,7 @@ func (x *DetailTransactionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DetailTransactionResponse.ProtoReflect.Descriptor instead.
 func (*DetailTransactionResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{9}
+	return file_wargapos_stock_v1_transaction_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DetailTransactionResponse) GetTransaction() *Transaction {
@@ -675,10 +1153,12 @@ var File_wargapos_stock_v1_transaction_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\n" +
-	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xf1\x02\n" +
+	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\x1a!wargapos/stock/v1/placement.proto\"\xc0\x03\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12M\n" +
-	"\x10transaction_type\x18\x02 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x129\n" +
+	"\x10transaction_type\x18\x02 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x12M\n" +
+	"\x10placement_status\x18\n" +
+	" \x01(\x0e2\".wargapos.stock.v1.PlacementStatusR\x0fplacementStatus\x129\n" +
 	"\n" +
 	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x12\n" +
 	"\x04note\x18\x04 \x01(\tR\x04note\x12\x1c\n" +
@@ -686,17 +1166,46 @@ const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\x05items\x18\x06 \x03(\v2\".wargapos.stock.v1.TransactionItemR\x05items\x12\x14\n" +
 	"\x05total\x18\a \x01(\x01R\x05total\x12#\n" +
 	"\rproduct_count\x18\b \x01(\x05R\fproductCount\x12!\n" +
-	"\fpieces_count\x18\t \x01(\x05R\vpiecesCount\"\x95\x01\n" +
+	"\fpieces_count\x18\t \x01(\x05R\vpiecesCount\"|\n" +
 	"\x0fTransactionItem\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12#\n" +
 	"\bquantity\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\bquantity\x12$\n" +
-	"\x05total\x18\x03 \x01(\x01B\x0e\xbaH\v\x12\t!\x00\x00\x00\x00\x00\x00\x00\x00R\x05total\x12\x17\n" +
-	"\arack_id\x18\x04 \x01(\rR\x06rackId\"\xd6\x01\n" +
-	"\x18CreateTransactionRequest\x12W\n" +
-	"\x10transaction_type\x18\x01 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x0ftransactionType\x12B\n" +
-	"\x05items\x18\x02 \x03(\v2\".wargapos.stock.v1.TransactionItemB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items\x12\x12\n" +
-	"\x04note\x18\x03 \x01(\tR\x04note:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"]\n" +
+	"\x05total\x18\x03 \x01(\x01B\x0e\xbaH\v\x12\t!\x00\x00\x00\x00\x00\x00\x00\x00R\x05total\"z\n" +
+	"\x17StockInPlacementPayload\x12 \n" +
+	"\arack_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x06rackId\x12\x1e\n" +
+	"\x06sku_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12\x1d\n" +
+	"\x05count\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\x05count\"e\n" +
+	"\rStockInCreate\x12T\n" +
+	"\tplacement\x18\x01 \x03(\v2*.wargapos.stock.v1.StockInPlacementPayloadB\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x10dR\tplacement\"\x80\x01\n" +
+	"\vMovePayload\x12)\n" +
+	"\ffrom_rack_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\n" +
+	"fromRackId\x12%\n" +
+	"\n" +
+	"to_rack_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\btoRackId\x12\x1f\n" +
+	"\x06change\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\x06change\"L\n" +
+	"\n" +
+	"MoveCreate\x12>\n" +
+	"\x04move\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.MovePayloadB\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x10dR\x04move\"\xbd\x01\n" +
+	"\x0eProblemPayload\x12 \n" +
+	"\arack_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x06rackId\x12\x1d\n" +
+	"\x05count\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\x05count\x12>\n" +
+	"\x04type\x18\x03 \x01(\x0e2 .wargapos.stock.v1.PlacementTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x04type\x12*\n" +
+	"\x06reason\x18\x04 \x01(\tB\x12\xbaH\x0fr\r\x10\x03\x18\xff\x012\x06.*\\S.*R\x06reason\"Z\n" +
+	"\rProblemCreate\x12I\n" +
+	"\aproblem\x18\x01 \x03(\v2!.wargapos.stock.v1.ProblemPayloadB\f\xbaH\t\x92\x01\x06\b\x01\x10d\x18\x00R\aproblem\"}\n" +
+	"\vOrderCreate\x12#\n" +
+	"\areceipt\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18dR\areceipt\x12I\n" +
+	"\freceipt_file\x18\x02 \x01(\tB&\xbaH#r!\x10\x012\x1d^(https?://.+|/.*|\\.?\\.?/.*)$R\vreceiptFile\"\xb7\x02\n" +
+	"\x18CreateTransactionRequest\x12=\n" +
+	"\bstock_in\x18\x01 \x01(\v2 .wargapos.stock.v1.StockInCreateH\x00R\astockIn\x123\n" +
+	"\x04move\x18\x02 \x01(\v2\x1d.wargapos.stock.v1.MoveCreateH\x00R\x04move\x12<\n" +
+	"\aproblem\x18\x03 \x01(\v2 .wargapos.stock.v1.ProblemCreateH\x00R\aproblem\x12B\n" +
+	"\x05items\x18\x04 \x03(\v2\".wargapos.stock.v1.TransactionItemB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items\x12\x12\n" +
+	"\x04note\x18\x05 \x01(\tR\x04note:\t\x8a\xb5\x18\x05\n" +
+	"\x03\x01\x02\x05B\x06\n" +
+	"\x04kind\"]\n" +
 	"\x19CreateTransactionResponse\x12@\n" +
 	"\vtransaction\x18\x01 \x01(\v2\x1e.wargapos.stock.v1.TransactionR\vtransaction\"m\n" +
 	"\x18CancelTransactionRequest\x12.\n" +
@@ -719,13 +1228,18 @@ const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x04B\a\xbaH\x042\x02 \x00R\x02id:\v\x8a\xb5\x18\a\n" +
 	"\x05\x01\x02\x05\x06\x04\"]\n" +
 	"\x19DetailTransactionResponse\x12@\n" +
-	"\vtransaction\x18\x01 \x01(\v2\x1e.wargapos.stock.v1.TransactionR\vtransaction*\xaf\x01\n" +
+	"\vtransaction\x18\x01 \x01(\v2\x1e.wargapos.stock.v1.TransactionR\vtransaction*\xd3\x01\n" +
 	"\x0fTransactionType\x12 \n" +
 	"\x1cTRANSACTION_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19TRANSACTION_TYPE_STOCK_IN\x10\x01\x12\x1e\n" +
-	"\x1aTRANSACTION_TYPE_STOCK_OUT\x10\x02\x12\x1f\n" +
-	"\x1bTRANSACTION_TYPE_ADJUSTMENT\x10\x03\x12\x1a\n" +
-	"\x16TRANSACTION_TYPE_ORDER\x10\x04B0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
+	"\x1aTRANSACTION_TYPE_STOCK_OUT\x10\x02\x12%\n" +
+	"!TRANSACTION_TYPE_PLACE_ADJUSTMENT\x10\x03\x12\x1c\n" +
+	"\x18TRANSACTION_TYPE_PROBLEM\x10\x04\x12\x1a\n" +
+	"\x16TRANSACTION_TYPE_ORDER\x10\x05*j\n" +
+	"\x0fPlacementStatus\x12 \n" +
+	"\x1cPLACEMENT_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17PLACEMENT_STATUS_REVIEW\x10\x01\x12\x18\n" +
+	"\x14PLACEMENT_STATUS_SET\x10\x02B0Z.wargapos/backend/gen/wargapos/stock/v1;stockv1b\x06proto3"
 
 var (
 	file_wargapos_stock_v1_transaction_proto_rawDescOnce sync.Once
@@ -739,37 +1253,53 @@ func file_wargapos_stock_v1_transaction_proto_rawDescGZIP() []byte {
 	return file_wargapos_stock_v1_transaction_proto_rawDescData
 }
 
-var file_wargapos_stock_v1_transaction_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_wargapos_stock_v1_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_wargapos_stock_v1_transaction_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_wargapos_stock_v1_transaction_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_wargapos_stock_v1_transaction_proto_goTypes = []any{
 	(TransactionType)(0),              // 0: wargapos.stock.v1.TransactionType
-	(*Transaction)(nil),               // 1: wargapos.stock.v1.Transaction
-	(*TransactionItem)(nil),           // 2: wargapos.stock.v1.TransactionItem
-	(*CreateTransactionRequest)(nil),  // 3: wargapos.stock.v1.CreateTransactionRequest
-	(*CreateTransactionResponse)(nil), // 4: wargapos.stock.v1.CreateTransactionResponse
-	(*CancelTransactionRequest)(nil),  // 5: wargapos.stock.v1.CancelTransactionRequest
-	(*CancelTransactionResponse)(nil), // 6: wargapos.stock.v1.CancelTransactionResponse
-	(*ListTransactionRequest)(nil),    // 7: wargapos.stock.v1.ListTransactionRequest
-	(*ListTransactionResponse)(nil),   // 8: wargapos.stock.v1.ListTransactionResponse
-	(*DetailTransactionRequest)(nil),  // 9: wargapos.stock.v1.DetailTransactionRequest
-	(*DetailTransactionResponse)(nil), // 10: wargapos.stock.v1.DetailTransactionResponse
-	(*timestamppb.Timestamp)(nil),     // 11: google.protobuf.Timestamp
+	(PlacementStatus)(0),              // 1: wargapos.stock.v1.PlacementStatus
+	(*Transaction)(nil),               // 2: wargapos.stock.v1.Transaction
+	(*TransactionItem)(nil),           // 3: wargapos.stock.v1.TransactionItem
+	(*StockInPlacementPayload)(nil),   // 4: wargapos.stock.v1.StockInPlacementPayload
+	(*StockInCreate)(nil),             // 5: wargapos.stock.v1.StockInCreate
+	(*MovePayload)(nil),               // 6: wargapos.stock.v1.MovePayload
+	(*MoveCreate)(nil),                // 7: wargapos.stock.v1.MoveCreate
+	(*ProblemPayload)(nil),            // 8: wargapos.stock.v1.ProblemPayload
+	(*ProblemCreate)(nil),             // 9: wargapos.stock.v1.ProblemCreate
+	(*OrderCreate)(nil),               // 10: wargapos.stock.v1.OrderCreate
+	(*CreateTransactionRequest)(nil),  // 11: wargapos.stock.v1.CreateTransactionRequest
+	(*CreateTransactionResponse)(nil), // 12: wargapos.stock.v1.CreateTransactionResponse
+	(*CancelTransactionRequest)(nil),  // 13: wargapos.stock.v1.CancelTransactionRequest
+	(*CancelTransactionResponse)(nil), // 14: wargapos.stock.v1.CancelTransactionResponse
+	(*ListTransactionRequest)(nil),    // 15: wargapos.stock.v1.ListTransactionRequest
+	(*ListTransactionResponse)(nil),   // 16: wargapos.stock.v1.ListTransactionResponse
+	(*DetailTransactionRequest)(nil),  // 17: wargapos.stock.v1.DetailTransactionRequest
+	(*DetailTransactionResponse)(nil), // 18: wargapos.stock.v1.DetailTransactionResponse
+	(*timestamppb.Timestamp)(nil),     // 19: google.protobuf.Timestamp
+	(PlacementType)(0),                // 20: wargapos.stock.v1.PlacementType
 }
 var file_wargapos_stock_v1_transaction_proto_depIdxs = []int32{
 	0,  // 0: wargapos.stock.v1.Transaction.transaction_type:type_name -> wargapos.stock.v1.TransactionType
-	11, // 1: wargapos.stock.v1.Transaction.created_at:type_name -> google.protobuf.Timestamp
-	2,  // 2: wargapos.stock.v1.Transaction.items:type_name -> wargapos.stock.v1.TransactionItem
-	0,  // 3: wargapos.stock.v1.CreateTransactionRequest.transaction_type:type_name -> wargapos.stock.v1.TransactionType
-	2,  // 4: wargapos.stock.v1.CreateTransactionRequest.items:type_name -> wargapos.stock.v1.TransactionItem
-	1,  // 5: wargapos.stock.v1.CreateTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
-	0,  // 6: wargapos.stock.v1.ListTransactionRequest.transaction_type:type_name -> wargapos.stock.v1.TransactionType
-	1,  // 7: wargapos.stock.v1.ListTransactionResponse.transactions:type_name -> wargapos.stock.v1.Transaction
-	1,  // 8: wargapos.stock.v1.DetailTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	1,  // 1: wargapos.stock.v1.Transaction.placement_status:type_name -> wargapos.stock.v1.PlacementStatus
+	19, // 2: wargapos.stock.v1.Transaction.created_at:type_name -> google.protobuf.Timestamp
+	3,  // 3: wargapos.stock.v1.Transaction.items:type_name -> wargapos.stock.v1.TransactionItem
+	4,  // 4: wargapos.stock.v1.StockInCreate.placement:type_name -> wargapos.stock.v1.StockInPlacementPayload
+	6,  // 5: wargapos.stock.v1.MoveCreate.move:type_name -> wargapos.stock.v1.MovePayload
+	20, // 6: wargapos.stock.v1.ProblemPayload.type:type_name -> wargapos.stock.v1.PlacementType
+	8,  // 7: wargapos.stock.v1.ProblemCreate.problem:type_name -> wargapos.stock.v1.ProblemPayload
+	5,  // 8: wargapos.stock.v1.CreateTransactionRequest.stock_in:type_name -> wargapos.stock.v1.StockInCreate
+	7,  // 9: wargapos.stock.v1.CreateTransactionRequest.move:type_name -> wargapos.stock.v1.MoveCreate
+	9,  // 10: wargapos.stock.v1.CreateTransactionRequest.problem:type_name -> wargapos.stock.v1.ProblemCreate
+	3,  // 11: wargapos.stock.v1.CreateTransactionRequest.items:type_name -> wargapos.stock.v1.TransactionItem
+	2,  // 12: wargapos.stock.v1.CreateTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
+	0,  // 13: wargapos.stock.v1.ListTransactionRequest.transaction_type:type_name -> wargapos.stock.v1.TransactionType
+	2,  // 14: wargapos.stock.v1.ListTransactionResponse.transactions:type_name -> wargapos.stock.v1.Transaction
+	2,  // 15: wargapos.stock.v1.DetailTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_transaction_proto_init() }
@@ -777,13 +1307,19 @@ func file_wargapos_stock_v1_transaction_proto_init() {
 	if File_wargapos_stock_v1_transaction_proto != nil {
 		return
 	}
+	file_wargapos_stock_v1_placement_proto_init()
+	file_wargapos_stock_v1_transaction_proto_msgTypes[9].OneofWrappers = []any{
+		(*CreateTransactionRequest_StockIn)(nil),
+		(*CreateTransactionRequest_Move)(nil),
+		(*CreateTransactionRequest_Problem)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_stock_v1_transaction_proto_rawDesc), len(file_wargapos_stock_v1_transaction_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   10,
+			NumEnums:      2,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

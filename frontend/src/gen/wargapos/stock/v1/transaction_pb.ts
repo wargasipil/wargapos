@@ -8,13 +8,15 @@ import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import { file_wargapos_rolebased_v1_role } from "../../rolebased/v1/role_pb";
+import type { PlacementType } from "./placement_pb";
+import { file_wargapos_stock_v1_placement } from "./placement_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file wargapos/stock/v1/transaction.proto.
  */
 export const file_wargapos_stock_v1_transaction: GenFile = /*@__PURE__*/
-  fileDesc("CiN3YXJnYXBvcy9zdG9jay92MS90cmFuc2FjdGlvbi5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEilwIKC1RyYW5zYWN0aW9uEgoKAmlkGAEgASgEEjwKEHRyYW5zYWN0aW9uX3R5cGUYAiABKA4yIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvblR5cGUSLgoKY3JlYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEbm90ZRgEIAEoCRIRCgljYW5jZWxsZWQYBSABKAgSMQoFaXRlbXMYBiADKAsyIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbkl0ZW0SDQoFdG90YWwYByABKAESFQoNcHJvZHVjdF9jb3VudBgIIAEoBRIUCgxwaWVjZXNfY291bnQYCSABKAUidQoPVHJhbnNhY3Rpb25JdGVtEhcKBnNrdV9pZBgBIAEoDUIHukgEKgIgABIZCghxdWFudGl0eRgCIAEoBUIHukgEGgI4ABIdCgV0b3RhbBgDIAEoAUIOukgLEgkhAAAAAAAAAAASDwoHcmFja19pZBgEIAEoDSK4AQoYQ3JlYXRlVHJhbnNhY3Rpb25SZXF1ZXN0EkYKEHRyYW5zYWN0aW9uX3R5cGUYASABKA4yIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvblR5cGVCCLpIBYIBAhABEjsKBWl0ZW1zGAIgAygLMiIud2FyZ2Fwb3Muc3RvY2sudjEuVHJhbnNhY3Rpb25JdGVtQgi6SAWSAQIIARIMCgRub3RlGAMgASgJOgmKtRgFCgMBAgUiUAoZQ3JlYXRlVHJhbnNhY3Rpb25SZXNwb25zZRIzCgt0cmFuc2FjdGlvbhgBIAEoCzIeLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uIlYKGENhbmNlbFRyYW5zYWN0aW9uUmVxdWVzdBIfCg50cmFuc2FjdGlvbl9pZBgBIAEoBEIHukgEMgIgABIOCgZyZWFzb24YAiABKAk6CYq1GAUKAwECBSIbChlDYW5jZWxUcmFuc2FjdGlvblJlc3BvbnNlIrsBChZMaXN0VHJhbnNhY3Rpb25SZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEjwKEHRyYW5zYWN0aW9uX3R5cGUYAyABKA4yIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvblR5cGUSEQoJY2FuY2VsbGVkGAQgASgIEhEKCWRhdGVfZnJvbRgFIAEoCRIPCgdkYXRlX3RvGAYgASgJOguKtRgHCgUBAgUGBCJeChdMaXN0VHJhbnNhY3Rpb25SZXNwb25zZRI0Cgx0cmFuc2FjdGlvbnMYASADKAsyHi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbhINCgV0b3RhbBgCIAEoBSI8ChhEZXRhaWxUcmFuc2FjdGlvblJlcXVlc3QSEwoCaWQYASABKARCB7pIBDICIAA6C4q1GAcKBQECBQYEIlAKGURldGFpbFRyYW5zYWN0aW9uUmVzcG9uc2USMwoLdHJhbnNhY3Rpb24YASABKAsyHi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbiqvAQoPVHJhbnNhY3Rpb25UeXBlEiAKHFRSQU5TQUNUSU9OX1RZUEVfVU5TUEVDSUZJRUQQABIdChlUUkFOU0FDVElPTl9UWVBFX1NUT0NLX0lOEAESHgoaVFJBTlNBQ1RJT05fVFlQRV9TVE9DS19PVVQQAhIfChtUUkFOU0FDVElPTl9UWVBFX0FESlVTVE1FTlQQAxIaChZUUkFOU0FDVElPTl9UWVBFX09SREVSEARCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
+  fileDesc("CiN3YXJnYXBvcy9zdG9jay92MS90cmFuc2FjdGlvbi5wcm90bxIRd2FyZ2Fwb3Muc3RvY2sudjEi1QIKC1RyYW5zYWN0aW9uEgoKAmlkGAEgASgEEjwKEHRyYW5zYWN0aW9uX3R5cGUYAiABKA4yIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvblR5cGUSPAoQcGxhY2VtZW50X3N0YXR1cxgKIAEoDjIiLndhcmdhcG9zLnN0b2NrLnYxLlBsYWNlbWVudFN0YXR1cxIuCgpjcmVhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIMCgRub3RlGAQgASgJEhEKCWNhbmNlbGxlZBgFIAEoCBIxCgVpdGVtcxgGIAMoCzIiLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uSXRlbRINCgV0b3RhbBgHIAEoARIVCg1wcm9kdWN0X2NvdW50GAggASgFEhQKDHBpZWNlc19jb3VudBgJIAEoBSJkCg9UcmFuc2FjdGlvbkl0ZW0SFwoGc2t1X2lkGAEgASgNQge6SAQqAiAAEhkKCHF1YW50aXR5GAIgASgFQge6SAQaAjgAEh0KBXRvdGFsGAMgASgBQg66SAsSCSEAAAAAAAAAACJkChdTdG9ja0luUGxhY2VtZW50UGF5bG9hZBIYCgdyYWNrX2lkGAEgASgNQge6SAQqAiAAEhcKBnNrdV9pZBgCIAEoDUIHukgEKgIgABIWCgVjb3VudBgDIAEoBUIHukgEGgIgACJaCg1TdG9ja0luQ3JlYXRlEkkKCXBsYWNlbWVudBgBIAMoCzIqLndhcmdhcG9zLnN0b2NrLnYxLlN0b2NrSW5QbGFjZW1lbnRQYXlsb2FkQgq6SAeSAQQIARBkImIKC01vdmVQYXlsb2FkEh0KDGZyb21fcmFja19pZBgBIAEoDUIHukgEKgIgABIbCgp0b19yYWNrX2lkGAIgASgNQge6SAQqAiAAEhcKBmNoYW5nZRgDIAEoBUIHukgEGgIgACJGCgpNb3ZlQ3JlYXRlEjgKBG1vdmUYASADKAsyHi53YXJnYXBvcy5zdG9jay52MS5Nb3ZlUGF5bG9hZEIKukgHkgEECAEQZCKgAQoOUHJvYmxlbVBheWxvYWQSGAoHcmFja19pZBgBIAEoDUIHukgEKgIgABIWCgVjb3VudBgCIAEoBUIHukgEGgI4ABI4CgR0eXBlGAMgASgOMiAud2FyZ2Fwb3Muc3RvY2sudjEuUGxhY2VtZW50VHlwZUIIukgFggECEAESIgoGcmVhc29uGAQgASgJQhK6SA9yDRADGP8BMgYuKlxTLioiUQoNUHJvYmxlbUNyZWF0ZRJACgdwcm9ibGVtGAEgAygLMiEud2FyZ2Fwb3Muc3RvY2sudjEuUHJvYmxlbVBheWxvYWRCDLpICZIBBggBEGQYACJnCgtPcmRlckNyZWF0ZRIaCgdyZWNlaXB0GAEgASgJQgm6SAZyBBABGGQSPAoMcmVjZWlwdF9maWxlGAIgASgJQia6SCNyIRABMh1eKGh0dHBzPzovLy4rfC8uKnxcLj9cLj8vLiopJCKSAgoYQ3JlYXRlVHJhbnNhY3Rpb25SZXF1ZXN0EjQKCHN0b2NrX2luGAEgASgLMiAud2FyZ2Fwb3Muc3RvY2sudjEuU3RvY2tJbkNyZWF0ZUgAEi0KBG1vdmUYAiABKAsyHS53YXJnYXBvcy5zdG9jay52MS5Nb3ZlQ3JlYXRlSAASMwoHcHJvYmxlbRgDIAEoCzIgLndhcmdhcG9zLnN0b2NrLnYxLlByb2JsZW1DcmVhdGVIABI7CgVpdGVtcxgEIAMoCzIiLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uSXRlbUIIukgFkgECCAESDAoEbm90ZRgFIAEoCToJirUYBQoDAQIFQgYKBGtpbmQiUAoZQ3JlYXRlVHJhbnNhY3Rpb25SZXNwb25zZRIzCgt0cmFuc2FjdGlvbhgBIAEoCzIeLndhcmdhcG9zLnN0b2NrLnYxLlRyYW5zYWN0aW9uIlYKGENhbmNlbFRyYW5zYWN0aW9uUmVxdWVzdBIfCg50cmFuc2FjdGlvbl9pZBgBIAEoBEIHukgEMgIgABIOCgZyZWFzb24YAiABKAk6CYq1GAUKAwECBSIbChlDYW5jZWxUcmFuc2FjdGlvblJlc3BvbnNlIrsBChZMaXN0VHJhbnNhY3Rpb25SZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEjwKEHRyYW5zYWN0aW9uX3R5cGUYAyABKA4yIi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvblR5cGUSEQoJY2FuY2VsbGVkGAQgASgIEhEKCWRhdGVfZnJvbRgFIAEoCRIPCgdkYXRlX3RvGAYgASgJOguKtRgHCgUBAgUGBCJeChdMaXN0VHJhbnNhY3Rpb25SZXNwb25zZRI0Cgx0cmFuc2FjdGlvbnMYASADKAsyHi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbhINCgV0b3RhbBgCIAEoBSI8ChhEZXRhaWxUcmFuc2FjdGlvblJlcXVlc3QSEwoCaWQYASABKARCB7pIBDICIAA6C4q1GAcKBQECBQYEIlAKGURldGFpbFRyYW5zYWN0aW9uUmVzcG9uc2USMwoLdHJhbnNhY3Rpb24YASABKAsyHi53YXJnYXBvcy5zdG9jay52MS5UcmFuc2FjdGlvbirTAQoPVHJhbnNhY3Rpb25UeXBlEiAKHFRSQU5TQUNUSU9OX1RZUEVfVU5TUEVDSUZJRUQQABIdChlUUkFOU0FDVElPTl9UWVBFX1NUT0NLX0lOEAESHgoaVFJBTlNBQ1RJT05fVFlQRV9TVE9DS19PVVQQAhIlCiFUUkFOU0FDVElPTl9UWVBFX1BMQUNFX0FESlVTVE1FTlQQAxIcChhUUkFOU0FDVElPTl9UWVBFX1BST0JMRU0QBBIaChZUUkFOU0FDVElPTl9UWVBFX09SREVSEAUqagoPUGxhY2VtZW50U3RhdHVzEiAKHFBMQUNFTUVOVF9TVEFUVVNfVU5TUEVDSUZJRUQQABIbChdQTEFDRU1FTlRfU1RBVFVTX1JFVklFVxABEhgKFFBMQUNFTUVOVF9TVEFUVVNfU0VUEAJCMFoud2FyZ2Fwb3MvYmFja2VuZC9nZW4vd2FyZ2Fwb3Mvc3RvY2svdjE7c3RvY2t2MWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role, file_wargapos_stock_v1_placement]);
 
 /**
  * @generated from message wargapos.stock.v1.Transaction
@@ -29,6 +31,11 @@ export type Transaction = Message<"wargapos.stock.v1.Transaction"> & {
    * @generated from field: wargapos.stock.v1.TransactionType transaction_type = 2;
    */
   transactionType: TransactionType;
+
+  /**
+   * @generated from field: wargapos.stock.v1.PlacementStatus placement_status = 10;
+   */
+  placementStatus: PlacementStatus;
 
   /**
    * @generated from field: google.protobuf.Timestamp created_at = 3;
@@ -91,11 +98,6 @@ export type TransactionItem = Message<"wargapos.stock.v1.TransactionItem"> & {
    * @generated from field: double total = 3;
    */
   total: number;
-
-  /**
-   * @generated from field: uint32 rack_id = 4;
-   */
-  rackId: number;
 };
 
 /**
@@ -106,21 +108,200 @@ export const TransactionItemSchema: GenMessage<TransactionItem> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_transaction, 1);
 
 /**
+ * @generated from message wargapos.stock.v1.StockInPlacementPayload
+ */
+export type StockInPlacementPayload = Message<"wargapos.stock.v1.StockInPlacementPayload"> & {
+  /**
+   * @generated from field: uint32 rack_id = 1;
+   */
+  rackId: number;
+
+  /**
+   * @generated from field: uint32 sku_id = 2;
+   */
+  skuId: number;
+
+  /**
+   * @generated from field: int32 count = 3;
+   */
+  count: number;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.StockInPlacementPayload.
+ * Use `create(StockInPlacementPayloadSchema)` to create a new message.
+ */
+export const StockInPlacementPayloadSchema: GenMessage<StockInPlacementPayload> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_transaction, 2);
+
+/**
+ * TRANSACTION_TYPE_STOCK_IN
+ *
+ * @generated from message wargapos.stock.v1.StockInCreate
+ */
+export type StockInCreate = Message<"wargapos.stock.v1.StockInCreate"> & {
+  /**
+   * @generated from field: repeated wargapos.stock.v1.StockInPlacementPayload placement = 1;
+   */
+  placement: StockInPlacementPayload[];
+};
+
+/**
+ * Describes the message wargapos.stock.v1.StockInCreate.
+ * Use `create(StockInCreateSchema)` to create a new message.
+ */
+export const StockInCreateSchema: GenMessage<StockInCreate> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_transaction, 3);
+
+/**
+ * @generated from message wargapos.stock.v1.MovePayload
+ */
+export type MovePayload = Message<"wargapos.stock.v1.MovePayload"> & {
+  /**
+   * @generated from field: uint32 from_rack_id = 1;
+   */
+  fromRackId: number;
+
+  /**
+   * @generated from field: uint32 to_rack_id = 2;
+   */
+  toRackId: number;
+
+  /**
+   * @generated from field: int32 change = 3;
+   */
+  change: number;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.MovePayload.
+ * Use `create(MovePayloadSchema)` to create a new message.
+ */
+export const MovePayloadSchema: GenMessage<MovePayload> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_transaction, 4);
+
+/**
+ * @generated from message wargapos.stock.v1.MoveCreate
+ */
+export type MoveCreate = Message<"wargapos.stock.v1.MoveCreate"> & {
+  /**
+   * @generated from field: repeated wargapos.stock.v1.MovePayload move = 1;
+   */
+  move: MovePayload[];
+};
+
+/**
+ * Describes the message wargapos.stock.v1.MoveCreate.
+ * Use `create(MoveCreateSchema)` to create a new message.
+ */
+export const MoveCreateSchema: GenMessage<MoveCreate> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_transaction, 5);
+
+/**
+ * @generated from message wargapos.stock.v1.ProblemPayload
+ */
+export type ProblemPayload = Message<"wargapos.stock.v1.ProblemPayload"> & {
+  /**
+   * @generated from field: uint32 rack_id = 1;
+   */
+  rackId: number;
+
+  /**
+   * @generated from field: int32 count = 2;
+   */
+  count: number;
+
+  /**
+   * @generated from field: wargapos.stock.v1.PlacementType type = 3;
+   */
+  type: PlacementType;
+
+  /**
+   * @generated from field: string reason = 4;
+   */
+  reason: string;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.ProblemPayload.
+ * Use `create(ProblemPayloadSchema)` to create a new message.
+ */
+export const ProblemPayloadSchema: GenMessage<ProblemPayload> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_transaction, 6);
+
+/**
+ * @generated from message wargapos.stock.v1.ProblemCreate
+ */
+export type ProblemCreate = Message<"wargapos.stock.v1.ProblemCreate"> & {
+  /**
+   * @generated from field: repeated wargapos.stock.v1.ProblemPayload problem = 1;
+   */
+  problem: ProblemPayload[];
+};
+
+/**
+ * Describes the message wargapos.stock.v1.ProblemCreate.
+ * Use `create(ProblemCreateSchema)` to create a new message.
+ */
+export const ProblemCreateSchema: GenMessage<ProblemCreate> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_transaction, 7);
+
+/**
+ * @generated from message wargapos.stock.v1.OrderCreate
+ */
+export type OrderCreate = Message<"wargapos.stock.v1.OrderCreate"> & {
+  /**
+   * @generated from field: string receipt = 1;
+   */
+  receipt: string;
+
+  /**
+   * @generated from field: string receipt_file = 2;
+   */
+  receiptFile: string;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.OrderCreate.
+ * Use `create(OrderCreateSchema)` to create a new message.
+ */
+export const OrderCreateSchema: GenMessage<OrderCreate> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_transaction, 8);
+
+/**
  * @generated from message wargapos.stock.v1.CreateTransactionRequest
  */
 export type CreateTransactionRequest = Message<"wargapos.stock.v1.CreateTransactionRequest"> & {
   /**
-   * @generated from field: wargapos.stock.v1.TransactionType transaction_type = 1;
+   * @generated from oneof wargapos.stock.v1.CreateTransactionRequest.kind
    */
-  transactionType: TransactionType;
+  kind: {
+    /**
+     * @generated from field: wargapos.stock.v1.StockInCreate stock_in = 1;
+     */
+    value: StockInCreate;
+    case: "stockIn";
+  } | {
+    /**
+     * @generated from field: wargapos.stock.v1.MoveCreate move = 2;
+     */
+    value: MoveCreate;
+    case: "move";
+  } | {
+    /**
+     * @generated from field: wargapos.stock.v1.ProblemCreate problem = 3;
+     */
+    value: ProblemCreate;
+    case: "problem";
+  } | { case: undefined; value?: undefined };
 
   /**
-   * @generated from field: repeated wargapos.stock.v1.TransactionItem items = 2;
+   * @generated from field: repeated wargapos.stock.v1.TransactionItem items = 4;
    */
   items: TransactionItem[];
 
   /**
-   * @generated from field: string note = 3;
+   * @generated from field: string note = 5;
    */
   note: string;
 };
@@ -130,7 +311,7 @@ export type CreateTransactionRequest = Message<"wargapos.stock.v1.CreateTransact
  * Use `create(CreateTransactionRequestSchema)` to create a new message.
  */
 export const CreateTransactionRequestSchema: GenMessage<CreateTransactionRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_transaction, 2);
+  messageDesc(file_wargapos_stock_v1_transaction, 9);
 
 /**
  * @generated from message wargapos.stock.v1.CreateTransactionResponse
@@ -147,7 +328,7 @@ export type CreateTransactionResponse = Message<"wargapos.stock.v1.CreateTransac
  * Use `create(CreateTransactionResponseSchema)` to create a new message.
  */
 export const CreateTransactionResponseSchema: GenMessage<CreateTransactionResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_transaction, 3);
+  messageDesc(file_wargapos_stock_v1_transaction, 10);
 
 /**
  * @generated from message wargapos.stock.v1.CancelTransactionRequest
@@ -169,7 +350,7 @@ export type CancelTransactionRequest = Message<"wargapos.stock.v1.CancelTransact
  * Use `create(CancelTransactionRequestSchema)` to create a new message.
  */
 export const CancelTransactionRequestSchema: GenMessage<CancelTransactionRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_transaction, 4);
+  messageDesc(file_wargapos_stock_v1_transaction, 11);
 
 /**
  * @generated from message wargapos.stock.v1.CancelTransactionResponse
@@ -182,7 +363,7 @@ export type CancelTransactionResponse = Message<"wargapos.stock.v1.CancelTransac
  * Use `create(CancelTransactionResponseSchema)` to create a new message.
  */
 export const CancelTransactionResponseSchema: GenMessage<CancelTransactionResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_transaction, 5);
+  messageDesc(file_wargapos_stock_v1_transaction, 12);
 
 /**
  * @generated from message wargapos.stock.v1.ListTransactionRequest
@@ -224,7 +405,7 @@ export type ListTransactionRequest = Message<"wargapos.stock.v1.ListTransactionR
  * Use `create(ListTransactionRequestSchema)` to create a new message.
  */
 export const ListTransactionRequestSchema: GenMessage<ListTransactionRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_transaction, 6);
+  messageDesc(file_wargapos_stock_v1_transaction, 13);
 
 /**
  * @generated from message wargapos.stock.v1.ListTransactionResponse
@@ -246,7 +427,7 @@ export type ListTransactionResponse = Message<"wargapos.stock.v1.ListTransaction
  * Use `create(ListTransactionResponseSchema)` to create a new message.
  */
 export const ListTransactionResponseSchema: GenMessage<ListTransactionResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_transaction, 7);
+  messageDesc(file_wargapos_stock_v1_transaction, 14);
 
 /**
  * @generated from message wargapos.stock.v1.DetailTransactionRequest
@@ -263,7 +444,7 @@ export type DetailTransactionRequest = Message<"wargapos.stock.v1.DetailTransact
  * Use `create(DetailTransactionRequestSchema)` to create a new message.
  */
 export const DetailTransactionRequestSchema: GenMessage<DetailTransactionRequest> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_transaction, 8);
+  messageDesc(file_wargapos_stock_v1_transaction, 15);
 
 /**
  * @generated from message wargapos.stock.v1.DetailTransactionResponse
@@ -280,7 +461,7 @@ export type DetailTransactionResponse = Message<"wargapos.stock.v1.DetailTransac
  * Use `create(DetailTransactionResponseSchema)` to create a new message.
  */
 export const DetailTransactionResponseSchema: GenMessage<DetailTransactionResponse> = /*@__PURE__*/
-  messageDesc(file_wargapos_stock_v1_transaction, 9);
+  messageDesc(file_wargapos_stock_v1_transaction, 16);
 
 /**
  * @generated from enum wargapos.stock.v1.TransactionType
@@ -302,14 +483,19 @@ export enum TransactionType {
   STOCK_OUT = 2,
 
   /**
-   * @generated from enum value: TRANSACTION_TYPE_ADJUSTMENT = 3;
+   * @generated from enum value: TRANSACTION_TYPE_PLACE_ADJUSTMENT = 3;
    */
-  ADJUSTMENT = 3,
+  PLACE_ADJUSTMENT = 3,
 
   /**
-   * @generated from enum value: TRANSACTION_TYPE_ORDER = 4;
+   * @generated from enum value: TRANSACTION_TYPE_PROBLEM = 4;
    */
-  ORDER = 4,
+  PROBLEM = 4,
+
+  /**
+   * @generated from enum value: TRANSACTION_TYPE_ORDER = 5;
+   */
+  ORDER = 5,
 }
 
 /**
@@ -317,4 +503,30 @@ export enum TransactionType {
  */
 export const TransactionTypeSchema: GenEnum<TransactionType> = /*@__PURE__*/
   enumDesc(file_wargapos_stock_v1_transaction, 0);
+
+/**
+ * @generated from enum wargapos.stock.v1.PlacementStatus
+ */
+export enum PlacementStatus {
+  /**
+   * @generated from enum value: PLACEMENT_STATUS_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: PLACEMENT_STATUS_REVIEW = 1;
+   */
+  REVIEW = 1,
+
+  /**
+   * @generated from enum value: PLACEMENT_STATUS_SET = 2;
+   */
+  SET = 2,
+}
+
+/**
+ * Describes the enum wargapos.stock.v1.PlacementStatus.
+ */
+export const PlacementStatusSchema: GenEnum<PlacementStatus> = /*@__PURE__*/
+  enumDesc(file_wargapos_stock_v1_transaction, 1);
 

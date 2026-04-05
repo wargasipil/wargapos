@@ -29,12 +29,14 @@ func (s *StockService) GetWarehouse(
 		WarehouseID         uint32
 		TotalLeftStock      int32
 		TotalStockValuation float64
+		TotalSkuCount       int32
 	}
 	var stats []warehouseStat
 	s.db.WithContext(ctx).Raw(`
 		SELECT s.warehouse_id,
 		       COALESCE(SUM(s.stock_qty), 0)                    AS total_left_stock,
-		       COALESCE(SUM(cv.unit_cost * cv.left_stock), 0)   AS total_stock_valuation
+		       COALESCE(SUM(cv.unit_cost * cv.left_stock), 0)   AS total_stock_valuation,
+		       COUNT(DISTINCT s.id)                             AS total_sku_count
 		FROM skus s
 		LEFT JOIN cost_versions cv ON cv.sku_id = s.id AND cv.left_stock > 0
 		WHERE s.warehouse_id IN ? AND s.deleted = false
@@ -43,8 +45,9 @@ func (s *StockService) GetWarehouse(
 
 	for _, st := range stats {
 		if w, ok := result[st.WarehouseID]; ok {
-			w.TotalLeftStock = st.TotalLeftStock
+			w.TotalLeftStock      = st.TotalLeftStock
 			w.TotalStockValuation = st.TotalStockValuation
+			w.TotalSkuCount       = st.TotalSkuCount
 		}
 	}
 

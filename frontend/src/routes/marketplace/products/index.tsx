@@ -4,7 +4,7 @@ import { Link } from '@tanstack/react-router'
 import {
   Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
-import { Plus, Pencil, Trash2, Search } from 'lucide-react'
+import { Plus, Pencil, Trash2, Search, Eye } from 'lucide-react'
 import { marketplaceClient } from '../../../client'
 import { formatPrice } from '../../../lib/format'
 import { stripError } from '../../../lib/errors'
@@ -95,9 +95,7 @@ export function MarketplaceProductsPage() {
                         {p.imageUrl && (
                           <img src={p.imageUrl} style={{ width: 32, height: 32, objectFit: 'cover', borderRadius: 4 }} />
                         )}
-                        <Link to="/marketplace/products/$id" params={{ id: String(p.id) }}>
-                          <Text fontWeight="medium" color="blue.600" _hover={{ textDecoration: 'underline' }}>{p.name}</Text>
-                        </Link>
+                        <Text fontWeight="medium">{p.name}</Text>
                       </HStack>
                     </Table.Cell>
                     <Table.Cell>{formatPrice(BigInt(p.priceCents))}</Table.Cell>
@@ -116,6 +114,11 @@ export function MarketplaceProductsPage() {
                     </Table.Cell>
                     <Table.Cell>
                       <Flex gap={1} justify="flex-end">
+                        <Button asChild size="xs" variant="ghost" colorPalette="blue">
+                          <Link to="/marketplace/products/$id" params={{ id: String(p.id) }}>
+                            <Eye size={14} /> Detail
+                          </Link>
+                        </Button>
                         <Button asChild size="xs" variant="ghost">
                           <Link to="/marketplace/products/$id/edit" params={{ id: String(p.id) }}>
                             <Pencil size={14} />
@@ -159,6 +162,11 @@ export function MarketplaceProductsPage() {
                 <Text fontSize="xs" color="gray.500">Stock: {p.leftStock.toLocaleString('id-ID')}</Text>
                 <Text fontSize="xs" color="gray.500" mb={3}>Valuation: {p.stockValuation.toLocaleString('id-ID')}</Text>
                 <Flex gap={2}>
+                  <Button asChild size="xs" variant="outline" colorPalette="blue" flex={1}>
+                    <Link to="/marketplace/products/$id" params={{ id: String(p.id) }}>
+                      <Eye size={13} /> Detail
+                    </Link>
+                  </Button>
                   <Button asChild size="xs" variant="outline" flex={1}>
                     <Link to="/marketplace/products/$id/edit" params={{ id: String(p.id) }}>
                       <Pencil size={13} /> Edit

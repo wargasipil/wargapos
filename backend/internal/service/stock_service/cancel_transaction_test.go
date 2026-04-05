@@ -38,7 +38,9 @@ func TestCancelTransaction(t *testing.T) {
 				t.Run("stock in then cancel", func(t *testing.T) {
 					res, err := srv.CreateTransaction(t.Context(), &connect.Request[stockv1.CreateTransactionRequest]{
 						Msg: &stockv1.CreateTransactionRequest{
-							TransactionType: stockv1.TransactionType_TRANSACTION_TYPE_STOCK_IN,
+							Kind: &stockv1.CreateTransactionRequest_StockIn{
+								StockIn: &stockv1.StockInCreate{},
+							},
 							Items: []*stockv1.TransactionItem{
 								{
 									SkuId:    createSku.Msg.Sku.Id,

@@ -27,6 +27,9 @@ import { SkuDetail } from './routes/stock/skus/Detail'
 import { WarehouseDetailPage } from './routes/stock/warehouses/Detail'
 import { TransactionsPage } from './routes/stock/transactions'
 import { TransactionDetailPage } from './routes/stock/transactions/Detail'
+import { PlacementPage } from './routes/stock/placement/index'
+import { RackDetailPage } from './routes/stock/placement/Detail'
+import { RackAdjustPage } from './routes/stock/placement/Adjust'
 import { IngredientsPage } from './routes/cafe/ingredients/index'
 import { ShopListingPage } from './routes/marketplace/shop/index'
 import { ShopListingNewPage } from './routes/marketplace/shop/new'
@@ -236,6 +239,36 @@ const transactionDetailRoute = createRoute({
   component: TransactionDetailPage,
 })
 
+const placementRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock/placement',
+  component: PlacementPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (!canViewStock(role)) throw redirect({ to: '/' })
+  },
+})
+
+const rackDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock/placement/$id',
+  component: RackDetailPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (!canViewStock(role)) throw redirect({ to: '/' })
+  },
+})
+
+const rackAdjustRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/stock/placement/$id/adjust',
+  component: RackAdjustPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (!canViewStock(role)) throw redirect({ to: '/' })
+  },
+})
+
 const ingredientsRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/cafe/ingredients',
@@ -413,6 +446,9 @@ const routeTree = rootRoute.addChildren([
     skuDetailRoute,
     transactionRoute,
     transactionDetailRoute,
+    placementRoute,
+    rackDetailRoute,
+    rackAdjustRoute,
     ingredientsRoute,
     marketplaceShopRoute,
     marketplaceShopNewRoute,

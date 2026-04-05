@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file wargapos/stock/v1/rack.proto.
  */
 export const file_wargapos_stock_v1_rack: GenFile = /*@__PURE__*/
-  fileDesc("Chx3YXJnYXBvcy9zdG9jay92MS9yYWNrLnByb3RvEhF3YXJnYXBvcy5zdG9jay52MSLVAQoEUmFjaxIKCgJpZBgBIAEoDRIUCgx3YXJlaG91c2VfaWQYAiABKA0SLgoKY3JlYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDwoHZGVsZXRlZBgFIAEoCBIMCgRuYW1lGAYgASgJEhMKC3N0b2NrX2NvdW50GAcgASgFEhcKD3N0b2NrX3ZhbHVhdGlvbhgIIAEoASJXChFDcmVhdGVSYWNrUmVxdWVzdBIdCgx3YXJlaG91c2VfaWQYASABKA1CB7pIBCoCIAASGAoEbmFtZRgCIAEoCUIKukgHcgUQARisAjoJirUYBQoDAQIFIjsKEkNyZWF0ZVJhY2tSZXNwb25zZRIlCgRyYWNrGAEgASgLMhcud2FyZ2Fwb3Muc3RvY2sudjEuUmFjayJNChFVcGRhdGVSYWNrUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgABIYCgRuYW1lGAIgASgJQgq6SAdyBRABGKwCOgmKtRgFCgMBAgUiOwoSVXBkYXRlUmFja1Jlc3BvbnNlEiUKBHJhY2sYASABKAsyFy53YXJnYXBvcy5zdG9jay52MS5SYWNrIjMKEURlbGV0ZVJhY2tSZXF1ZXN0EhMKAmlkGAEgASgNQge6SAQqAiAAOgmKtRgFCgMBAgUiFAoSRGVsZXRlUmFja1Jlc3BvbnNlIjYKDkxpc3RSYWNrRmlsdGVyEhQKDHdhcmVob3VzZV9pZBgDIAEoDRIOCgZzZWFyY2gYBCABKAkiegoPTGlzdFJhY2tSZXF1ZXN0EgwKBHBhZ2UYASABKAUSEQoJcGFnZV9zaXplGAIgASgFEjkKBmZpbHRlchgDIAEoCzIhLndhcmdhcG9zLnN0b2NrLnYxLkxpc3RSYWNrRmlsdGVyQga6SAPIAQE6C4q1GAcKBQECBQYEIkkKEExpc3RSYWNrUmVzcG9uc2USJgoFcmFja3MYASADKAsyFy53YXJnYXBvcy5zdG9jay52MS5SYWNrEg0KBXRvdGFsGAIgASgFQjBaLndhcmdhcG9zL2JhY2tlbmQvZ2VuL3dhcmdhcG9zL3N0b2NrL3YxO3N0b2NrdjFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
+  fileDesc("Chx3YXJnYXBvcy9zdG9jay92MS9yYWNrLnByb3RvEhF3YXJnYXBvcy5zdG9jay52MSLoAQoEUmFjaxIKCgJpZBgBIAEoDRIUCgx3YXJlaG91c2VfaWQYAiABKA0SLgoKY3JlYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDwoHZGVsZXRlZBgFIAEoCBIMCgRuYW1lGAYgASgJEhMKC3N0b2NrX2NvdW50GAcgASgFEhcKD3N0b2NrX3ZhbHVhdGlvbhgIIAEoARIRCglza3VfY291bnQYCSABKAUiVwoRQ3JlYXRlUmFja1JlcXVlc3QSHQoMd2FyZWhvdXNlX2lkGAEgASgNQge6SAQqAiAAEhgKBG5hbWUYAiABKAlCCrpIB3IFEAEYrAI6CYq1GAUKAwECBSI7ChJDcmVhdGVSYWNrUmVzcG9uc2USJQoEcmFjaxgBIAEoCzIXLndhcmdhcG9zLnN0b2NrLnYxLlJhY2siTQoRVXBkYXRlUmFja1JlcXVlc3QSEwoCaWQYASABKA1CB7pIBCoCIAASGAoEbmFtZRgCIAEoCUIKukgHcgUQARisAjoJirUYBQoDAQIFIjsKElVwZGF0ZVJhY2tSZXNwb25zZRIlCgRyYWNrGAEgASgLMhcud2FyZ2Fwb3Muc3RvY2sudjEuUmFjayIzChFEZWxldGVSYWNrUmVxdWVzdBITCgJpZBgBIAEoDUIHukgEKgIgADoJirUYBQoDAQIFIhQKEkRlbGV0ZVJhY2tSZXNwb25zZSJGCg5MaXN0UmFja0ZpbHRlchIUCgx3YXJlaG91c2VfaWQYAyABKA0SDgoGc2VhcmNoGAQgASgJEg4KBnNrdV9pZBgFIAEoDSJ6Cg9MaXN0UmFja1JlcXVlc3QSDAoEcGFnZRgBIAEoBRIRCglwYWdlX3NpemUYAiABKAUSOQoGZmlsdGVyGAMgASgLMiEud2FyZ2Fwb3Muc3RvY2sudjEuTGlzdFJhY2tGaWx0ZXJCBrpIA8gBAToLirUYBwoFAQIFBgQiSQoQTGlzdFJhY2tSZXNwb25zZRImCgVyYWNrcxgBIAMoCzIXLndhcmdhcG9zLnN0b2NrLnYxLlJhY2sSDQoFdG90YWwYAiABKAUiRQoNR2V0UmFja0J5TmFtZRIdCgx3YXJlaG91c2VfaWQYASABKA1CB7pIBCoCIAASFQoEbmFtZRgCIAEoCUIHukgEcgIQASKAAQoOR2V0UmFja1JlcXVlc3QSDAoCaWQYASABKA1IABIwCgRuYW1lGAIgASgLMiAud2FyZ2Fwb3Muc3RvY2sudjEuR2V0UmFja0J5TmFtZUgAEhsKE2NyZWF0ZV9pZl9ub3RfZm91bmQYAyABKAg6C4q1GAcKBQECBQYEQgQKAmJ5IjgKD0dldFJhY2tSZXNwb25zZRIlCgRyYWNrGAEgASgLMhcud2FyZ2Fwb3Muc3RvY2sudjEuUmFja0IwWi53YXJnYXBvcy9iYWNrZW5kL2dlbi93YXJnYXBvcy9zdG9jay92MTtzdG9ja3YxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_wargapos_rolebased_v1_role]);
 
 /**
  * @generated from message wargapos.stock.v1.Rack
@@ -59,6 +59,11 @@ export type Rack = Message<"wargapos.stock.v1.Rack"> & {
    * @generated from field: double stock_valuation = 8;
    */
   stockValuation: number;
+
+  /**
+   * @generated from field: int32 sku_count = 9;
+   */
+  skuCount: number;
 };
 
 /**
@@ -189,6 +194,11 @@ export type ListRackFilter = Message<"wargapos.stock.v1.ListRackFilter"> & {
    * @generated from field: string search = 4;
    */
   search: string;
+
+  /**
+   * @generated from field: uint32 sku_id = 5;
+   */
+  skuId: number;
 };
 
 /**
@@ -246,4 +256,79 @@ export type ListRackResponse = Message<"wargapos.stock.v1.ListRackResponse"> & {
  */
 export const ListRackResponseSchema: GenMessage<ListRackResponse> = /*@__PURE__*/
   messageDesc(file_wargapos_stock_v1_rack, 9);
+
+/**
+ * @generated from message wargapos.stock.v1.GetRackByName
+ */
+export type GetRackByName = Message<"wargapos.stock.v1.GetRackByName"> & {
+  /**
+   * @generated from field: uint32 warehouse_id = 1;
+   */
+  warehouseId: number;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.GetRackByName.
+ * Use `create(GetRackByNameSchema)` to create a new message.
+ */
+export const GetRackByNameSchema: GenMessage<GetRackByName> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_rack, 10);
+
+/**
+ * @generated from message wargapos.stock.v1.GetRackRequest
+ */
+export type GetRackRequest = Message<"wargapos.stock.v1.GetRackRequest"> & {
+  /**
+   * @generated from oneof wargapos.stock.v1.GetRackRequest.by
+   */
+  by: {
+    /**
+     * @generated from field: uint32 id = 1;
+     */
+    value: number;
+    case: "id";
+  } | {
+    /**
+     * @generated from field: wargapos.stock.v1.GetRackByName name = 2;
+     */
+    value: GetRackByName;
+    case: "name";
+  } | { case: undefined; value?: undefined };
+
+  /**
+   * only applies when using name
+   *
+   * @generated from field: bool create_if_not_found = 3;
+   */
+  createIfNotFound: boolean;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.GetRackRequest.
+ * Use `create(GetRackRequestSchema)` to create a new message.
+ */
+export const GetRackRequestSchema: GenMessage<GetRackRequest> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_rack, 11);
+
+/**
+ * @generated from message wargapos.stock.v1.GetRackResponse
+ */
+export type GetRackResponse = Message<"wargapos.stock.v1.GetRackResponse"> & {
+  /**
+   * @generated from field: wargapos.stock.v1.Rack rack = 1;
+   */
+  rack?: Rack;
+};
+
+/**
+ * Describes the message wargapos.stock.v1.GetRackResponse.
+ * Use `create(GetRackResponseSchema)` to create a new message.
+ */
+export const GetRackResponseSchema: GenMessage<GetRackResponse> = /*@__PURE__*/
+  messageDesc(file_wargapos_stock_v1_rack, 12);
 

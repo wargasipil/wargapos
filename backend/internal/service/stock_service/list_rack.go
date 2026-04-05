@@ -31,6 +31,9 @@ func (s *StockService) ListRack(
 		if f.Search != "" {
 			q = q.Where("name ILIKE ?", "%"+f.Search+"%")
 		}
+		if f.SkuId > 0 {
+			q = q.Where("id IN (SELECT rack_id FROM rack_placements WHERE sku_id = ? AND left_stock > 0)", f.SkuId)
+		}
 	}
 
 	var total int64
@@ -52,6 +55,7 @@ func (s *StockService) ListRack(
 	type rackStats struct {
 		RackID         uint32
 		StockCount     int32
+		SkuCount       int32
 		StockValuation float64
 	}
 	statsMap := make(map[uint32]rackStats)
@@ -60,6 +64,7 @@ func (s *StockService) ListRack(
 		s.db.WithContext(ctx).Raw(`
 			SELECT rp.rack_id,
 			       COALESCE(SUM(rp.left_stock), 0)               AS stock_count,
+			       COUNT(DISTINCT rp.sku_id)                     AS sku_count,
 			       COALESCE(SUM(cv.unit_cost * cv.left_stock), 0) AS stock_valuation
 			FROM rack_placements rp
 			LEFT JOIN cost_versions cv ON cv.sku_id = rp.sku_id AND cv.left_stock > 0
@@ -76,6 +81,7 @@ func (s *StockService) ListRack(
 		p := toProtoRack(&racks[i])
 		if st, ok := statsMap[racks[i].ID]; ok {
 			p.StockCount     = st.StockCount
+			p.SkuCount       = st.SkuCount
 			p.StockValuation = st.StockValuation
 		}
 		proto[i] = p

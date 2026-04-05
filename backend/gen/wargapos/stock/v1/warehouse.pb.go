@@ -35,6 +35,7 @@ type Warehouse struct {
 	TotalStockValuation float64                `protobuf:"fixed64,7,opt,name=total_stock_valuation,json=totalStockValuation,proto3" json:"total_stock_valuation,omitempty"`
 	Address             string                 `protobuf:"bytes,8,opt,name=address,proto3" json:"address,omitempty"`
 	Contact             string                 `protobuf:"bytes,9,opt,name=contact,proto3" json:"contact,omitempty"`
+	TotalSkuCount       int32                  `protobuf:"varint,10,opt,name=total_sku_count,json=totalSkuCount,proto3" json:"total_sku_count,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -130,6 +131,13 @@ func (x *Warehouse) GetContact() string {
 		return x.Contact
 	}
 	return ""
+}
+
+func (x *Warehouse) GetTotalSkuCount() int32 {
+	if x != nil {
+		return x.TotalSkuCount
+	}
+	return 0
 }
 
 type CreateWarehouseRequest struct {
@@ -632,7 +640,7 @@ var File_wargapos_stock_v1_warehouse_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_warehouse_proto_rawDesc = "" +
 	"\n" +
-	"!wargapos/stock/v1/warehouse.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xd1\x02\n" +
+	"!wargapos/stock/v1/warehouse.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\"\xf9\x02\n" +
 	"\tWarehouse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\rR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x129\n" +
@@ -644,7 +652,9 @@ const file_wargapos_stock_v1_warehouse_proto_rawDesc = "" +
 	"\x10total_left_stock\x18\x06 \x01(\x05R\x0etotalLeftStock\x122\n" +
 	"\x15total_stock_valuation\x18\a \x01(\x01R\x13totalStockValuation\x12\x18\n" +
 	"\aaddress\x18\b \x01(\tR\aaddress\x12\x18\n" +
-	"\acontact\x18\t \x01(\tR\acontact\"w\n" +
+	"\acontact\x18\t \x01(\tR\acontact\x12&\n" +
+	"\x0ftotal_sku_count\x18\n" +
+	" \x01(\x05R\rtotalSkuCount\"w\n" +
 	"\x16CreateWarehouseRequest\x12\x1e\n" +
 	"\x04name\x18\x01 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x01\x18\xac\x02R\x04name\x12\x18\n" +

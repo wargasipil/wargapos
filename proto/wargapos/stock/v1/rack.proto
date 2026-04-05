@@ -14,33 +14,56 @@ message Rack {
   google.protobuf.Timestamp created_at = 3;
   google.protobuf.Timestamp updated_at = 4;
   bool deleted = 5;
-  string name           = 6;
-  int32  stock_count    = 7;
+  string name = 6;
+  int32 stock_count = 7;
   double stock_valuation = 8;
+  int32 sku_count = 9;
 }
 
 message CreateRackRequest {
-  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
   uint32 warehouse_id = 1 [(buf.validate.field).uint32.gt = 0];
   string name = 2 [(buf.validate.field).string = {
     min_len: 1
     max_len: 300
   }];
 }
-message CreateRackResponse { Rack rack = 1; }
+message CreateRackResponse {
+  Rack rack = 1;
+}
 
 message UpdateRackRequest {
-  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
   string name = 2 [(buf.validate.field).string = {
     min_len: 1
     max_len: 300
   }];
 }
-message UpdateRackResponse { Rack rack = 1; }
+message UpdateRackResponse {
+  Rack rack = 1;
+}
 
 message DeleteRackRequest {
-  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN] };
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
   uint32 id = 1 [(buf.validate.field).uint32.gt = 0];
 }
 message DeleteRackResponse {}
@@ -48,12 +71,49 @@ message DeleteRackResponse {}
 message ListRackFilter {
   uint32 warehouse_id = 3;
   string search = 4;
+  uint32 sku_id = 5;
 }
 
 message ListRackRequest {
-  option (wargapos.rolebased.v1.request_policy) = { roles: [ROLE_ROOT, ROLE_ADMIN, ROLE_WAREHOUSE_ADMIN, ROLE_WAREHOUSE_MEMBER, ROLE_CASHIER] };
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN,
+      ROLE_WAREHOUSE_MEMBER,
+      ROLE_CASHIER
+    ]
+  };
   int32 page = 1;
   int32 page_size = 2;
   ListRackFilter filter = 3 [(buf.validate.field).required = true];
 }
-message ListRackResponse { repeated Rack racks = 1; int32 total = 2; }
+message ListRackResponse {
+  repeated Rack racks = 1;
+  int32 total = 2;
+}
+
+message GetRackByName {
+  uint32 warehouse_id = 1 [(buf.validate.field).uint32.gt = 0];
+  string name = 2 [(buf.validate.field).string.min_len = 1];
+}
+
+message GetRackRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN,
+      ROLE_WAREHOUSE_MEMBER,
+      ROLE_CASHIER
+    ]
+  };
+  oneof by {
+    uint32 id = 1;
+    GetRackByName name = 2;
+  }
+  bool create_if_not_found = 3; // only applies when using name
+}
+message GetRackResponse {
+  Rack rack = 1;
+}

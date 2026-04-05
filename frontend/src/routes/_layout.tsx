@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Outlet, Link, useNavigate, useRouterState } from '@tanstack/react-router'
 import { Accordion, Box, Button, Flex, IconButton, Popover, Text, Tooltip, VStack, HStack } from '@chakra-ui/react'
-import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight, Warehouse, Barcode, ChevronDown, UtensilsCrossed, ArrowLeftRight, FlaskConical, ShoppingBag, Store, ClipboardList, type LucideIcon } from 'lucide-react'
+import { LayoutDashboard, ShoppingCart, Package, Receipt, LogOut, LayoutGrid, Settings, Users, ChefHat, ChevronLeft, ChevronRight, Warehouse, Barcode, ChevronDown, UtensilsCrossed, ArrowLeftRight, FlaskConical, ShoppingBag, Store, ClipboardList, MapPin, type LucideIcon } from 'lucide-react'
 import { useAuthStore } from '../store/auth'
 import { isRootOrAdmin, canManageMarketplace, canViewOrders, canViewStock } from '../lib/roles'
 import { settingsClient } from '../client'
@@ -124,6 +124,7 @@ export function ProtectedLayout() {
         { label: 'Warehouses', to: '/stock', Icon: Warehouse, exact: true as const },
         { label: 'SKUs', to: '/stock/skus', Icon: Barcode },
         { label: 'Transactions', to: '/stock/transactions', Icon: ArrowLeftRight },
+        { label: 'Placement', to: '/stock/placement', Icon: MapPin },
       ],
     }] : []),
     ...(isAdmin ? [{ label: 'Team', to: '/users', Icon: Users }] : []),
