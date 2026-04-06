@@ -28,6 +28,7 @@ const (
 	MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_UNSPECIFIED MarketplaceOrderStatus = 0
 	MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_PENDING     MarketplaceOrderStatus = 1
 	MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_CANCELLED   MarketplaceOrderStatus = 2
+	MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_COMPLETED   MarketplaceOrderStatus = 3
 )
 
 // Enum value maps for MarketplaceOrderStatus.
@@ -36,11 +37,13 @@ var (
 		0: "MARKETPLACE_ORDER_STATUS_UNSPECIFIED",
 		1: "MARKETPLACE_ORDER_STATUS_PENDING",
 		2: "MARKETPLACE_ORDER_STATUS_CANCELLED",
+		3: "MARKETPLACE_ORDER_STATUS_COMPLETED",
 	}
 	MarketplaceOrderStatus_value = map[string]int32{
 		"MARKETPLACE_ORDER_STATUS_UNSPECIFIED": 0,
 		"MARKETPLACE_ORDER_STATUS_PENDING":     1,
 		"MARKETPLACE_ORDER_STATUS_CANCELLED":   2,
+		"MARKETPLACE_ORDER_STATUS_COMPLETED":   3,
 	}
 )
 
@@ -167,6 +170,9 @@ type MarketplaceOrder struct {
 	ShippingCity       string                  `protobuf:"bytes,16,opt,name=shipping_city,json=shippingCity,proto3" json:"shipping_city,omitempty"`
 	ShippingProvince   string                  `protobuf:"bytes,17,opt,name=shipping_province,json=shippingProvince,proto3" json:"shipping_province,omitempty"`
 	ShippingPostalCode string                  `protobuf:"bytes,18,opt,name=shipping_postal_code,json=shippingPostalCode,proto3" json:"shipping_postal_code,omitempty"`
+	Note               string                  `protobuf:"bytes,19,opt,name=note,proto3" json:"note,omitempty"`
+	Receipt            string                  `protobuf:"bytes,20,opt,name=receipt,proto3" json:"receipt,omitempty"`
+	ReceiptFile        string                  `protobuf:"bytes,21,opt,name=receipt_file,json=receiptFile,proto3" json:"receipt_file,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -327,6 +333,27 @@ func (x *MarketplaceOrder) GetShippingPostalCode() string {
 	return ""
 }
 
+func (x *MarketplaceOrder) GetNote() string {
+	if x != nil {
+		return x.Note
+	}
+	return ""
+}
+
+func (x *MarketplaceOrder) GetReceipt() string {
+	if x != nil {
+		return x.Receipt
+	}
+	return ""
+}
+
+func (x *MarketplaceOrder) GetReceiptFile() string {
+	if x != nil {
+		return x.ReceiptFile
+	}
+	return ""
+}
+
 var File_wargapos_marketplace_v1_order_proto protoreflect.FileDescriptor
 
 const file_wargapos_marketplace_v1_order_proto_rawDesc = "" +
@@ -337,7 +364,7 @@ const file_wargapos_marketplace_v1_order_proto_rawDesc = "" +
 	"\titem_name\x18\x02 \x01(\tR\bitemName\x12\x1a\n" +
 	"\bquantity\x18\x03 \x01(\x05R\bquantity\x12(\n" +
 	"\x10unit_price_cents\x18\x04 \x01(\x03R\x0eunitPriceCents\x12%\n" +
-	"\x0esubtotal_cents\x18\x05 \x01(\x03R\rsubtotalCents\"\xfe\x05\n" +
+	"\x0esubtotal_cents\x18\x05 \x01(\x03R\rsubtotalCents\"\xcf\x06\n" +
 	"\x10MarketplaceOrder\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x17\n" +
 	"\ashop_id\x18\x02 \x01(\x04R\x06shopId\x12\x1b\n" +
@@ -362,11 +389,15 @@ const file_wargapos_marketplace_v1_order_proto_rawDesc = "" +
 	"\x10shipping_address\x18\x0f \x01(\tR\x0fshippingAddress\x12#\n" +
 	"\rshipping_city\x18\x10 \x01(\tR\fshippingCity\x12+\n" +
 	"\x11shipping_province\x18\x11 \x01(\tR\x10shippingProvince\x120\n" +
-	"\x14shipping_postal_code\x18\x12 \x01(\tR\x12shippingPostalCode*\x90\x01\n" +
+	"\x14shipping_postal_code\x18\x12 \x01(\tR\x12shippingPostalCode\x12\x12\n" +
+	"\x04note\x18\x13 \x01(\tR\x04note\x12\x18\n" +
+	"\areceipt\x18\x14 \x01(\tR\areceipt\x12!\n" +
+	"\freceipt_file\x18\x15 \x01(\tR\vreceiptFile*\xb8\x01\n" +
 	"\x16MarketplaceOrderStatus\x12(\n" +
 	"$MARKETPLACE_ORDER_STATUS_UNSPECIFIED\x10\x00\x12$\n" +
 	" MARKETPLACE_ORDER_STATUS_PENDING\x10\x01\x12&\n" +
-	"\"MARKETPLACE_ORDER_STATUS_CANCELLED\x10\x02B<Z:wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1b\x06proto3"
+	"\"MARKETPLACE_ORDER_STATUS_CANCELLED\x10\x02\x12&\n" +
+	"\"MARKETPLACE_ORDER_STATUS_COMPLETED\x10\x03B<Z:wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1b\x06proto3"
 
 var (
 	file_wargapos_marketplace_v1_order_proto_rawDescOnce sync.Once

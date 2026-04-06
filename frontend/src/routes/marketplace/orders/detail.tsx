@@ -16,6 +16,7 @@ import { canManageMarketplace } from '../../../lib/roles'
 
 function statusBadge(status: MarketplaceOrderStatus) {
   if (status === MarketplaceOrderStatus.PENDING)   return <Badge colorPalette="yellow">Pending</Badge>
+  if (status === MarketplaceOrderStatus.COMPLETED) return <Badge colorPalette="green">Completed</Badge>
   if (status === MarketplaceOrderStatus.CANCELLED) return <Badge colorPalette="red">Cancelled</Badge>
   return <Badge colorPalette="gray">Unknown</Badge>
 }
@@ -101,6 +102,24 @@ export function MarketplaceOrderDetailPage() {
             <Text color="gray.500">Date</Text>
             <Text>{formatDateTime(order.createdAt)}</Text>
           </HStack>
+          {order.note && (
+            <HStack justify="space-between" align="flex-start">
+              <Text color="gray.500" flexShrink={0}>Note</Text>
+              <Text textAlign="right">{order.note}</Text>
+            </HStack>
+          )}
+          {order.receipt && (
+            <HStack justify="space-between">
+              <Text color="gray.500">Receipt #</Text>
+              <Text fontFamily="mono" fontSize="xs">{order.receipt}</Text>
+            </HStack>
+          )}
+          {order.receiptFile && (
+            <HStack justify="space-between">
+              <Text color="gray.500">Receipt File</Text>
+              <Text fontSize="xs" color="blue.500" truncate maxW="220px">{order.receiptFile}</Text>
+            </HStack>
+          )}
         </VStack>
       </Box>
 

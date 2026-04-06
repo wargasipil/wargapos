@@ -162,6 +162,8 @@ type StockTransaction struct {
 	CreatedAt       time.Time
 	Items           []StockTransactionItem `gorm:"foreignKey:TransactionID"`
 	Total           float64
+	Receipt         string `gorm:"size:100;not null;default:''"`
+	ReceiptFile     string `gorm:"size:500;not null;default:''"`
 }
 
 type StockTransactionItem struct {
@@ -237,6 +239,9 @@ type MarketplaceOrder struct {
 	ShippingCity       string                               `gorm:"column:shipping_city;not null;default:''"`
 	ShippingProvince   string                               `gorm:"column:shipping_province;not null;default:''"`
 	ShippingPostalCode string                               `gorm:"column:shipping_postal_code;not null;default:''"`
+	Note               string                               `gorm:"type:text;not null;default:''"`
+	Receipt            string                               `gorm:"size:100;not null;default:''"`
+	ReceiptFile        string                               `gorm:"size:500;not null;default:''"`
 	Items              []MarketplaceOrderItem               `gorm:"foreignKey:OrderID"`
 	CreatedAt          time.Time
 	UpdatedAt          time.Time

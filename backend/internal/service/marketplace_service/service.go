@@ -90,6 +90,9 @@ func toOrderProto(o models.MarketplaceOrder) *marketplacev1.MarketplaceOrder {
 		ShippingCity:       o.ShippingCity,
 		ShippingProvince:   o.ShippingProvince,
 		ShippingPostalCode: o.ShippingPostalCode,
+		Note:               o.Note,
+		Receipt:            o.Receipt,
+		ReceiptFile:        o.ReceiptFile,
 		CreatedAt:          timestamppb.New(o.CreatedAt),
 		UpdatedAt:          timestamppb.New(o.UpdatedAt),
 	}

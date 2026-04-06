@@ -2,14 +2,15 @@ syntax = "proto3";
 
 package wargapos.marketplace.v1;
 
-option go_package = "wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1";
-
 import "google/protobuf/timestamp.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1";
 
 enum MarketplaceOrderStatus {
   MARKETPLACE_ORDER_STATUS_UNSPECIFIED = 0;
   MARKETPLACE_ORDER_STATUS_PENDING = 1;
   MARKETPLACE_ORDER_STATUS_CANCELLED = 2;
+  MARKETPLACE_ORDER_STATUS_COMPLETED = 3;
 }
 
 message MarketplaceOrderItem {
@@ -39,4 +40,7 @@ message MarketplaceOrder {
   string shipping_city = 16;
   string shipping_province = 17;
   string shipping_postal_code = 18;
+  string note = 19;
+  string receipt = 20;
+  string receipt_file = 21;
 }

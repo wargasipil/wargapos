@@ -40,6 +40,8 @@ func toProtoTransaction(t *models.StockTransaction) *stockv1.Transaction {
 		Cancelled:       t.Cancelled,
 		CreatedAt:       timestamppb.New(t.CreatedAt),
 		Items:           items,
+		Receipt:         t.Receipt,
+		ReceiptFile:     t.ReceiptFile,
 	}
 }
 

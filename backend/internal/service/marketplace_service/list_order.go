@@ -28,6 +28,19 @@ func (s *MarketplaceService) ListOrders(ctx context.Context, req *connect.Reques
 	if req.Msg.CustomerId > 0 {
 		q = q.Where("customer_id = ?", req.Msg.CustomerId)
 	}
+	if req.Msg.WarehouseId > 0 {
+		q = q.Where("warehouse_id = ?", req.Msg.WarehouseId)
+	}
+	if req.Msg.Search != "" {
+		like := "%" + req.Msg.Search + "%"
+		q = q.Where("customer_name ILIKE ? OR phone_number ILIKE ?", like, like)
+	}
+	if req.Msg.DateFrom != "" {
+		q = q.Where("created_at >= ?", req.Msg.DateFrom)
+	}
+	if req.Msg.DateTo != "" {
+		q = q.Where("created_at < ?", req.Msg.DateTo+" 23:59:59")
+	}
 
 	var total int64
 	q.Count(&total)

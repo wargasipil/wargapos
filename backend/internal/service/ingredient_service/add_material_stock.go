@@ -80,12 +80,13 @@ func (s *IngredientService) AddMaterialStock(
 			_, err = s.stockSrv.CreateTransaction(ctx, &connect.Request[stockv1.CreateTransactionRequest]{
 				Msg: &stockv1.CreateTransactionRequest{
 					Kind: &stockv1.CreateTransactionRequest_StockIn{
-						StockIn: &stockv1.StockInCreate{},
+						StockIn: &stockv1.StockInCreate{
+							Items: []*stockv1.TransactionItem{
+								{SkuId: sku.Id, Quantity: pay.Qty, Total: float64(pay.Price)},
+							},
+						},
 					},
 					Note: pay.Note,
-					Items: []*stockv1.TransactionItem{
-						{SkuId: sku.Id, Quantity: pay.Qty, Total: float64(pay.Price)},
-					},
 				},
 			})
 			if err != nil {

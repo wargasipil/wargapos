@@ -64,11 +64,30 @@ POS app for cafes and marketplace management (monorepo). Backend: Go + ConnectRP
 | marketplace_order_items | id, order_id, item_name, quantity, unit_price_cents, subtotal_cents |
 
 ## Design Principles
-- **Mobile-first**: primary target is mobile/tablet (POS use case)
-- Bottom nav bar on mobile, left sidebar on desktop (`md+` breakpoint)
-- Card-based lists on mobile, tables on desktop
+- **Desktop-first**: optimized for desktop; mobile is secondary
+- Use Chakra UI v3 components first for all UI — before any custom HTML or third-party libs
 - Pricing in IDR (BigInt cents, stored as int64)
 - Connect RPC errors: strip `[code] ` prefix before showing to user
+
+## Shared Frontend Components (`frontend/src/components/shared/`)
+Reusable searchable entity selectors — all use Popover + Input + scrollable list (Chakra UI only):
+
+| Component | Props | Notes |
+|-----------|-------|-------|
+| `SkuSelect` | `value`, `onChange`, `placeholder?`, `size?`, `w?`, `minW?` | Searches by SKU code; `value=0` means none |
+| `WarehouseSelect` | `value`, `onChange`, `withAll?`, `placeholder?`, `size?`, `w?` | `withAll` shows "All warehouses" option |
+| `RackSelect` | `value`, `onChange`, `warehouseId?`, `excludeRackId?`, `placeholder?`, `size?`, `w?` | Filters by warehouse; excludes self when moving |
+| `CustomerSelect` | `value: bigint`, `onChange: (id, name, phone) => void`, `placeholder?`, `w?` | Server-side search via `listCustomers`; `value=0n` means none |
+| `ShopSelect` | `value: bigint`, `onChange: (id) => void`, `placeholder?`, `w?` | Client-side search; loads all active shops once |
+
+Usage example:
+```tsx
+<SkuSelect value={skuId} onChange={setSkuId} placeholder="All SKUs" minW="180px" />
+<WarehouseSelect value={warehouseId} onChange={setWarehouseId} withAll w="180px" />
+<RackSelect value={rackId} onChange={setRackId} warehouseId={warehouseId} w="180px" />
+<CustomerSelect value={customerId} onChange={(id, name, phone) => { setCustomerId(id); setCustomerName(name); setPhoneNumber(phone) }} w="100%" />
+<ShopSelect value={shopId} onChange={setShopId} w="180px" />
+```
 
 ## Marketplace Module
 - Shops: CRUD for marketplace storefronts (Shopee, Tokopedia, Lazada, Other)

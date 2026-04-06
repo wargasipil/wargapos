@@ -53,7 +53,11 @@ type ServerConfig struct {
 }
 
 func (scfg *ServerConfig) GetBase() string {
-	return fmt.Sprintf("%s://%s:%s", scfg.Protocol, scfg.Host, scfg.Port)
+	var host string = "localhost"
+	if scfg.Host != "0.0.0.0" {
+		host = scfg.Host
+	}
+	return fmt.Sprintf("%s://%s:%s", scfg.Protocol, host, scfg.Port)
 }
 
 type DatabaseConfig struct {
@@ -63,7 +67,7 @@ type DatabaseConfig struct {
 
 // defaults used when config.yaml is absent (dev convenience).
 var defaults = Config{
-	Server: ServerConfig{Host: "0.0.0.0", Port: "8080", UploadDir: "./uploads"},
+	Server: ServerConfig{Protocol: "https", Host: "0.0.0.0", Port: "8080", UploadDir: "./uploads"},
 	Database: DatabaseConfig{
 		URL:  "host=localhost user=postgres password=postgres dbname=wargapos port=5432 sslmode=disable",
 		Skip: false,

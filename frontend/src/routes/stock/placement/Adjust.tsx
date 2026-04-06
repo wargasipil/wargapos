@@ -9,6 +9,7 @@ import { ArrowLeft } from 'lucide-react'
 import { stockClient } from '../../../client'
 import { toaster } from '../../../components/ui/toaster'
 import { stripError } from '../../../lib/errors'
+import { SkuSelect } from '../../../components/shared/SkuSelect'
 import { PlacementType } from '../../../gen/wargapos/stock/v1/placement_pb'
 
 const typeOptions = createListCollection({
@@ -36,22 +37,6 @@ export function RackAdjustPage() {
     enabled: !!rackId,
   })
 
-  const { data: placementData } = useQuery({
-    queryKey: ['rack-placement', rackId],
-    queryFn: () => stockClient.listRackPlacement({ rackId }),
-    enabled: !!rackId,
-  })
-
-  const skuOptions = createListCollection({
-    items: [
-      { label: 'Select SKU…', value: '0' },
-      ...(placementData?.items ?? []).map((item) => ({
-        label: item.skuCode,
-        value: String(item.skuId),
-      })),
-    ],
-  })
-
   const mutation = useMutation({
     mutationFn: () => {
       const typeNum = Number(placementType) as PlacementType
@@ -66,10 +51,9 @@ export function RackAdjustPage() {
         kind: {
           case: 'problem',
           value: {
-            problem: [{ rackId, count, type: typeNum, reason: reason.trim() }],
+            problem: [{ skuId, rackId, count, type: typeNum, reason: reason.trim() }],
           },
         },
-        items: [{ skuId, quantity: count, total: 0 }],
         note: reason.trim(),
       })
     },
@@ -108,28 +92,7 @@ export function RackAdjustPage() {
         <VStack gap={4} align="stretch">
           <Field.Root required>
             <Field.Label fontSize="sm">SKU</Field.Label>
-            <Select.Root
-              collection={skuOptions}
-              value={[String(skuId)]}
-              onValueChange={({ value }) => setSkuId(Number(value[0] ?? '0'))}
-              size="sm"
-            >
-              <Select.HiddenSelect />
-              <Select.Control>
-                <Select.Trigger><Select.ValueText /></Select.Trigger>
-                <Select.IndicatorGroup><Select.Indicator /></Select.IndicatorGroup>
-              </Select.Control>
-              <Select.Positioner>
-                <Select.Content>
-                  {skuOptions.items.map((item) => (
-                    <Select.Item key={item.value} item={item}>
-                      <Select.ItemText>{item.label}</Select.ItemText>
-                      <Select.ItemIndicator />
-                    </Select.Item>
-                  ))}
-                </Select.Content>
-              </Select.Positioner>
-            </Select.Root>
+            <SkuSelect value={skuId} onChange={setSkuId} w="100%" />
           </Field.Root>
 
           <Field.Root required>

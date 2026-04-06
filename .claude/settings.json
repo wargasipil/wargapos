@@ -33,7 +33,8 @@
       "Bash(ls -1 /d/research/wargapos/backend/internal/service/stock_service/*.go)",
       "Bash(sed 's/func \\(s \\\\*StockService\\) //')",
       "Bash(cut -d'\\(' -f1)",
-      "Bash(find d:/research/wargapos/backend -name *_test.go)"
+      "Bash(find d:/research/wargapos/backend -name *_test.go)",
+      "Bash(find /d/research/wargapos/backend/internal/service/marketplace_service -name \"*.go\" -type f -exec wc -l {} +)"
     ]
   }
 }

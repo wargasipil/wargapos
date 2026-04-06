@@ -230,14 +230,14 @@ export function TransactionsPage() {
               skuId: r.skuId,
               count: Number(r.quantity || '0'),
             })),
+            items: items.map((r) => ({
+              skuId: r.skuId,
+              quantity: Number(r.quantity || '0'),
+              total:    Number(r.price   || '0'),
+            })),
           },
         },
         note,
-        items: items.map((r) => ({
-          skuId: r.skuId,
-          quantity: Number(r.quantity || '0'),
-          total:    Number(r.price   || '0'),
-        })),
       })
     },
     onSuccess: () => {

@@ -35,6 +35,8 @@ message Transaction {
   double total = 7;
   int32 product_count = 8;
   int32 pieces_count = 9;
+  string receipt = 11;
+  string receipt_file = 12;
 }
 
 message TransactionItem {
@@ -56,6 +58,7 @@ message StockInCreate { // TRANSACTION_TYPE_STOCK_IN
     min_items: 1
     max_items: 100
   }];
+  repeated TransactionItem items = 2 [(buf.validate.field).repeated.min_items = 1];
 }
 
 message MovePayload {
@@ -70,6 +73,8 @@ message MovePayload {
   int32 change = 3 [(buf.validate.field).int32 = {
     gt: 0 // movement amount must be positive
   }];
+
+  uint32 sku_id = 4 [(buf.validate.field).uint32.gt = 0];
 }
 
 message MoveCreate {
@@ -86,30 +91,25 @@ message ProblemPayload {
 
   int32 count = 2 [(buf.validate.field).int32 = {
     not_in: [0] /* cannot be zero */
-    // optionally:
-    // gt: 0   // if only positive allowed
-    // lt: 0   // if only negative allowed (e.g. deduction)
   }];
 
   PlacementType type = 3 [(buf.validate.field).enum = {
-    defined_only: true // must be valid enum value
-    // optionally exclude UNKNOWN = 0:
-    // not_in: [0]
+    defined_only: true
   }];
 
   string reason = 4 [(buf.validate.field).string = {
     min_len: 3
     max_len: 255
-    // optional: avoid empty/whitespace-only
     pattern: ".*\\S.*"
   }];
+
+  uint32 sku_id = 5 [(buf.validate.field).uint32.gt = 0];
 }
 
 message ProblemCreate {
   repeated ProblemPayload problem = 1 [(buf.validate.field).repeated = {
-    min_items: 1 // at least one problem required
-    max_items: 100 // prevent abuse / payload explosion
-    unique: false // set true if you later define uniqueness rule
+    min_items: 1
+    max_items: 100
   }];
 }
 
@@ -123,6 +123,8 @@ message OrderCreate {
     min_len: 1
     pattern: "^(https?://.+|/.*|\\.?\\.?/.*)$"
   }];
+
+  repeated TransactionItem items = 3 [(buf.validate.field).repeated.min_items = 1];
 }
 
 message CreateTransactionRequest {
@@ -138,9 +140,9 @@ message CreateTransactionRequest {
     StockInCreate stock_in = 1;
     MoveCreate move = 2;
     ProblemCreate problem = 3;
+    OrderCreate order = 4;
   }
 
-  repeated TransactionItem items = 4 [(buf.validate.field).repeated.min_items = 1];
   string note = 5;
 }
 

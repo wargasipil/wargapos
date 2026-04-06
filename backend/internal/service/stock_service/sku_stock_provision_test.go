@@ -41,8 +41,11 @@ func TestSkuStockProvision(t *testing.T) {
 			// cv1: qty=5, unit_cost=2000 (total 10000) — created first (lower ID / earlier created_at)
 			res1, err := srv.CreateTransaction(t.Context(), &connect.Request[stockv1.CreateTransactionRequest]{
 				Msg: &stockv1.CreateTransactionRequest{
-					Kind:  &stockv1.CreateTransactionRequest_StockIn{StockIn: &stockv1.StockInCreate{}},
-					Items: []*stockv1.TransactionItem{{SkuId: skuId, Quantity: 5, Total: 10000}},
+					Kind: &stockv1.CreateTransactionRequest_StockIn{
+						StockIn: &stockv1.StockInCreate{
+							Items: []*stockv1.TransactionItem{{SkuId: skuId, Quantity: 5, Total: 10000}},
+						},
+					},
 				},
 			})
 			require.Nil(t, err)
@@ -50,8 +53,11 @@ func TestSkuStockProvision(t *testing.T) {
 			// cv2: qty=3, unit_cost=3000 (total 9000) — created second (higher ID / later created_at)
 			res2, err := srv.CreateTransaction(t.Context(), &connect.Request[stockv1.CreateTransactionRequest]{
 				Msg: &stockv1.CreateTransactionRequest{
-					Kind:  &stockv1.CreateTransactionRequest_StockIn{StockIn: &stockv1.StockInCreate{}},
-					Items: []*stockv1.TransactionItem{{SkuId: skuId, Quantity: 3, Total: 9000}},
+					Kind: &stockv1.CreateTransactionRequest_StockIn{
+						StockIn: &stockv1.StockInCreate{
+							Items: []*stockv1.TransactionItem{{SkuId: skuId, Quantity: 3, Total: 9000}},
+						},
+					},
 				},
 			})
 			require.Nil(t, err)

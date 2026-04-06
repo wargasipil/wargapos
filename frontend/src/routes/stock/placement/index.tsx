@@ -4,7 +4,7 @@ import {
   Badge, Box, Button, Dialog, Flex, Heading, HStack, Portal,
   Spinner, Table, Text,
 } from '@chakra-ui/react'
-import { MapPin } from 'lucide-react'
+import { MapPin, SlidersHorizontal } from 'lucide-react'
 import { useNavigate } from '@tanstack/react-router'
 import { stockClient } from '../../../client'
 import { WarehouseSelect } from '../../../components/shared/WarehouseSelect'
@@ -92,14 +92,17 @@ export function PlacementPage() {
 
   return (
     <Box p={{ base: 3, md: 6 }}>
-      <HStack mb={4} gap={2}>
-        <MapPin size={20} />
-        <Heading size="md">Placement</Heading>
+      <HStack mb={4} justify="space-between">
+        <HStack gap={2}>
+          <MapPin size={20} />
+          <Heading size="md">Placement</Heading>
+        </HStack>
       </HStack>
 
-      <HStack mb={4} gap={2} wrap="wrap">
+      <HStack mb={4} gap={2} align="center" wrap="wrap">
+        <SlidersHorizontal size={14} color="gray" />
         <WarehouseSelect value={warehouseId} onChange={setWarehouseId} withAll w="180px" />
-        <SkuSelect value={skuId} onChange={setSkuId} placeholder="All SKUs" minW="180px" />
+        <SkuSelect value={skuId} onChange={setSkuId} placeholder="All SKUs" w="200px" />
       </HStack>
 
       {isLoading ? (

@@ -2,21 +2,28 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import {
-  Badge, Box, Button, Flex, Heading, HStack, Spinner, Table, Tabs, Text, VStack,
+  Badge, Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Tabs, Text, VStack,
 } from '@chakra-ui/react'
-import { Plus } from 'lucide-react'
+import { Plus, SlidersHorizontal } from 'lucide-react'
 import { marketplaceClient } from '../../../client'
 import { MarketplaceOrderStatus } from '../../../gen/wargapos/marketplace/v1/order_pb'
 import { formatPrice, formatDateTime } from '../../../lib/format'
+import { WarehouseSelect } from '../../../components/shared/WarehouseSelect'
+import { ShopSelect } from '../../../components/shared/ShopSelect'
+import { useDebounce } from '../../../lib/useDebounce'
+
+const PAGE_SIZE = 20
 
 const STATUS_TABS = [
   { label: 'All',       value: MarketplaceOrderStatus.UNSPECIFIED },
   { label: 'Pending',   value: MarketplaceOrderStatus.PENDING },
+  { label: 'Completed', value: MarketplaceOrderStatus.COMPLETED },
   { label: 'Cancelled', value: MarketplaceOrderStatus.CANCELLED },
 ]
 
 function statusBadge(status: MarketplaceOrderStatus) {
   if (status === MarketplaceOrderStatus.PENDING)   return <Badge colorPalette="yellow">Pending</Badge>
+  if (status === MarketplaceOrderStatus.COMPLETED) return <Badge colorPalette="green">Completed</Badge>
   if (status === MarketplaceOrderStatus.CANCELLED) return <Badge colorPalette="red">Cancelled</Badge>
   return <Badge colorPalette="gray">Unknown</Badge>
 }
@@ -25,15 +32,33 @@ export function MarketplaceOrdersPage() {
   const navigate = useNavigate()
   const [statusFilter, setStatusFilter] = useState<MarketplaceOrderStatus>(MarketplaceOrderStatus.UNSPECIFIED)
   const [page, setPage] = useState(1)
+  const [warehouseId, setWarehouseId] = useState(0)
+  const [shopId, setShopId] = useState(0n)
+  const [dateFrom, setDateFrom] = useState('')
+  const [dateTo, setDateTo] = useState('')
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 300)
 
   const { data, isLoading } = useQuery({
-    queryKey: ['marketplace-orders', statusFilter, page],
-    queryFn: () => marketplaceClient.listOrders({ page, pageSize: 20, statusFilter }),
+    queryKey: ['marketplace-orders', statusFilter, page, warehouseId, String(shopId), dateFrom, dateTo, debouncedSearch],
+    queryFn: () => marketplaceClient.listOrders({
+      page,
+      pageSize: PAGE_SIZE,
+      statusFilter,
+      warehouseId,
+      shopId,
+      dateFrom,
+      dateTo,
+      search: debouncedSearch,
+    }),
     staleTime: 0,
   })
 
   const orders = data?.orders ?? []
   const total = data?.total ?? 0
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+
+  function resetPage() { setPage(1) }
 
   return (
     <Box p={{ base: 3, md: 6 }}>
@@ -47,7 +72,7 @@ export function MarketplaceOrdersPage() {
       {/* Status tabs */}
       <Tabs.Root
         value={String(statusFilter)}
-        onValueChange={(d) => { setStatusFilter(Number(d.value) as MarketplaceOrderStatus); setPage(1) }}
+        onValueChange={(d) => { setStatusFilter(Number(d.value) as MarketplaceOrderStatus); resetPage() }}
         mb={4}
         size="sm"
       >
@@ -57,6 +82,22 @@ export function MarketplaceOrdersPage() {
           ))}
         </Tabs.List>
       </Tabs.Root>
+
+      {/* Filters */}
+      <HStack mb={4} gap={2} wrap="wrap" align="center">
+        <SlidersHorizontal size={14} color="gray" />
+        <WarehouseSelect value={warehouseId} onChange={(v) => { setWarehouseId(v); resetPage() }} withAll w="160px" />
+        <ShopSelect value={shopId} onChange={(v) => { setShopId(v); resetPage() }} placeholder="All shops" w="160px" />
+        <Input
+          size="sm"
+          maxW="180px"
+          placeholder="Search customer…"
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); resetPage() }}
+        />
+        <Input size="sm" type="date" maxW="145px" value={dateFrom} onChange={(e) => { setDateFrom(e.target.value); resetPage() }} />
+        <Input size="sm" type="date" maxW="145px" value={dateTo} onChange={(e) => { setDateTo(e.target.value); resetPage() }} />
+      </HStack>
 
       {isLoading ? (
         <Flex justify="center" py={12}><Spinner /></Flex>
@@ -128,11 +169,11 @@ export function MarketplaceOrdersPage() {
           </VStack>
 
           {/* Pagination */}
-          {total > 20 && (
+          {total > PAGE_SIZE && (
             <HStack mt={4} justify="center" gap={3}>
-              <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Prev</Button>
-              <Text fontSize="sm" color="gray.500">Page {page}</Text>
-              <Button size="sm" variant="outline" disabled={orders.length < 20} onClick={() => setPage((p) => p + 1)}>Next</Button>
+              <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>‹</Button>
+              <Text fontSize="sm" color="gray.500">{page} / {totalPages}</Text>
+              <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>›</Button>
             </HStack>
           )}
         </>

@@ -117,10 +117,10 @@ func (s *MarketplaceService) RestockProduct(
 					Placement: []*stockv1.StockInPlacementPayload{
 						{RackId: rackID, SkuId: skuID, Count: delta},
 					},
+					Items: []*stockv1.TransactionItem{
+						{SkuId: skuID, Quantity: delta, Total: total},
+					},
 				},
-			},
-			Items: []*stockv1.TransactionItem{
-				{SkuId: skuID, Quantity: delta, Total: total},
 			},
 		},
 	})

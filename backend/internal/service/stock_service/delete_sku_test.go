@@ -39,10 +39,11 @@ func TestDeleteSku(t *testing.T) {
 				_, err = srv.CreateTransaction(t.Context(), &connect.Request[stockv1.CreateTransactionRequest]{
 					Msg: &stockv1.CreateTransactionRequest{
 						Kind: &stockv1.CreateTransactionRequest_StockIn{
-							StockIn: &stockv1.StockInCreate{},
-						},
-						Items: []*stockv1.TransactionItem{
-							{SkuId: sku.Msg.Sku.Id, Quantity: 5, Total: 10000},
+							StockIn: &stockv1.StockInCreate{
+								Items: []*stockv1.TransactionItem{
+									{SkuId: sku.Msg.Sku.Id, Quantity: 5, Total: 10000},
+								},
+							},
 						},
 					},
 				})

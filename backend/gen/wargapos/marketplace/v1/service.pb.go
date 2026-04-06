@@ -552,16 +552,24 @@ func (x *ListShopsResponse) GetTotal() int32 {
 }
 
 type CreateOrderRequest struct {
-	state         protoimpl.MessageState  `protogen:"open.v1"`
-	ShopId        uint64                  `protobuf:"varint,1,opt,name=shop_id,json=shopId,proto3" json:"shop_id,omitempty"`
-	CustomerName  string                  `protobuf:"bytes,2,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
-	PhoneNumber   string                  `protobuf:"bytes,3,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
-	Items         []*MarketplaceOrderItem `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"`
-	WarehouseId   uint32                  `protobuf:"varint,5,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	CustomerId    uint64                  `protobuf:"varint,6,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
-	AddressId     uint64                  `protobuf:"varint,7,opt,name=address_id,json=addressId,proto3" json:"address_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState  `protogen:"open.v1"`
+	ShopId             uint64                  `protobuf:"varint,1,opt,name=shop_id,json=shopId,proto3" json:"shop_id,omitempty"`
+	CustomerName       string                  `protobuf:"bytes,2,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
+	PhoneNumber        string                  `protobuf:"bytes,3,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
+	Items              []*MarketplaceOrderItem `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"`
+	WarehouseId        uint32                  `protobuf:"varint,5,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	CustomerId         uint64                  `protobuf:"varint,6,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	AddressId          uint64                  `protobuf:"varint,7,opt,name=address_id,json=addressId,proto3" json:"address_id,omitempty"`
+	Note               string                  `protobuf:"bytes,8,opt,name=note,proto3" json:"note,omitempty"`
+	Receipt            string                  `protobuf:"bytes,9,opt,name=receipt,proto3" json:"receipt,omitempty"`
+	ReceiptFile        string                  `protobuf:"bytes,10,opt,name=receipt_file,json=receiptFile,proto3" json:"receipt_file,omitempty"`
+	ShippingAddress    string                  `protobuf:"bytes,11,opt,name=shipping_address,json=shippingAddress,proto3" json:"shipping_address,omitempty"`
+	ShippingCity       string                  `protobuf:"bytes,12,opt,name=shipping_city,json=shippingCity,proto3" json:"shipping_city,omitempty"`
+	ShippingProvince   string                  `protobuf:"bytes,13,opt,name=shipping_province,json=shippingProvince,proto3" json:"shipping_province,omitempty"`
+	ShippingPostalCode string                  `protobuf:"bytes,14,opt,name=shipping_postal_code,json=shippingPostalCode,proto3" json:"shipping_postal_code,omitempty"`
+	ShippingLabel      string                  `protobuf:"bytes,15,opt,name=shipping_label,json=shippingLabel,proto3" json:"shipping_label,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *CreateOrderRequest) Reset() {
@@ -641,6 +649,62 @@ func (x *CreateOrderRequest) GetAddressId() uint64 {
 		return x.AddressId
 	}
 	return 0
+}
+
+func (x *CreateOrderRequest) GetNote() string {
+	if x != nil {
+		return x.Note
+	}
+	return ""
+}
+
+func (x *CreateOrderRequest) GetReceipt() string {
+	if x != nil {
+		return x.Receipt
+	}
+	return ""
+}
+
+func (x *CreateOrderRequest) GetReceiptFile() string {
+	if x != nil {
+		return x.ReceiptFile
+	}
+	return ""
+}
+
+func (x *CreateOrderRequest) GetShippingAddress() string {
+	if x != nil {
+		return x.ShippingAddress
+	}
+	return ""
+}
+
+func (x *CreateOrderRequest) GetShippingCity() string {
+	if x != nil {
+		return x.ShippingCity
+	}
+	return ""
+}
+
+func (x *CreateOrderRequest) GetShippingProvince() string {
+	if x != nil {
+		return x.ShippingProvince
+	}
+	return ""
+}
+
+func (x *CreateOrderRequest) GetShippingPostalCode() string {
+	if x != nil {
+		return x.ShippingPostalCode
+	}
+	return ""
+}
+
+func (x *CreateOrderRequest) GetShippingLabel() string {
+	if x != nil {
+		return x.ShippingLabel
+	}
+	return ""
 }
 
 type CreateOrderResponse struct {
@@ -782,6 +846,10 @@ type ListOrdersRequest struct {
 	StatusFilter  MarketplaceOrderStatus `protobuf:"varint,3,opt,name=status_filter,json=statusFilter,proto3,enum=wargapos.marketplace.v1.MarketplaceOrderStatus" json:"status_filter,omitempty"`
 	ShopId        uint64                 `protobuf:"varint,4,opt,name=shop_id,json=shopId,proto3" json:"shop_id,omitempty"`
 	CustomerId    uint64                 `protobuf:"varint,5,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	DateFrom      string                 `protobuf:"bytes,6,opt,name=date_from,json=dateFrom,proto3" json:"date_from,omitempty"`
+	DateTo        string                 `protobuf:"bytes,7,opt,name=date_to,json=dateTo,proto3" json:"date_to,omitempty"`
+	WarehouseId   uint32                 `protobuf:"varint,8,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
+	Search        string                 `protobuf:"bytes,9,opt,name=search,proto3" json:"search,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -849,6 +917,34 @@ func (x *ListOrdersRequest) GetCustomerId() uint64 {
 		return x.CustomerId
 	}
 	return 0
+}
+
+func (x *ListOrdersRequest) GetDateFrom() string {
+	if x != nil {
+		return x.DateFrom
+	}
+	return ""
+}
+
+func (x *ListOrdersRequest) GetDateTo() string {
+	if x != nil {
+		return x.DateTo
+	}
+	return ""
+}
+
+func (x *ListOrdersRequest) GetWarehouseId() uint32 {
+	if x != nil {
+		return x.WarehouseId
+	}
+	return 0
+}
+
+func (x *ListOrdersRequest) GetSearch() string {
+	if x != nil {
+		return x.Search
+	}
+	return ""
 }
 
 type ListOrdersResponse struct {
@@ -2582,7 +2678,7 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"activeOnly\"i\n" +
 	"\x11ListShopsResponse\x12>\n" +
 	"\x05shops\x18\x01 \x03(\v2(.wargapos.marketplace.v1.MarketplaceShopR\x05shops\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"\xa8\x02\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\xcf\x04\n" +
 	"\x12CreateOrderRequest\x12\x17\n" +
 	"\ashop_id\x18\x01 \x01(\x04R\x06shopId\x12#\n" +
 	"\rcustomer_name\x18\x02 \x01(\tR\fcustomerName\x12!\n" +
@@ -2592,7 +2688,16 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\vcustomer_id\x18\x06 \x01(\x04R\n" +
 	"customerId\x12\x1d\n" +
 	"\n" +
-	"address_id\x18\a \x01(\x04R\taddressId:\t\x8a\xb5\x18\x05\n" +
+	"address_id\x18\a \x01(\x04R\taddressId\x12\x12\n" +
+	"\x04note\x18\b \x01(\tR\x04note\x12\x18\n" +
+	"\areceipt\x18\t \x01(\tR\areceipt\x12!\n" +
+	"\freceipt_file\x18\n" +
+	" \x01(\tR\vreceiptFile\x12)\n" +
+	"\x10shipping_address\x18\v \x01(\tR\x0fshippingAddress\x12#\n" +
+	"\rshipping_city\x18\f \x01(\tR\fshippingCity\x12+\n" +
+	"\x11shipping_province\x18\r \x01(\tR\x10shippingProvince\x120\n" +
+	"\x14shipping_postal_code\x18\x0e \x01(\tR\x12shippingPostalCode\x12%\n" +
+	"\x0eshipping_label\x18\x0f \x01(\tR\rshippingLabel:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05\"V\n" +
 	"\x13CreateOrderResponse\x12?\n" +
 	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"-\n" +
@@ -2601,14 +2706,18 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\x8a\xb5\x18\x06\n" +
 	"\x04\x01\x02\x03\x05\"S\n" +
 	"\x10GetOrderResponse\x12?\n" +
-	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"\xe0\x01\n" +
+	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"\xd1\x02\n" +
 	"\x11ListOrdersRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12T\n" +
 	"\rstatus_filter\x18\x03 \x01(\x0e2/.wargapos.marketplace.v1.MarketplaceOrderStatusR\fstatusFilter\x12\x17\n" +
 	"\ashop_id\x18\x04 \x01(\x04R\x06shopId\x12\x1f\n" +
 	"\vcustomer_id\x18\x05 \x01(\x04R\n" +
-	"customerId:\n" +
+	"customerId\x12\x1b\n" +
+	"\tdate_from\x18\x06 \x01(\tR\bdateFrom\x12\x17\n" +
+	"\adate_to\x18\a \x01(\tR\x06dateTo\x12!\n" +
+	"\fwarehouse_id\x18\b \x01(\rR\vwarehouseId\x12\x16\n" +
+	"\x06search\x18\t \x01(\tR\x06search:\n" +
 	"\x8a\xb5\x18\x06\n" +
 	"\x04\x01\x02\x03\x05\"m\n" +
 	"\x12ListOrdersResponse\x12A\n" +

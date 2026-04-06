@@ -14,8 +14,8 @@ func (s *MarketplaceService) CreateOrder(ctx context.Context, req *connect.Reque
 	if len(req.Msg.Items) == 0 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("items required"))
 	}
-	if req.Msg.AddressId == 0 {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("address required"))
+	if req.Msg.AddressId == 0 && req.Msg.ShippingAddress == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("address or shipping fields required"))
 	}
 
 	var shop models.MarketplaceShop
@@ -23,24 +23,35 @@ func (s *MarketplaceService) CreateOrder(ctx context.Context, req *connect.Reque
 		return nil, connect.NewError(connect.CodeNotFound, err)
 	}
 
-	var addr models.MarketplaceCustomerAddress
-	if err := s.db.WithContext(ctx).Where("id = ? AND deleted = false", req.Msg.AddressId).First(&addr).Error; err != nil {
-		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("address not found"))
+	order := models.MarketplaceOrder{
+		ShopID:       req.Msg.ShopId,
+		CustomerName: req.Msg.CustomerName,
+		PhoneNumber:  req.Msg.PhoneNumber,
+		Status:       marketplacev1.MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_PENDING,
+		WarehouseID:  req.Msg.WarehouseId,
+		CustomerID:   req.Msg.CustomerId,
+		Note:         req.Msg.Note,
+		Receipt:      req.Msg.Receipt,
+		ReceiptFile:  req.Msg.ReceiptFile,
 	}
 
-	order := models.MarketplaceOrder{
-		ShopID:             req.Msg.ShopId,
-		CustomerName:       req.Msg.CustomerName,
-		PhoneNumber:        req.Msg.PhoneNumber,
-		Status:             marketplacev1.MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_PENDING,
-		WarehouseID:        req.Msg.WarehouseId,
-		CustomerID:         req.Msg.CustomerId,
-		AddressID:          addr.ID,
-		ShippingLabel:      addr.Label,
-		ShippingAddress:    addr.Address,
-		ShippingCity:       addr.City,
-		ShippingProvince:   addr.Province,
-		ShippingPostalCode: addr.PostalCode,
+	if req.Msg.AddressId > 0 {
+		var addr models.MarketplaceCustomerAddress
+		if err := s.db.WithContext(ctx).Where("id = ? AND deleted = false", req.Msg.AddressId).First(&addr).Error; err != nil {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("address not found"))
+		}
+		order.AddressID = addr.ID
+		order.ShippingLabel = addr.Label
+		order.ShippingAddress = addr.Address
+		order.ShippingCity = addr.City
+		order.ShippingProvince = addr.Province
+		order.ShippingPostalCode = addr.PostalCode
+	} else {
+		order.ShippingLabel = req.Msg.ShippingLabel
+		order.ShippingAddress = req.Msg.ShippingAddress
+		order.ShippingCity = req.Msg.ShippingCity
+		order.ShippingProvince = req.Msg.ShippingProvince
+		order.ShippingPostalCode = req.Msg.ShippingPostalCode
 	}
 
 	var total int64

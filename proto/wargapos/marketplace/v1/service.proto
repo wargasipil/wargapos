@@ -125,6 +125,14 @@ message CreateOrderRequest {
   uint32 warehouse_id = 5;
   uint64 customer_id = 6;
   uint64 address_id = 7;
+  string note = 8;
+  string receipt = 9;
+  string receipt_file = 10;
+  string shipping_address = 11;
+  string shipping_city = 12;
+  string shipping_province = 13;
+  string shipping_postal_code = 14;
+  string shipping_label = 15;
 }
 message CreateOrderResponse {
   MarketplaceOrder order = 1;
@@ -159,6 +167,10 @@ message ListOrdersRequest {
   MarketplaceOrderStatus status_filter = 3;
   uint64 shop_id = 4;
   uint64 customer_id = 5;
+  string date_from = 6;
+  string date_to = 7;
+  uint32 warehouse_id = 8;
+  string search = 9;
 }
 message ListOrdersResponse {
   repeated MarketplaceOrder orders = 1;

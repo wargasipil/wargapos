@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"connectrpc.com/connect"
@@ -41,6 +42,9 @@ func (s *StockService) CreateTransaction(
 		txType = stockv1.TransactionType_TRANSACTION_TYPE_PLACE_ADJUSTMENT
 	case *stockv1.CreateTransactionRequest_Problem:
 		txType = stockv1.TransactionType_TRANSACTION_TYPE_PROBLEM
+	case *stockv1.CreateTransactionRequest_Order:
+		txType = stockv1.TransactionType_TRANSACTION_TYPE_ORDER
+		placementStatus = int16(stockv1.PlacementStatus_PLACEMENT_STATUS_REVIEW)
 	default:
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("transaction kind is required"))
 	}
@@ -52,9 +56,9 @@ func (s *StockService) CreateTransaction(
 		caller := runner.NewChainParam(
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 				return func(ctx context.Context) (context.Context, error) { // validate duplicate SKUs (StockIn only)
-					if _, ok := req.Msg.Kind.(*stockv1.CreateTransactionRequest_StockIn); ok {
+					if k, ok := req.Msg.Kind.(*stockv1.CreateTransactionRequest_StockIn); ok {
 						skuMap := map[uint32]bool{}
-						for _, item := range req.Msg.Items {
+						for _, item := range k.StockIn.Items {
 							if skuMap[item.SkuId] {
 								return ctx, fmt.Errorf("item sku in transaction duplicate")
 							}
@@ -80,10 +84,11 @@ func (s *StockService) CreateTransaction(
 			},
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 				return func(ctx context.Context) (context.Context, error) { // create transaction items + total (StockIn only)
-					if _, ok := req.Msg.Kind.(*stockv1.CreateTransactionRequest_StockIn); !ok {
+					k, ok := req.Msg.Kind.(*stockv1.CreateTransactionRequest_StockIn)
+					if !ok {
 						return next(ctx)
 					}
-					for _, item := range req.Msg.Items {
+					for _, item := range k.StockIn.Items {
 						txItem := models.StockTransactionItem{
 							TransactionID: txRecord.ID,
 							SkuID:         item.SkuId,
@@ -107,7 +112,7 @@ func (s *StockService) CreateTransaction(
 
 					case *stockv1.CreateTransactionRequest_StockIn:
 						// SKU costing via stock_core
-						for _, item := range req.Msg.Items {
+						for _, item := range k.StockIn.Items {
 							logs, err := stock_core.SkuStockAdd(ctx, tx, &stock_core.SkuStockAddPayload{
 								SkuId:         item.SkuId,
 								TransactionId: txRecord.ID,
@@ -150,14 +155,10 @@ func (s *StockService) CreateTransaction(
 
 					case *stockv1.CreateTransactionRequest_Move:
 						// Rack-to-rack moves — no stock qty change
-						skuId := uint32(0)
-						if len(req.Msg.Items) > 0 {
-							skuId = req.Msg.Items[0].SkuId
-						}
 						for _, m := range k.Move.Move {
 							res := tx.Exec(
 								`UPDATE rack_placements SET left_stock = left_stock - ? WHERE sku_id = ? AND rack_id = ? AND left_stock >= ?`,
-								m.Change, skuId, m.FromRackId, m.Change,
+								m.Change, m.SkuId, m.FromRackId, m.Change,
 							)
 							if res.Error != nil {
 								return ctx, res.Error
@@ -169,11 +170,11 @@ func (s *StockService) CreateTransaction(
 								INSERT INTO rack_placements (sku_id, rack_id, left_stock)
 								VALUES (?, ?, ?)
 								ON CONFLICT (sku_id, rack_id) DO UPDATE SET left_stock = rack_placements.left_stock + excluded.left_stock
-							`, skuId, m.ToRackId, m.Change).Error; err != nil {
+							`, m.SkuId, m.ToRackId, m.Change).Error; err != nil {
 								return ctx, err
 							}
 							pl := stock_model.PlacementLog{
-								SkuID:         skuId,
+								SkuID:         m.SkuId,
 								FromRackID:    m.FromRackId,
 								ToRackID:      m.ToRackId,
 								PlacementType: int16(stockv1.PlacementType_PLACEMENT_TYPE_MOVE),
@@ -187,19 +188,54 @@ func (s *StockService) CreateTransaction(
 							}
 						}
 
+					case *stockv1.CreateTransactionRequest_Order:
+						txRecord.Receipt = k.Order.Receipt
+						txRecord.ReceiptFile = k.Order.ReceiptFile
+
+						// create transaction items + total
+						for _, item := range k.Order.Items {
+							txItem := models.StockTransactionItem{
+								TransactionID: txRecord.ID,
+								SkuID:         item.SkuId,
+								Quantity:      item.Quantity,
+								Price:         item.Total,
+							}
+							if err := tx.Create(&txItem).Error; err != nil {
+								return ctx, err
+							}
+							txRecord.Total += item.Total
+						}
+						if err := tx.Save(&txRecord).Error; err != nil {
+							return ctx, err
+						}
+
+						// provision + commit stock for each item
+						for _, item := range k.Order.Items {
+							var sku models.Sku
+							if err := tx.First(&sku, item.SkuId).Error; err != nil {
+								return ctx, fmt.Errorf("sku %d not found", item.SkuId)
+							}
+							costingType := sku.CostingType
+							if costingType == stockv1.CostingType_COSTING_TYPE_UNSPECIFIED {
+								costingType = stockv1.CostingType_COSTING_TYPE_FIFO
+							}
+							_, committed, err := stock_core.SkuStockProvision(ctx, tx, &stock_core.SkuStockProvisionPayload{
+								SkuId:       item.SkuId,
+								UserId:      userID,
+								Qty:         item.Quantity,
+								CostingType: costingType,
+							})
+							if err != nil {
+								return ctx, err
+							}
+							if _, err = committed(txRecord.ID); err != nil {
+								return ctx, err
+							}
+						}
+
 					case *stockv1.CreateTransactionRequest_Problem:
 						// Rack stock problems (BROKEN / LOST)
-						getSkuId := func(i int) uint32 {
-							if len(req.Msg.Items) == 1 {
-								return req.Msg.Items[0].SkuId
-							}
-							if i < len(req.Msg.Items) {
-								return req.Msg.Items[i].SkuId
-							}
-							return 0
-						}
-						for i, p := range k.Problem.Problem {
-							skuId := getSkuId(i)
+						for _, p := range k.Problem.Problem {
 							change := p.Count
 							// BROKEN and LOST are always deductions
 							if p.Type == stockv1.PlacementType_PLACEMENT_TYPE_BROKEN ||
@@ -208,11 +244,11 @@ func (s *StockService) CreateTransaction(
 							}
 							if err := tx.Exec(`
 								UPDATE rack_placements SET left_stock = left_stock + ? WHERE sku_id = ? AND rack_id = ?
-							`, change, skuId, p.RackId).Error; err != nil {
+							`, change, p.SkuId, p.RackId).Error; err != nil {
 								return ctx, err
 							}
 							pl := stock_model.PlacementLog{
-								SkuID:         skuId,
+								SkuID:         p.SkuId,
 								ToRackID:      p.RackId,
 								PlacementType: int16(p.Type),
 								TransactionID: txRecord.ID,
@@ -237,7 +273,8 @@ func (s *StockService) CreateTransaction(
 	})
 
 	if err != nil {
-		if err.Error() == "insufficient stock or SKU not in source rack" {
+		msg := err.Error()
+		if msg == "insufficient stock or SKU not in source rack" || strings.Contains(msg, "insuffient") {
 			return nil, connect.NewError(connect.CodeFailedPrecondition, err)
 		}
 		return nil, connect.NewError(connect.CodeInternal, err)

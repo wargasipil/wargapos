@@ -4,14 +4,15 @@ import {
   Badge, Box, Button, Dialog, Field, Flex, Heading, HStack, Input,
   Portal, Spinner, Table, Tabs, Text, VStack,
 } from '@chakra-ui/react'
+
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import { ArrowLeft, ArrowRightLeft, MapPin, SlidersHorizontal } from 'lucide-react'
-import { createListCollection, Select } from '@chakra-ui/react'
 import { stockClient } from '../../../client'
 import { toaster } from '../../../components/ui/toaster'
 import { stripError } from '../../../lib/errors'
 import { formatDateTime } from '../../../lib/format'
 import { RackSelect } from '../../../components/shared/RackSelect'
+import { SkuSelect } from '../../../components/shared/SkuSelect'
 import type { Timestamp } from '@bufbuild/protobuf/wkt'
 import { PlacementType } from '../../../gen/wargapos/stock/v1/placement_pb'
 
@@ -67,16 +68,6 @@ export function RackDetailPage() {
     enabled: !!rackId,
   })
 
-  const skuOptions = createListCollection({
-    items: [
-      { label: 'Select SKU…', value: '0' },
-      ...(placementData?.items ?? []).map((item) => ({
-        label: item.skuCode,
-        value: String(item.skuId),
-      })),
-    ],
-  })
-
   const moveMutation = useMutation({
     mutationFn: () => {
       if (!moveSkuId) throw new Error('SKU is required')
@@ -87,10 +78,9 @@ export function RackDetailPage() {
         kind: {
           case: 'move',
           value: {
-            move: [{ fromRackId: rackId, toRackId: moveToRackId, change: qty }],
+            move: [{ skuId: moveSkuId, fromRackId: rackId, toRackId: moveToRackId, change: qty }],
           },
         },
-        items: [{ skuId: moveSkuId, quantity: qty, total: 0 }],
         note: moveNote,
       })
     },
@@ -170,28 +160,7 @@ export function RackDetailPage() {
                 <VStack gap={4} align="stretch">
                   <Field.Root required>
                     <Field.Label fontSize="sm">SKU</Field.Label>
-                    <Select.Root
-                      collection={skuOptions}
-                      value={[String(moveSkuId)]}
-                      onValueChange={({ value }) => setMoveSkuId(Number(value[0] ?? '0'))}
-                      size="sm"
-                    >
-                      <Select.HiddenSelect />
-                      <Select.Control>
-                        <Select.Trigger><Select.ValueText /></Select.Trigger>
-                        <Select.IndicatorGroup><Select.Indicator /></Select.IndicatorGroup>
-                      </Select.Control>
-                      <Select.Positioner>
-                        <Select.Content>
-                          {skuOptions.items.map((item) => (
-                            <Select.Item key={item.value} item={item}>
-                              <Select.ItemText>{item.label}</Select.ItemText>
-                              <Select.ItemIndicator />
-                            </Select.Item>
-                          ))}
-                        </Select.Content>
-                      </Select.Positioner>
-                    </Select.Root>
+                    <SkuSelect value={moveSkuId} onChange={setMoveSkuId} w="100%" />
                   </Field.Root>
 
                   <Field.Root required>

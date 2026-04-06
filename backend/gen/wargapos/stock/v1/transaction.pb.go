@@ -143,6 +143,8 @@ type Transaction struct {
 	Total           float64                `protobuf:"fixed64,7,opt,name=total,proto3" json:"total,omitempty"`
 	ProductCount    int32                  `protobuf:"varint,8,opt,name=product_count,json=productCount,proto3" json:"product_count,omitempty"`
 	PiecesCount     int32                  `protobuf:"varint,9,opt,name=pieces_count,json=piecesCount,proto3" json:"pieces_count,omitempty"`
+	Receipt         string                 `protobuf:"bytes,11,opt,name=receipt,proto3" json:"receipt,omitempty"`
+	ReceiptFile     string                 `protobuf:"bytes,12,opt,name=receipt_file,json=receiptFile,proto3" json:"receipt_file,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -245,6 +247,20 @@ func (x *Transaction) GetPiecesCount() int32 {
 		return x.PiecesCount
 	}
 	return 0
+}
+
+func (x *Transaction) GetReceipt() string {
+	if x != nil {
+		return x.Receipt
+	}
+	return ""
+}
+
+func (x *Transaction) GetReceiptFile() string {
+	if x != nil {
+		return x.ReceiptFile
+	}
+	return ""
 }
 
 type TransactionItem struct {
@@ -370,6 +386,7 @@ func (x *StockInPlacementPayload) GetCount() int32 {
 type StockInCreate struct {
 	state         protoimpl.MessageState     `protogen:"open.v1"`
 	Placement     []*StockInPlacementPayload `protobuf:"bytes,1,rep,name=placement,proto3" json:"placement,omitempty"`
+	Items         []*TransactionItem         `protobuf:"bytes,2,rep,name=items,proto3" json:"items,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -411,11 +428,19 @@ func (x *StockInCreate) GetPlacement() []*StockInPlacementPayload {
 	return nil
 }
 
+func (x *StockInCreate) GetItems() []*TransactionItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
 type MovePayload struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FromRackId    uint32                 `protobuf:"varint,1,opt,name=from_rack_id,json=fromRackId,proto3" json:"from_rack_id,omitempty"`
 	ToRackId      uint32                 `protobuf:"varint,2,opt,name=to_rack_id,json=toRackId,proto3" json:"to_rack_id,omitempty"`
 	Change        int32                  `protobuf:"varint,3,opt,name=change,proto3" json:"change,omitempty"`
+	SkuId         uint32                 `protobuf:"varint,4,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -471,6 +496,13 @@ func (x *MovePayload) GetChange() int32 {
 	return 0
 }
 
+func (x *MovePayload) GetSkuId() uint32 {
+	if x != nil {
+		return x.SkuId
+	}
+	return 0
+}
+
 type MoveCreate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Move          []*MovePayload         `protobuf:"bytes,1,rep,name=move,proto3" json:"move,omitempty"`
@@ -521,6 +553,7 @@ type ProblemPayload struct {
 	Count         int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
 	Type          PlacementType          `protobuf:"varint,3,opt,name=type,proto3,enum=wargapos.stock.v1.PlacementType" json:"type,omitempty"`
 	Reason        string                 `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	SkuId         uint32                 `protobuf:"varint,5,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -583,6 +616,13 @@ func (x *ProblemPayload) GetReason() string {
 	return ""
 }
 
+func (x *ProblemPayload) GetSkuId() uint32 {
+	if x != nil {
+		return x.SkuId
+	}
+	return 0
+}
+
 type ProblemCreate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Problem       []*ProblemPayload      `protobuf:"bytes,1,rep,name=problem,proto3" json:"problem,omitempty"`
@@ -631,6 +671,7 @@ type OrderCreate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Receipt       string                 `protobuf:"bytes,1,opt,name=receipt,proto3" json:"receipt,omitempty"`
 	ReceiptFile   string                 `protobuf:"bytes,2,opt,name=receipt_file,json=receiptFile,proto3" json:"receipt_file,omitempty"`
+	Items         []*TransactionItem     `protobuf:"bytes,3,rep,name=items,proto3" json:"items,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -679,6 +720,13 @@ func (x *OrderCreate) GetReceiptFile() string {
 	return ""
 }
 
+func (x *OrderCreate) GetItems() []*TransactionItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
 type CreateTransactionRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Kind:
@@ -686,8 +734,8 @@ type CreateTransactionRequest struct {
 	//	*CreateTransactionRequest_StockIn
 	//	*CreateTransactionRequest_Move
 	//	*CreateTransactionRequest_Problem
+	//	*CreateTransactionRequest_Order
 	Kind          isCreateTransactionRequest_Kind `protobuf_oneof:"kind"`
-	Items         []*TransactionItem              `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"`
 	Note          string                          `protobuf:"bytes,5,opt,name=note,proto3" json:"note,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -757,9 +805,11 @@ func (x *CreateTransactionRequest) GetProblem() *ProblemCreate {
 	return nil
 }
 
-func (x *CreateTransactionRequest) GetItems() []*TransactionItem {
+func (x *CreateTransactionRequest) GetOrder() *OrderCreate {
 	if x != nil {
-		return x.Items
+		if x, ok := x.Kind.(*CreateTransactionRequest_Order); ok {
+			return x.Order
+		}
 	}
 	return nil
 }
@@ -787,11 +837,17 @@ type CreateTransactionRequest_Problem struct {
 	Problem *ProblemCreate `protobuf:"bytes,3,opt,name=problem,proto3,oneof"`
 }
 
+type CreateTransactionRequest_Order struct {
+	Order *OrderCreate `protobuf:"bytes,4,opt,name=order,proto3,oneof"`
+}
+
 func (*CreateTransactionRequest_StockIn) isCreateTransactionRequest_Kind() {}
 
 func (*CreateTransactionRequest_Move) isCreateTransactionRequest_Kind() {}
 
 func (*CreateTransactionRequest_Problem) isCreateTransactionRequest_Kind() {}
+
+func (*CreateTransactionRequest_Order) isCreateTransactionRequest_Kind() {}
 
 type CreateTransactionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1153,7 +1209,7 @@ var File_wargapos_stock_v1_transaction_proto protoreflect.FileDescriptor
 
 const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\n" +
-	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\x1a!wargapos/stock/v1/placement.proto\"\xc0\x03\n" +
+	"#wargapos/stock/v1/transaction.proto\x12\x11wargapos.stock.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a wargapos/rolebased/v1/role.proto\x1a!wargapos/stock/v1/placement.proto\"\xfd\x03\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12M\n" +
 	"\x10transaction_type\x18\x02 \x01(\x0e2\".wargapos.stock.v1.TransactionTypeR\x0ftransactionType\x12M\n" +
@@ -1166,7 +1222,9 @@ const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\x05items\x18\x06 \x03(\v2\".wargapos.stock.v1.TransactionItemR\x05items\x12\x14\n" +
 	"\x05total\x18\a \x01(\x01R\x05total\x12#\n" +
 	"\rproduct_count\x18\b \x01(\x05R\fproductCount\x12!\n" +
-	"\fpieces_count\x18\t \x01(\x05R\vpiecesCount\"|\n" +
+	"\fpieces_count\x18\t \x01(\x05R\vpiecesCount\x12\x18\n" +
+	"\areceipt\x18\v \x01(\tR\areceipt\x12!\n" +
+	"\freceipt_file\x18\f \x01(\tR\vreceiptFile\"|\n" +
 	"\x0fTransactionItem\x12\x1e\n" +
 	"\x06sku_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12#\n" +
 	"\bquantity\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\bquantity\x12$\n" +
@@ -1174,35 +1232,40 @@ const file_wargapos_stock_v1_transaction_proto_rawDesc = "" +
 	"\x17StockInPlacementPayload\x12 \n" +
 	"\arack_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x06rackId\x12\x1e\n" +
 	"\x06sku_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\x12\x1d\n" +
-	"\x05count\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\x05count\"e\n" +
+	"\x05count\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\x05count\"\xa9\x01\n" +
 	"\rStockInCreate\x12T\n" +
 	"\tplacement\x18\x01 \x03(\v2*.wargapos.stock.v1.StockInPlacementPayloadB\n" +
-	"\xbaH\a\x92\x01\x04\b\x01\x10dR\tplacement\"\x80\x01\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x10dR\tplacement\x12B\n" +
+	"\x05items\x18\x02 \x03(\v2\".wargapos.stock.v1.TransactionItemB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items\"\xa0\x01\n" +
 	"\vMovePayload\x12)\n" +
 	"\ffrom_rack_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\n" +
 	"fromRackId\x12%\n" +
 	"\n" +
 	"to_rack_id\x18\x02 \x01(\rB\a\xbaH\x04*\x02 \x00R\btoRackId\x12\x1f\n" +
-	"\x06change\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\x06change\"L\n" +
+	"\x06change\x18\x03 \x01(\x05B\a\xbaH\x04\x1a\x02 \x00R\x06change\x12\x1e\n" +
+	"\x06sku_id\x18\x04 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"L\n" +
 	"\n" +
 	"MoveCreate\x12>\n" +
 	"\x04move\x18\x01 \x03(\v2\x1e.wargapos.stock.v1.MovePayloadB\n" +
-	"\xbaH\a\x92\x01\x04\b\x01\x10dR\x04move\"\xbd\x01\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x10dR\x04move\"\xdd\x01\n" +
 	"\x0eProblemPayload\x12 \n" +
 	"\arack_id\x18\x01 \x01(\rB\a\xbaH\x04*\x02 \x00R\x06rackId\x12\x1d\n" +
 	"\x05count\x18\x02 \x01(\x05B\a\xbaH\x04\x1a\x028\x00R\x05count\x12>\n" +
 	"\x04type\x18\x03 \x01(\x0e2 .wargapos.stock.v1.PlacementTypeB\b\xbaH\x05\x82\x01\x02\x10\x01R\x04type\x12*\n" +
-	"\x06reason\x18\x04 \x01(\tB\x12\xbaH\x0fr\r\x10\x03\x18\xff\x012\x06.*\\S.*R\x06reason\"Z\n" +
-	"\rProblemCreate\x12I\n" +
-	"\aproblem\x18\x01 \x03(\v2!.wargapos.stock.v1.ProblemPayloadB\f\xbaH\t\x92\x01\x06\b\x01\x10d\x18\x00R\aproblem\"}\n" +
+	"\x06reason\x18\x04 \x01(\tB\x12\xbaH\x0fr\r\x10\x03\x18\xff\x012\x06.*\\S.*R\x06reason\x12\x1e\n" +
+	"\x06sku_id\x18\x05 \x01(\rB\a\xbaH\x04*\x02 \x00R\x05skuId\"X\n" +
+	"\rProblemCreate\x12G\n" +
+	"\aproblem\x18\x01 \x03(\v2!.wargapos.stock.v1.ProblemPayloadB\n" +
+	"\xbaH\a\x92\x01\x04\b\x01\x10dR\aproblem\"\xc1\x01\n" +
 	"\vOrderCreate\x12#\n" +
 	"\areceipt\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x01\x18dR\areceipt\x12I\n" +
-	"\freceipt_file\x18\x02 \x01(\tB&\xbaH#r!\x10\x012\x1d^(https?://.+|/.*|\\.?\\.?/.*)$R\vreceiptFile\"\xb7\x02\n" +
+	"\freceipt_file\x18\x02 \x01(\tB&\xbaH#r!\x10\x012\x1d^(https?://.+|/.*|\\.?\\.?/.*)$R\vreceiptFile\x12B\n" +
+	"\x05items\x18\x03 \x03(\v2\".wargapos.stock.v1.TransactionItemB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items\"\xab\x02\n" +
 	"\x18CreateTransactionRequest\x12=\n" +
 	"\bstock_in\x18\x01 \x01(\v2 .wargapos.stock.v1.StockInCreateH\x00R\astockIn\x123\n" +
 	"\x04move\x18\x02 \x01(\v2\x1d.wargapos.stock.v1.MoveCreateH\x00R\x04move\x12<\n" +
-	"\aproblem\x18\x03 \x01(\v2 .wargapos.stock.v1.ProblemCreateH\x00R\aproblem\x12B\n" +
-	"\x05items\x18\x04 \x03(\v2\".wargapos.stock.v1.TransactionItemB\b\xbaH\x05\x92\x01\x02\b\x01R\x05items\x12\x12\n" +
+	"\aproblem\x18\x03 \x01(\v2 .wargapos.stock.v1.ProblemCreateH\x00R\aproblem\x126\n" +
+	"\x05order\x18\x04 \x01(\v2\x1e.wargapos.stock.v1.OrderCreateH\x00R\x05order\x12\x12\n" +
 	"\x04note\x18\x05 \x01(\tR\x04note:\t\x8a\xb5\x18\x05\n" +
 	"\x03\x01\x02\x05B\x06\n" +
 	"\x04kind\"]\n" +
@@ -1284,22 +1347,24 @@ var file_wargapos_stock_v1_transaction_proto_depIdxs = []int32{
 	19, // 2: wargapos.stock.v1.Transaction.created_at:type_name -> google.protobuf.Timestamp
 	3,  // 3: wargapos.stock.v1.Transaction.items:type_name -> wargapos.stock.v1.TransactionItem
 	4,  // 4: wargapos.stock.v1.StockInCreate.placement:type_name -> wargapos.stock.v1.StockInPlacementPayload
-	6,  // 5: wargapos.stock.v1.MoveCreate.move:type_name -> wargapos.stock.v1.MovePayload
-	20, // 6: wargapos.stock.v1.ProblemPayload.type:type_name -> wargapos.stock.v1.PlacementType
-	8,  // 7: wargapos.stock.v1.ProblemCreate.problem:type_name -> wargapos.stock.v1.ProblemPayload
-	5,  // 8: wargapos.stock.v1.CreateTransactionRequest.stock_in:type_name -> wargapos.stock.v1.StockInCreate
-	7,  // 9: wargapos.stock.v1.CreateTransactionRequest.move:type_name -> wargapos.stock.v1.MoveCreate
-	9,  // 10: wargapos.stock.v1.CreateTransactionRequest.problem:type_name -> wargapos.stock.v1.ProblemCreate
-	3,  // 11: wargapos.stock.v1.CreateTransactionRequest.items:type_name -> wargapos.stock.v1.TransactionItem
-	2,  // 12: wargapos.stock.v1.CreateTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
-	0,  // 13: wargapos.stock.v1.ListTransactionRequest.transaction_type:type_name -> wargapos.stock.v1.TransactionType
-	2,  // 14: wargapos.stock.v1.ListTransactionResponse.transactions:type_name -> wargapos.stock.v1.Transaction
-	2,  // 15: wargapos.stock.v1.DetailTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
-	16, // [16:16] is the sub-list for method output_type
-	16, // [16:16] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	3,  // 5: wargapos.stock.v1.StockInCreate.items:type_name -> wargapos.stock.v1.TransactionItem
+	6,  // 6: wargapos.stock.v1.MoveCreate.move:type_name -> wargapos.stock.v1.MovePayload
+	20, // 7: wargapos.stock.v1.ProblemPayload.type:type_name -> wargapos.stock.v1.PlacementType
+	8,  // 8: wargapos.stock.v1.ProblemCreate.problem:type_name -> wargapos.stock.v1.ProblemPayload
+	3,  // 9: wargapos.stock.v1.OrderCreate.items:type_name -> wargapos.stock.v1.TransactionItem
+	5,  // 10: wargapos.stock.v1.CreateTransactionRequest.stock_in:type_name -> wargapos.stock.v1.StockInCreate
+	7,  // 11: wargapos.stock.v1.CreateTransactionRequest.move:type_name -> wargapos.stock.v1.MoveCreate
+	9,  // 12: wargapos.stock.v1.CreateTransactionRequest.problem:type_name -> wargapos.stock.v1.ProblemCreate
+	10, // 13: wargapos.stock.v1.CreateTransactionRequest.order:type_name -> wargapos.stock.v1.OrderCreate
+	2,  // 14: wargapos.stock.v1.CreateTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
+	0,  // 15: wargapos.stock.v1.ListTransactionRequest.transaction_type:type_name -> wargapos.stock.v1.TransactionType
+	2,  // 16: wargapos.stock.v1.ListTransactionResponse.transactions:type_name -> wargapos.stock.v1.Transaction
+	2,  // 17: wargapos.stock.v1.DetailTransactionResponse.transaction:type_name -> wargapos.stock.v1.Transaction
+	18, // [18:18] is the sub-list for method output_type
+	18, // [18:18] is the sub-list for method input_type
+	18, // [18:18] is the sub-list for extension type_name
+	18, // [18:18] is the sub-list for extension extendee
+	0,  // [0:18] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_stock_v1_transaction_proto_init() }
@@ -1312,6 +1377,7 @@ func file_wargapos_stock_v1_transaction_proto_init() {
 		(*CreateTransactionRequest_StockIn)(nil),
 		(*CreateTransactionRequest_Move)(nil),
 		(*CreateTransactionRequest_Problem)(nil),
+		(*CreateTransactionRequest_Order)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
