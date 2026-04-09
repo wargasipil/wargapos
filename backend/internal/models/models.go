@@ -138,17 +138,17 @@ type Warehouse struct {
 }
 
 type Sku struct {
-	ID           uint32               `gorm:"primaryKey;autoIncrement"`
-	Code         string               `gorm:"uniqueIndex;not null;size:255"`
-	ProductID    uint32               `gorm:"column:product_id;not null"`
-	BranchID     uint32               `gorm:"column:branch_id;not null"`
-	WarehouseID  uint32               `gorm:"column:warehouse_id;not null"`
-	ProductType  int32                `gorm:"column:product_type;not null;default:0"`
-	StockQty     int64                `gorm:"column:stock_qty;not null;default:0"`
-	Deleted      bool                 `gorm:"not null;default:false"`
-	LastStockIn  *time.Time           `gorm:"column:last_stock_in"`
-	LastStockOut *time.Time           `gorm:"column:last_stock_out"`
-	CostingType  stockv1.CostingType  `gorm:"column:costing_type;not null;default:0"`
+	ID           uint32              `gorm:"primaryKey;autoIncrement"`
+	Code         string              `gorm:"uniqueIndex;not null;size:255"`
+	ProductID    uint32              `gorm:"column:product_id;not null"`
+	BranchID     uint32              `gorm:"column:branch_id;not null"`
+	WarehouseID  uint32              `gorm:"column:warehouse_id;not null"`
+	ProductType  int32               `gorm:"column:product_type;not null;default:0"`
+	StockQty     int64               `gorm:"column:stock_qty;not null;default:0"`
+	Deleted      bool                `gorm:"not null;default:false"`
+	LastStockIn  *time.Time          `gorm:"column:last_stock_in"`
+	LastStockOut *time.Time          `gorm:"column:last_stock_out"`
+	CostingType  stockv1.CostingType `gorm:"column:costing_type;not null;default:0"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
@@ -156,7 +156,7 @@ type Sku struct {
 type StockTransaction struct {
 	ID              uint64                  `gorm:"primaryKey;autoIncrement"`
 	TransactionType stockv1.TransactionType `gorm:"column:transaction_type;not null"`
-	PlacementStatus int16                   `gorm:"column:placement_status;not null;default:0"`
+	PlacementStatus stockv1.PlacementStatus `gorm:"column:placement_status;not null;default:0"`
 	Note            string                  `gorm:"size:500"`
 	Cancelled       bool                    `gorm:"not null;default:false"`
 	CreatedAt       time.Time
@@ -171,16 +171,7 @@ type StockTransactionItem struct {
 	TransactionID uint64  `gorm:"column:transaction_id;not null"`
 	SkuID         uint32  `gorm:"column:sku_id;not null"`
 	Quantity      int32   `gorm:"not null"`
-	Price         float64 `gorm:"not null;default:0"`
-}
-
-type Rack struct {
-	ID          uint32 `gorm:"primaryKey;autoIncrement"`
-	WarehouseID uint32 `gorm:"column:warehouse_id;not null"`
-	Name        string `gorm:"not null;size:300"`
-	Deleted     bool   `gorm:"not null;default:false"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	Total         float64 `gorm:"not null;default:0"`
 }
 
 type Material struct {
@@ -259,6 +250,8 @@ type MarketplaceCustomerAddress struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
+
+func (MarketplaceCustomerAddress) TableName() string { return "customer_addresses" }
 
 type MarketplaceCustomer struct {
 	ID          uint64 `gorm:"primaryKey;autoIncrement"`

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Box, Button, Flex, Input, Popover, Portal, Spinner, Text } from '@chakra-ui/react'
 import { ChevronDown, X } from 'lucide-react'
 import { useDebounce } from '../../lib/useDebounce'
-import { marketplaceClient } from '../../client'
+import { marketplaceOrderClient } from '../../client'
 
 interface Props {
   value: bigint
@@ -25,13 +25,13 @@ export function CustomerSelect({
 
   const { data: listData, isLoading } = useQuery({
     queryKey: ['customers-search', debouncedSearch],
-    queryFn: () => marketplaceClient.listCustomers({ page: 1, pageSize: 10, search: debouncedSearch }),
+    queryFn: () => marketplaceOrderClient.listCustomers({ page: 1, pageSize: 10, search: debouncedSearch }),
     enabled: open,
   })
 
   const { data: selectedData } = useQuery({
     queryKey: ['customer-by-id', String(value)],
-    queryFn: () => marketplaceClient.listCustomers({ page: 1, pageSize: 1, search: String(value) }),
+    queryFn: () => marketplaceOrderClient.listCustomers({ page: 1, pageSize: 1, search: String(value) }),
     enabled: value > 0n,
     staleTime: Infinity,
   })

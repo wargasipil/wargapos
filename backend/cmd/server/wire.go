@@ -10,6 +10,7 @@ import (
 	"wargapos/backend/internal/service/device_service"
 	"wargapos/backend/internal/service/event_service"
 	"wargapos/backend/internal/service/ingredient_service"
+	"wargapos/backend/internal/service/marketplace_order_service"
 	"wargapos/backend/internal/service/marketplace_service"
 	"wargapos/backend/internal/service/notification_service"
 	"wargapos/backend/internal/service/product_service"
@@ -42,6 +43,7 @@ func InitializeApp(cfg *config.Config) (App, error) {
 		stock_service.NewStockService,
 		ingredient_service.NewIngredientService,
 		marketplace_service.NewMarketplaceService,
+		marketplace_order_service.NewMarketplaceOrderService,
 		device_service.NewDeviceService,
 		backup_service.NewBackupService,
 		NewPartitionRunner,

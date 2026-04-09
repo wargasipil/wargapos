@@ -1,15 +1,15 @@
-package marketplace_service
+package marketplace_order_service
 
 import (
 	"context"
 	"time"
-	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
+	marketplaceorderv1 "wargapos/backend/gen/wargapos/marketplace_order/v1"
 	"wargapos/backend/internal/models"
 
 	"connectrpc.com/connect"
 )
 
-func (s *MarketplaceService) UpdateOrderStatus(ctx context.Context, req *connect.Request[marketplacev1.UpdateOrderStatusRequest]) (*connect.Response[marketplacev1.UpdateOrderStatusResponse], error) {
+func (s *MarketplaceOrderService) UpdateOrderStatus(ctx context.Context, req *connect.Request[marketplaceorderv1.UpdateOrderStatusRequest]) (*connect.Response[marketplaceorderv1.UpdateOrderStatusResponse], error) {
 	var order models.MarketplaceOrder
 	if err := s.db.Preload("Items").First(&order, req.Msg.Id).Error; err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, err)
@@ -23,7 +23,7 @@ func (s *MarketplaceService) UpdateOrderStatus(ctx context.Context, req *connect
 	}
 	order.Status = req.Msg.Status
 
-	return connect.NewResponse(&marketplacev1.UpdateOrderStatusResponse{
+	return connect.NewResponse(&marketplaceorderv1.UpdateOrderStatusResponse{
 		Order: toOrderProto(order),
 	}), nil
 }

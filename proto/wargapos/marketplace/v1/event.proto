@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package wargapos.marketplace.v1;
+
+// import "google/protobuf/timestamp.proto";
+import "wargapos/marketplace/v1/order.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1";
+
+message OrderCreatedEvent {
+  uint64 order_id = 1;
+  repeated MarketplaceOrderItem items = 2;
+  double total = 3;
+}
+
+message OrderCancelEvent {
+  uint64 order_id = 1;
+}
+
+message OrderEvent {
+  oneof event {
+    OrderCreatedEvent order_created = 1;
+    OrderCancelEvent order_cancel = 2;
+  }
+}

@@ -5,7 +5,7 @@ import {
   Badge, Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
 import { ArrowLeft, Pencil, Plus, Trash2, X, Check } from 'lucide-react'
-import { marketplaceClient } from '../../../client'
+import { marketplaceOrderClient } from '../../../client'
 import { MarketplaceOrderStatus } from '../../../gen/wargapos/marketplace/v1/order_pb'
 import { formatPrice, formatDateTime } from '../../../lib/format'
 import { stripError } from '../../../lib/errors'
@@ -44,7 +44,7 @@ function AddrRow({
 
   const updateMutation = useMutation({
     mutationFn: () =>
-      marketplaceClient.updateCustomerAddress({
+      marketplaceOrderClient.updateCustomerAddress({
         id: addr.id,
         label: form.label,
         address: form.address,
@@ -60,7 +60,7 @@ function AddrRow({
   })
 
   const deleteMutation = useMutation({
-    mutationFn: () => marketplaceClient.deleteCustomerAddress({ id: addr.id }),
+    mutationFn: () => marketplaceOrderClient.deleteCustomerAddress({ id: addr.id }),
     onSuccess: () => {
       setDeleteOpen(false)
       onDeleted()
@@ -167,25 +167,25 @@ export function MarketplaceCustomerDetailPage() {
 
   const { data: customerData, isLoading: customerLoading } = useQuery({
     queryKey: ['marketplace-customer', id],
-    queryFn: () => marketplaceClient.getCustomer({ id: BigInt(id) }),
+    queryFn: () => marketplaceOrderClient.getCustomer({ id: BigInt(id) }),
     enabled: !!id,
   })
 
   const { data: ordersData, isLoading: ordersLoading } = useQuery({
     queryKey: ['marketplace-orders-customer', id],
-    queryFn: () => marketplaceClient.listOrders({ page: 1, pageSize: 100, customerId: BigInt(id) }),
+    queryFn: () => marketplaceOrderClient.listOrders({ page: 1, pageSize: 100, customerId: BigInt(id) }),
     enabled: !!id,
   })
 
   const { data: addressesData, refetch: refetchAddresses } = useQuery({
     queryKey: ['customer-addresses', id],
-    queryFn: () => marketplaceClient.listCustomerAddresses({ customerId: BigInt(id) }),
+    queryFn: () => marketplaceOrderClient.listCustomerAddresses({ customerId: BigInt(id) }),
     enabled: !!id,
   })
 
   const createAddrMutation = useMutation({
     mutationFn: () =>
-      marketplaceClient.createCustomerAddress({
+      marketplaceOrderClient.createCustomerAddress({
         customerId: BigInt(id),
         label: addrForm.label,
         address: addrForm.address,

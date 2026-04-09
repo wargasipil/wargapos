@@ -1,19 +1,19 @@
-package marketplace_service
+package marketplace_order_service
 
 import (
 	"context"
 	"time"
 
-	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
+	marketplaceorderv1 "wargapos/backend/gen/wargapos/marketplace_order/v1"
 	"wargapos/backend/internal/models"
 
 	"connectrpc.com/connect"
 )
 
-func (s *MarketplaceService) UpdateCustomerAddress(
+func (s *MarketplaceOrderService) UpdateCustomerAddress(
 	ctx context.Context,
-	req *connect.Request[marketplacev1.UpdateCustomerAddressRequest],
-) (*connect.Response[marketplacev1.UpdateCustomerAddressResponse], error) {
+	req *connect.Request[marketplaceorderv1.UpdateCustomerAddressRequest],
+) (*connect.Response[marketplaceorderv1.UpdateCustomerAddressResponse], error) {
 	var addr models.MarketplaceCustomerAddress
 	if err := s.db.WithContext(ctx).Where("id = ? AND deleted = false", req.Msg.Id).First(&addr).Error; err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, err)
@@ -30,7 +30,7 @@ func (s *MarketplaceService) UpdateCustomerAddress(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	return connect.NewResponse(&marketplacev1.UpdateCustomerAddressResponse{
+	return connect.NewResponse(&marketplaceorderv1.UpdateCustomerAddressResponse{
 		Address: toAddressProto(addr),
 	}), nil
 }

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Box, Button, Field, Heading, HStack, Input, VStack } from '@chakra-ui/react'
 import { ArrowLeft } from 'lucide-react'
-import { marketplaceClient } from '../../../client'
+import { marketplaceOrderClient } from '../../../client'
 import { stripError } from '../../../lib/errors'
 import { toaster } from '../../../components/ui/toaster'
 
@@ -14,7 +14,7 @@ export function MarketplaceCustomerNewPage() {
   const [phone, setPhone] = useState('')
 
   const createMutation = useMutation({
-    mutationFn: () => marketplaceClient.createCustomer({ name, phoneNumber: phone }),
+    mutationFn: () => marketplaceOrderClient.createCustomer({ name, phoneNumber: phone }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['marketplace-customers'] })
       toaster.create({ title: 'Customer created', type: 'success', duration: 2000 })

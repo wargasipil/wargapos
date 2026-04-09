@@ -1,0 +1,258 @@
+syntax = "proto3";
+
+package wargapos.marketplace_order.v1;
+
+import "buf/validate/validate.proto";
+import "wargapos/marketplace/v1/customer.proto";
+import "wargapos/marketplace/v1/order.proto";
+import "wargapos/rolebased/v1/role.proto";
+
+option go_package = "wargapos/backend/gen/wargapos/marketplace_order/v1;marketplaceorderv1";
+
+service MarketplaceOrderService {
+  // Orders
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
+  rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse);
+  // Customers
+  rpc CreateCustomer(CreateCustomerRequest) returns (CreateCustomerResponse);
+  rpc GetCustomer(GetCustomerRequest) returns (GetCustomerResponse);
+  rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse);
+  rpc DeleteCustomer(DeleteCustomerRequest) returns (DeleteCustomerResponse);
+  rpc ListCustomers(ListCustomersRequest) returns (ListCustomersResponse);
+  // Customer Addresses
+  rpc CreateCustomerAddress(CreateCustomerAddressRequest) returns (CreateCustomerAddressResponse);
+  rpc UpdateCustomerAddress(UpdateCustomerAddressRequest) returns (UpdateCustomerAddressResponse);
+  rpc DeleteCustomerAddress(DeleteCustomerAddressRequest) returns (DeleteCustomerAddressResponse);
+  rpc ListCustomerAddresses(ListCustomerAddressesRequest) returns (ListCustomerAddressesResponse);
+}
+
+// --- Order messages ---
+
+message CreateOrderRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 shop_id = 1;
+  string customer_name = 2;
+  string phone_number = 3;
+  repeated wargapos.marketplace.v1.MarketplaceOrderItem items = 4;
+  uint32 warehouse_id = 5;
+  uint64 customer_id = 6;
+  uint64 address_id = 7;
+  string note = 8;
+  string receipt = 9;
+  string receipt_file = 10;
+  string shipping_address = 11;
+  string shipping_city = 12;
+  string shipping_province = 13;
+  string shipping_postal_code = 14;
+  string shipping_label = 15;
+}
+message CreateOrderResponse {
+  wargapos.marketplace.v1.MarketplaceOrder order = 1;
+}
+
+message GetOrderRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_ACCOUNTANT,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 id = 1;
+}
+message GetOrderResponse {
+  wargapos.marketplace.v1.MarketplaceOrder order = 1;
+}
+
+message ListOrdersRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_ACCOUNTANT,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  int32 page = 1;
+  int32 page_size = 2;
+  wargapos.marketplace.v1.MarketplaceOrderStatus status_filter = 3;
+  uint64 shop_id = 4;
+  uint64 customer_id = 5;
+  string date_from = 6;
+  string date_to = 7;
+  uint32 warehouse_id = 8;
+  string search = 9;
+}
+message ListOrdersResponse {
+  repeated wargapos.marketplace.v1.MarketplaceOrder orders = 1;
+  int32 total = 2;
+}
+
+message UpdateOrderStatusRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 id = 1;
+  wargapos.marketplace.v1.MarketplaceOrderStatus status = 2;
+}
+message UpdateOrderStatusResponse {
+  wargapos.marketplace.v1.MarketplaceOrder order = 1;
+}
+
+// --- Customer messages ---
+
+message CreateCustomerRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  string name = 1;
+  string phone_number = 2;
+}
+message CreateCustomerResponse {
+  wargapos.marketplace.v1.MarketplaceCustomer customer = 1;
+}
+
+message GetCustomerRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_ACCOUNTANT,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 id = 1;
+}
+message GetCustomerResponse {
+  wargapos.marketplace.v1.MarketplaceCustomer customer = 1;
+}
+
+message UpdateCustomerRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 id = 1;
+  string name = 2;
+  string phone_number = 3;
+}
+message UpdateCustomerResponse {
+  wargapos.marketplace.v1.MarketplaceCustomer customer = 1;
+}
+
+message DeleteCustomerRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 id = 1;
+}
+message DeleteCustomerResponse {}
+
+message ListCustomersRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_ACCOUNTANT,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+}
+message ListCustomersResponse {
+  repeated wargapos.marketplace.v1.MarketplaceCustomer customers = 1;
+  int32 total = 2;
+}
+
+// --- Customer Address messages ---
+
+message CreateCustomerAddressRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 customer_id = 1;
+  string label = 2;
+  string address = 3;
+  string city = 4;
+  string province = 5;
+  string postal_code = 6;
+}
+message CreateCustomerAddressResponse {
+  wargapos.marketplace.v1.CustomerAddress address = 1;
+}
+
+message UpdateCustomerAddressRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 id = 1;
+  string label = 2;
+  string address = 3;
+  string city = 4;
+  string province = 5;
+  string postal_code = 6;
+}
+message UpdateCustomerAddressResponse {
+  wargapos.marketplace.v1.CustomerAddress address = 1;
+}
+
+message DeleteCustomerAddressRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 id = 1;
+}
+message DeleteCustomerAddressResponse {}
+
+message ListCustomerAddressesRequest {
+  option (wargapos.rolebased.v1.request_policy) = {
+    roles: [
+      ROLE_ROOT,
+      ROLE_ADMIN,
+      ROLE_ACCOUNTANT,
+      ROLE_WAREHOUSE_ADMIN
+    ]
+  };
+  uint64 customer_id = 1;
+}
+message ListCustomerAddressesResponse {
+  repeated wargapos.marketplace.v1.CustomerAddress addresses = 1;
+}

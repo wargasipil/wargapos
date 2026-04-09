@@ -5,7 +5,7 @@ import {
   Badge, Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Tabs, Text, VStack,
 } from '@chakra-ui/react'
 import { Plus, SlidersHorizontal } from 'lucide-react'
-import { marketplaceClient } from '../../../client'
+import { marketplaceOrderClient } from '../../../client'
 import { MarketplaceOrderStatus } from '../../../gen/wargapos/marketplace/v1/order_pb'
 import { formatPrice, formatDateTime } from '../../../lib/format'
 import { WarehouseSelect } from '../../../components/shared/WarehouseSelect'
@@ -41,7 +41,7 @@ export function MarketplaceOrdersPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['marketplace-orders', statusFilter, page, warehouseId, String(shopId), dateFrom, dateTo, debouncedSearch],
-    queryFn: () => marketplaceClient.listOrders({
+    queryFn: () => marketplaceOrderClient.listOrders({
       page,
       pageSize: PAGE_SIZE,
       statusFilter,

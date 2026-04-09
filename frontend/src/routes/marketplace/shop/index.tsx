@@ -2,14 +2,17 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import {
-  Badge, Box, Button, Flex, Heading, HStack, Spinner, Table, Text, VStack,
+  Badge, Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Tabs, Text, VStack,
 } from '@chakra-ui/react'
-import { Plus, Pencil, Trash2 } from 'lucide-react'
+import { ExternalLink, Pencil, Plus, Trash2 } from 'lucide-react'
 import { marketplaceClient } from '../../../client'
 import { MarketplaceShopType } from '../../../gen/wargapos/marketplace/v1/shop_pb'
 import { stripError } from '../../../lib/errors'
 import { toaster } from '../../../components/ui/toaster'
 import { ConfirmDialog } from '../../../components/shared/ConfirmDialog'
+import { useDebounce } from '../../../lib/useDebounce'
+
+const PAGE_SIZE = 20
 
 const SHOP_TYPE_LABELS: Record<number, string> = {
   [MarketplaceShopType.SHOPEE]: 'Shopee',
@@ -25,21 +28,46 @@ const SHOP_TYPE_COLORS: Record<number, string> = {
   [MarketplaceShopType.OTHER]: 'gray',
 }
 
+const PLATFORM_TABS = [
+  { label: 'All',       value: 0 },
+  { label: 'Shopee',    value: MarketplaceShopType.SHOPEE },
+  { label: 'Tokopedia', value: MarketplaceShopType.TOKOPEDIA },
+  { label: 'Lazada',    value: MarketplaceShopType.LAZADA },
+  { label: 'Other',     value: MarketplaceShopType.OTHER },
+]
+
 export function ShopListingPage() {
   const qc = useQueryClient()
   const [deleteTarget, setDeleteTarget] = useState<bigint | null>(null)
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 300)
+  const [typeFilter, setTypeFilter] = useState(0)
+  const [activeOnly, setActiveOnly] = useState(false)
+  const [page, setPage] = useState(1)
+  const [togglingIds, setTogglingIds] = useState<Set<bigint>>(new Set())
+
+  function resetPage() { setPage(1) }
 
   const { data, isLoading } = useQuery({
-    queryKey: ['marketplace-shops'],
-    queryFn: () => marketplaceClient.listShops({ page: 1, pageSize: 100 }),
+    queryKey: ['marketplace-shops', page, debouncedSearch, activeOnly],
+    queryFn: () => marketplaceClient.listShops({ page, pageSize: PAGE_SIZE, search: debouncedSearch, activeOnly }),
     staleTime: 0,
   })
 
-  const shops = data?.shops ?? []
+  const allShops = data?.shops ?? []
+  const total = data?.total ?? 0
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+
+  // client-side platform filter
+  const shops = typeFilter === 0 ? allShops : allShops.filter((s) => s.type === typeFilter)
 
   const toggleMutation = useMutation({
-    mutationFn: ({ id, isActive }: { id: bigint; isActive: boolean }) =>
-      marketplaceClient.updateShop({ id, isActive } as Parameters<typeof marketplaceClient.updateShop>[0]),
+    mutationFn: ({ id, isActive }: { id: bigint; isActive: boolean }) => {
+      setTogglingIds((prev) => new Set(prev).add(id))
+      return marketplaceClient.updateShop({ id, isActive } as Parameters<typeof marketplaceClient.updateShop>[0])
+    },
+    onSettled: (_r, _e, { id }) =>
+      setTogglingIds((prev) => { const s = new Set(prev); s.delete(id); return s }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['marketplace-shops'] }),
     onError: (e) => toaster.create({ title: stripError(e), type: 'error', duration: 4000 }),
   })
@@ -63,14 +91,49 @@ export function ShopListingPage() {
         </Button>
       </Flex>
 
+      {/* Platform tabs */}
+      <Tabs.Root
+        value={String(typeFilter)}
+        onValueChange={(d) => { setTypeFilter(Number(d.value)); resetPage() }}
+        mb={4}
+        size="sm"
+      >
+        <Tabs.List>
+          {PLATFORM_TABS.map((t) => (
+            <Tabs.Trigger key={t.value} value={String(t.value)}>{t.label}</Tabs.Trigger>
+          ))}
+        </Tabs.List>
+      </Tabs.Root>
+
+      {/* Filter bar */}
+      <HStack mb={4} gap={2} wrap="wrap">
+        <Input
+          size="sm"
+          maxW="220px"
+          placeholder="Search shop…"
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); resetPage() }}
+        />
+        <Button
+          size="sm"
+          variant={activeOnly ? 'solid' : 'outline'}
+          colorPalette="green"
+          onClick={() => { setActiveOnly((v) => !v); resetPage() }}
+        >
+          Active only
+        </Button>
+      </HStack>
+
       {isLoading ? (
         <Flex justify="center" py={12}><Spinner /></Flex>
       ) : shops.length === 0 ? (
         <Flex direction="column" align="center" py={16} gap={2} color="gray.400">
-          <Text>No shops yet</Text>
-          <Button asChild size="sm" variant="outline" mt={2}>
-            <Link to="/marketplace/shop/new">Add your first shop</Link>
-          </Button>
+          <Text>No shops found</Text>
+          {allShops.length === 0 && total === 0 && (
+            <Button asChild size="sm" variant="outline" mt={2}>
+              <Link to="/marketplace/shop/new">Add your first shop</Link>
+            </Button>
+          )}
         </Flex>
       ) : (
         <>
@@ -82,6 +145,7 @@ export function ShopListingPage() {
                   <Table.ColumnHeader>Name</Table.ColumnHeader>
                   <Table.ColumnHeader>Platform</Table.ColumnHeader>
                   <Table.ColumnHeader>Username</Table.ColumnHeader>
+                  <Table.ColumnHeader>URL</Table.ColumnHeader>
                   <Table.ColumnHeader>Status</Table.ColumnHeader>
                   <Table.ColumnHeader textAlign="right">Actions</Table.ColumnHeader>
                 </Table.Row>
@@ -89,19 +153,40 @@ export function ShopListingPage() {
               <Table.Body>
                 {shops.map((s) => (
                   <Table.Row key={String(s.id)}>
-                    <Table.Cell fontWeight="medium">{s.name}</Table.Cell>
+                    <Table.Cell>
+                      <Link to="/marketplace/shop/$id" params={{ id: String(s.id) }}>
+                        <Text fontWeight="medium" color="blue.600" _hover={{ textDecoration: 'underline' }}>
+                          {s.name}
+                        </Text>
+                      </Link>
+                    </Table.Cell>
                     <Table.Cell>
                       <Badge colorPalette={SHOP_TYPE_COLORS[s.type] ?? 'gray'}>
                         {SHOP_TYPE_LABELS[s.type] ?? 'Unknown'}
                       </Badge>
                     </Table.Cell>
                     <Table.Cell color="gray.600">{s.username || '—'}</Table.Cell>
+                    <Table.Cell maxW="200px">
+                      {s.url ? (
+                        <a
+                          href={s.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ fontSize: '0.75rem', color: 'var(--chakra-colors-blue-500)', display: 'flex', alignItems: 'center', gap: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {s.url} <ExternalLink size={10} />
+                        </a>
+                      ) : (
+                        <Text color="gray.300" fontSize="xs">—</Text>
+                      )}
+                    </Table.Cell>
                     <Table.Cell>
                       <Button
                         size="xs"
                         variant="outline"
                         colorPalette={s.isActive ? 'green' : 'gray'}
-                        loading={toggleMutation.isPending}
+                        loading={togglingIds.has(s.id)}
                         onClick={() => toggleMutation.mutate({ id: s.id, isActive: !s.isActive })}
                       >
                         {s.isActive ? 'Active' : 'Inactive'}
@@ -131,7 +216,9 @@ export function ShopListingPage() {
               <Box key={String(s.id)} bg="white" borderRadius="lg" p={4} boxShadow="sm">
                 <Flex justify="space-between" align="flex-start" mb={2}>
                   <VStack align="flex-start" gap={1}>
-                    <Text fontWeight="semibold" fontSize="sm">{s.name}</Text>
+                    <Link to="/marketplace/shop/$id" params={{ id: String(s.id) }}>
+                      <Text fontWeight="semibold" fontSize="sm" color="blue.600">{s.name}</Text>
+                    </Link>
                     <Badge colorPalette={SHOP_TYPE_COLORS[s.type] ?? 'gray'} size="sm">
                       {SHOP_TYPE_LABELS[s.type] ?? 'Unknown'}
                     </Badge>
@@ -140,14 +227,24 @@ export function ShopListingPage() {
                     size="2xs"
                     variant="outline"
                     colorPalette={s.isActive ? 'green' : 'gray'}
-                    loading={toggleMutation.isPending}
+                    loading={togglingIds.has(s.id)}
                     onClick={() => toggleMutation.mutate({ id: s.id, isActive: !s.isActive })}
                   >
                     {s.isActive ? 'Active' : 'Inactive'}
                   </Button>
                 </Flex>
                 {s.username && (
-                  <Text fontSize="sm" color="gray.500" mb={3}>@{s.username}</Text>
+                  <Text fontSize="sm" color="gray.500" mb={1}>@{s.username}</Text>
+                )}
+                {s.url && (
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontSize: '0.75rem', color: 'var(--chakra-colors-blue-400)', display: 'block', marginBottom: '0.75rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                  >
+                    {s.url}
+                  </a>
                 )}
                 <Flex gap={2}>
                   <Button asChild size="xs" variant="outline" flex={1}>
@@ -162,6 +259,15 @@ export function ShopListingPage() {
               </Box>
             ))}
           </VStack>
+
+          {/* Pagination */}
+          {total > PAGE_SIZE && (
+            <HStack mt={4} justify="center" gap={3}>
+              <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>‹</Button>
+              <Text fontSize="sm" color="gray.500">{page} / {totalPages}</Text>
+              <Button size="sm" variant="outline" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>›</Button>
+            </HStack>
+          )}
         </>
       )}
 

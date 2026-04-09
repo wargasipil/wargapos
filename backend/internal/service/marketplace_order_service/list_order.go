@@ -1,14 +1,15 @@
-package marketplace_service
+package marketplace_order_service
 
 import (
 	"context"
 	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
+	marketplaceorderv1 "wargapos/backend/gen/wargapos/marketplace_order/v1"
 	"wargapos/backend/internal/models"
 
 	"connectrpc.com/connect"
 )
 
-func (s *MarketplaceService) ListOrders(ctx context.Context, req *connect.Request[marketplacev1.ListOrdersRequest]) (*connect.Response[marketplacev1.ListOrdersResponse], error) {
+func (s *MarketplaceOrderService) ListOrders(ctx context.Context, req *connect.Request[marketplaceorderv1.ListOrdersRequest]) (*connect.Response[marketplaceorderv1.ListOrdersResponse], error) {
 	page := int(req.Msg.Page)
 	if page < 1 {
 		page = 1
@@ -54,7 +55,7 @@ func (s *MarketplaceService) ListOrders(ctx context.Context, req *connect.Reques
 	for i, o := range orders {
 		proto[i] = toOrderProto(o)
 	}
-	return connect.NewResponse(&marketplacev1.ListOrdersResponse{
+	return connect.NewResponse(&marketplaceorderv1.ListOrdersResponse{
 		Orders: proto,
 		Total:  int32(total),
 	}), nil

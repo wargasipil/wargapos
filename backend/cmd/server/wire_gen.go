@@ -14,6 +14,7 @@ import (
 	"wargapos/backend/internal/service/device_service"
 	"wargapos/backend/internal/service/event_service"
 	"wargapos/backend/internal/service/ingredient_service"
+	"wargapos/backend/internal/service/marketplace_order_service"
 	"wargapos/backend/internal/service/marketplace_service"
 	"wargapos/backend/internal/service/notification_service"
 	"wargapos/backend/internal/service/product_service"
@@ -43,10 +44,11 @@ func InitializeApp(cfg *config.Config) (App, error) {
 	stockServiceClient := NewStockServiceClient(cfg, defaultServiceClientOption)
 	ingredientService := ingredient_service.NewIngredientService(db, stockServiceClient)
 	marketplaceService := marketplace_service.NewMarketplaceService(cfg, db, stockServiceClient)
+	marketplaceOrderService := marketplace_order_service.NewMarketplaceOrderService(cfg, db, stockServiceClient)
 	deviceService := device_service.NewDeviceService()
 	notificationService := notification_service.NewNotificationService(db)
 	backupService := backup_service.NewBackupService(db, cfg, authConfig)
-	webRunnerFunc := NewWebRunnerFunc(db, cfg, midtransConfig, authConfig, authService, userService, eventService, productService, transactionService, tableService, settingsService, stockService, ingredientService, marketplaceService, deviceService, notificationService, backupService)
+	webRunnerFunc := NewWebRunnerFunc(db, cfg, midtransConfig, authConfig, authService, userService, eventService, productService, transactionService, tableService, settingsService, stockService, ingredientService, marketplaceService, marketplaceOrderService, deviceService, notificationService, backupService)
 	runner := transaction_service.NewTransactionRunner()
 	partitionRunner := NewPartitionRunner(db)
 	partitionRunnerFunc := NewPartitionRunnerFunc(partitionRunner)

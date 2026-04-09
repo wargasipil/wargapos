@@ -1,16 +1,17 @@
-package marketplace_service
+package marketplace_order_service
 
 import (
 	"context"
 	"fmt"
 	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
+	marketplaceorderv1 "wargapos/backend/gen/wargapos/marketplace_order/v1"
 	"wargapos/backend/internal/models"
 
 	"connectrpc.com/connect"
 	"gorm.io/gorm"
 )
 
-func (s *MarketplaceService) CreateOrder(ctx context.Context, req *connect.Request[marketplacev1.CreateOrderRequest]) (*connect.Response[marketplacev1.CreateOrderResponse], error) {
+func (s *MarketplaceOrderService) CreateOrder(ctx context.Context, req *connect.Request[marketplaceorderv1.CreateOrderRequest]) (*connect.Response[marketplaceorderv1.CreateOrderResponse], error) {
 	if len(req.Msg.Items) == 0 {
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("items required"))
 	}
@@ -83,7 +84,7 @@ func (s *MarketplaceService) CreateOrder(ctx context.Context, req *connect.Reque
 
 	order.Shop = shop
 	order.Items = items
-	return connect.NewResponse(&marketplacev1.CreateOrderResponse{
+	return connect.NewResponse(&marketplaceorderv1.CreateOrderResponse{
 		Order: toOrderProto(order),
 	}), nil
 }

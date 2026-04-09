@@ -5,7 +5,7 @@ import {
   Box, Button, Flex, Heading, HStack, Input, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
 import { Plus, Pencil, Trash2 } from 'lucide-react'
-import { marketplaceClient } from '../../../client'
+import { marketplaceOrderClient } from '../../../client'
 import { stripError } from '../../../lib/errors'
 import { toaster } from '../../../components/ui/toaster'
 import { ConfirmDialog } from '../../../components/shared/ConfirmDialog'
@@ -20,7 +20,7 @@ export function MarketplaceCustomersPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['marketplace-customers', search, page],
-    queryFn: () => marketplaceClient.listCustomers({ page, pageSize: 20, search }),
+    queryFn: () => marketplaceOrderClient.listCustomers({ page, pageSize: 20, search }),
     staleTime: 0,
   })
 
@@ -28,7 +28,7 @@ export function MarketplaceCustomersPage() {
   const total = data?.total ?? 0
 
   const deleteMutation = useMutation({
-    mutationFn: (id: bigint) => marketplaceClient.deleteCustomer({ id }),
+    mutationFn: (id: bigint) => marketplaceOrderClient.deleteCustomer({ id }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['marketplace-customers'] })
       toaster.create({ title: 'Customer deleted', type: 'success', duration: 2000 })

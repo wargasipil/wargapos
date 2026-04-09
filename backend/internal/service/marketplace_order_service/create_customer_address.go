@@ -1,19 +1,19 @@
-package marketplace_service
+package marketplace_order_service
 
 import (
 	"context"
 	"time"
 
-	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
+	marketplaceorderv1 "wargapos/backend/gen/wargapos/marketplace_order/v1"
 	"wargapos/backend/internal/models"
 
 	"connectrpc.com/connect"
 )
 
-func (s *MarketplaceService) CreateCustomerAddress(
+func (s *MarketplaceOrderService) CreateCustomerAddress(
 	ctx context.Context,
-	req *connect.Request[marketplacev1.CreateCustomerAddressRequest],
-) (*connect.Response[marketplacev1.CreateCustomerAddressResponse], error) {
+	req *connect.Request[marketplaceorderv1.CreateCustomerAddressRequest],
+) (*connect.Response[marketplaceorderv1.CreateCustomerAddressResponse], error) {
 	if req.Msg.Address == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, nil)
 	}
@@ -33,7 +33,7 @@ func (s *MarketplaceService) CreateCustomerAddress(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	return connect.NewResponse(&marketplacev1.CreateCustomerAddressResponse{
+	return connect.NewResponse(&marketplaceorderv1.CreateCustomerAddressResponse{
 		Address: toAddressProto(addr),
 	}), nil
 }

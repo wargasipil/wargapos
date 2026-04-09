@@ -43,6 +43,14 @@ POS app for cafes and marketplace management (monorepo). Backend: Go + ConnectRP
 - `make migrate-status` — show pending/applied migrations
 - `make migrate-reset` — roll back all migrations
 
+## Migration Policy
+Whenever a task requires a schema change, **always ask the user** before writing any SQL:
+> "Should I append this to the last migration (`000XX_<name>.sql`) or create a new migration file?"
+
+- **Append**: use when the last migration hasn't been applied to any shared/production DB yet (i.e., it's still in local dev and logically belongs with the same change set).
+- **New file**: use for any standalone or independently deployable schema change. Name it `000XX_<short_description>.sql` where `XX` is the next number after the current highest.
+- Never decide silently — always confirm with the user first.
+
 ## Database Tables
 | Table | Key columns |
 |-------|-------------|

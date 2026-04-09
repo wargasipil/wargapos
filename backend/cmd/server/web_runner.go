@@ -12,6 +12,7 @@ import (
 	"wargapos/backend/gen/wargapos/event/v1/eventv1connect"
 	ingredientv1connect "wargapos/backend/gen/wargapos/ingredient/v1/ingredientv1connect"
 	marketplacev1connect "wargapos/backend/gen/wargapos/marketplace/v1/marketplacev1connect"
+	marketplaceorderv1connect "wargapos/backend/gen/wargapos/marketplace_order/v1/marketplaceorderv1connect"
 	notificationv1connect "wargapos/backend/gen/wargapos/notification/v1/notificationv1connect"
 	"wargapos/backend/gen/wargapos/product/v1/productv1connect"
 	settingsv1connect "wargapos/backend/gen/wargapos/settings/v1/settingsv1connect"
@@ -26,6 +27,7 @@ import (
 	"wargapos/backend/internal/service/device_service"
 	"wargapos/backend/internal/service/event_service"
 	"wargapos/backend/internal/service/ingredient_service"
+	"wargapos/backend/internal/service/marketplace_order_service"
 	"wargapos/backend/internal/service/marketplace_service"
 	"wargapos/backend/internal/service/notification_service"
 	"wargapos/backend/internal/service/product_service"
@@ -61,6 +63,7 @@ func NewWebRunnerFunc(
 	stockSvc *stock_service.StockService,
 	ingredientSvc *ingredient_service.IngredientService,
 	marketplaceSvc *marketplace_service.MarketplaceService,
+	marketplaceOrderSvc *marketplace_order_service.MarketplaceOrderService,
 	deviceSvc *device_service.DeviceService,
 	notifSvc *notification_service.NotificationService,
 	backupSvc *backup_service.BackupService,
@@ -87,6 +90,7 @@ func NewWebRunnerFunc(
 	mux.Handle(stockv1connect.NewStockServiceHandler(stockSvc, interceptor))
 	mux.Handle(ingredientv1connect.NewIngredientServiceHandler(ingredientSvc, interceptor))
 	mux.Handle(marketplacev1connect.NewMarketplaceServiceHandler(marketplaceSvc, interceptor))
+	mux.Handle(marketplaceorderv1connect.NewMarketplaceOrderServiceHandler(marketplaceOrderSvc, interceptor))
 	mux.Handle(devicev1connect.NewDeviceServiceHandler(deviceSvc, interceptor))
 	mux.Handle(notificationv1connect.NewNotificationServiceHandler(notifSvc, interceptor))
 	mux.Handle(backupv1connect.NewBackupServiceHandler(backupSvc, interceptor))
@@ -102,6 +106,7 @@ func NewWebRunnerFunc(
 		stockv1connect.StockServiceName,
 		ingredientv1connect.IngredientServiceName,
 		marketplacev1connect.MarketplaceServiceName,
+		marketplaceorderv1connect.MarketplaceOrderServiceName,
 		devicev1connect.DeviceServiceName,
 		notificationv1connect.NotificationServiceName,
 		backupv1connect.BackupServiceName,

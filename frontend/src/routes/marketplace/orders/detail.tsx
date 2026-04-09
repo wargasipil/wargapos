@@ -5,7 +5,7 @@ import {
   Badge, Box, Button, Flex, Heading, HStack, Spinner, Table, Text, VStack,
 } from '@chakra-ui/react'
 import { ArrowLeft } from 'lucide-react'
-import { marketplaceClient } from '../../../client'
+import { marketplaceOrderClient } from '../../../client'
 import { useAuthStore } from '../../../store/auth'
 import { MarketplaceOrderStatus } from '../../../gen/wargapos/marketplace/v1/order_pb'
 import { formatPrice, formatDateTime } from '../../../lib/format'
@@ -31,13 +31,13 @@ export function MarketplaceOrderDetailPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['marketplace-order', id],
-    queryFn: () => marketplaceClient.getOrder({ id: BigInt(id) }),
+    queryFn: () => marketplaceOrderClient.getOrder({ id: BigInt(id) }),
     enabled: !!id,
   })
 
   const cancelMutation = useMutation({
     mutationFn: () =>
-      marketplaceClient.updateOrderStatus({
+      marketplaceOrderClient.updateOrderStatus({
         id: BigInt(id),
         status: MarketplaceOrderStatus.CANCELLED,
       }),

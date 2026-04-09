@@ -34,6 +34,7 @@ import { IngredientsPage } from './routes/cafe/ingredients/index'
 import { ShopListingPage } from './routes/marketplace/shop/index'
 import { ShopListingNewPage } from './routes/marketplace/shop/new'
 import { ShopListingEditPage } from './routes/marketplace/shop/edit'
+import { ShopDetailPage } from './routes/marketplace/shop/detail'
 import { MarketplaceOrdersPage } from './routes/marketplace/orders/index'
 import { MarketplaceOrderDetailPage } from './routes/marketplace/orders/detail'
 import { MarketplaceProductsPage } from './routes/marketplace/products/index'
@@ -305,6 +306,16 @@ const marketplaceShopEditRoute = createRoute({
   },
 })
 
+const marketplaceShopDetailRoute = createRoute({
+  getParentRoute: () => layoutRoute,
+  path: '/marketplace/shop/$id',
+  component: ShopDetailPage,
+  beforeLoad: () => {
+    const { role } = useAuthStore.getState()
+    if (!isRootOrAdmin(role)) throw redirect({ to: '/' })
+  },
+})
+
 const marketplaceOrdersRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: '/marketplace/orders',
@@ -453,6 +464,7 @@ const routeTree = rootRoute.addChildren([
     marketplaceShopRoute,
     marketplaceShopNewRoute,
     marketplaceShopEditRoute,
+    marketplaceShopDetailRoute,
     marketplaceOrdersRoute,
     marketplaceOrderNewRoute,
     marketplaceOrderDetailRoute,

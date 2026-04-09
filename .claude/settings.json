@@ -34,7 +34,15 @@
       "Bash(sed 's/func \\(s \\\\*StockService\\) //')",
       "Bash(cut -d'\\(' -f1)",
       "Bash(find d:/research/wargapos/backend -name *_test.go)",
-      "Bash(find /d/research/wargapos/backend/internal/service/marketplace_service -name \"*.go\" -type f -exec wc -l {} +)"
+      "Bash(find /d/research/wargapos/backend/internal/service/marketplace_service -name \"*.go\" -type f -exec wc -l {} +)",
+      "Bash(find /d/research/wargapos/backend/internal/service/marketplace_service -type f -name *.go)",
+      "Bash(find /d/research/wargapos/backend/internal/models -type f -name *.go)",
+      "Bash(find /d/research/wargapos -type d -name *marketplace*order* -o -type d -name *order*)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(echo \"=== $f ===\")",
+      "Read(//d/research/wargapos/backend/**)",
+      "Bash(done)"
     ]
   }
 }

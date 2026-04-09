@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import { Box, Button, Field, Heading, HStack, Input, Spinner, VStack } from '@chakra-ui/react'
 import { ArrowLeft } from 'lucide-react'
-import { marketplaceClient } from '../../../client'
+import { marketplaceOrderClient } from '../../../client'
 import { stripError } from '../../../lib/errors'
 import { toaster } from '../../../components/ui/toaster'
 
@@ -16,7 +16,7 @@ export function MarketplaceCustomerEditPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['marketplace-customer', id],
-    queryFn: () => marketplaceClient.getCustomer({ id: BigInt(id) }),
+    queryFn: () => marketplaceOrderClient.getCustomer({ id: BigInt(id) }),
     enabled: !!id,
   })
 
@@ -28,7 +28,7 @@ export function MarketplaceCustomerEditPage() {
   }, [data])
 
   const updateMutation = useMutation({
-    mutationFn: () => marketplaceClient.updateCustomer({ id: BigInt(id), name, phoneNumber: phone }),
+    mutationFn: () => marketplaceOrderClient.updateCustomer({ id: BigInt(id), name, phoneNumber: phone }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['marketplace-customers'] })
       qc.invalidateQueries({ queryKey: ['marketplace-customer', id] })

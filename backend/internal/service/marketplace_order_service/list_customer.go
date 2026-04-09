@@ -1,18 +1,19 @@
-package marketplace_service
+package marketplace_order_service
 
 import (
 	"context"
 
 	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
+	marketplaceorderv1 "wargapos/backend/gen/wargapos/marketplace_order/v1"
 	"wargapos/backend/internal/models"
 
 	"connectrpc.com/connect"
 )
 
-func (s *MarketplaceService) ListCustomers(
+func (s *MarketplaceOrderService) ListCustomers(
 	ctx context.Context,
-	req *connect.Request[marketplacev1.ListCustomersRequest],
-) (*connect.Response[marketplacev1.ListCustomersResponse], error) {
+	req *connect.Request[marketplaceorderv1.ListCustomersRequest],
+) (*connect.Response[marketplaceorderv1.ListCustomersResponse], error) {
 	page := int(req.Msg.Page)
 	if page < 1 {
 		page = 1
@@ -40,7 +41,7 @@ func (s *MarketplaceService) ListCustomers(
 		proto[i] = toCustomerProto(c)
 	}
 
-	return connect.NewResponse(&marketplacev1.ListCustomersResponse{
+	return connect.NewResponse(&marketplaceorderv1.ListCustomersResponse{
 		Customers: proto,
 		Total:     int32(total),
 	}), nil

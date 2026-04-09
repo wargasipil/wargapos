@@ -1,18 +1,19 @@
-package marketplace_service
+package marketplace_order_service
 
 import (
 	"context"
 
 	marketplacev1 "wargapos/backend/gen/wargapos/marketplace/v1"
+	marketplaceorderv1 "wargapos/backend/gen/wargapos/marketplace_order/v1"
 	"wargapos/backend/internal/models"
 
 	"connectrpc.com/connect"
 )
 
-func (s *MarketplaceService) ListCustomerAddresses(
+func (s *MarketplaceOrderService) ListCustomerAddresses(
 	ctx context.Context,
-	req *connect.Request[marketplacev1.ListCustomerAddressesRequest],
-) (*connect.Response[marketplacev1.ListCustomerAddressesResponse], error) {
+	req *connect.Request[marketplaceorderv1.ListCustomerAddressesRequest],
+) (*connect.Response[marketplaceorderv1.ListCustomerAddressesResponse], error) {
 	var addrs []models.MarketplaceCustomerAddress
 	if err := s.db.WithContext(ctx).
 		Where("customer_id = ? AND deleted = false", req.Msg.CustomerId).
@@ -26,7 +27,7 @@ func (s *MarketplaceService) ListCustomerAddresses(
 		proto[i] = toAddressProto(a)
 	}
 
-	return connect.NewResponse(&marketplacev1.ListCustomerAddressesResponse{
+	return connect.NewResponse(&marketplaceorderv1.ListCustomerAddressesResponse{
 		Addresses: proto,
 	}), nil
 }

@@ -551,550 +551,6 @@ func (x *ListShopsResponse) GetTotal() int32 {
 	return 0
 }
 
-type CreateOrderRequest struct {
-	state              protoimpl.MessageState  `protogen:"open.v1"`
-	ShopId             uint64                  `protobuf:"varint,1,opt,name=shop_id,json=shopId,proto3" json:"shop_id,omitempty"`
-	CustomerName       string                  `protobuf:"bytes,2,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
-	PhoneNumber        string                  `protobuf:"bytes,3,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
-	Items              []*MarketplaceOrderItem `protobuf:"bytes,4,rep,name=items,proto3" json:"items,omitempty"`
-	WarehouseId        uint32                  `protobuf:"varint,5,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	CustomerId         uint64                  `protobuf:"varint,6,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
-	AddressId          uint64                  `protobuf:"varint,7,opt,name=address_id,json=addressId,proto3" json:"address_id,omitempty"`
-	Note               string                  `protobuf:"bytes,8,opt,name=note,proto3" json:"note,omitempty"`
-	Receipt            string                  `protobuf:"bytes,9,opt,name=receipt,proto3" json:"receipt,omitempty"`
-	ReceiptFile        string                  `protobuf:"bytes,10,opt,name=receipt_file,json=receiptFile,proto3" json:"receipt_file,omitempty"`
-	ShippingAddress    string                  `protobuf:"bytes,11,opt,name=shipping_address,json=shippingAddress,proto3" json:"shipping_address,omitempty"`
-	ShippingCity       string                  `protobuf:"bytes,12,opt,name=shipping_city,json=shippingCity,proto3" json:"shipping_city,omitempty"`
-	ShippingProvince   string                  `protobuf:"bytes,13,opt,name=shipping_province,json=shippingProvince,proto3" json:"shipping_province,omitempty"`
-	ShippingPostalCode string                  `protobuf:"bytes,14,opt,name=shipping_postal_code,json=shippingPostalCode,proto3" json:"shipping_postal_code,omitempty"`
-	ShippingLabel      string                  `protobuf:"bytes,15,opt,name=shipping_label,json=shippingLabel,proto3" json:"shipping_label,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
-}
-
-func (x *CreateOrderRequest) Reset() {
-	*x = CreateOrderRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateOrderRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateOrderRequest) ProtoMessage() {}
-
-func (x *CreateOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateOrderRequest.ProtoReflect.Descriptor instead.
-func (*CreateOrderRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *CreateOrderRequest) GetShopId() uint64 {
-	if x != nil {
-		return x.ShopId
-	}
-	return 0
-}
-
-func (x *CreateOrderRequest) GetCustomerName() string {
-	if x != nil {
-		return x.CustomerName
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetPhoneNumber() string {
-	if x != nil {
-		return x.PhoneNumber
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetItems() []*MarketplaceOrderItem {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *CreateOrderRequest) GetWarehouseId() uint32 {
-	if x != nil {
-		return x.WarehouseId
-	}
-	return 0
-}
-
-func (x *CreateOrderRequest) GetCustomerId() uint64 {
-	if x != nil {
-		return x.CustomerId
-	}
-	return 0
-}
-
-func (x *CreateOrderRequest) GetAddressId() uint64 {
-	if x != nil {
-		return x.AddressId
-	}
-	return 0
-}
-
-func (x *CreateOrderRequest) GetNote() string {
-	if x != nil {
-		return x.Note
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetReceipt() string {
-	if x != nil {
-		return x.Receipt
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetReceiptFile() string {
-	if x != nil {
-		return x.ReceiptFile
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetShippingAddress() string {
-	if x != nil {
-		return x.ShippingAddress
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetShippingCity() string {
-	if x != nil {
-		return x.ShippingCity
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetShippingProvince() string {
-	if x != nil {
-		return x.ShippingProvince
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetShippingPostalCode() string {
-	if x != nil {
-		return x.ShippingPostalCode
-	}
-	return ""
-}
-
-func (x *CreateOrderRequest) GetShippingLabel() string {
-	if x != nil {
-		return x.ShippingLabel
-	}
-	return ""
-}
-
-type CreateOrderResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Order         *MarketplaceOrder      `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateOrderResponse) Reset() {
-	*x = CreateOrderResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateOrderResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateOrderResponse) ProtoMessage() {}
-
-func (x *CreateOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateOrderResponse.ProtoReflect.Descriptor instead.
-func (*CreateOrderResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *CreateOrderResponse) GetOrder() *MarketplaceOrder {
-	if x != nil {
-		return x.Order
-	}
-	return nil
-}
-
-type GetOrderRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetOrderRequest) Reset() {
-	*x = GetOrderRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetOrderRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetOrderRequest) ProtoMessage() {}
-
-func (x *GetOrderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetOrderRequest.ProtoReflect.Descriptor instead.
-func (*GetOrderRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{12}
-}
-
-func (x *GetOrderRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-type GetOrderResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Order         *MarketplaceOrder      `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetOrderResponse) Reset() {
-	*x = GetOrderResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetOrderResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetOrderResponse) ProtoMessage() {}
-
-func (x *GetOrderResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetOrderResponse.ProtoReflect.Descriptor instead.
-func (*GetOrderResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{13}
-}
-
-func (x *GetOrderResponse) GetOrder() *MarketplaceOrder {
-	if x != nil {
-		return x.Order
-	}
-	return nil
-}
-
-type ListOrdersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	StatusFilter  MarketplaceOrderStatus `protobuf:"varint,3,opt,name=status_filter,json=statusFilter,proto3,enum=wargapos.marketplace.v1.MarketplaceOrderStatus" json:"status_filter,omitempty"`
-	ShopId        uint64                 `protobuf:"varint,4,opt,name=shop_id,json=shopId,proto3" json:"shop_id,omitempty"`
-	CustomerId    uint64                 `protobuf:"varint,5,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
-	DateFrom      string                 `protobuf:"bytes,6,opt,name=date_from,json=dateFrom,proto3" json:"date_from,omitempty"`
-	DateTo        string                 `protobuf:"bytes,7,opt,name=date_to,json=dateTo,proto3" json:"date_to,omitempty"`
-	WarehouseId   uint32                 `protobuf:"varint,8,opt,name=warehouse_id,json=warehouseId,proto3" json:"warehouse_id,omitempty"`
-	Search        string                 `protobuf:"bytes,9,opt,name=search,proto3" json:"search,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListOrdersRequest) Reset() {
-	*x = ListOrdersRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListOrdersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListOrdersRequest) ProtoMessage() {}
-
-func (x *ListOrdersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListOrdersRequest.ProtoReflect.Descriptor instead.
-func (*ListOrdersRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *ListOrdersRequest) GetPage() int32 {
-	if x != nil {
-		return x.Page
-	}
-	return 0
-}
-
-func (x *ListOrdersRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListOrdersRequest) GetStatusFilter() MarketplaceOrderStatus {
-	if x != nil {
-		return x.StatusFilter
-	}
-	return MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_UNSPECIFIED
-}
-
-func (x *ListOrdersRequest) GetShopId() uint64 {
-	if x != nil {
-		return x.ShopId
-	}
-	return 0
-}
-
-func (x *ListOrdersRequest) GetCustomerId() uint64 {
-	if x != nil {
-		return x.CustomerId
-	}
-	return 0
-}
-
-func (x *ListOrdersRequest) GetDateFrom() string {
-	if x != nil {
-		return x.DateFrom
-	}
-	return ""
-}
-
-func (x *ListOrdersRequest) GetDateTo() string {
-	if x != nil {
-		return x.DateTo
-	}
-	return ""
-}
-
-func (x *ListOrdersRequest) GetWarehouseId() uint32 {
-	if x != nil {
-		return x.WarehouseId
-	}
-	return 0
-}
-
-func (x *ListOrdersRequest) GetSearch() string {
-	if x != nil {
-		return x.Search
-	}
-	return ""
-}
-
-type ListOrdersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Orders        []*MarketplaceOrder    `protobuf:"bytes,1,rep,name=orders,proto3" json:"orders,omitempty"`
-	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListOrdersResponse) Reset() {
-	*x = ListOrdersResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListOrdersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListOrdersResponse) ProtoMessage() {}
-
-func (x *ListOrdersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListOrdersResponse.ProtoReflect.Descriptor instead.
-func (*ListOrdersResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *ListOrdersResponse) GetOrders() []*MarketplaceOrder {
-	if x != nil {
-		return x.Orders
-	}
-	return nil
-}
-
-func (x *ListOrdersResponse) GetTotal() int32 {
-	if x != nil {
-		return x.Total
-	}
-	return 0
-}
-
-type UpdateOrderStatusRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Status        MarketplaceOrderStatus `protobuf:"varint,2,opt,name=status,proto3,enum=wargapos.marketplace.v1.MarketplaceOrderStatus" json:"status,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateOrderStatusRequest) Reset() {
-	*x = UpdateOrderStatusRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateOrderStatusRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateOrderStatusRequest) ProtoMessage() {}
-
-func (x *UpdateOrderStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateOrderStatusRequest.ProtoReflect.Descriptor instead.
-func (*UpdateOrderStatusRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *UpdateOrderStatusRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *UpdateOrderStatusRequest) GetStatus() MarketplaceOrderStatus {
-	if x != nil {
-		return x.Status
-	}
-	return MarketplaceOrderStatus_MARKETPLACE_ORDER_STATUS_UNSPECIFIED
-}
-
-type UpdateOrderStatusResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Order         *MarketplaceOrder      `protobuf:"bytes,1,opt,name=order,proto3" json:"order,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateOrderStatusResponse) Reset() {
-	*x = UpdateOrderStatusResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateOrderStatusResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateOrderStatusResponse) ProtoMessage() {}
-
-func (x *UpdateOrderStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateOrderStatusResponse.ProtoReflect.Descriptor instead.
-func (*UpdateOrderStatusResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *UpdateOrderStatusResponse) GetOrder() *MarketplaceOrder {
-	if x != nil {
-		return x.Order
-	}
-	return nil
-}
-
 type CreateProductRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -1107,7 +563,7 @@ type CreateProductRequest struct {
 
 func (x *CreateProductRequest) Reset() {
 	*x = CreateProductRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[18]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1119,7 +575,7 @@ func (x *CreateProductRequest) String() string {
 func (*CreateProductRequest) ProtoMessage() {}
 
 func (x *CreateProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[18]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1132,7 +588,7 @@ func (x *CreateProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateProductRequest.ProtoReflect.Descriptor instead.
 func (*CreateProductRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{18}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CreateProductRequest) GetName() string {
@@ -1172,7 +628,7 @@ type CreateProductResponse struct {
 
 func (x *CreateProductResponse) Reset() {
 	*x = CreateProductResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[19]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1184,7 +640,7 @@ func (x *CreateProductResponse) String() string {
 func (*CreateProductResponse) ProtoMessage() {}
 
 func (x *CreateProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[19]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1197,7 +653,7 @@ func (x *CreateProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateProductResponse.ProtoReflect.Descriptor instead.
 func (*CreateProductResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{19}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CreateProductResponse) GetProduct() *MarketplaceProduct {
@@ -1216,7 +672,7 @@ type GetProductRequest struct {
 
 func (x *GetProductRequest) Reset() {
 	*x = GetProductRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[20]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1228,7 +684,7 @@ func (x *GetProductRequest) String() string {
 func (*GetProductRequest) ProtoMessage() {}
 
 func (x *GetProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[20]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1241,7 +697,7 @@ func (x *GetProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetProductRequest.ProtoReflect.Descriptor instead.
 func (*GetProductRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{20}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetProductRequest) GetId() uint64 {
@@ -1260,7 +716,7 @@ type GetProductResponse struct {
 
 func (x *GetProductResponse) Reset() {
 	*x = GetProductResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[21]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1272,7 +728,7 @@ func (x *GetProductResponse) String() string {
 func (*GetProductResponse) ProtoMessage() {}
 
 func (x *GetProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[21]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1285,7 +741,7 @@ func (x *GetProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetProductResponse.ProtoReflect.Descriptor instead.
 func (*GetProductResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{21}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetProductResponse) GetProduct() *MarketplaceProduct {
@@ -1309,7 +765,7 @@ type UpdateProductRequest struct {
 
 func (x *UpdateProductRequest) Reset() {
 	*x = UpdateProductRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[22]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1321,7 +777,7 @@ func (x *UpdateProductRequest) String() string {
 func (*UpdateProductRequest) ProtoMessage() {}
 
 func (x *UpdateProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[22]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1334,7 +790,7 @@ func (x *UpdateProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProductRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProductRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{22}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *UpdateProductRequest) GetId() uint64 {
@@ -1388,7 +844,7 @@ type UpdateProductResponse struct {
 
 func (x *UpdateProductResponse) Reset() {
 	*x = UpdateProductResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[23]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1400,7 +856,7 @@ func (x *UpdateProductResponse) String() string {
 func (*UpdateProductResponse) ProtoMessage() {}
 
 func (x *UpdateProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[23]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1413,7 +869,7 @@ func (x *UpdateProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProductResponse.ProtoReflect.Descriptor instead.
 func (*UpdateProductResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{23}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *UpdateProductResponse) GetProduct() *MarketplaceProduct {
@@ -1432,7 +888,7 @@ type DeleteProductRequest struct {
 
 func (x *DeleteProductRequest) Reset() {
 	*x = DeleteProductRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[24]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1444,7 +900,7 @@ func (x *DeleteProductRequest) String() string {
 func (*DeleteProductRequest) ProtoMessage() {}
 
 func (x *DeleteProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[24]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1457,7 +913,7 @@ func (x *DeleteProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteProductRequest.ProtoReflect.Descriptor instead.
 func (*DeleteProductRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{24}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DeleteProductRequest) GetId() uint64 {
@@ -1475,7 +931,7 @@ type DeleteProductResponse struct {
 
 func (x *DeleteProductResponse) Reset() {
 	*x = DeleteProductResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[25]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1487,7 +943,7 @@ func (x *DeleteProductResponse) String() string {
 func (*DeleteProductResponse) ProtoMessage() {}
 
 func (x *DeleteProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[25]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1500,7 +956,7 @@ func (x *DeleteProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteProductResponse.ProtoReflect.Descriptor instead.
 func (*DeleteProductResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{25}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{17}
 }
 
 type RestockProductRequest struct {
@@ -1515,7 +971,7 @@ type RestockProductRequest struct {
 
 func (x *RestockProductRequest) Reset() {
 	*x = RestockProductRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[26]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1527,7 +983,7 @@ func (x *RestockProductRequest) String() string {
 func (*RestockProductRequest) ProtoMessage() {}
 
 func (x *RestockProductRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[26]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1540,7 +996,7 @@ func (x *RestockProductRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestockProductRequest.ProtoReflect.Descriptor instead.
 func (*RestockProductRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{26}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *RestockProductRequest) GetProductId() uint64 {
@@ -1580,7 +1036,7 @@ type RestockProductResponse struct {
 
 func (x *RestockProductResponse) Reset() {
 	*x = RestockProductResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[27]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1592,7 +1048,7 @@ func (x *RestockProductResponse) String() string {
 func (*RestockProductResponse) ProtoMessage() {}
 
 func (x *RestockProductResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[27]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1605,7 +1061,7 @@ func (x *RestockProductResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestockProductResponse.ProtoReflect.Descriptor instead.
 func (*RestockProductResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{27}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *RestockProductResponse) GetProduct() *MarketplaceProduct {
@@ -1627,7 +1083,7 @@ type ListProductsRequest struct {
 
 func (x *ListProductsRequest) Reset() {
 	*x = ListProductsRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[28]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1639,7 +1095,7 @@ func (x *ListProductsRequest) String() string {
 func (*ListProductsRequest) ProtoMessage() {}
 
 func (x *ListProductsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[28]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1652,7 +1108,7 @@ func (x *ListProductsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProductsRequest.ProtoReflect.Descriptor instead.
 func (*ListProductsRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{28}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListProductsRequest) GetPage() int32 {
@@ -1693,7 +1149,7 @@ type ListProductsResponse struct {
 
 func (x *ListProductsResponse) Reset() {
 	*x = ListProductsResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[29]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1705,7 +1161,7 @@ func (x *ListProductsResponse) String() string {
 func (*ListProductsResponse) ProtoMessage() {}
 
 func (x *ListProductsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[29]
+	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1718,7 +1174,7 @@ func (x *ListProductsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListProductsResponse.ProtoReflect.Descriptor instead.
 func (*ListProductsResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{29}
+	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ListProductsResponse) GetProducts() []*MarketplaceProduct {
@@ -1735,915 +1191,11 @@ func (x *ListProductsResponse) GetTotal() int32 {
 	return 0
 }
 
-type CreateCustomerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	PhoneNumber   string                 `protobuf:"bytes,2,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCustomerRequest) Reset() {
-	*x = CreateCustomerRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[30]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCustomerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCustomerRequest) ProtoMessage() {}
-
-func (x *CreateCustomerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[30]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCustomerRequest.ProtoReflect.Descriptor instead.
-func (*CreateCustomerRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{30}
-}
-
-func (x *CreateCustomerRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *CreateCustomerRequest) GetPhoneNumber() string {
-	if x != nil {
-		return x.PhoneNumber
-	}
-	return ""
-}
-
-type CreateCustomerResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Customer      *MarketplaceCustomer   `protobuf:"bytes,1,opt,name=customer,proto3" json:"customer,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCustomerResponse) Reset() {
-	*x = CreateCustomerResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[31]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCustomerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCustomerResponse) ProtoMessage() {}
-
-func (x *CreateCustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[31]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCustomerResponse.ProtoReflect.Descriptor instead.
-func (*CreateCustomerResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{31}
-}
-
-func (x *CreateCustomerResponse) GetCustomer() *MarketplaceCustomer {
-	if x != nil {
-		return x.Customer
-	}
-	return nil
-}
-
-type GetCustomerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetCustomerRequest) Reset() {
-	*x = GetCustomerRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[32]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCustomerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCustomerRequest) ProtoMessage() {}
-
-func (x *GetCustomerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[32]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCustomerRequest.ProtoReflect.Descriptor instead.
-func (*GetCustomerRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{32}
-}
-
-func (x *GetCustomerRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-type GetCustomerResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Customer      *MarketplaceCustomer   `protobuf:"bytes,1,opt,name=customer,proto3" json:"customer,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetCustomerResponse) Reset() {
-	*x = GetCustomerResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[33]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCustomerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCustomerResponse) ProtoMessage() {}
-
-func (x *GetCustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[33]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCustomerResponse.ProtoReflect.Descriptor instead.
-func (*GetCustomerResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{33}
-}
-
-func (x *GetCustomerResponse) GetCustomer() *MarketplaceCustomer {
-	if x != nil {
-		return x.Customer
-	}
-	return nil
-}
-
-type UpdateCustomerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	PhoneNumber   string                 `protobuf:"bytes,3,opt,name=phone_number,json=phoneNumber,proto3" json:"phone_number,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateCustomerRequest) Reset() {
-	*x = UpdateCustomerRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[34]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCustomerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCustomerRequest) ProtoMessage() {}
-
-func (x *UpdateCustomerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[34]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCustomerRequest.ProtoReflect.Descriptor instead.
-func (*UpdateCustomerRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{34}
-}
-
-func (x *UpdateCustomerRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *UpdateCustomerRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *UpdateCustomerRequest) GetPhoneNumber() string {
-	if x != nil {
-		return x.PhoneNumber
-	}
-	return ""
-}
-
-type UpdateCustomerResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Customer      *MarketplaceCustomer   `protobuf:"bytes,1,opt,name=customer,proto3" json:"customer,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateCustomerResponse) Reset() {
-	*x = UpdateCustomerResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[35]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCustomerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCustomerResponse) ProtoMessage() {}
-
-func (x *UpdateCustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[35]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCustomerResponse.ProtoReflect.Descriptor instead.
-func (*UpdateCustomerResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{35}
-}
-
-func (x *UpdateCustomerResponse) GetCustomer() *MarketplaceCustomer {
-	if x != nil {
-		return x.Customer
-	}
-	return nil
-}
-
-type DeleteCustomerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteCustomerRequest) Reset() {
-	*x = DeleteCustomerRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[36]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteCustomerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteCustomerRequest) ProtoMessage() {}
-
-func (x *DeleteCustomerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[36]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteCustomerRequest.ProtoReflect.Descriptor instead.
-func (*DeleteCustomerRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{36}
-}
-
-func (x *DeleteCustomerRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-type DeleteCustomerResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteCustomerResponse) Reset() {
-	*x = DeleteCustomerResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[37]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteCustomerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteCustomerResponse) ProtoMessage() {}
-
-func (x *DeleteCustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[37]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteCustomerResponse.ProtoReflect.Descriptor instead.
-func (*DeleteCustomerResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{37}
-}
-
-type ListCustomersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Page          int32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	Search        string                 `protobuf:"bytes,3,opt,name=search,proto3" json:"search,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCustomersRequest) Reset() {
-	*x = ListCustomersRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[38]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCustomersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCustomersRequest) ProtoMessage() {}
-
-func (x *ListCustomersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[38]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCustomersRequest.ProtoReflect.Descriptor instead.
-func (*ListCustomersRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{38}
-}
-
-func (x *ListCustomersRequest) GetPage() int32 {
-	if x != nil {
-		return x.Page
-	}
-	return 0
-}
-
-func (x *ListCustomersRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListCustomersRequest) GetSearch() string {
-	if x != nil {
-		return x.Search
-	}
-	return ""
-}
-
-type ListCustomersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Customers     []*MarketplaceCustomer `protobuf:"bytes,1,rep,name=customers,proto3" json:"customers,omitempty"`
-	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCustomersResponse) Reset() {
-	*x = ListCustomersResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[39]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCustomersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCustomersResponse) ProtoMessage() {}
-
-func (x *ListCustomersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[39]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCustomersResponse.ProtoReflect.Descriptor instead.
-func (*ListCustomersResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{39}
-}
-
-func (x *ListCustomersResponse) GetCustomers() []*MarketplaceCustomer {
-	if x != nil {
-		return x.Customers
-	}
-	return nil
-}
-
-func (x *ListCustomersResponse) GetTotal() int32 {
-	if x != nil {
-		return x.Total
-	}
-	return 0
-}
-
-type CreateCustomerAddressRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CustomerId    uint64                 `protobuf:"varint,1,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
-	Label         string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
-	Address       string                 `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
-	City          string                 `protobuf:"bytes,4,opt,name=city,proto3" json:"city,omitempty"`
-	Province      string                 `protobuf:"bytes,5,opt,name=province,proto3" json:"province,omitempty"`
-	PostalCode    string                 `protobuf:"bytes,6,opt,name=postal_code,json=postalCode,proto3" json:"postal_code,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCustomerAddressRequest) Reset() {
-	*x = CreateCustomerAddressRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[40]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCustomerAddressRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCustomerAddressRequest) ProtoMessage() {}
-
-func (x *CreateCustomerAddressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[40]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCustomerAddressRequest.ProtoReflect.Descriptor instead.
-func (*CreateCustomerAddressRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{40}
-}
-
-func (x *CreateCustomerAddressRequest) GetCustomerId() uint64 {
-	if x != nil {
-		return x.CustomerId
-	}
-	return 0
-}
-
-func (x *CreateCustomerAddressRequest) GetLabel() string {
-	if x != nil {
-		return x.Label
-	}
-	return ""
-}
-
-func (x *CreateCustomerAddressRequest) GetAddress() string {
-	if x != nil {
-		return x.Address
-	}
-	return ""
-}
-
-func (x *CreateCustomerAddressRequest) GetCity() string {
-	if x != nil {
-		return x.City
-	}
-	return ""
-}
-
-func (x *CreateCustomerAddressRequest) GetProvince() string {
-	if x != nil {
-		return x.Province
-	}
-	return ""
-}
-
-func (x *CreateCustomerAddressRequest) GetPostalCode() string {
-	if x != nil {
-		return x.PostalCode
-	}
-	return ""
-}
-
-type CreateCustomerAddressResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Address       *CustomerAddress       `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCustomerAddressResponse) Reset() {
-	*x = CreateCustomerAddressResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[41]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCustomerAddressResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCustomerAddressResponse) ProtoMessage() {}
-
-func (x *CreateCustomerAddressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[41]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCustomerAddressResponse.ProtoReflect.Descriptor instead.
-func (*CreateCustomerAddressResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{41}
-}
-
-func (x *CreateCustomerAddressResponse) GetAddress() *CustomerAddress {
-	if x != nil {
-		return x.Address
-	}
-	return nil
-}
-
-type UpdateCustomerAddressRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Label         string                 `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
-	Address       string                 `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
-	City          string                 `protobuf:"bytes,4,opt,name=city,proto3" json:"city,omitempty"`
-	Province      string                 `protobuf:"bytes,5,opt,name=province,proto3" json:"province,omitempty"`
-	PostalCode    string                 `protobuf:"bytes,6,opt,name=postal_code,json=postalCode,proto3" json:"postal_code,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateCustomerAddressRequest) Reset() {
-	*x = UpdateCustomerAddressRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[42]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCustomerAddressRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCustomerAddressRequest) ProtoMessage() {}
-
-func (x *UpdateCustomerAddressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[42]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCustomerAddressRequest.ProtoReflect.Descriptor instead.
-func (*UpdateCustomerAddressRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{42}
-}
-
-func (x *UpdateCustomerAddressRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *UpdateCustomerAddressRequest) GetLabel() string {
-	if x != nil {
-		return x.Label
-	}
-	return ""
-}
-
-func (x *UpdateCustomerAddressRequest) GetAddress() string {
-	if x != nil {
-		return x.Address
-	}
-	return ""
-}
-
-func (x *UpdateCustomerAddressRequest) GetCity() string {
-	if x != nil {
-		return x.City
-	}
-	return ""
-}
-
-func (x *UpdateCustomerAddressRequest) GetProvince() string {
-	if x != nil {
-		return x.Province
-	}
-	return ""
-}
-
-func (x *UpdateCustomerAddressRequest) GetPostalCode() string {
-	if x != nil {
-		return x.PostalCode
-	}
-	return ""
-}
-
-type UpdateCustomerAddressResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Address       *CustomerAddress       `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateCustomerAddressResponse) Reset() {
-	*x = UpdateCustomerAddressResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[43]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCustomerAddressResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCustomerAddressResponse) ProtoMessage() {}
-
-func (x *UpdateCustomerAddressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[43]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCustomerAddressResponse.ProtoReflect.Descriptor instead.
-func (*UpdateCustomerAddressResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{43}
-}
-
-func (x *UpdateCustomerAddressResponse) GetAddress() *CustomerAddress {
-	if x != nil {
-		return x.Address
-	}
-	return nil
-}
-
-type DeleteCustomerAddressRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteCustomerAddressRequest) Reset() {
-	*x = DeleteCustomerAddressRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[44]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteCustomerAddressRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteCustomerAddressRequest) ProtoMessage() {}
-
-func (x *DeleteCustomerAddressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[44]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteCustomerAddressRequest.ProtoReflect.Descriptor instead.
-func (*DeleteCustomerAddressRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{44}
-}
-
-func (x *DeleteCustomerAddressRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-type DeleteCustomerAddressResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteCustomerAddressResponse) Reset() {
-	*x = DeleteCustomerAddressResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[45]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteCustomerAddressResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteCustomerAddressResponse) ProtoMessage() {}
-
-func (x *DeleteCustomerAddressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[45]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteCustomerAddressResponse.ProtoReflect.Descriptor instead.
-func (*DeleteCustomerAddressResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{45}
-}
-
-type ListCustomerAddressesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CustomerId    uint64                 `protobuf:"varint,1,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCustomerAddressesRequest) Reset() {
-	*x = ListCustomerAddressesRequest{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[46]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCustomerAddressesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCustomerAddressesRequest) ProtoMessage() {}
-
-func (x *ListCustomerAddressesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[46]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCustomerAddressesRequest.ProtoReflect.Descriptor instead.
-func (*ListCustomerAddressesRequest) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{46}
-}
-
-func (x *ListCustomerAddressesRequest) GetCustomerId() uint64 {
-	if x != nil {
-		return x.CustomerId
-	}
-	return 0
-}
-
-type ListCustomerAddressesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Addresses     []*CustomerAddress     `protobuf:"bytes,1,rep,name=addresses,proto3" json:"addresses,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCustomerAddressesResponse) Reset() {
-	*x = ListCustomerAddressesResponse{}
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[47]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCustomerAddressesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCustomerAddressesResponse) ProtoMessage() {}
-
-func (x *ListCustomerAddressesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_wargapos_marketplace_v1_service_proto_msgTypes[47]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCustomerAddressesResponse.ProtoReflect.Descriptor instead.
-func (*ListCustomerAddressesResponse) Descriptor() ([]byte, []int) {
-	return file_wargapos_marketplace_v1_service_proto_rawDescGZIP(), []int{47}
-}
-
-func (x *ListCustomerAddressesResponse) GetAddresses() []*CustomerAddress {
-	if x != nil {
-		return x.Addresses
-	}
-	return nil
-}
-
 var File_wargapos_marketplace_v1_service_proto protoreflect.FileDescriptor
 
 const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"%wargapos/marketplace/v1/service.proto\x12\x17wargapos.marketplace.v1\x1a\x1bbuf/validate/validate.proto\x1a&wargapos/marketplace/v1/customer.proto\x1a#wargapos/marketplace/v1/order.proto\x1a%wargapos/marketplace/v1/product.proto\x1a\"wargapos/marketplace/v1/shop.proto\x1a wargapos/rolebased/v1/role.proto\"\xa1\x01\n" +
+	"%wargapos/marketplace/v1/service.proto\x12\x17wargapos.marketplace.v1\x1a\x1bbuf/validate/validate.proto\x1a%wargapos/marketplace/v1/product.proto\x1a\"wargapos/marketplace/v1/shop.proto\x1a wargapos/rolebased/v1/role.proto\"\xa1\x01\n" +
 	"\x11CreateShopRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12@\n" +
 	"\x04type\x18\x02 \x01(\x0e2,.wargapos.marketplace.v1.MarketplaceShopTypeR\x04type\x12\x1a\n" +
@@ -2669,66 +1221,17 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\x11DeleteShopRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id:\b\x8a\xb5\x18\x04\n" +
 	"\x02\x01\x02\"\x14\n" +
-	"\x12DeleteShopResponse\"|\n" +
+	"\x12DeleteShopResponse\"\x86\x01\n" +
 	"\x10ListShopsRequest\x12\x12\n" +
 	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
 	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x16\n" +
 	"\x06search\x18\x03 \x01(\tR\x06search\x12\x1f\n" +
 	"\vactive_only\x18\x04 \x01(\bR\n" +
-	"activeOnly\"i\n" +
+	"activeOnly:\b\x8a\xb5\x18\x04\n" +
+	"\x02\x01\x02\"i\n" +
 	"\x11ListShopsResponse\x12>\n" +
 	"\x05shops\x18\x01 \x03(\v2(.wargapos.marketplace.v1.MarketplaceShopR\x05shops\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"\xcf\x04\n" +
-	"\x12CreateOrderRequest\x12\x17\n" +
-	"\ashop_id\x18\x01 \x01(\x04R\x06shopId\x12#\n" +
-	"\rcustomer_name\x18\x02 \x01(\tR\fcustomerName\x12!\n" +
-	"\fphone_number\x18\x03 \x01(\tR\vphoneNumber\x12C\n" +
-	"\x05items\x18\x04 \x03(\v2-.wargapos.marketplace.v1.MarketplaceOrderItemR\x05items\x12!\n" +
-	"\fwarehouse_id\x18\x05 \x01(\rR\vwarehouseId\x12\x1f\n" +
-	"\vcustomer_id\x18\x06 \x01(\x04R\n" +
-	"customerId\x12\x1d\n" +
-	"\n" +
-	"address_id\x18\a \x01(\x04R\taddressId\x12\x12\n" +
-	"\x04note\x18\b \x01(\tR\x04note\x12\x18\n" +
-	"\areceipt\x18\t \x01(\tR\areceipt\x12!\n" +
-	"\freceipt_file\x18\n" +
-	" \x01(\tR\vreceiptFile\x12)\n" +
-	"\x10shipping_address\x18\v \x01(\tR\x0fshippingAddress\x12#\n" +
-	"\rshipping_city\x18\f \x01(\tR\fshippingCity\x12+\n" +
-	"\x11shipping_province\x18\r \x01(\tR\x10shippingProvince\x120\n" +
-	"\x14shipping_postal_code\x18\x0e \x01(\tR\x12shippingPostalCode\x12%\n" +
-	"\x0eshipping_label\x18\x0f \x01(\tR\rshippingLabel:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"V\n" +
-	"\x13CreateOrderResponse\x12?\n" +
-	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"-\n" +
-	"\x0fGetOrderRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id:\n" +
-	"\x8a\xb5\x18\x06\n" +
-	"\x04\x01\x02\x03\x05\"S\n" +
-	"\x10GetOrderResponse\x12?\n" +
-	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"\xd1\x02\n" +
-	"\x11ListOrdersRequest\x12\x12\n" +
-	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12T\n" +
-	"\rstatus_filter\x18\x03 \x01(\x0e2/.wargapos.marketplace.v1.MarketplaceOrderStatusR\fstatusFilter\x12\x17\n" +
-	"\ashop_id\x18\x04 \x01(\x04R\x06shopId\x12\x1f\n" +
-	"\vcustomer_id\x18\x05 \x01(\x04R\n" +
-	"customerId\x12\x1b\n" +
-	"\tdate_from\x18\x06 \x01(\tR\bdateFrom\x12\x17\n" +
-	"\adate_to\x18\a \x01(\tR\x06dateTo\x12!\n" +
-	"\fwarehouse_id\x18\b \x01(\rR\vwarehouseId\x12\x16\n" +
-	"\x06search\x18\t \x01(\tR\x06search:\n" +
-	"\x8a\xb5\x18\x06\n" +
-	"\x04\x01\x02\x03\x05\"m\n" +
-	"\x12ListOrdersResponse\x12A\n" +
-	"\x06orders\x18\x01 \x03(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x06orders\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"~\n" +
-	"\x18UpdateOrderStatusRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\x12G\n" +
-	"\x06status\x18\x02 \x01(\x0e2/.wargapos.marketplace.v1.MarketplaceOrderStatusR\x06status:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"\\\n" +
-	"\x19UpdateOrderStatusResponse\x12?\n" +
-	"\x05order\x18\x01 \x01(\v2).wargapos.marketplace.v1.MarketplaceOrderR\x05order\"\x95\x01\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\x95\x01\n" +
 	"\x14CreateProductRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1f\n" +
@@ -2778,73 +1281,7 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\x04\x01\x02\x03\x05\"u\n" +
 	"\x14ListProductsResponse\x12G\n" +
 	"\bproducts\x18\x01 \x03(\v2+.wargapos.marketplace.v1.MarketplaceProductR\bproducts\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"Y\n" +
-	"\x15CreateCustomerRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12!\n" +
-	"\fphone_number\x18\x02 \x01(\tR\vphoneNumber:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"b\n" +
-	"\x16CreateCustomerResponse\x12H\n" +
-	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"0\n" +
-	"\x12GetCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id:\n" +
-	"\x8a\xb5\x18\x06\n" +
-	"\x04\x01\x02\x03\x05\"_\n" +
-	"\x13GetCustomerResponse\x12H\n" +
-	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"i\n" +
-	"\x15UpdateCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12!\n" +
-	"\fphone_number\x18\x03 \x01(\tR\vphoneNumber:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"b\n" +
-	"\x16UpdateCustomerResponse\x12H\n" +
-	"\bcustomer\x18\x01 \x01(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\bcustomer\"2\n" +
-	"\x15DeleteCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"\x18\n" +
-	"\x16DeleteCustomerResponse\"k\n" +
-	"\x14ListCustomersRequest\x12\x12\n" +
-	"\x04page\x18\x01 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x16\n" +
-	"\x06search\x18\x03 \x01(\tR\x06search:\n" +
-	"\x8a\xb5\x18\x06\n" +
-	"\x04\x01\x02\x03\x05\"y\n" +
-	"\x15ListCustomersResponse\x12J\n" +
-	"\tcustomers\x18\x01 \x03(\v2,.wargapos.marketplace.v1.MarketplaceCustomerR\tcustomers\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\"\xcb\x01\n" +
-	"\x1cCreateCustomerAddressRequest\x12\x1f\n" +
-	"\vcustomer_id\x18\x01 \x01(\x04R\n" +
-	"customerId\x12\x14\n" +
-	"\x05label\x18\x02 \x01(\tR\x05label\x12\x18\n" +
-	"\aaddress\x18\x03 \x01(\tR\aaddress\x12\x12\n" +
-	"\x04city\x18\x04 \x01(\tR\x04city\x12\x1a\n" +
-	"\bprovince\x18\x05 \x01(\tR\bprovince\x12\x1f\n" +
-	"\vpostal_code\x18\x06 \x01(\tR\n" +
-	"postalCode:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"c\n" +
-	"\x1dCreateCustomerAddressResponse\x12B\n" +
-	"\aaddress\x18\x01 \x01(\v2(.wargapos.marketplace.v1.CustomerAddressR\aaddress\"\xba\x01\n" +
-	"\x1cUpdateCustomerAddressRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x14\n" +
-	"\x05label\x18\x02 \x01(\tR\x05label\x12\x18\n" +
-	"\aaddress\x18\x03 \x01(\tR\aaddress\x12\x12\n" +
-	"\x04city\x18\x04 \x01(\tR\x04city\x12\x1a\n" +
-	"\bprovince\x18\x05 \x01(\tR\bprovince\x12\x1f\n" +
-	"\vpostal_code\x18\x06 \x01(\tR\n" +
-	"postalCode:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"c\n" +
-	"\x1dUpdateCustomerAddressResponse\x12B\n" +
-	"\aaddress\x18\x01 \x01(\v2(.wargapos.marketplace.v1.CustomerAddressR\aaddress\"9\n" +
-	"\x1cDeleteCustomerAddressRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x04R\x02id:\t\x8a\xb5\x18\x05\n" +
-	"\x03\x01\x02\x05\"\x1f\n" +
-	"\x1dDeleteCustomerAddressResponse\"K\n" +
-	"\x1cListCustomerAddressesRequest\x12\x1f\n" +
-	"\vcustomer_id\x18\x01 \x01(\x04R\n" +
-	"customerId:\n" +
-	"\x8a\xb5\x18\x06\n" +
-	"\x04\x01\x02\x03\x05\"g\n" +
-	"\x1dListCustomerAddressesResponse\x12F\n" +
-	"\taddresses\x18\x01 \x03(\v2(.wargapos.marketplace.v1.CustomerAddressR\taddresses2\xa7\x15\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total2\xa2\t\n" +
 	"\x12MarketplaceService\x12e\n" +
 	"\n" +
 	"CreateShop\x12*.wargapos.marketplace.v1.CreateShopRequest\x1a+.wargapos.marketplace.v1.CreateShopResponse\x12\\\n" +
@@ -2860,21 +1297,7 @@ const file_wargapos_marketplace_v1_service_proto_rawDesc = "" +
 	"\rUpdateProduct\x12-.wargapos.marketplace.v1.UpdateProductRequest\x1a..wargapos.marketplace.v1.UpdateProductResponse\x12n\n" +
 	"\rDeleteProduct\x12-.wargapos.marketplace.v1.DeleteProductRequest\x1a..wargapos.marketplace.v1.DeleteProductResponse\x12k\n" +
 	"\fListProducts\x12,.wargapos.marketplace.v1.ListProductsRequest\x1a-.wargapos.marketplace.v1.ListProductsResponse\x12q\n" +
-	"\x0eRestockProduct\x12..wargapos.marketplace.v1.RestockProductRequest\x1a/.wargapos.marketplace.v1.RestockProductResponse\x12h\n" +
-	"\vCreateOrder\x12+.wargapos.marketplace.v1.CreateOrderRequest\x1a,.wargapos.marketplace.v1.CreateOrderResponse\x12_\n" +
-	"\bGetOrder\x12(.wargapos.marketplace.v1.GetOrderRequest\x1a).wargapos.marketplace.v1.GetOrderResponse\x12e\n" +
-	"\n" +
-	"ListOrders\x12*.wargapos.marketplace.v1.ListOrdersRequest\x1a+.wargapos.marketplace.v1.ListOrdersResponse\x12z\n" +
-	"\x11UpdateOrderStatus\x121.wargapos.marketplace.v1.UpdateOrderStatusRequest\x1a2.wargapos.marketplace.v1.UpdateOrderStatusResponse\x12q\n" +
-	"\x0eCreateCustomer\x12..wargapos.marketplace.v1.CreateCustomerRequest\x1a/.wargapos.marketplace.v1.CreateCustomerResponse\x12h\n" +
-	"\vGetCustomer\x12+.wargapos.marketplace.v1.GetCustomerRequest\x1a,.wargapos.marketplace.v1.GetCustomerResponse\x12q\n" +
-	"\x0eUpdateCustomer\x12..wargapos.marketplace.v1.UpdateCustomerRequest\x1a/.wargapos.marketplace.v1.UpdateCustomerResponse\x12q\n" +
-	"\x0eDeleteCustomer\x12..wargapos.marketplace.v1.DeleteCustomerRequest\x1a/.wargapos.marketplace.v1.DeleteCustomerResponse\x12n\n" +
-	"\rListCustomers\x12-.wargapos.marketplace.v1.ListCustomersRequest\x1a..wargapos.marketplace.v1.ListCustomersResponse\x12\x86\x01\n" +
-	"\x15CreateCustomerAddress\x125.wargapos.marketplace.v1.CreateCustomerAddressRequest\x1a6.wargapos.marketplace.v1.CreateCustomerAddressResponse\x12\x86\x01\n" +
-	"\x15UpdateCustomerAddress\x125.wargapos.marketplace.v1.UpdateCustomerAddressRequest\x1a6.wargapos.marketplace.v1.UpdateCustomerAddressResponse\x12\x86\x01\n" +
-	"\x15DeleteCustomerAddress\x125.wargapos.marketplace.v1.DeleteCustomerAddressRequest\x1a6.wargapos.marketplace.v1.DeleteCustomerAddressResponse\x12\x86\x01\n" +
-	"\x15ListCustomerAddresses\x125.wargapos.marketplace.v1.ListCustomerAddressesRequest\x1a6.wargapos.marketplace.v1.ListCustomerAddressesResponseB<Z:wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1b\x06proto3"
+	"\x0eRestockProduct\x12..wargapos.marketplace.v1.RestockProductRequest\x1a/.wargapos.marketplace.v1.RestockProductResponseB<Z:wargapos/backend/gen/wargapos/marketplace/v1;marketplacev1b\x06proto3"
 
 var (
 	file_wargapos_marketplace_v1_service_proto_rawDescOnce sync.Once
@@ -2888,144 +1311,73 @@ func file_wargapos_marketplace_v1_service_proto_rawDescGZIP() []byte {
 	return file_wargapos_marketplace_v1_service_proto_rawDescData
 }
 
-var file_wargapos_marketplace_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 48)
+var file_wargapos_marketplace_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_wargapos_marketplace_v1_service_proto_goTypes = []any{
-	(*CreateShopRequest)(nil),             // 0: wargapos.marketplace.v1.CreateShopRequest
-	(*CreateShopResponse)(nil),            // 1: wargapos.marketplace.v1.CreateShopResponse
-	(*GetShopRequest)(nil),                // 2: wargapos.marketplace.v1.GetShopRequest
-	(*GetShopResponse)(nil),               // 3: wargapos.marketplace.v1.GetShopResponse
-	(*UpdateShopRequest)(nil),             // 4: wargapos.marketplace.v1.UpdateShopRequest
-	(*UpdateShopResponse)(nil),            // 5: wargapos.marketplace.v1.UpdateShopResponse
-	(*DeleteShopRequest)(nil),             // 6: wargapos.marketplace.v1.DeleteShopRequest
-	(*DeleteShopResponse)(nil),            // 7: wargapos.marketplace.v1.DeleteShopResponse
-	(*ListShopsRequest)(nil),              // 8: wargapos.marketplace.v1.ListShopsRequest
-	(*ListShopsResponse)(nil),             // 9: wargapos.marketplace.v1.ListShopsResponse
-	(*CreateOrderRequest)(nil),            // 10: wargapos.marketplace.v1.CreateOrderRequest
-	(*CreateOrderResponse)(nil),           // 11: wargapos.marketplace.v1.CreateOrderResponse
-	(*GetOrderRequest)(nil),               // 12: wargapos.marketplace.v1.GetOrderRequest
-	(*GetOrderResponse)(nil),              // 13: wargapos.marketplace.v1.GetOrderResponse
-	(*ListOrdersRequest)(nil),             // 14: wargapos.marketplace.v1.ListOrdersRequest
-	(*ListOrdersResponse)(nil),            // 15: wargapos.marketplace.v1.ListOrdersResponse
-	(*UpdateOrderStatusRequest)(nil),      // 16: wargapos.marketplace.v1.UpdateOrderStatusRequest
-	(*UpdateOrderStatusResponse)(nil),     // 17: wargapos.marketplace.v1.UpdateOrderStatusResponse
-	(*CreateProductRequest)(nil),          // 18: wargapos.marketplace.v1.CreateProductRequest
-	(*CreateProductResponse)(nil),         // 19: wargapos.marketplace.v1.CreateProductResponse
-	(*GetProductRequest)(nil),             // 20: wargapos.marketplace.v1.GetProductRequest
-	(*GetProductResponse)(nil),            // 21: wargapos.marketplace.v1.GetProductResponse
-	(*UpdateProductRequest)(nil),          // 22: wargapos.marketplace.v1.UpdateProductRequest
-	(*UpdateProductResponse)(nil),         // 23: wargapos.marketplace.v1.UpdateProductResponse
-	(*DeleteProductRequest)(nil),          // 24: wargapos.marketplace.v1.DeleteProductRequest
-	(*DeleteProductResponse)(nil),         // 25: wargapos.marketplace.v1.DeleteProductResponse
-	(*RestockProductRequest)(nil),         // 26: wargapos.marketplace.v1.RestockProductRequest
-	(*RestockProductResponse)(nil),        // 27: wargapos.marketplace.v1.RestockProductResponse
-	(*ListProductsRequest)(nil),           // 28: wargapos.marketplace.v1.ListProductsRequest
-	(*ListProductsResponse)(nil),          // 29: wargapos.marketplace.v1.ListProductsResponse
-	(*CreateCustomerRequest)(nil),         // 30: wargapos.marketplace.v1.CreateCustomerRequest
-	(*CreateCustomerResponse)(nil),        // 31: wargapos.marketplace.v1.CreateCustomerResponse
-	(*GetCustomerRequest)(nil),            // 32: wargapos.marketplace.v1.GetCustomerRequest
-	(*GetCustomerResponse)(nil),           // 33: wargapos.marketplace.v1.GetCustomerResponse
-	(*UpdateCustomerRequest)(nil),         // 34: wargapos.marketplace.v1.UpdateCustomerRequest
-	(*UpdateCustomerResponse)(nil),        // 35: wargapos.marketplace.v1.UpdateCustomerResponse
-	(*DeleteCustomerRequest)(nil),         // 36: wargapos.marketplace.v1.DeleteCustomerRequest
-	(*DeleteCustomerResponse)(nil),        // 37: wargapos.marketplace.v1.DeleteCustomerResponse
-	(*ListCustomersRequest)(nil),          // 38: wargapos.marketplace.v1.ListCustomersRequest
-	(*ListCustomersResponse)(nil),         // 39: wargapos.marketplace.v1.ListCustomersResponse
-	(*CreateCustomerAddressRequest)(nil),  // 40: wargapos.marketplace.v1.CreateCustomerAddressRequest
-	(*CreateCustomerAddressResponse)(nil), // 41: wargapos.marketplace.v1.CreateCustomerAddressResponse
-	(*UpdateCustomerAddressRequest)(nil),  // 42: wargapos.marketplace.v1.UpdateCustomerAddressRequest
-	(*UpdateCustomerAddressResponse)(nil), // 43: wargapos.marketplace.v1.UpdateCustomerAddressResponse
-	(*DeleteCustomerAddressRequest)(nil),  // 44: wargapos.marketplace.v1.DeleteCustomerAddressRequest
-	(*DeleteCustomerAddressResponse)(nil), // 45: wargapos.marketplace.v1.DeleteCustomerAddressResponse
-	(*ListCustomerAddressesRequest)(nil),  // 46: wargapos.marketplace.v1.ListCustomerAddressesRequest
-	(*ListCustomerAddressesResponse)(nil), // 47: wargapos.marketplace.v1.ListCustomerAddressesResponse
-	(MarketplaceShopType)(0),              // 48: wargapos.marketplace.v1.MarketplaceShopType
-	(*MarketplaceShop)(nil),               // 49: wargapos.marketplace.v1.MarketplaceShop
-	(*MarketplaceOrderItem)(nil),          // 50: wargapos.marketplace.v1.MarketplaceOrderItem
-	(*MarketplaceOrder)(nil),              // 51: wargapos.marketplace.v1.MarketplaceOrder
-	(MarketplaceOrderStatus)(0),           // 52: wargapos.marketplace.v1.MarketplaceOrderStatus
-	(*MarketplaceProduct)(nil),            // 53: wargapos.marketplace.v1.MarketplaceProduct
-	(*MarketplaceCustomer)(nil),           // 54: wargapos.marketplace.v1.MarketplaceCustomer
-	(*CustomerAddress)(nil),               // 55: wargapos.marketplace.v1.CustomerAddress
+	(*CreateShopRequest)(nil),      // 0: wargapos.marketplace.v1.CreateShopRequest
+	(*CreateShopResponse)(nil),     // 1: wargapos.marketplace.v1.CreateShopResponse
+	(*GetShopRequest)(nil),         // 2: wargapos.marketplace.v1.GetShopRequest
+	(*GetShopResponse)(nil),        // 3: wargapos.marketplace.v1.GetShopResponse
+	(*UpdateShopRequest)(nil),      // 4: wargapos.marketplace.v1.UpdateShopRequest
+	(*UpdateShopResponse)(nil),     // 5: wargapos.marketplace.v1.UpdateShopResponse
+	(*DeleteShopRequest)(nil),      // 6: wargapos.marketplace.v1.DeleteShopRequest
+	(*DeleteShopResponse)(nil),     // 7: wargapos.marketplace.v1.DeleteShopResponse
+	(*ListShopsRequest)(nil),       // 8: wargapos.marketplace.v1.ListShopsRequest
+	(*ListShopsResponse)(nil),      // 9: wargapos.marketplace.v1.ListShopsResponse
+	(*CreateProductRequest)(nil),   // 10: wargapos.marketplace.v1.CreateProductRequest
+	(*CreateProductResponse)(nil),  // 11: wargapos.marketplace.v1.CreateProductResponse
+	(*GetProductRequest)(nil),      // 12: wargapos.marketplace.v1.GetProductRequest
+	(*GetProductResponse)(nil),     // 13: wargapos.marketplace.v1.GetProductResponse
+	(*UpdateProductRequest)(nil),   // 14: wargapos.marketplace.v1.UpdateProductRequest
+	(*UpdateProductResponse)(nil),  // 15: wargapos.marketplace.v1.UpdateProductResponse
+	(*DeleteProductRequest)(nil),   // 16: wargapos.marketplace.v1.DeleteProductRequest
+	(*DeleteProductResponse)(nil),  // 17: wargapos.marketplace.v1.DeleteProductResponse
+	(*RestockProductRequest)(nil),  // 18: wargapos.marketplace.v1.RestockProductRequest
+	(*RestockProductResponse)(nil), // 19: wargapos.marketplace.v1.RestockProductResponse
+	(*ListProductsRequest)(nil),    // 20: wargapos.marketplace.v1.ListProductsRequest
+	(*ListProductsResponse)(nil),   // 21: wargapos.marketplace.v1.ListProductsResponse
+	(MarketplaceShopType)(0),       // 22: wargapos.marketplace.v1.MarketplaceShopType
+	(*MarketplaceShop)(nil),        // 23: wargapos.marketplace.v1.MarketplaceShop
+	(*MarketplaceProduct)(nil),     // 24: wargapos.marketplace.v1.MarketplaceProduct
 }
 var file_wargapos_marketplace_v1_service_proto_depIdxs = []int32{
-	48, // 0: wargapos.marketplace.v1.CreateShopRequest.type:type_name -> wargapos.marketplace.v1.MarketplaceShopType
-	49, // 1: wargapos.marketplace.v1.CreateShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
-	49, // 2: wargapos.marketplace.v1.GetShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
-	48, // 3: wargapos.marketplace.v1.UpdateShopRequest.type:type_name -> wargapos.marketplace.v1.MarketplaceShopType
-	49, // 4: wargapos.marketplace.v1.UpdateShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
-	49, // 5: wargapos.marketplace.v1.ListShopsResponse.shops:type_name -> wargapos.marketplace.v1.MarketplaceShop
-	50, // 6: wargapos.marketplace.v1.CreateOrderRequest.items:type_name -> wargapos.marketplace.v1.MarketplaceOrderItem
-	51, // 7: wargapos.marketplace.v1.CreateOrderResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
-	51, // 8: wargapos.marketplace.v1.GetOrderResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
-	52, // 9: wargapos.marketplace.v1.ListOrdersRequest.status_filter:type_name -> wargapos.marketplace.v1.MarketplaceOrderStatus
-	51, // 10: wargapos.marketplace.v1.ListOrdersResponse.orders:type_name -> wargapos.marketplace.v1.MarketplaceOrder
-	52, // 11: wargapos.marketplace.v1.UpdateOrderStatusRequest.status:type_name -> wargapos.marketplace.v1.MarketplaceOrderStatus
-	51, // 12: wargapos.marketplace.v1.UpdateOrderStatusResponse.order:type_name -> wargapos.marketplace.v1.MarketplaceOrder
-	53, // 13: wargapos.marketplace.v1.CreateProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	53, // 14: wargapos.marketplace.v1.GetProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	53, // 15: wargapos.marketplace.v1.UpdateProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	53, // 16: wargapos.marketplace.v1.RestockProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	53, // 17: wargapos.marketplace.v1.ListProductsResponse.products:type_name -> wargapos.marketplace.v1.MarketplaceProduct
-	54, // 18: wargapos.marketplace.v1.CreateCustomerResponse.customer:type_name -> wargapos.marketplace.v1.MarketplaceCustomer
-	54, // 19: wargapos.marketplace.v1.GetCustomerResponse.customer:type_name -> wargapos.marketplace.v1.MarketplaceCustomer
-	54, // 20: wargapos.marketplace.v1.UpdateCustomerResponse.customer:type_name -> wargapos.marketplace.v1.MarketplaceCustomer
-	54, // 21: wargapos.marketplace.v1.ListCustomersResponse.customers:type_name -> wargapos.marketplace.v1.MarketplaceCustomer
-	55, // 22: wargapos.marketplace.v1.CreateCustomerAddressResponse.address:type_name -> wargapos.marketplace.v1.CustomerAddress
-	55, // 23: wargapos.marketplace.v1.UpdateCustomerAddressResponse.address:type_name -> wargapos.marketplace.v1.CustomerAddress
-	55, // 24: wargapos.marketplace.v1.ListCustomerAddressesResponse.addresses:type_name -> wargapos.marketplace.v1.CustomerAddress
-	0,  // 25: wargapos.marketplace.v1.MarketplaceService.CreateShop:input_type -> wargapos.marketplace.v1.CreateShopRequest
-	2,  // 26: wargapos.marketplace.v1.MarketplaceService.GetShop:input_type -> wargapos.marketplace.v1.GetShopRequest
-	4,  // 27: wargapos.marketplace.v1.MarketplaceService.UpdateShop:input_type -> wargapos.marketplace.v1.UpdateShopRequest
-	6,  // 28: wargapos.marketplace.v1.MarketplaceService.DeleteShop:input_type -> wargapos.marketplace.v1.DeleteShopRequest
-	8,  // 29: wargapos.marketplace.v1.MarketplaceService.ListShops:input_type -> wargapos.marketplace.v1.ListShopsRequest
-	18, // 30: wargapos.marketplace.v1.MarketplaceService.CreateProduct:input_type -> wargapos.marketplace.v1.CreateProductRequest
-	20, // 31: wargapos.marketplace.v1.MarketplaceService.GetProduct:input_type -> wargapos.marketplace.v1.GetProductRequest
-	22, // 32: wargapos.marketplace.v1.MarketplaceService.UpdateProduct:input_type -> wargapos.marketplace.v1.UpdateProductRequest
-	24, // 33: wargapos.marketplace.v1.MarketplaceService.DeleteProduct:input_type -> wargapos.marketplace.v1.DeleteProductRequest
-	28, // 34: wargapos.marketplace.v1.MarketplaceService.ListProducts:input_type -> wargapos.marketplace.v1.ListProductsRequest
-	26, // 35: wargapos.marketplace.v1.MarketplaceService.RestockProduct:input_type -> wargapos.marketplace.v1.RestockProductRequest
-	10, // 36: wargapos.marketplace.v1.MarketplaceService.CreateOrder:input_type -> wargapos.marketplace.v1.CreateOrderRequest
-	12, // 37: wargapos.marketplace.v1.MarketplaceService.GetOrder:input_type -> wargapos.marketplace.v1.GetOrderRequest
-	14, // 38: wargapos.marketplace.v1.MarketplaceService.ListOrders:input_type -> wargapos.marketplace.v1.ListOrdersRequest
-	16, // 39: wargapos.marketplace.v1.MarketplaceService.UpdateOrderStatus:input_type -> wargapos.marketplace.v1.UpdateOrderStatusRequest
-	30, // 40: wargapos.marketplace.v1.MarketplaceService.CreateCustomer:input_type -> wargapos.marketplace.v1.CreateCustomerRequest
-	32, // 41: wargapos.marketplace.v1.MarketplaceService.GetCustomer:input_type -> wargapos.marketplace.v1.GetCustomerRequest
-	34, // 42: wargapos.marketplace.v1.MarketplaceService.UpdateCustomer:input_type -> wargapos.marketplace.v1.UpdateCustomerRequest
-	36, // 43: wargapos.marketplace.v1.MarketplaceService.DeleteCustomer:input_type -> wargapos.marketplace.v1.DeleteCustomerRequest
-	38, // 44: wargapos.marketplace.v1.MarketplaceService.ListCustomers:input_type -> wargapos.marketplace.v1.ListCustomersRequest
-	40, // 45: wargapos.marketplace.v1.MarketplaceService.CreateCustomerAddress:input_type -> wargapos.marketplace.v1.CreateCustomerAddressRequest
-	42, // 46: wargapos.marketplace.v1.MarketplaceService.UpdateCustomerAddress:input_type -> wargapos.marketplace.v1.UpdateCustomerAddressRequest
-	44, // 47: wargapos.marketplace.v1.MarketplaceService.DeleteCustomerAddress:input_type -> wargapos.marketplace.v1.DeleteCustomerAddressRequest
-	46, // 48: wargapos.marketplace.v1.MarketplaceService.ListCustomerAddresses:input_type -> wargapos.marketplace.v1.ListCustomerAddressesRequest
-	1,  // 49: wargapos.marketplace.v1.MarketplaceService.CreateShop:output_type -> wargapos.marketplace.v1.CreateShopResponse
-	3,  // 50: wargapos.marketplace.v1.MarketplaceService.GetShop:output_type -> wargapos.marketplace.v1.GetShopResponse
-	5,  // 51: wargapos.marketplace.v1.MarketplaceService.UpdateShop:output_type -> wargapos.marketplace.v1.UpdateShopResponse
-	7,  // 52: wargapos.marketplace.v1.MarketplaceService.DeleteShop:output_type -> wargapos.marketplace.v1.DeleteShopResponse
-	9,  // 53: wargapos.marketplace.v1.MarketplaceService.ListShops:output_type -> wargapos.marketplace.v1.ListShopsResponse
-	19, // 54: wargapos.marketplace.v1.MarketplaceService.CreateProduct:output_type -> wargapos.marketplace.v1.CreateProductResponse
-	21, // 55: wargapos.marketplace.v1.MarketplaceService.GetProduct:output_type -> wargapos.marketplace.v1.GetProductResponse
-	23, // 56: wargapos.marketplace.v1.MarketplaceService.UpdateProduct:output_type -> wargapos.marketplace.v1.UpdateProductResponse
-	25, // 57: wargapos.marketplace.v1.MarketplaceService.DeleteProduct:output_type -> wargapos.marketplace.v1.DeleteProductResponse
-	29, // 58: wargapos.marketplace.v1.MarketplaceService.ListProducts:output_type -> wargapos.marketplace.v1.ListProductsResponse
-	27, // 59: wargapos.marketplace.v1.MarketplaceService.RestockProduct:output_type -> wargapos.marketplace.v1.RestockProductResponse
-	11, // 60: wargapos.marketplace.v1.MarketplaceService.CreateOrder:output_type -> wargapos.marketplace.v1.CreateOrderResponse
-	13, // 61: wargapos.marketplace.v1.MarketplaceService.GetOrder:output_type -> wargapos.marketplace.v1.GetOrderResponse
-	15, // 62: wargapos.marketplace.v1.MarketplaceService.ListOrders:output_type -> wargapos.marketplace.v1.ListOrdersResponse
-	17, // 63: wargapos.marketplace.v1.MarketplaceService.UpdateOrderStatus:output_type -> wargapos.marketplace.v1.UpdateOrderStatusResponse
-	31, // 64: wargapos.marketplace.v1.MarketplaceService.CreateCustomer:output_type -> wargapos.marketplace.v1.CreateCustomerResponse
-	33, // 65: wargapos.marketplace.v1.MarketplaceService.GetCustomer:output_type -> wargapos.marketplace.v1.GetCustomerResponse
-	35, // 66: wargapos.marketplace.v1.MarketplaceService.UpdateCustomer:output_type -> wargapos.marketplace.v1.UpdateCustomerResponse
-	37, // 67: wargapos.marketplace.v1.MarketplaceService.DeleteCustomer:output_type -> wargapos.marketplace.v1.DeleteCustomerResponse
-	39, // 68: wargapos.marketplace.v1.MarketplaceService.ListCustomers:output_type -> wargapos.marketplace.v1.ListCustomersResponse
-	41, // 69: wargapos.marketplace.v1.MarketplaceService.CreateCustomerAddress:output_type -> wargapos.marketplace.v1.CreateCustomerAddressResponse
-	43, // 70: wargapos.marketplace.v1.MarketplaceService.UpdateCustomerAddress:output_type -> wargapos.marketplace.v1.UpdateCustomerAddressResponse
-	45, // 71: wargapos.marketplace.v1.MarketplaceService.DeleteCustomerAddress:output_type -> wargapos.marketplace.v1.DeleteCustomerAddressResponse
-	47, // 72: wargapos.marketplace.v1.MarketplaceService.ListCustomerAddresses:output_type -> wargapos.marketplace.v1.ListCustomerAddressesResponse
-	49, // [49:73] is the sub-list for method output_type
-	25, // [25:49] is the sub-list for method input_type
-	25, // [25:25] is the sub-list for extension type_name
-	25, // [25:25] is the sub-list for extension extendee
-	0,  // [0:25] is the sub-list for field type_name
+	22, // 0: wargapos.marketplace.v1.CreateShopRequest.type:type_name -> wargapos.marketplace.v1.MarketplaceShopType
+	23, // 1: wargapos.marketplace.v1.CreateShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
+	23, // 2: wargapos.marketplace.v1.GetShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
+	22, // 3: wargapos.marketplace.v1.UpdateShopRequest.type:type_name -> wargapos.marketplace.v1.MarketplaceShopType
+	23, // 4: wargapos.marketplace.v1.UpdateShopResponse.shop:type_name -> wargapos.marketplace.v1.MarketplaceShop
+	23, // 5: wargapos.marketplace.v1.ListShopsResponse.shops:type_name -> wargapos.marketplace.v1.MarketplaceShop
+	24, // 6: wargapos.marketplace.v1.CreateProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	24, // 7: wargapos.marketplace.v1.GetProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	24, // 8: wargapos.marketplace.v1.UpdateProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	24, // 9: wargapos.marketplace.v1.RestockProductResponse.product:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	24, // 10: wargapos.marketplace.v1.ListProductsResponse.products:type_name -> wargapos.marketplace.v1.MarketplaceProduct
+	0,  // 11: wargapos.marketplace.v1.MarketplaceService.CreateShop:input_type -> wargapos.marketplace.v1.CreateShopRequest
+	2,  // 12: wargapos.marketplace.v1.MarketplaceService.GetShop:input_type -> wargapos.marketplace.v1.GetShopRequest
+	4,  // 13: wargapos.marketplace.v1.MarketplaceService.UpdateShop:input_type -> wargapos.marketplace.v1.UpdateShopRequest
+	6,  // 14: wargapos.marketplace.v1.MarketplaceService.DeleteShop:input_type -> wargapos.marketplace.v1.DeleteShopRequest
+	8,  // 15: wargapos.marketplace.v1.MarketplaceService.ListShops:input_type -> wargapos.marketplace.v1.ListShopsRequest
+	10, // 16: wargapos.marketplace.v1.MarketplaceService.CreateProduct:input_type -> wargapos.marketplace.v1.CreateProductRequest
+	12, // 17: wargapos.marketplace.v1.MarketplaceService.GetProduct:input_type -> wargapos.marketplace.v1.GetProductRequest
+	14, // 18: wargapos.marketplace.v1.MarketplaceService.UpdateProduct:input_type -> wargapos.marketplace.v1.UpdateProductRequest
+	16, // 19: wargapos.marketplace.v1.MarketplaceService.DeleteProduct:input_type -> wargapos.marketplace.v1.DeleteProductRequest
+	20, // 20: wargapos.marketplace.v1.MarketplaceService.ListProducts:input_type -> wargapos.marketplace.v1.ListProductsRequest
+	18, // 21: wargapos.marketplace.v1.MarketplaceService.RestockProduct:input_type -> wargapos.marketplace.v1.RestockProductRequest
+	1,  // 22: wargapos.marketplace.v1.MarketplaceService.CreateShop:output_type -> wargapos.marketplace.v1.CreateShopResponse
+	3,  // 23: wargapos.marketplace.v1.MarketplaceService.GetShop:output_type -> wargapos.marketplace.v1.GetShopResponse
+	5,  // 24: wargapos.marketplace.v1.MarketplaceService.UpdateShop:output_type -> wargapos.marketplace.v1.UpdateShopResponse
+	7,  // 25: wargapos.marketplace.v1.MarketplaceService.DeleteShop:output_type -> wargapos.marketplace.v1.DeleteShopResponse
+	9,  // 26: wargapos.marketplace.v1.MarketplaceService.ListShops:output_type -> wargapos.marketplace.v1.ListShopsResponse
+	11, // 27: wargapos.marketplace.v1.MarketplaceService.CreateProduct:output_type -> wargapos.marketplace.v1.CreateProductResponse
+	13, // 28: wargapos.marketplace.v1.MarketplaceService.GetProduct:output_type -> wargapos.marketplace.v1.GetProductResponse
+	15, // 29: wargapos.marketplace.v1.MarketplaceService.UpdateProduct:output_type -> wargapos.marketplace.v1.UpdateProductResponse
+	17, // 30: wargapos.marketplace.v1.MarketplaceService.DeleteProduct:output_type -> wargapos.marketplace.v1.DeleteProductResponse
+	21, // 31: wargapos.marketplace.v1.MarketplaceService.ListProducts:output_type -> wargapos.marketplace.v1.ListProductsResponse
+	19, // 32: wargapos.marketplace.v1.MarketplaceService.RestockProduct:output_type -> wargapos.marketplace.v1.RestockProductResponse
+	22, // [22:33] is the sub-list for method output_type
+	11, // [11:22] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_wargapos_marketplace_v1_service_proto_init() }
@@ -3033,8 +1385,6 @@ func file_wargapos_marketplace_v1_service_proto_init() {
 	if File_wargapos_marketplace_v1_service_proto != nil {
 		return
 	}
-	file_wargapos_marketplace_v1_customer_proto_init()
-	file_wargapos_marketplace_v1_order_proto_init()
 	file_wargapos_marketplace_v1_product_proto_init()
 	file_wargapos_marketplace_v1_shop_proto_init()
 	type x struct{}
@@ -3043,7 +1393,7 @@ func file_wargapos_marketplace_v1_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wargapos_marketplace_v1_service_proto_rawDesc), len(file_wargapos_marketplace_v1_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   48,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

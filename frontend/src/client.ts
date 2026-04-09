@@ -1,6 +1,7 @@
 import { Code, ConnectError, createClient, type Interceptor } from '@connectrpc/connect'
 import { BackupService } from './gen/wargapos/backup/v1/backup_pb'
 import { MarketplaceService } from './gen/wargapos/marketplace/v1/service_pb'
+import { MarketplaceOrderService } from './gen/wargapos/marketplace_order/v1/service_pb'
 import { createConnectTransport } from '@connectrpc/connect-web'
 import { AuthService }        from './gen/wargapos/auth/v1/auth_pb'
 import { UserService }        from './gen/wargapos/user/v1/user_pb'
@@ -76,7 +77,8 @@ export const deviceClient        = createClient(DeviceService, transport)
 export const notificationClient = createClient(NotificationService, transport)
 export const backupClient        = createClient(BackupService, transport)
 export const ingredientClient    = createClient(IngredientService, transport)
-export const marketplaceClient   = createClient(MarketplaceService, transport)
+export const marketplaceClient      = createClient(MarketplaceService, transport)
+export const marketplaceOrderClient = createClient(MarketplaceOrderService, transport)
 
 export async function uploadFile(file: File, token: string): Promise<string> {
   const form = new FormData()
