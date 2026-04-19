@@ -6,14 +6,14 @@ import (
 	"connectrpc.com/connect"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
 func (s *StockService) CreateRack(
 	ctx context.Context,
 	req *connect.Request[stockv1.CreateRackRequest],
 ) (*connect.Response[stockv1.CreateRackResponse], error) {
-	r := models.Rack{
+	r := stock_model.Rack{
 		WarehouseID: req.Msg.WarehouseId,
 		Name:        req.Msg.Name,
 	}

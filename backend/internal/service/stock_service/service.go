@@ -7,6 +7,7 @@ import (
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
 	"wargapos/backend/gen/wargapos/stock/v1/stockv1connect"
 	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -29,7 +30,7 @@ func toProtoTransaction(t *models.StockTransaction) *stockv1.Transaction {
 		items[i] = &stockv1.TransactionItem{
 			SkuId:    it.SkuID,
 			Quantity: int32(it.Quantity),
-			Total:    float64(it.Price),
+			Total:    it.Total,
 		}
 	}
 	return &stockv1.Transaction{
@@ -45,7 +46,7 @@ func toProtoTransaction(t *models.StockTransaction) *stockv1.Transaction {
 	}
 }
 
-func toProtoSku(s *models.Sku) *stockv1.Sku {
+func toProtoSku(s *stock_model.Sku) *stockv1.Sku {
 	return &stockv1.Sku{
 		Id:          s.ID,
 		Code:        s.Code,
@@ -60,7 +61,7 @@ func toProtoSku(s *models.Sku) *stockv1.Sku {
 	}
 }
 
-func toProtoRack(r *models.Rack) *stockv1.Rack {
+func toProtoRack(r *stock_model.Rack) *stockv1.Rack {
 	return &stockv1.Rack{
 		Id:          r.ID,
 		WarehouseId: r.WarehouseID,

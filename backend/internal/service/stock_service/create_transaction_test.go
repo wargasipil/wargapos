@@ -4,7 +4,6 @@ import (
 	"testing"
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
 	"wargapos/backend/internal/database"
-	"wargapos/backend/internal/models"
 	"wargapos/backend/internal/service/stock_service"
 	"wargapos/backend/internal/service/stock_service/stock_model"
 	"wargapos/backend/pkgs/wargatest"
@@ -55,7 +54,7 @@ func TestCreateTransaction(t *testing.T) {
 
 					assert.Nil(t, err)
 
-					var sku models.Sku
+					var sku stock_model.Sku
 					db.First(&sku, createSku.Msg.Sku.Id)
 					assert.NotNil(t, sku.LastStockIn, "last_stock_in should be set after stock in")
 					assert.Equal(t, int64(9), sku.StockQty, "sku stock_qty should match quantity added")

@@ -10,6 +10,7 @@ import (
 	ingredientv1 "wargapos/backend/gen/wargapos/ingredient/v1"
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
 	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
 func (s *IngredientService) AddMaterialStock(
@@ -94,7 +95,7 @@ func (s *IngredientService) AddMaterialStock(
 			}
 		} else if pay.Qty < 0 {
 			// Stock reduction: adjust sku.stock_qty directly (no rack context for ingredients)
-			if err := tx.Model(&models.Sku{}).
+			if err := tx.Model(&stock_model.Sku{}).
 				Where("id = ?", sku.Id).
 				Update("stock_qty", gorm.Expr("stock_qty + ?", pay.Qty)).Error; err != nil {
 				return err

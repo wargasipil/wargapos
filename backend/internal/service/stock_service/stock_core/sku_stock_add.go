@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
 	"wargapos/backend/internal/service/stock_service/stock_model"
 	"wargapos/backend/pkgs/runner"
 
@@ -27,7 +26,7 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) ([]*
 	var stockLogs []*stockv1.LogEvent = []*stockv1.LogEvent{}
 
 	err = db.Transaction(func(tx *gorm.DB) error {
-		var sku models.Sku
+		var sku stock_model.Sku
 		var costVersion stock_model.CostVersion
 		var stockLog stock_model.StockLog
 
@@ -38,7 +37,7 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) ([]*
 						Clauses(clause.Locking{
 							Strength: "UPDATE",
 						}).
-						Model(&models.Sku{}).
+						Model(&stock_model.Sku{}).
 						First(&sku, pay.SkuId).
 						Error
 
@@ -118,7 +117,7 @@ func SkuStockAdd(ctx context.Context, db *gorm.DB, pay *SkuStockAddPayload) ([]*
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 				return func(ctx context.Context) (context.Context, error) { // update sku last in + stock_qty
 					err = tx.
-						Model(&models.Sku{}).
+						Model(&stock_model.Sku{}).
 						Where("id = ?", sku.ID).
 						Updates(map[string]any{
 							"last_stock_in": pay.CreatedAt,

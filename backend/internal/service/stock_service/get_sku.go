@@ -10,7 +10,6 @@ import (
 	"gorm.io/gorm"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
 	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
@@ -29,7 +28,7 @@ func (s *StockService) GetSku(
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("identifier is required"))
 	}
 
-	var sku models.Sku
+	var sku stock_model.Sku
 	if err := q.First(&sku).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return connect.NewResponse(&stockv1.GetSkuResponse{

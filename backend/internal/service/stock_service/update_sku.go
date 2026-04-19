@@ -9,14 +9,14 @@ import (
 	"gorm.io/gorm"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
 func (s *StockService) UpdateSku(
 	ctx context.Context,
 	req *connect.Request[stockv1.UpdateSkuRequest],
 ) (*connect.Response[stockv1.UpdateSkuResponse], error) {
-	var sku models.Sku
+	var sku stock_model.Sku
 	if err := s.db.WithContext(ctx).First(&sku, "id = ? AND deleted = false", req.Msg.Id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, errors.New("sku not found"))

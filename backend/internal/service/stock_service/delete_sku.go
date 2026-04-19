@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 	"wargapos/backend/pkgs/runner"
 )
 
@@ -26,12 +26,12 @@ func (s *StockService) DeleteSku(
 			caller := runner.NewChainParam(
 				func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 					return func(ctx context.Context) (context.Context, error) {
-						var sku models.Sku
+						var sku stock_model.Sku
 						err = tx.
 							Clauses(clause.Locking{
 								Strength: "UPDATE",
 							}).
-							Model(&models.Sku{}).
+							Model(&stock_model.Sku{}).
 							First(&sku, req.Msg.Id).
 							Error
 						if err != nil {
@@ -49,7 +49,7 @@ func (s *StockService) DeleteSku(
 				func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 					return func(ctx context.Context) (context.Context, error) { // deleting sku
 						err = tx.
-							Model(&models.Sku{}).
+							Model(&stock_model.Sku{}).
 							Where("id = ? AND deleted = false", req.Msg.Id).
 							Update("deleted", true).
 							Error

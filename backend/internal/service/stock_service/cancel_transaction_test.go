@@ -74,7 +74,7 @@ func TestCancelTransaction(t *testing.T) {
 					assert.Equal(t, int32(0), costVersion.LeftStock, "cost version left_stock should be 0 after cancel")
 
 					// ensure sku stock_qty rolled back to 0
-					var sku models.Sku
+					var sku stock_model.Sku
 					db.First(&sku, skuId)
 					assert.Equal(t, int64(0), sku.StockQty, "sku stock_qty should be 0 after cancel")
 				})

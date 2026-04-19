@@ -6,7 +6,7 @@ import (
 	"connectrpc.com/connect"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
 func (s *StockService) ListSku(
@@ -23,7 +23,7 @@ func (s *StockService) ListSku(
 	}
 	offset := (page - 1) * pageSize
 
-	q := s.db.WithContext(ctx).Model(&models.Sku{}).Where("deleted = false")
+	q := s.db.WithContext(ctx).Model(&stock_model.Sku{}).Where("deleted = false")
 	if req.Msg.ProductId > 0 {
 		q = q.Where("product_id = ?", req.Msg.ProductId)
 	}
@@ -36,7 +36,7 @@ func (s *StockService) ListSku(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	var skus []models.Sku
+	var skus []stock_model.Sku
 	if err := q.Order("id desc").Limit(pageSize).Offset(offset).Find(&skus).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

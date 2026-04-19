@@ -7,7 +7,6 @@
 package marketplaceorderv1
 
 import (
-	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -1476,7 +1475,7 @@ var File_wargapos_marketplace_order_v1_service_proto protoreflect.FileDescriptor
 
 const file_wargapos_marketplace_order_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"+wargapos/marketplace_order/v1/service.proto\x12\x1dwargapos.marketplace_order.v1\x1a\x1bbuf/validate/validate.proto\x1a&wargapos/marketplace/v1/customer.proto\x1a#wargapos/marketplace/v1/order.proto\x1a wargapos/rolebased/v1/role.proto\"\xcf\x04\n" +
+	"+wargapos/marketplace_order/v1/service.proto\x12\x1dwargapos.marketplace_order.v1\x1a&wargapos/marketplace/v1/customer.proto\x1a#wargapos/marketplace/v1/order.proto\x1a wargapos/rolebased/v1/role.proto\"\xcf\x04\n" +
 	"\x12CreateOrderRequest\x12\x17\n" +
 	"\ashop_id\x18\x01 \x01(\x04R\x06shopId\x12#\n" +
 	"\rcustomer_name\x18\x02 \x01(\tR\fcustomerName\x12!\n" +

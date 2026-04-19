@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
 	"wargapos/backend/internal/service/stock_service/stock_model"
 	"wargapos/backend/pkgs/runner"
 
@@ -21,7 +20,7 @@ type SkuStockCancelPayload struct {
 
 func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload) error {
 	var err error
-	var sku models.Sku
+	var sku stock_model.Sku
 	var costVersion stock_model.CostVersion
 	var stockLog stock_model.StockLog
 
@@ -33,7 +32,7 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 						Clauses(clause.Locking{
 							Strength: "UPDATE",
 						}).
-						Model(&models.Sku{}).
+						Model(&stock_model.Sku{}).
 						First(&sku, pay.SkuId).
 						Error
 
@@ -106,7 +105,7 @@ func SkuStockCancel(ctx context.Context, db *gorm.DB, pay *SkuStockCancelPayload
 			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 				return func(ctx context.Context) (context.Context, error) { // decrement sku stock_qty
 					err = tx.
-						Model(&models.Sku{}).
+						Model(&stock_model.Sku{}).
 						Where("id = ?", sku.ID).
 						Update("stock_qty", gorm.Expr("stock_qty - ?", costVersion.StockInitiate)).
 						Error

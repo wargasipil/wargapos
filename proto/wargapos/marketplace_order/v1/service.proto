@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package wargapos.marketplace_order.v1;
 
-import "buf/validate/validate.proto";
+// import "buf/validate/validate.proto";
 import "wargapos/marketplace/v1/customer.proto";
 import "wargapos/marketplace/v1/order.proto";
 import "wargapos/rolebased/v1/role.proto";

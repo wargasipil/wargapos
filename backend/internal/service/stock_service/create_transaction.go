@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"connectrpc.com/connect"
-	"github.com/pdcgo/shared/db_models"
 	"gorm.io/gorm"
 
 	eventv1 "wargapos/backend/gen/wargapos/event/v1"
@@ -29,10 +28,6 @@ func (s *StockService) CreateTransaction(
 	if claims != nil {
 		userID = claims.Identity.IdentityId
 	}
-
-	// Derive transaction type and initial placement status from oneof kind
-	var txType stockv1.TransactionType
-	var placementStatus stockv1.PlacementStatus
 
 	var txRecord models.StockTransaction
 	var stockLogs []*stockv1.LogEvent
@@ -201,104 +196,44 @@ func (s *StockService) CreateTransaction(
 				func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
 					return func(ctx context.Context) (context.Context, error) {
 
-						kindPayload.Problem.Problem
-						panic("unimplemented")
+						for _, prob := range kindPayload.Problem.Problem {
+							// pricing
+
+							_, commit, err := stock_core.SkuStockProvision(ctx, tx, &stock_core.SkuStockProvisionPayload{
+								SkuId:  prob.SkuId,
+								UserId: userID,
+								Qty:    prob.Count,
+							})
+
+							if err != nil {
+								return ctx, err
+							}
+
+							_, err = commit(txRecord.ID)
+							if err != nil {
+								return ctx, err
+							}
+						}
+
+						// placement
+						_, err := stock_core.ProblemPlacements(tx, txRecord.ID, userID, kindPayload.Problem.Problem)
+						if err != nil {
+							return ctx, err
+						}
+
 						return next(ctx)
 					}
 				},
 				FinalizeTransaction(tx, items, &txRecord),
 			)
 		case *stockv1.CreateTransactionRequest_Order:
-			txType = stockv1.TransactionType_TRANSACTION_TYPE_ORDER
-			placementStatus = stockv1.PlacementStatus_PLACEMENT_STATUS_REVIEW
+			return errors.New("unimplemented")
 		default:
 			return errors.New("transaction kind is invalid")
 		}
 
 		caller := runner.NewChainParam(
-
-			func(next runner.NextFuncParam[context.Context]) runner.NextFuncParam[context.Context] {
-				return func(ctx context.Context) (context.Context, error) { // stock-core processing per kind
-					switch k := req.Msg.Kind.(type) {
-
-					case *stockv1.CreateTransactionRequest_Order:
-						txRecord.Receipt = k.Order.Receipt
-						txRecord.ReceiptFile = k.Order.ReceiptFile
-
-						// create transaction items + total
-						for _, item := range k.Order.Items {
-							txItem := models.StockTransactionItem{
-								TransactionID: txRecord.ID,
-								SkuID:         item.SkuId,
-								Quantity:      item.Quantity,
-								Price:         item.Total,
-							}
-							if err := tx.Create(&txItem).Error; err != nil {
-								return ctx, err
-							}
-							txRecord.Total += item.Total
-						}
-						if err := tx.Save(&txRecord).Error; err != nil {
-							return ctx, err
-						}
-
-						// provision + commit stock for each item
-						for _, item := range k.Order.Items {
-							var sku models.Sku
-							if err := tx.First(&sku, item.SkuId).Error; err != nil {
-								return ctx, fmt.Errorf("sku %d not found", item.SkuId)
-							}
-							costingType := sku.CostingType
-							if costingType == stockv1.CostingType_COSTING_TYPE_UNSPECIFIED {
-								costingType = stockv1.CostingType_COSTING_TYPE_FIFO
-							}
-							_, committed, err := stock_core.SkuStockProvision(ctx, tx, &stock_core.SkuStockProvisionPayload{
-								SkuId:       item.SkuId,
-								UserId:      userID,
-								Qty:         item.Quantity,
-								CostingType: costingType,
-							})
-							if err != nil {
-								return ctx, err
-							}
-							if _, err = committed(txRecord.ID); err != nil {
-								return ctx, err
-							}
-						}
-
-					case *stockv1.CreateTransactionRequest_Problem:
-						// Rack stock problems (BROKEN / LOST)
-						for _, p := range k.Problem.Problem {
-							change := p.Count
-							// BROKEN and LOST are always deductions
-							if p.Type == stockv1.PlacementType_PLACEMENT_TYPE_BROKEN ||
-								p.Type == stockv1.PlacementType_PLACEMENT_TYPE_LOST {
-								change = -change
-							}
-							if err := tx.Exec(`
-								UPDATE rack_placements SET left_stock = left_stock + ? WHERE sku_id = ? AND rack_id = ?
-							`, change, p.SkuId, p.RackId).Error; err != nil {
-								return ctx, err
-							}
-							pl := stock_model.PlacementLog{
-								SkuID:         p.SkuId,
-								ToRackID:      p.RackId,
-								PlacementType: int16(p.Type),
-								TransactionID: txRecord.ID,
-								ActorID:       userID,
-								Change:        change,
-								Note:          p.Reason,
-								CreatedAt:     txRecord.CreatedAt,
-							}
-							if err := tx.Create(&pl).Error; err != nil {
-								return ctx, err
-							}
-						}
-					}
-
-					return next(ctx)
-				}
-			},
+			chains...,
 		)
 
 		_, err := caller(ctx)
@@ -350,7 +285,7 @@ func LockSkus(
 			}
 
 			err := tx.
-				Model(&db_models.Sku{}).
+				Model(&stock_model.Sku{}).
 				Where("id in ?", lockIds).
 				Select("1").
 				Find(&templock).

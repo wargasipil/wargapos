@@ -86,7 +86,7 @@ func TestCreateOrderTransaction(t *testing.T) {
 				assert.InDelta(t, 15000.0, txRecord.Total, 0.01)
 
 				// sku stock_qty decremented: 10 - 3 = 7
-				var sku models.Sku
+				var sku stock_model.Sku
 				db.First(&sku, skuId)
 				assert.Equal(t, int64(7), sku.StockQty)
 				assert.NotNil(t, sku.LastStockOut)
@@ -170,11 +170,11 @@ func TestCreateOrderTransaction(t *testing.T) {
 				db.First(&txRecord, res.Msg.Transaction.Id)
 				assert.InDelta(t, 25000.0, txRecord.Total, 0.01)
 
-				var sku1 models.Sku
+				var sku1 stock_model.Sku
 				db.First(&sku1, skuId)
 				assert.Equal(t, int64(5), sku1.StockQty) // was 7, minus 2
 
-				var sku2 models.Sku
+				var sku2 stock_model.Sku
 				db.First(&sku2, skuId2)
 				assert.Equal(t, int64(2), sku2.StockQty) // was 5, minus 3
 			})

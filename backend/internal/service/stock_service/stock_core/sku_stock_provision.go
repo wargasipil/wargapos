@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
 	"wargapos/backend/internal/service/stock_service/stock_model"
 	"wargapos/backend/pkgs/runner"
 
@@ -19,25 +18,43 @@ type PriceProvision struct {
 }
 
 type SkuStockProvisionPayload struct {
-	SkuId       uint32
-	UserId      uint32
-	Qty         int32
-	CostingType stockv1.CostingType
+	SkuId  uint32
+	UserId uint32
+	Qty    int32
 }
 
-func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionPayload) ([]PriceProvision, runner.NextFuncParam[uint64], error) {
+func SkuStockProvision(ctx context.Context, db *gorm.DB, pay *SkuStockProvisionPayload) ([]PriceProvision, runner.NextFuncParam[uint64], error) {
 	var err error
-	var sku models.Sku
+	var sku stock_model.Sku
 	var priceProvision []PriceProvision
 
+	// getting sku costing type
+	var costingType stockv1.CostingType
+
 	caller := runner.NewChainParam(
+		func(next runner.NextFuncParam[*gorm.DB]) runner.NextFuncParam[*gorm.DB] {
+			return func(tx *gorm.DB) (*gorm.DB, error) { // getting costing type
+				err = db.
+					Model(&stock_model.Sku{}).
+					Where("id = ?", pay.SkuId).
+					Select("costing_type").
+					Find(&costingType).
+					Error
+
+				if err != nil {
+					return tx, err
+				}
+
+				return next(tx)
+			}
+		},
 		func(next runner.NextFuncParam[*gorm.DB]) runner.NextFuncParam[*gorm.DB] {
 			return func(tx *gorm.DB) (*gorm.DB, error) { // locking sku
 				err = tx.
 					Clauses(clause.Locking{
 						Strength: "UPDATE",
 					}).
-					Model(&models.Sku{}).
+					Model(&stock_model.Sku{}).
 					First(&sku, pay.SkuId).
 					Error
 
@@ -55,7 +72,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 					Where("sku_id = ?", pay.SkuId).
 					Where("left_stock > ?", 0)
 
-				switch pay.CostingType {
+				switch costingType {
 				case stockv1.CostingType_COSTING_TYPE_FIFO:
 					query = query.Order("created_at asc")
 				case stockv1.CostingType_COSTING_TYPE_LIFO:
@@ -65,7 +82,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 				case stockv1.CostingType_COSTING_TYPE_MIN_PRICE:
 					query = query.Order("unit_cost asc")
 				default:
-					return tx, fmt.Errorf("%s not implemented", stockv1.CostingType_name[int32(pay.CostingType)])
+					return tx, fmt.Errorf("%s not implemented", stockv1.CostingType_name[int32(costingType)])
 				}
 
 				rows, err := query.Rows()
@@ -112,7 +129,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 	)
 
 	// running provisioning
-	_, err = caller(tx)
+	_, err = caller(db)
 
 	commited := runner.NewChainParam(
 		func(next runner.NextFuncParam[uint64]) runner.NextFuncParam[uint64] {
@@ -130,7 +147,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 						CreatedAt:     time.Now(),
 					}
 
-					err = tx.Create(&stockLog).Error
+					err = db.Create(&stockLog).Error
 					if err != nil {
 						return txId, err
 					}
@@ -143,7 +160,7 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 			return func(txId uint64) (uint64, error) { // delta in cost version
 				var err error
 				for _, price := range priceProvision {
-					err = tx.
+					err = db.
 						Model(&stock_model.CostVersion{}).
 						Where("id = ?", price.PriceId).
 						Updates(map[string]interface{}{
@@ -168,8 +185,8 @@ func SkuStockProvision(ctx context.Context, tx *gorm.DB, pay *SkuStockProvisionP
 				}
 
 				now := time.Now()
-				err := tx.
-					Model(&models.Sku{}).
+				err := db.
+					Model(&stock_model.Sku{}).
 					Where("id = ?", pay.SkuId).
 					Updates(map[string]interface{}{
 						"stock_qty":      gorm.Expr("stock_qty - ?", totalQty),

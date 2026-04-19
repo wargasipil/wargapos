@@ -6,7 +6,6 @@ import (
 	"connectrpc.com/connect"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
 	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
@@ -27,9 +26,9 @@ func (s *StockService) ListSkuPlacement(
 		rackIDs = append(rackIDs, p.RackID)
 	}
 
-	rackMap := make(map[uint32]*models.Rack, len(rackIDs))
+	rackMap := make(map[uint32]*stock_model.Rack, len(rackIDs))
 	if len(rackIDs) > 0 {
-		var racks []models.Rack
+		var racks []stock_model.Rack
 		if err := s.db.WithContext(ctx).Where("id IN ?", rackIDs).Find(&racks).Error; err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}

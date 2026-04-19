@@ -8,14 +8,14 @@ import (
 	"connectrpc.com/connect"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
 func (s *StockService) CreateSku(
 	ctx context.Context,
 	req *connect.Request[stockv1.CreateSkuRequest],
 ) (*connect.Response[stockv1.CreateSkuResponse], error) {
-	sku := models.Sku{
+	sku := stock_model.Sku{
 		Code:        req.Msg.Code,
 		ProductID:   req.Msg.ProductId,
 		BranchID:    req.Msg.BranchId,

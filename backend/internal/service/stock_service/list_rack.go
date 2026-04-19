@@ -6,7 +6,7 @@ import (
 	"connectrpc.com/connect"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
 func (s *StockService) ListRack(
@@ -23,7 +23,7 @@ func (s *StockService) ListRack(
 	}
 	offset := (page - 1) * pageSize
 
-	q := s.db.WithContext(ctx).Model(&models.Rack{}).Where("deleted = false")
+	q := s.db.WithContext(ctx).Model(&stock_model.Rack{}).Where("deleted = false")
 	if f := req.Msg.Filter; f != nil {
 		if f.WarehouseId > 0 {
 			q = q.Where("warehouse_id = ?", f.WarehouseId)
@@ -41,7 +41,7 @@ func (s *StockService) ListRack(
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	var racks []models.Rack
+	var racks []stock_model.Rack
 	if err := q.Order("id asc").Limit(pageSize).Offset(offset).Find(&racks).Error; err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

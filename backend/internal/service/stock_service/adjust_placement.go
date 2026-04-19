@@ -46,7 +46,7 @@ func (s *StockService) AdjustPlacement(
 		pl := stock_model.PlacementLog{
 			SkuID:         req.Msg.SkuId,
 			ToRackID:      req.Msg.RackId,
-			PlacementType: int16(req.Msg.PlacementType),
+			PlacementType: req.Msg.PlacementType,
 			ActorID:       userID,
 			Change:        change,
 			Note:          req.Msg.Note,

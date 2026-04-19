@@ -8,14 +8,14 @@ import (
 	"gorm.io/gorm"
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
-	"wargapos/backend/internal/models"
+	"wargapos/backend/internal/service/stock_service/stock_model"
 )
 
 func (s *StockService) GetRack(
 	ctx context.Context,
 	req *connect.Request[stockv1.GetRackRequest],
 ) (*connect.Response[stockv1.GetRackResponse], error) {
-	var rack models.Rack
+	var rack stock_model.Rack
 	var err error
 
 	switch by := req.Msg.By.(type) {
@@ -39,7 +39,7 @@ func (s *StockService) GetRack(
 			if !req.Msg.CreateIfNotFound {
 				return nil, connect.NewError(connect.CodeNotFound, errors.New("rack not found"))
 			}
-			rack = models.Rack{
+			rack = stock_model.Rack{
 				WarehouseID: by.Name.WarehouseId,
 				Name:        by.Name.Name,
 			}

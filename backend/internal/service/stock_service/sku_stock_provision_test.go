@@ -5,7 +5,6 @@ import (
 
 	stockv1 "wargapos/backend/gen/wargapos/stock/v1"
 	"wargapos/backend/internal/database"
-	"wargapos/backend/internal/models"
 	"wargapos/backend/internal/service/stock_service"
 	"wargapos/backend/internal/service/stock_service/stock_core"
 	"wargapos/backend/internal/service/stock_service/stock_model"
@@ -73,9 +72,8 @@ func TestSkuStockProvision(t *testing.T) {
 				var provision []stock_core.PriceProvision
 				db.Transaction(func(tx *gorm.DB) error {
 					provision, _, err = stock_core.SkuStockProvision(t.Context(), tx, &stock_core.SkuStockProvisionPayload{
-						SkuId:       skuId,
-						Qty:         6,
-						CostingType: stockv1.CostingType_COSTING_TYPE_FIFO,
+						SkuId: skuId,
+						Qty:   6,
 					})
 					return err
 				})
@@ -91,9 +89,8 @@ func TestSkuStockProvision(t *testing.T) {
 				var provision []stock_core.PriceProvision
 				db.Transaction(func(tx *gorm.DB) error {
 					provision, _, err = stock_core.SkuStockProvision(t.Context(), tx, &stock_core.SkuStockProvisionPayload{
-						SkuId:       skuId,
-						Qty:         4,
-						CostingType: stockv1.CostingType_COSTING_TYPE_LIFO,
+						SkuId: skuId,
+						Qty:   4,
 					})
 					return err
 				})
@@ -109,9 +106,8 @@ func TestSkuStockProvision(t *testing.T) {
 				var provision []stock_core.PriceProvision
 				db.Transaction(func(tx *gorm.DB) error {
 					provision, _, err = stock_core.SkuStockProvision(t.Context(), tx, &stock_core.SkuStockProvisionPayload{
-						SkuId:       skuId,
-						Qty:         4,
-						CostingType: stockv1.CostingType_COSTING_TYPE_MAX_PRICE,
+						SkuId: skuId,
+						Qty:   4,
 					})
 					return err
 				})
@@ -127,9 +123,8 @@ func TestSkuStockProvision(t *testing.T) {
 				var provision []stock_core.PriceProvision
 				db.Transaction(func(tx *gorm.DB) error {
 					provision, _, err = stock_core.SkuStockProvision(t.Context(), tx, &stock_core.SkuStockProvisionPayload{
-						SkuId:       skuId,
-						Qty:         6,
-						CostingType: stockv1.CostingType_COSTING_TYPE_MIN_PRICE,
+						SkuId: skuId,
+						Qty:   6,
 					})
 					return err
 				})
@@ -145,9 +140,8 @@ func TestSkuStockProvision(t *testing.T) {
 				var provision []stock_core.PriceProvision
 				db.Transaction(func(tx *gorm.DB) error {
 					provision, _, err = stock_core.SkuStockProvision(t.Context(), tx, &stock_core.SkuStockProvisionPayload{
-						SkuId:       skuId,
-						Qty:         3,
-						CostingType: stockv1.CostingType_COSTING_TYPE_FIFO,
+						SkuId: skuId,
+						Qty:   3,
 					})
 					return err
 				})
@@ -160,9 +154,8 @@ func TestSkuStockProvision(t *testing.T) {
 			t.Run("insufficient stock returns error", func(t *testing.T) {
 				err := db.Transaction(func(tx *gorm.DB) error {
 					_, _, e := stock_core.SkuStockProvision(t.Context(), tx, &stock_core.SkuStockProvisionPayload{
-						SkuId:       skuId,
-						Qty:         100, // only 8 total in stock
-						CostingType: stockv1.CostingType_COSTING_TYPE_FIFO,
+						SkuId: skuId,
+						Qty:   100, // only 8 total in stock
 					})
 					return e
 				})
@@ -178,9 +171,8 @@ func TestSkuStockProvision(t *testing.T) {
 				err := db.Transaction(func(tx *gorm.DB) error {
 					var e error
 					provision, commited, e = stock_core.SkuStockProvision(t.Context(), tx, &stock_core.SkuStockProvisionPayload{
-						SkuId:       skuId,
-						Qty:         5, // consume all of cv1
-						CostingType: stockv1.CostingType_COSTING_TYPE_FIFO,
+						SkuId: skuId,
+						Qty:   5, // consume all of cv1
 					})
 					if e != nil {
 						return e
@@ -206,7 +198,7 @@ func TestSkuStockProvision(t *testing.T) {
 				assert.Equal(t, int32(-5), stockLog.Change, "change should be negative qty")
 
 				// sku stock_qty should be decremented: was 8 (5+3), now 3
-				var skuAfter models.Sku
+				var skuAfter stock_model.Sku
 				db.First(&skuAfter, skuId)
 				assert.Equal(t, int64(3), skuAfter.StockQty, "sku stock_qty should decrease by qty out")
 				assert.NotNil(t, skuAfter.LastStockOut, "last_stock_out should be set after provision")

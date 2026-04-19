@@ -59,7 +59,7 @@ func (s *StockService) MovePlacement(
 			SkuID:         skuID,
 			FromRackID:    fromRackID,
 			ToRackID:      toRackID,
-			PlacementType: int16(stockv1.PlacementType_PLACEMENT_TYPE_MOVE),
+			PlacementType: stockv1.PlacementType_PLACEMENT_TYPE_MOVE,
 			ActorID:       userID,
 			Change:        qty,
 			Note:          req.Msg.Note,

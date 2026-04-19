@@ -5,12 +5,13 @@
 package authv1connect
 
 import (
-	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
 	http "net/http"
 	strings "strings"
 	v1 "wargapos/backend/gen/wargapos/auth/v1"
+
+	connect "connectrpc.com/connect"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
